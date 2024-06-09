@@ -9,14 +9,14 @@
 
 struct CB_GAMEOBJECT_INFO
 {
-	XMFLOAT4X4						m_xmf4x4World;
+	XMFLOAT4X4						Matrix;
 };
 
-class CShader
+class Shader
 {
 public:
-	CShader();
-	virtual ~CShader();
+	Shader();
+	virtual ~Shader();
 
 private:
 	int								m_nReferences = 0;
@@ -42,7 +42,7 @@ public:
 	virtual void ReleaseShaderVariables();
 
 	virtual void OnPrepareRender(ID3D12GraphicsCommandList *pd3dCommandList);
-	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera);
+	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, Camera *pCamera);
 
 protected:
 	ID3D12PipelineState				*m_pd3dPipelineState = NULL;
@@ -50,11 +50,11 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CPseudoLightingShader : public CShader
+class PseudoLightingShader : public Shader
 {
 public:
-	CPseudoLightingShader();
-	virtual ~CPseudoLightingShader();
+	PseudoLightingShader();
+	virtual ~PseudoLightingShader();
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();
 

@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Camera.h"
 
-CCamera::CCamera()
+Camera::Camera()
 {
 	m_xmf4x4View = Matrix4x4::Identity();
 	m_xmf4x4Projection = Matrix4x4::Identity();
@@ -22,7 +22,7 @@ CCamera::CCamera()
 	m_pPlayer = NULL;
 }
 
-CCamera::CCamera(CCamera *pCamera)
+Camera::Camera(Camera *pCamera)
 {
 	if (pCamera)
 	{
@@ -49,11 +49,11 @@ CCamera::CCamera(CCamera *pCamera)
 	}
 }
 
-CCamera::~CCamera()
+Camera::~Camera()
 {
 }
 
-void CCamera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float fMinZ, float fMaxZ)
+void Camera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float fMinZ, float fMaxZ)
 {
 	m_d3dViewport.TopLeftX = float(xTopLeft);
 	m_d3dViewport.TopLeftY = float(yTopLeft);
@@ -63,7 +63,7 @@ void CCamera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, f
 	m_d3dViewport.MaxDepth = fMaxZ;
 }
 
-void CCamera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom)
+void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom)
 {
 	m_d3dScissorRect.left = xLeft;
 	m_d3dScissorRect.top = yTop;
@@ -71,7 +71,7 @@ void CCamera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom)
 	m_d3dScissorRect.bottom = yBottom;
 }
 
-void CCamera::GenerateProjectionMatrix(float fNearPlaneDistance, float fFarPlaneDistance, float fAspectRatio, float fFOVAngle)
+void Camera::GenerateProjectionMatrix(float fNearPlaneDistance, float fFarPlaneDistance, float fAspectRatio, float fFOVAngle)
 {
 	//	m_xmf4x4Projection = Matrix4x4::PerspectiveFovLH(XMConvertToRadians(fFOVAngle), fAspectRatio, fNearPlaneDistance, fFarPlaneDistance);
 	XMMATRIX xmmtxProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(fFOVAngle), fAspectRatio, fNearPlaneDistance, fFarPlaneDistance);
@@ -82,7 +82,7 @@ void CCamera::GenerateProjectionMatrix(float fNearPlaneDistance, float fFarPlane
 #endif
 }
 
-void CCamera::CalculateFrustumPlanes()
+void Camera::CalculateFrustumPlanes()
 {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	m_xmFrustumView.Transform(m_xmFrustumWorld, XMMatrixInverse(NULL, XMLoadFloat4x4(&m_xmf4x4View)));
@@ -123,7 +123,7 @@ void CCamera::CalculateFrustumPlanes()
 #endif
 }
 
-bool CCamera::IsInFrustum(BoundingOrientedBox& xmBoundingBox)
+bool Camera::IsInFrustum(BoundingOrientedBox& xmBoundingBox)
 {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	return(m_xmFrustumWorld.Intersects(xmBoundingBox));
@@ -131,7 +131,7 @@ bool CCamera::IsInFrustum(BoundingOrientedBox& xmBoundingBox)
 #endif
 }
 
-bool CCamera::IsInFrustum(BoundingBox& xmBoundingBox)
+bool Camera::IsInFrustum(BoundingBox& xmBoundingBox)
 {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	return(m_xmFrustumWorld.Intersects(xmBoundingBox));
@@ -199,7 +199,7 @@ bool CCamera::IsInFrustum(BoundingBox& xmBoundingBox)
 #endif
 }
 
-void CCamera::GenerateViewMatrix(XMFLOAT3 xmf3Position, XMFLOAT3 xmf3LookAt, XMFLOAT3 xmf3Up)
+void Camera::GenerateViewMatrix(XMFLOAT3 xmf3Position, XMFLOAT3 xmf3LookAt, XMFLOAT3 xmf3Up)
 {
 	m_xmf3Position = xmf3Position;
 	m_xmf3LookAtWorld = xmf3LookAt;
@@ -208,12 +208,12 @@ void CCamera::GenerateViewMatrix(XMFLOAT3 xmf3Position, XMFLOAT3 xmf3LookAt, XMF
 	GenerateViewMatrix();
 }
 
-void CCamera::GenerateViewMatrix()
+void Camera::GenerateViewMatrix()
 {
 	m_xmf4x4View = Matrix4x4::LookAtLH(m_xmf3Position, m_xmf3LookAtWorld, m_xmf3Up);
 }
 
-void CCamera::RegenerateViewMatrix()
+void Camera::RegenerateViewMatrix()
 {
 	m_xmf3Look = Vector3::Normalize(m_xmf3Look);
 	m_xmf3Right = Vector3::CrossProduct(m_xmf3Up, m_xmf3Look, true);
@@ -234,11 +234,11 @@ void CCamera::RegenerateViewMatrix()
 	m_xmFrustumView.Transform(m_xmFrustumWorld, XMLoadFloat4x4(&m_xmf4x4InverseView));
 }
 
-void CCamera::CreateShaderVariables(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList)
+void Camera::CreateShaderVariables(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList)
 {
 }
 
-void CCamera::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList)
+void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList)
 {
 	XMFLOAT4X4 xmf4x4View;
 	XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&m_xmf4x4View)));
@@ -251,11 +251,11 @@ void CCamera::UpdateShaderVariables(ID3D12GraphicsCommandList *pd3dCommandList)
 	pd3dCommandList->SetGraphicsRoot32BitConstants(2, 3, &m_xmf3Position, 32);
 }
 
-void CCamera::ReleaseShaderVariables()
+void Camera::ReleaseShaderVariables()
 {
 }
 
-void CCamera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList *pd3dCommandList)
+void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList *pd3dCommandList)
 {
 	pd3dCommandList->RSSetViewports(1, &m_d3dViewport);
 	pd3dCommandList->RSSetScissorRects(1, &m_d3dScissorRect);
@@ -264,7 +264,7 @@ void CCamera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList *pd3dCommand
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CSpaceShipCamera
 
-CSpaceShipCamera::CSpaceShipCamera(CCamera *pCamera) : CCamera(pCamera)
+CSpaceShipCamera::CSpaceShipCamera(Camera *pCamera) : Camera(pCamera)
 {
 	m_nMode = SPACESHIP_CAMERA;
 }
@@ -309,7 +309,7 @@ void CSpaceShipCamera::Rotate(float x, float y, float z)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CFirstPersonCamera
 
-CFirstPersonCamera::CFirstPersonCamera(CCamera *pCamera) : CCamera(pCamera)
+CFirstPersonCamera::CFirstPersonCamera(Camera *pCamera) : Camera(pCamera)
 {
 	m_nMode = FIRST_PERSON_CAMERA;
 	if (pCamera)
@@ -358,7 +358,7 @@ void CFirstPersonCamera::Rotate(float x, float y, float z)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CThirdPersonCamera
 
-CThirdPersonCamera::CThirdPersonCamera(CCamera *pCamera) : CCamera(pCamera)
+CThirdPersonCamera::CThirdPersonCamera(Camera *pCamera) : Camera(pCamera)
 {
 	m_nMode = THIRD_PERSON_CAMERA;
 	if (pCamera)

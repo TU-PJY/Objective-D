@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "GameFramework.h"
 
-CGameFramework::CGameFramework()
+D3D_Work::D3D_Work()
 {
 	m_pdxgiFactory = NULL;
 	m_pdxgiSwapChain = NULL;
@@ -37,11 +37,11 @@ CGameFramework::CGameFramework()
 	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
 }
 
-CGameFramework::~CGameFramework()
+D3D_Work::~D3D_Work()
 {
 }
 
-bool CGameFramework::OnCreate(HINSTANCE hInstance, HWND hMainWnd)
+bool D3D_Work::OnCreate(HINSTANCE hInstance, HWND hMainWnd)
 {
 	m_hInstance = hInstance;
 	m_hWnd = hMainWnd;
@@ -57,7 +57,7 @@ bool CGameFramework::OnCreate(HINSTANCE hInstance, HWND hMainWnd)
 	return(true);
 }
 
-void CGameFramework::CreateSwapChain()
+void D3D_Work::CreateSwapChain()
 {
 	RECT rcClient;
 	::GetClientRect(m_hWnd, &rcClient);
@@ -124,7 +124,7 @@ void CGameFramework::CreateSwapChain()
 #endif
 }
 
-void CGameFramework::CreateDirect3DDevice()
+void D3D_Work::CreateDirect3DDevice()
 {
 	HRESULT hResult;
 
@@ -178,7 +178,7 @@ void CGameFramework::CreateDirect3DDevice()
 	m_nDsvDescriptorIncrementSize = m_pd3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 }
 
-void CGameFramework::CreateCommandQueueAndList()
+void D3D_Work::CreateCommandQueueAndList()
 {
 	D3D12_COMMAND_QUEUE_DESC d3dCommandQueueDesc;
 	::ZeroMemory(&d3dCommandQueueDesc, sizeof(D3D12_COMMAND_QUEUE_DESC));
@@ -192,7 +192,7 @@ void CGameFramework::CreateCommandQueueAndList()
 	hResult = m_pd3dCommandList->Close();
 }
 
-void CGameFramework::CreateRtvAndDsvDescriptorHeaps()
+void D3D_Work::CreateRtvAndDsvDescriptorHeaps()
 {
 	D3D12_DESCRIPTOR_HEAP_DESC d3dDescriptorHeapDesc;
 	::ZeroMemory(&d3dDescriptorHeapDesc, sizeof(D3D12_DESCRIPTOR_HEAP_DESC));
@@ -207,7 +207,7 @@ void CGameFramework::CreateRtvAndDsvDescriptorHeaps()
 	hResult = m_pd3dDevice->CreateDescriptorHeap(&d3dDescriptorHeapDesc, __uuidof(ID3D12DescriptorHeap), (void **)&m_pd3dDsvDescriptorHeap);
 }
 
-void CGameFramework::CreateRenderTargetViews()
+void D3D_Work::CreateRenderTargetViews()
 {
 	D3D12_CPU_DESCRIPTOR_HANDLE d3dRtvCPUDescriptorHandle = m_pd3dRtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	for (UINT i = 0; i < m_nSwapChainBuffers; i++)
@@ -218,7 +218,7 @@ void CGameFramework::CreateRenderTargetViews()
 	}
 }
 
-void CGameFramework::CreateDepthStencilView()
+void D3D_Work::CreateDepthStencilView()
 {
 	D3D12_RESOURCE_DESC d3dResourceDesc;
 	d3dResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -272,7 +272,7 @@ void CGameFramework::CreateDepthStencilView()
 	m_pd3dDevice->CreateDepthStencilView(m_pd3dDepthStencilBuffer, &d3dDepthStencilViewDesc, d3dDsvCPUDescriptorHandle);
 }
 
-void CGameFramework::CreateRenderTargetViewsAndDepthStencilView()
+void D3D_Work::CreateRenderTargetViewsAndDepthStencilView()
 {
 	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
 
@@ -286,7 +286,7 @@ void CGameFramework::CreateRenderTargetViewsAndDepthStencilView()
 	WaitForGpuComplete();
 }
 
-void CGameFramework::ChangeSwapChainState()
+void D3D_Work::ChangeSwapChainState()
 {
 	WaitForGpuComplete();
 
@@ -319,7 +319,7 @@ void CGameFramework::ChangeSwapChainState()
 	CreateRenderTargetViews();
 }
 
-void CGameFramework::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
+void D3D_Work::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
 {
 	switch (nMessageID)
 	{
@@ -339,7 +339,7 @@ void CGameFramework::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM
 	}
 }
 
-void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
+void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
 {
 	switch (nMessageID)
 	{
@@ -368,7 +368,7 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 	}
 }
 
-LRESULT CALLBACK CGameFramework::OnProcessingWindowMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK D3D_Work::OnProcessingWindowMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
 {
 	switch (nMessageID)
 	{
@@ -397,7 +397,7 @@ LRESULT CALLBACK CGameFramework::OnProcessingWindowMessage(HWND hWnd, UINT nMess
 	return(0);
 }
 
-void CGameFramework::OnDestroy()
+void D3D_Work::OnDestroy()
 {
     ReleaseObjects();
 
@@ -425,12 +425,14 @@ void CGameFramework::OnDestroy()
 #endif
 }
 
-void CGameFramework::BuildObjects()
+void D3D_Work::BuildObjects()
 {
 	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
 
-	m_pScene = new CScene();
-	if (m_pScene) m_pScene->BuildObjects(m_pd3dDevice, m_pd3dCommandList);
+	m_pScene = new Scene();
+
+	if (m_pScene) 
+		m_pScene->InitScene(m_pd3dDevice, m_pd3dCommandList);
 
 	CAirplanePlayer *pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene->GetGraphicsRootSignature());
 	m_pPlayer = pAirplanePlayer;
@@ -442,13 +444,16 @@ void CGameFramework::BuildObjects()
 
 	WaitForGpuComplete();
 
-	if (m_pScene) m_pScene->ReleaseUploadBuffers();
-	if (m_pPlayer) m_pPlayer->ReleaseUploadBuffers();
+	if (m_pScene) 
+		m_pScene->ReleaseUploadBuffers();
+
+	if (m_pPlayer) 
+		m_pPlayer->ReleaseUploadBuffers();
 
 	m_GameTimer.Reset();
 }
 
-void CGameFramework::ReleaseObjects()
+void D3D_Work::ReleaseObjects()
 {
 	if (m_pPlayer) delete m_pPlayer;
 
@@ -456,7 +461,7 @@ void CGameFramework::ReleaseObjects()
 	if (m_pScene) delete m_pScene;
 }
 
-void CGameFramework::ProcessInput()
+void D3D_Work::ProcessInput()
 {
 	static UCHAR pKeysBuffer[256];
 	DWORD dwDirection = 0;
@@ -496,20 +501,20 @@ void CGameFramework::ProcessInput()
 	m_pPlayer->Update(m_GameTimer.GetTimeElapsed());
 }
 
-void CGameFramework::AnimateObjects()
+void D3D_Work::Update()
 {
-	if (m_pScene) m_pScene->AnimateObjects(m_GameTimer.GetTimeElapsed());
+	if (m_pScene) m_pScene->Update(m_GameTimer.GetTimeElapsed());
 }
 
-void CGameFramework::CreateShaderVariables()
-{
-}
-
-void CGameFramework::ReleaseShaderVariables()
+void D3D_Work::CreateShaderVariables()
 {
 }
 
-void CGameFramework::UpdateShaderVariables()
+void D3D_Work::ReleaseShaderVariables()
+{
+}
+
+void D3D_Work::UpdateShaderVariables()
 {
 	float fCurrentTime = m_GameTimer.GetTotalTime();
 	float fElapsedTime = m_GameTimer.GetTimeElapsed();
@@ -527,7 +532,7 @@ void CGameFramework::UpdateShaderVariables()
 	m_pd3dCommandList->SetGraphicsRoot32BitConstants(0, 1, &fyCursorPos, 3);
 }
 
-void CGameFramework::WaitForGpuComplete()
+void D3D_Work::WaitForGpuComplete()
 {
 	UINT64 nFenceValue = ++m_nFenceValues[m_nSwapChainBufferIndex];
 	HRESULT hResult = m_pd3dCommandQueue->Signal(m_pd3dFence, nFenceValue);
@@ -538,7 +543,7 @@ void CGameFramework::WaitForGpuComplete()
 	}
 }
 
-void CGameFramework::MoveToNextFrame()
+void D3D_Work::MoveToNextFrame()
 {
 	m_nSwapChainBufferIndex = m_pdxgiSwapChain->GetCurrentBackBufferIndex();
 
@@ -552,13 +557,9 @@ void CGameFramework::MoveToNextFrame()
 	}
 }
 
-void CGameFramework::FrameAdvance()
+void D3D_Work::FrameAdvance()
 {    
 	m_GameTimer.Tick(0.0f);
-	
-	ProcessInput();
-
-    AnimateObjects();
 
 	HRESULT hResult = m_pd3dCommandAllocator->Reset();
 	hResult = m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
@@ -584,9 +585,18 @@ void CGameFramework::FrameAdvance()
 
 	m_pd3dCommandList->OMSetRenderTargets(1, &d3dRtvCPUDescriptorHandle, TRUE, &d3dDsvCPUDescriptorHandle);
 
-	if (m_pScene) m_pScene->PrepareRender(m_pd3dCommandList);
-	UpdateShaderVariables();
-	if (m_pScene) m_pScene->Render(m_pd3dCommandList, m_pCamera);
+	
+	ProcessInput();
+
+    Update();
+
+	if (m_pScene) 
+		m_pScene->PrepareRender(m_pd3dCommandList);
+
+	//UpdateShaderVariables();
+
+	if (m_pScene) 
+		m_pScene->Render(m_pd3dCommandList, m_pCamera);
 
 #ifdef _WITH_PLAYER_TOP
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);

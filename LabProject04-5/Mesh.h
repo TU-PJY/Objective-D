@@ -31,11 +31,11 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CMesh
+class Mesh
 {
 public:
-	CMesh(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, char *pstrFileName = NULL, bool bTextFile = true);
-    virtual ~CMesh();
+	Mesh(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, char *pstrFileName = NULL, bool bTextFile = true);
+    virtual ~Mesh();
 
 private:
 	int								m_nReferences = 0;

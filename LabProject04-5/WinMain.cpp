@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "GlobalRes.h"
 #include "LabProject04-5.h"
 #include "GameFramework.h"
 
@@ -11,7 +12,12 @@ HINSTANCE						ghAppInstance;
 TCHAR							szTitle[MAX_LOADSTRING];
 TCHAR							szWindowClass[MAX_LOADSTRING];
 
-CGameFramework					gGameFramework;
+// pre load resources
+Mesh* pUfoMesh;
+Mesh* pFlyerMesh;
+PseudoLightingShader* pShader;
+
+D3D_Work					gGameFramework;
 
 ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE, int);

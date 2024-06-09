@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Timer.h"
 
-CGameTimer::CGameTimer()
+Timer::Timer()
 {
 	::QueryPerformanceFrequency((LARGE_INTEGER *)&m_nPerformanceFrequencyPerSec);
 	::QueryPerformanceCounter((LARGE_INTEGER *)&m_nLastPerformanceCounter); 
@@ -21,11 +21,11 @@ CGameTimer::CGameTimer()
 	m_fFPSTimeElapsed = 0.0f;
 }
 
-CGameTimer::~CGameTimer()
+Timer::~Timer()
 {
 }
 
-void CGameTimer::Tick(float fLockFPS)
+void Timer::Tick(float fLockFPS)
 {
 	if (m_bStopped)
 	{
@@ -69,7 +69,7 @@ void CGameTimer::Tick(float fLockFPS)
     if (m_nSampleCount > 0) m_fTimeElapsed /= m_nSampleCount;
 }
 
-unsigned long CGameTimer::GetFrameRate(LPTSTR lpszString, int nCharacters) 
+unsigned long Timer::GetFrameRate(LPTSTR lpszString, int nCharacters) 
 {
     if (lpszString)
     {
@@ -80,18 +80,18 @@ unsigned long CGameTimer::GetFrameRate(LPTSTR lpszString, int nCharacters)
     return(m_nCurrentFrameRate);
 }
 
-float CGameTimer::GetTimeElapsed() 
+float Timer::GetTimeElapsed() 
 {
     return(m_fTimeElapsed);
 }
 
-float CGameTimer::GetTotalTime()
+float Timer::GetTotalTime()
 {
 	if (m_bStopped) return(float(((m_nStopPerformanceCounter - m_nPausedPerformanceCounter) - m_nBasePerformanceCounter) * m_fTimeScale));
 	return(float(((m_nCurrentPerformanceCounter - m_nPausedPerformanceCounter) - m_nBasePerformanceCounter) * m_fTimeScale));
 }
 
-void CGameTimer::Reset()
+void Timer::Reset()
 {
 	__int64 nPerformanceCounter;
 	::QueryPerformanceCounter((LARGE_INTEGER*)&nPerformanceCounter);
@@ -102,7 +102,7 @@ void CGameTimer::Reset()
 	m_bStopped = false;
 }
 
-void CGameTimer::Start()
+void Timer::Start()
 {
 	__int64 nPerformanceCounter;
 	::QueryPerformanceCounter((LARGE_INTEGER *)&nPerformanceCounter);
@@ -115,7 +115,7 @@ void CGameTimer::Start()
 	}
 }
 
-void CGameTimer::Stop()
+void Timer::Stop()
 {
 	if (!m_bStopped)
 	{

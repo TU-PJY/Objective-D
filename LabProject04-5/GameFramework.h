@@ -4,11 +4,11 @@
 #include "Player.h"
 #include "Scene.h"
 
-class CGameFramework
+class D3D_Work
 {
 public:
-	CGameFramework();
-	~CGameFramework();
+	D3D_Work();
+	~D3D_Work();
 
 	bool OnCreate(HINSTANCE hInstance, HWND hMainWnd);
 	void OnDestroy();
@@ -29,7 +29,7 @@ public:
     void ReleaseObjects();
 
     void ProcessInput();
-    void AnimateObjects();
+    void Update();
     void FrameAdvance();
 
 	virtual void CreateShaderVariables();
@@ -80,13 +80,13 @@ private:
 	ID3D12Debug					*m_pd3dDebugController;
 #endif
 
-	CScene						*m_pScene = NULL;
-	CPlayer						*m_pPlayer = NULL;
-	CCamera						*m_pCamera = NULL;
+	Scene						*m_pScene = NULL;
+	Player						*m_pPlayer = NULL;
+	Camera						*m_pCamera = NULL;
 
 	POINT						m_ptOldCursorPos;
 
-	CGameTimer					m_GameTimer;
+	Timer					m_GameTimer;
 	_TCHAR						m_pszFrameRate[50];
 };
 

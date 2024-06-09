@@ -7,32 +7,29 @@
 #include "Mesh.h"
 #include "Camera.h"
 
-class CShader;
+class Shader;
 
-class CGameObject
-{
+class MAIN_OBJ {
 public:
-	CGameObject();
-	virtual ~CGameObject();
+	MAIN_OBJ();
+	virtual ~MAIN_OBJ();
 
 public:
-	XMFLOAT4X4						m_xmf4x4World;
-	CMesh							*m_pMesh = NULL;
+	XMFLOAT4X4						Matrix;
+	XMFLOAT3						ModelColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	Shader							*m_pShader = NULL;
+	Mesh							*m_pMesh = NULL;
 
-	CShader							*m_pShader = NULL;
-
-	XMFLOAT3						m_xmf3Color = XMFLOAT3(1.0f, 1.0f, 1.0f);
-
-	void SetMesh(CMesh *pMesh);
-	void SetShader(CShader *pShader);
+	void SetMesh(Mesh *pMesh);
+	void SetShader(Shader *pShader);
 
 	virtual void CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList);
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
 	virtual void ReleaseShaderVariables();
 
-	virtual void Animate(float fTimeElapsed);
+	virtual void Update(float fTimeElapsed);
 	virtual void OnPrepareRender() { }
-	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, CCamera *pCamera = NULL);
+	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, Camera *pCamera = NULL);
 
 	virtual void ReleaseUploadBuffers();
 
@@ -41,10 +38,12 @@ public:
 	XMFLOAT3 GetUp();
 	XMFLOAT3 GetRight();
 
+	void InitTransform();
+
 	void SetPosition(float x, float y, float z);
 	void SetPosition(XMFLOAT3 xmf3Position);
 
-	void SetColor(XMFLOAT3 xmf3Color) { m_xmf3Color = xmf3Color; }
+	void SetColor(XMFLOAT3 xmf3Color) { ModelColor = xmf3Color; }
 
 	void MoveStrafe(float fDistance = 1.0f);
 	void MoveUp(float fDistance = 1.0f);
@@ -53,11 +52,3 @@ public:
 	void Rotate(float fPitch = 10.0f, float fYaw = 10.0f, float fRoll = 10.0f);
 	void Rotate(XMFLOAT3 *pxmf3Axis, float fAngle);
 };
-
-class CUfoObject : public CGameObject
-{
-public:
-	CUfoObject();
-	virtual ~CUfoObject();
-};
-
