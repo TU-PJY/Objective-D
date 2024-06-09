@@ -86,9 +86,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
