@@ -1,9 +1,4 @@
-//-----------------------------------------------------------------------------
-// File: Scene.h
-//-----------------------------------------------------------------------------
-
 #pragma once
-
 #include "D3D_CONF.h"
 #include "GlobalRes.h"
 #include "Ufo.h"
@@ -11,16 +6,19 @@
 #include <deque>
 #include <ranges>
 
+
 constexpr int NUM_MAIN_LAYER = static_cast<int>(MainLayer::END);
 
+
 class Scene {
+protected:
+	ID3D12RootSignature* m_pd3dGraphicsRootSignature = NULL;
+
+	std::array<std::deque<MAIN_OBJ*>, NUM_MAIN_LAYER> MainCont;
+
+
 public:
-	Scene() {};
-	~Scene() {};
-
 	void InitScene(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
-
-////////////////////////////////////////////////////////////////////////////////////////
 
 	void Update(float fTimeElapsed) {
 		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
@@ -130,7 +128,13 @@ public:
 	}
 
 
-	void Scene::ReleaseUploadBuffers() {}
+	void Scene::ReleaseUploadBuffers() {
+		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
+			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ++It) {
+				if(*It) (*It)->ReleaseUploadBuffers();
+			}
+		 }
+	}
 
 
 	bool Scene::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
@@ -153,8 +157,6 @@ public:
 	}
 
 
-protected:
-	ID3D12RootSignature			*m_pd3dGraphicsRootSignature = NULL;
-
-	std::array<std::deque<MAIN_OBJ*>, NUM_MAIN_LAYER> MainCont;
+	Scene() {};
+	~Scene() {};
 };
