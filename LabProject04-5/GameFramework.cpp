@@ -5,8 +5,7 @@
 #include "stdafx.h"
 #include "GameFramework.h"
 
-D3D_Work::D3D_Work()
-{
+D3D_Work::D3D_Work() {
 	m_pdxgiFactory = NULL;
 	m_pdxgiSwapChain = NULL;
 	m_pd3dDevice = NULL;
@@ -37,12 +36,9 @@ D3D_Work::D3D_Work()
 	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
 }
 
-D3D_Work::~D3D_Work()
-{
-}
+D3D_Work::~D3D_Work(){}
 
-bool D3D_Work::OnCreate(HINSTANCE hInstance, HWND hMainWnd)
-{
+bool D3D_Work::OnCreate(HINSTANCE hInstance, HWND hMainWnd) {
 	m_hInstance = hInstance;
 	m_hWnd = hMainWnd;
 
