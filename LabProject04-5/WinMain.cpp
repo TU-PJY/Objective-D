@@ -1,10 +1,10 @@
 // LabProject04-5.cpp : 응용 프로그램에 대한 진입점을 정의합니다.
 //
 
-#include "stdafx.h"
+#include "D3D_Header.h"
 #include "GlobalRes.h"
-#include "LabProject04-5.h"
-#include "GameFramework.h"
+#include "Objective-D.h"
+#include "D3D_Work.h"
 
 #define MAX_LOADSTRING 100
 

@@ -3,35 +3,38 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
-
-#include "Mesh.h"
 #include "Camera.h"
+#include "Mesh.h"
+#include "Shader.h"
 
 class Shader;
 
 class MAIN_OBJ {
-public:
-	MAIN_OBJ();
-	virtual ~MAIN_OBJ();
-
 public:
 	XMFLOAT4X4						Matrix;
 	XMFLOAT3						ModelColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	Shader							*m_pShader = NULL;
 	Mesh							*m_pMesh = NULL;
 
-	void SetMesh(Mesh *pMesh);
-	void SetShader(Shader *pShader);
+
+	MAIN_OBJ();
+	~MAIN_OBJ();
+
+	void SetMesh(Mesh* pMesh);
+	void SetShader(Shader* pShader);
 
 	virtual void CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList);
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
-	virtual void ReleaseShaderVariables();
 
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
+
+	virtual void ReleaseShaderVariables();
 	virtual void Update(float fTimeElapsed);
-	virtual void OnPrepareRender() { }
-	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, Camera *pCamera = NULL);
+	virtual void OnPrepareRender();
+
+	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera = NULL);
 
 	virtual void ReleaseUploadBuffers();
+
 
 	XMFLOAT3 GetPosition();
 	XMFLOAT3 GetLook();

@@ -154,7 +154,7 @@ public:
 		char pstrToken[64] = { '\0' };
 
 		if (bTextFile) {
-			ifstream InFile(pstrFileName);
+			std::ifstream InFile(pstrFileName);
 
 			while(true) {
 				InFile >> pstrToken;

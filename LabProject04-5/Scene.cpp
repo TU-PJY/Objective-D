@@ -1,6 +1,5 @@
-#include "stdafx.h"
+#include "D3D_Header.h"
 #include "Scene.h"
-
 
 void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {
 	m_pd3dGraphicsRootSignature = CreateGraphicsRootSignature(pd3dDevice);
@@ -10,5 +9,3 @@ void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dC
 
 	AddObject(new Ufo(), MainLayer::L1);
 }
-
-

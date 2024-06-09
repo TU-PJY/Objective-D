@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "D3D_Header.h"
 #include "Mesh.h"
 #include "Shader.h"
 
