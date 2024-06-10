@@ -25,7 +25,7 @@ public:
 		SetPosition(position);
 		Rotate(0.0, rotation, 0.0);
 
-		if(rotation > 600)
-			m_pScene.DeleteObject(this, Layer);
+		//if(rotation > 600)
+			//scene.DeleteObject(this, Layer);
 	}
 };

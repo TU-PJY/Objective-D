@@ -10,7 +10,7 @@ Mesh* pFlyerMesh;
 PseudoLightingShader* pShader;
 
 // global scope scene
-Scene m_pScene;
+Scene scene;
 
 
 void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {

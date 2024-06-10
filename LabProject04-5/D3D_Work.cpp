@@ -10,9 +10,9 @@
 void D3D_Work::BuildObjects() {
 	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
 
-	m_pScene.InitScene(m_pd3dDevice, m_pd3dCommandList);
+	scene.InitScene(m_pd3dDevice, m_pd3dCommandList);
 
-	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene.GetGraphicsRootSignature());
+	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, scene.GetGraphicsRootSignature());
 	m_pPlayer = pAirplanePlayer;
 	m_pCamera = m_pPlayer->GetCamera();
 
@@ -22,7 +22,7 @@ void D3D_Work::BuildObjects() {
 
 	WaitForGpuComplete();
 
-	m_pScene.ReleaseUploadBuffers();
+	scene.ReleaseUploadBuffers();
 
 	if (m_pPlayer)
 		m_pPlayer->ReleaseUploadBuffers();
@@ -140,7 +140,7 @@ D3D_Work::D3D_Work() {
 	m_nWndClientWidth = FRAME_BUFFER_WIDTH;
 	m_nWndClientHeight = FRAME_BUFFER_HEIGHT;
 
-	//m_pScene = NULL;
+	//scene = NULL;
 	m_pCamera = NULL;
 
 	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
@@ -457,7 +457,7 @@ void D3D_Work::ReleaseObjects()
 {
 	if (m_pPlayer) delete m_pPlayer;
 
-	m_pScene.ReleaseObjects();
+	scene.ReleaseObjects();
 }
 
 void D3D_Work::ProcessInput()
@@ -502,7 +502,7 @@ void D3D_Work::ProcessInput()
 
 void D3D_Work::Update()
 {
-	m_pScene.Update(m_GameTimer.GetTimeElapsed());
+	scene.Update(m_GameTimer.GetTimeElapsed());
 }
 
 void D3D_Work::CreateShaderVariables()
@@ -588,11 +588,11 @@ void D3D_Work::FrameAdvance()
 
 	Update();
 
-	m_pScene.PrepareRender(m_pd3dCommandList);
+	scene.PrepareRender(m_pd3dCommandList);
 
 	//UpdateShaderVariables();
 
-	m_pScene.Render(m_pd3dCommandList, m_pCamera);
+	scene.Render(m_pd3dCommandList, m_pCamera);
 
 #ifdef _WITH_PLAYER_TOP
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);

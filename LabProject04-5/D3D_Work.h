@@ -79,7 +79,7 @@ private:
 	ID3D12Debug					*m_pd3dDebugController;
 #endif
 
-//	Scene						*m_pScene = NULL;
+//	Scene						*scene = NULL;
 	Player						*m_pPlayer = NULL;
 	Camera						*m_pCamera = NULL;
 

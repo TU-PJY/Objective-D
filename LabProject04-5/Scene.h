@@ -29,6 +29,7 @@ protected:
 public:
 	void InitScene(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
 
+
 	void Update(float fTimeElapsed) {
 		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
@@ -132,12 +133,13 @@ public:
 	}
 
 
-	void Scene::ReleaseObjects() {
-		if (m_pd3dGraphicsRootSignature) m_pd3dGraphicsRootSignature->Release();
+	void ReleaseObjects() {
+		if (m_pd3dGraphicsRootSignature) 
+			m_pd3dGraphicsRootSignature->Release();
 	}
 
 
-	void Scene::ReleaseUploadBuffers() {
+	void ReleaseUploadBuffers() {
 		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ++It) {
 				if(*It) (*It)->ReleaseUploadBuffers();
@@ -146,22 +148,22 @@ public:
 	}
 
 
-	bool Scene::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	bool OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		return(false);
 	}
 
 
-	bool Scene::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	bool OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		return(false);
 	}
 
 
-	bool Scene::ProcessInput() {
+	bool ProcessInput() {
 		return(false);
 	}
 
 
-	void Scene::PrepareRender(ID3D12GraphicsCommandList* pd3dCommandList) {
+	void PrepareRender(ID3D12GraphicsCommandList* pd3dCommandList) {
 		pd3dCommandList->SetGraphicsRootSignature(m_pd3dGraphicsRootSignature);
 	}
 
@@ -170,4 +172,4 @@ public:
 	~Scene() {};
 };
 
-extern Scene m_pScene;
+extern Scene scene;
