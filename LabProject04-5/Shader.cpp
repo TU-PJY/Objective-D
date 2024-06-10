@@ -158,7 +158,7 @@ void Shader::OnPrepareRender(ID3D12GraphicsCommandList* pd3dCommandList) {
 }
 
 
-void Shader::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera) {
+void Shader::Render(ID3D12GraphicsCommandList* pd3dCommandList) {
 	OnPrepareRender(pd3dCommandList);
 }
 

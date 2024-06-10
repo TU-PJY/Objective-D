@@ -57,7 +57,7 @@ public:
 	virtual void Update(float fTimeElapsed);
 	virtual void OnPrepareRender();
 
-	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera = NULL);
+	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList);
 
 	virtual void ReleaseUploadBuffers();
 

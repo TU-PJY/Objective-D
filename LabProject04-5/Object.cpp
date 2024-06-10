@@ -109,11 +109,11 @@ void OBJ::UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList) {
 }
 
 
-void OBJ::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera) {
+void OBJ::Render(ID3D12GraphicsCommandList* pd3dCommandList) {
 	OnPrepareRender();
 
 	if (m_pShader)
-		m_pShader->Render(pd3dCommandList, pCamera);
+		m_pShader->Render(pd3dCommandList);
 
 	UpdateShaderVariables(pd3dCommandList);
 

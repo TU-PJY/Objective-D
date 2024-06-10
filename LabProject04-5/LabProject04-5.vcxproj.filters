@@ -73,9 +73,6 @@
     <ClInclude Include="Timer.h">
       <Filter>%285%29____________D3D_System\---D3D_Work---</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>%284%29____________User_Object</Filter>
-    </ClInclude>
     <ClInclude Include="Ufo.h">
       <Filter>%284%29____________User_Object</Filter>
     </ClInclude>
@@ -104,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>%286%29____________Win_System</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>%284%29____________User_Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

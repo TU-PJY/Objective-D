@@ -54,7 +54,7 @@ public:
 
 	virtual void OnPrepareRender(ID3D12GraphicsCommandList* pd3dCommandList);
 
-	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera);
+	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList);
 
 protected:
 	ID3D12PipelineState				*m_pd3dPipelineState = NULL;

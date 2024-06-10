@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Timer.h"
-#include "Player.h"
+#include "Camera.h"
 
-class D3D_Work
-{
+class D3D_Work {
 public:
 	D3D_Work();
 	~D3D_Work();
@@ -78,10 +77,6 @@ private:
 #if defined(_DEBUG)
 	ID3D12Debug					*m_pd3dDebugController;
 #endif
-
-//	Scene						*scene = NULL;
-	Player						*m_pPlayer = NULL;
-	Camera						*m_pCamera = NULL;
 
 	POINT						m_ptOldCursorPos;
 

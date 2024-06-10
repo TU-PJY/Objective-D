@@ -4,6 +4,7 @@
 
 #include "D3D_Header.h"
 #include "D3D_Work.h"
+#include "Camera.h"
 #include "Scene.h"
 
 
@@ -12,9 +13,10 @@ void D3D_Work::BuildObjects() {
 
 	scene.InitScene(m_pd3dDevice, m_pd3dCommandList);
 
-	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, scene.GetGraphicsRootSignature());
-	m_pPlayer = pAirplanePlayer;
-	m_pCamera = m_pPlayer->GetCamera();
+	m_pCamera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
+	m_pCamera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 60.0f);
+	m_pCamera.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
+	m_pCamera.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
 
 	m_pd3dCommandList->Close();
 	ID3D12CommandList* ppd3dCommandLists[] = { m_pd3dCommandList };
@@ -23,10 +25,6 @@ void D3D_Work::BuildObjects() {
 	WaitForGpuComplete();
 
 	scene.ReleaseUploadBuffers();
-
-	if (m_pPlayer)
-		m_pPlayer->ReleaseUploadBuffers();
-
 	m_GameTimer.Reset();
 }
 
@@ -85,6 +83,14 @@ void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 		case 'X':
 			scene.DeleteObject("aircraft", ObjectRange::All, LayerRange::All, D3D_Layer::L1);
 			break;
+
+		case VK_UP:
+			m_pCamera.CamPos.z += 2.0;
+			break;
+
+		case VK_DOWN:
+			m_pCamera.CamPos.z -= 2.0;
+			break;
 		}
 		break;
 
@@ -95,16 +101,6 @@ void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 			break;
 
 		case VK_RETURN:
-			break;
-
-		case VK_F1:
-		case VK_F2:
-		case VK_F3:
-			m_pCamera = m_pPlayer->ChangeCamera((DWORD)(wParam - VK_F1 + 1), m_GameTimer.GetTimeElapsed());
-			break;
-
-		case VK_F9:
-			ChangeSwapChainState();
 			break;
 
 		default:
@@ -172,9 +168,6 @@ D3D_Work::D3D_Work() {
 
 	m_nWndClientWidth = FRAME_BUFFER_WIDTH;
 	m_nWndClientHeight = FRAME_BUFFER_HEIGHT;
-
-	//scene = NULL;
-	m_pCamera = NULL;
 
 	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
 }
@@ -486,10 +479,7 @@ void D3D_Work::OnDestroy()
 #endif
 }
 
-void D3D_Work::ReleaseObjects()
-{
-	if (m_pPlayer) delete m_pPlayer;
-
+void D3D_Work::ReleaseObjects() {
 	scene.ReleaseObjects();
 }
 
@@ -517,20 +507,6 @@ void D3D_Work::ProcessInput()
 		cyDelta = (float)(ptCursorPos.y - m_ptOldCursorPos.y) / 3.0f;
 		::SetCursorPos(m_ptOldCursorPos.x, m_ptOldCursorPos.y);
 	}
-
-	if ((dwDirection != 0) || (cxDelta != 0.0f) || (cyDelta != 0.0f))
-	{
-		if (cxDelta || cyDelta)
-		{
-			if (pKeysBuffer[VK_RBUTTON] & 0xF0)
-				m_pPlayer->Rotate(cyDelta, 0.0f, -cxDelta);
-			else
-				m_pPlayer->Rotate(cyDelta, cxDelta, 0.0f);
-		}
-		if (dwDirection) m_pPlayer->Move(dwDirection, 50.0f * m_GameTimer.GetTimeElapsed(), true);
-	}
-
-	m_pPlayer->Update(m_GameTimer.GetTimeElapsed());
 }
 
 void D3D_Work::Update()
@@ -614,10 +590,9 @@ void D3D_Work::FrameAdvance()
 
 	D3D12_CPU_DESCRIPTOR_HANDLE d3dDsvCPUDescriptorHandle = m_pd3dDsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
-
 	m_pd3dCommandList->OMSetRenderTargets(1, &d3dRtvCPUDescriptorHandle, TRUE, &d3dDsvCPUDescriptorHandle);
 
-	ProcessInput();
+	m_pCamera.RegenerateViewMatrix();
 
 	Update();
 
@@ -625,12 +600,11 @@ void D3D_Work::FrameAdvance()
 
 	//UpdateShaderVariables();
 
-	scene.Render(m_pd3dCommandList, m_pCamera);
+	scene.Render(m_pd3dCommandList);
 
 #ifdef _WITH_PLAYER_TOP
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 #endif
-	if (m_pPlayer) m_pPlayer->Render(m_pd3dCommandList, m_pCamera);
 
 	d3dResourceBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	d3dResourceBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;

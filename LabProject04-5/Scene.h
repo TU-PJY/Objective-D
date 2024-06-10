@@ -57,13 +57,13 @@ public:
 	}
 
 
-	void Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera = NULL) {
-		pCamera->SetViewportsAndScissorRects(pd3dCommandList);
-		pCamera->UpdateShaderVariables(pd3dCommandList);
+	void Render(ID3D12GraphicsCommandList* pd3dCommandList) {
+		m_pCamera.SetViewportsAndScissorRects(pd3dCommandList);
+		m_pCamera.UpdateShaderVariables(pd3dCommandList);
 
 		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
-				if (*It) (*It)->Render(pd3dCommandList, pCamera);
+				if (*It) (*It)->Render(pd3dCommandList);
 				if (*It) ++It;
 			}
 		}
