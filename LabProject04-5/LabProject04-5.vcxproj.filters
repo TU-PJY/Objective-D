@@ -1,125 +1,130 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="_______________D3D_Camera">
+    <Filter Include="%281%29______________D3D_CONF">
+      <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%282%29____________D3D_Camera">
       <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_______________User_Object">
-      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="__________D3D_Shader/Mesh">
-      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="________________D3D_Object">
-      <UniqueIdentifier>{698482d9-309b-47d4-9ea9-5b12799b176c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="________________D3D_Scene">
+    <Filter Include="%283%29_____________D3D_Scene">
       <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_________________D3D_Base">
+    <Filter Include="%284%29____________User_Object">
+      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System">
+      <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\D3D_Object">
+      <UniqueIdentifier>{698482d9-309b-47d4-9ea9-5b12799b176c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\D3D_Base">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="____________________Global">
-      <UniqueIdentifier>{9a235899-38e5-4e85-abbc-7bbc72d54782}</UniqueIdentifier>
+    <Filter Include="%285%29____________D3D_System\D3D_Shader/Mesh">
+      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="______________________Win">
-      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="__________________D3D_Run">
+    <Filter Include="%285%29____________D3D_System\D3D_Work">
       <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_________________리소스 파일">
+    <Filter Include="%286%29____________Win_System">
+      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%286%29____________Win_System\_________________리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="%287%29_____________D3D_Shader">
+      <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
-      <Filter>______________________Win</Filter>
+      <Filter>%286%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>______________________Win</Filter>
+      <Filter>%286%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>______________________Win</Filter>
-    </ClInclude>
-    <ClInclude Include="D3D_CONF.h">
-      <Filter>__________________D3D_Run</Filter>
+      <Filter>%286%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="D3D_Work.h">
-      <Filter>__________________D3D_Run</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>________________D3D_Object</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Object</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>________________D3D_Scene</Filter>
+      <Filter>%283%29_____________D3D_Scene</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>__________D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>__________D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>_______________D3D_Camera</Filter>
+      <Filter>%282%29____________D3D_Camera</Filter>
     </ClInclude>
     <ClInclude Include="D3D_Header.h">
-      <Filter>_________________D3D_Base</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Base</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>__________________D3D_Run</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalRes.h">
-      <Filter>____________________Global</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>_______________User_Object</Filter>
+      <Filter>%284%29____________User_Object</Filter>
     </ClInclude>
     <ClInclude Include="Ufo.h">
-      <Filter>_______________User_Object</Filter>
+      <Filter>%284%29____________User_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D_CONF.h">
+      <Filter>%281%29______________D3D_CONF</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3D_Work.cpp">
-      <Filter>__________________D3D_Run</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>________________D3D_Object</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Object</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>________________D3D_Scene</Filter>
+      <Filter>%283%29_____________D3D_Scene</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>__________D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>_______________D3D_Camera</Filter>
+      <Filter>%282%29____________D3D_Camera</Filter>
     </ClCompile>
     <ClCompile Include="D3D_Header.cpp">
-      <Filter>_________________D3D_Base</Filter>
+      <Filter>%285%29____________D3D_System\D3D_Base</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
-      <Filter>______________________Win</Filter>
+      <Filter>%286%29____________Win_System</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>_______________User_Object</Filter>
+      <Filter>%284%29____________User_Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>_________________리소스 파일</Filter>
+      <Filter>%286%29____________Win_System\_________________리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>_________________리소스 파일</Filter>
+      <Filter>%286%29____________Win_System\_________________리소스 파일</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>_________________리소스 파일</Filter>
+      <Filter>%286%29____________Win_System\_________________리소스 파일</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders.hlsl" />
+    <FxCompile Include="Shaders.hlsl">
+      <Filter>%287%29_____________D3D_Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
