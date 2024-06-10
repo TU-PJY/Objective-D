@@ -24,6 +24,7 @@ enum class LayerRange
 
 constexpr int NUM_LAYER = static_cast<int>(D3D_Layer::END);
 
+
 class Scene {
 private:
 	std::string RunningMode{};
@@ -122,7 +123,7 @@ public:
 				auto It = std::ranges::begin(MainCont[layer]);
 
 				while (It != std::ranges::end(MainCont[layer])) {
-					It = std::ranges::find_if(MainCont[layer], [&tag](OBJ*& obj) { return obj->Tag == tag; });
+					It = std::ranges::find_if(MainCont[layer], [&tag](OBJ*& Obj) { return Obj->Tag == tag; });
 
 					if (It != std::ranges::end(MainCont[layer])) {
 						delete* It;
@@ -135,17 +136,14 @@ public:
 			else if (range2 == LayerRange::All) {
 				for (int i = 0; i < NUM_LAYER; ++i) {
 					auto It = std::ranges::begin(MainCont[i]);
-					auto SubRange = std::ranges::subrange(It, std::ranges::end(MainCont[i]));
 
 					while (It != std::ranges::end(MainCont[i])) {
-						It = std::ranges::find_if(SubRange, [&tag](OBJ*& obj) { return obj->Tag == tag; });
+						It = std::ranges::find_if(MainCont[i], [&tag](OBJ*& Obj) { return Obj->Tag == tag; });
 
 						if (It != std::ranges::end(MainCont[i])) {
 							delete* It;
 							*It = nullptr;
 							It = MainCont[i].erase(It);
-
-							SubRange = std::ranges::subrange(It, std::ranges::end(MainCont[i]));
 						}
 					}
 				}
@@ -185,10 +183,11 @@ public:
 
 	void ClearAll() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
+			auto It = std::ranges::begin(MainCont[i]);
+
+			while (It != std::ranges::end(MainCont[i])) {
 				delete* It;
 				*It = nullptr;
-
 				It = MainCont[i].erase(It);
 			}
 		}
@@ -266,9 +265,8 @@ public:
 
 	void ReleaseUploadBuffers() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ++It) {
+			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ++It)
 				if(*It) (*It)->ReleaseUploadBuffers();
-			}
 		 }
 	}
 
@@ -297,4 +295,5 @@ public:
 	~Scene() {};
 };
 
+// global scope scene
 extern Scene scene;

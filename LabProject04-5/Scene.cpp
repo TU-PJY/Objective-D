@@ -25,6 +25,7 @@ void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dC
 	pShader = ShaderLoader(m_pd3dGraphicsRootSignature, pd3dDevice, pd3dCommandList);
 
 	pUfoMesh = MeshLoader(pd3dDevice, pd3dCommandList, "Models//UFO.txt");
+	pFlyerMesh = MeshLoader(pd3dDevice, pd3dCommandList, "Models//FlyerPlayership.txt");
 
 	RunningMode = Mode1();
 }

@@ -52,13 +52,38 @@ void D3D_Work::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wPara
 	}
 }
 
+#include "Ufo.h"
 
 void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 		switch (wParam) {
-		case 'R':
+		case '1':
+			scene.AddObject(new Aircraft(D3D_Layer::L1, "aircraft"), D3D_Layer::L1);
+			break;
+
+		case '2':
+			scene.AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
+			break;
+
+		case 'U':
 			scene.DeleteObject("ufo", ObjectRange::Single, LayerRange::Single, D3D_Layer::L1);
+			break;
+
+		case 'F':
+			scene.DeleteObject("aircraft", ObjectRange::Single, LayerRange::Single, D3D_Layer::L1);
+			break;
+
+		case 'C':
+			scene.ClearAll();
+			break;
+
+		case 'Z':
+			scene.DeleteObject("ufo", ObjectRange::All, LayerRange::All, D3D_Layer::L1);
+			break;
+
+		case 'X':
+			scene.DeleteObject("aircraft", ObjectRange::All, LayerRange::All, D3D_Layer::L1);
 			break;
 		}
 		break;

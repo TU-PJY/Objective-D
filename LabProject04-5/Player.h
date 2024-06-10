@@ -26,6 +26,7 @@ protected:
 
 	Camera						*m_pCamera = NULL;
 
+
 public:
 	Player();
 	virtual ~Player();

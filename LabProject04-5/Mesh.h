@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 
 class CVertex {
 protected:
@@ -62,8 +62,8 @@ public:
 
 
 	void Release() { 
-		if (--m_nReferences <= 0) 
-			delete this; 
+		if (--m_nReferences <= 0)
+			delete this;
 	}
 
 

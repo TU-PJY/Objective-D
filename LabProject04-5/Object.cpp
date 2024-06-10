@@ -84,22 +84,16 @@ OBJ::OBJ() {
 
 
 OBJ::~OBJ() {
-	if (m_pMesh) m_pMesh->Release();
-	if (m_pShader) m_pShader->Release();
 }
 
 
 void OBJ::SetMesh(Mesh* pMesh) {
-	if (m_pMesh) m_pMesh->Release();
 	m_pMesh = pMesh;
-	if (m_pMesh) m_pMesh->AddRef();
 }
 
 
 void OBJ::SetShader(Shader* pShader) {
-	if (m_pShader) m_pShader->Release();
 	m_pShader = pShader;
-	if (m_pShader) m_pShader->AddRef();
 }
 
 
