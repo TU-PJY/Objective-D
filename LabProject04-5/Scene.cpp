@@ -13,7 +13,8 @@ PseudoLightingShader* pShader;
 Scene scene;
 
 std::string Mode1(){
-	scene.AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
+	for(int i = 0; i < 10; ++i)
+		scene.AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
 
 	return __func__;
 }

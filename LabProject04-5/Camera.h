@@ -34,6 +34,10 @@ public:
 	float           				CamRoll{};
 	float           				CamYaw{};
 
+	bool MoveFront{};
+	bool MoveBack{};
+	bool MoveRight{};
+	bool MoveLeft{};
 
 	Camera() {
 		m_xmf4x4View = Mat4::Identity();
@@ -59,6 +63,18 @@ public:
 
 
 	virtual ~Camera() {}
+
+
+	void UpdateCamera(float FT) {
+		if (MoveFront)
+			CamPos.z += FT * 10;
+		if (MoveBack)
+			CamPos.z -= FT * 10;
+		if (MoveRight)
+			CamPos.x += FT * 10;
+		if (MoveLeft)
+			CamPos.x -= FT * 10;
+	}
 
 
 	virtual void CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {}
@@ -180,7 +196,7 @@ public:
 
 	virtual void Move(const XMFLOAT3& xmf3Shift) { CamPos.x += xmf3Shift.x; CamPos.y += xmf3Shift.y; CamPos.z += xmf3Shift.z; }
 	virtual void Rotate(float fPitch = 0.0f, float fYaw = 0.0f, float fRoll = 0.0f) { }
-	virtual void Update(XMFLOAT3& xmf3LookAt, float fTimeElapsed) { }
+	//virtual void Update(XMFLOAT3& xmf3LookAt, float fTimeElapsed) { }
 	virtual void SetLookAt(XMFLOAT3& xmf3LookAt) { }
 
 

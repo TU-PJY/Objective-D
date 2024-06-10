@@ -85,11 +85,19 @@ void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 			break;
 
 		case VK_UP:
-			m_pCamera.CamPos.z += 2.0;
+			m_pCamera.MoveFront = true;
 			break;
 
 		case VK_DOWN:
-			m_pCamera.CamPos.z -= 2.0;
+			m_pCamera.MoveBack = true;
+			break;
+
+		case VK_RIGHT:
+			m_pCamera.MoveRight = true;
+			break;
+
+		case VK_LEFT:
+			m_pCamera.MoveLeft = true;
 			break;
 		}
 		break;
@@ -101,6 +109,22 @@ void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 			break;
 
 		case VK_RETURN:
+			break;
+
+		case VK_UP:
+			m_pCamera.MoveFront = false;
+			break;
+
+		case VK_DOWN:
+			m_pCamera.MoveBack = false;
+			break;
+
+		case VK_RIGHT:
+			m_pCamera.MoveRight = false;
+			break;
+
+		case VK_LEFT:
+			m_pCamera.MoveLeft = false;
 			break;
 
 		default:
@@ -509,8 +533,8 @@ void D3D_Work::ProcessInput()
 	}
 }
 
-void D3D_Work::Update()
-{
+void D3D_Work::Update(){
+	m_pCamera.UpdateCamera(m_GameTimer.GetTimeElapsed());
 	scene.Update(m_GameTimer.GetTimeElapsed());
 }
 
