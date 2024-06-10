@@ -2,7 +2,6 @@
 
 #include "Timer.h"
 #include "Player.h"
-#include "Scene.h"
 
 class D3D_Work
 {
@@ -80,7 +79,7 @@ private:
 	ID3D12Debug					*m_pd3dDebugController;
 #endif
 
-	Scene						*m_pScene = NULL;
+//	Scene						*m_pScene = NULL;
 	Player						*m_pPlayer = NULL;
 	Camera						*m_pCamera = NULL;
 

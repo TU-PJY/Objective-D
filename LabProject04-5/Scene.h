@@ -1,13 +1,22 @@
 #pragma once
 #include "D3D_CONF.h"
-#include "GlobalRes.h"
-#include "Ufo.h"
+#include "Mesh.h"
+#include "Shader.h"
+
 #include <array>
 #include <deque>
 #include <ranges>
 
+// global scope mesh
+extern Mesh* pUfoMesh;
+extern Mesh* pFlyerMesh;
+
+// global scope shader
+extern PseudoLightingShader* pShader;
+
 
 constexpr int NUM_MAIN_LAYER = static_cast<int>(MainLayer::END);
+
 
 
 class Scene {
@@ -160,3 +169,5 @@ public:
 	Scene() {};
 	~Scene() {};
 };
+
+extern Scene m_pScene;

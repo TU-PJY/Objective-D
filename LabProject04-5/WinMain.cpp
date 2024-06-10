@@ -2,7 +2,6 @@
 //
 
 #include "D3D_Header.h"
-#include "GlobalRes.h"
 #include "Objective-D.h"
 #include "D3D_Work.h"
 
@@ -11,11 +10,6 @@
 HINSTANCE						ghAppInstance;
 TCHAR							szTitle[MAX_LOADSTRING];
 TCHAR							szWindowClass[MAX_LOADSTRING];
-
-// pre load resources
-Mesh* pUfoMesh;
-Mesh* pFlyerMesh;
-PseudoLightingShader* pShader;
 
 D3D_Work					gGameFramework;
 

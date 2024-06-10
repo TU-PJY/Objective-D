@@ -127,11 +127,16 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile />
+      <PrecompiledHeaderOutputFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +148,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D_CONF.h" />
     <ClInclude Include="D3D_Work.h" />
-    <ClInclude Include="GlobalRes.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />

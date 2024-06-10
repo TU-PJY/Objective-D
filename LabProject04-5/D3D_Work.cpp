@@ -4,6 +4,7 @@
 
 #include "D3D_Header.h"
 #include "D3D_Work.h"
+#include "Scene.h"
 
 D3D_Work::D3D_Work() {
 	m_pdxgiFactory = NULL;
@@ -30,7 +31,7 @@ D3D_Work::D3D_Work() {
 	m_nWndClientWidth = FRAME_BUFFER_WIDTH;
 	m_nWndClientHeight = FRAME_BUFFER_HEIGHT;
 
-	m_pScene = NULL;
+	//m_pScene = NULL;
 	m_pCamera = NULL;
 
 	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
@@ -425,12 +426,12 @@ void D3D_Work::BuildObjects()
 {
 	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
 
-	m_pScene = new Scene();
+	//m_pScene = new Scene();
 
-	if (m_pScene)
-		m_pScene->InitScene(m_pd3dDevice, m_pd3dCommandList);
+	//if (m_pScene)
+	m_pScene.InitScene(m_pd3dDevice, m_pd3dCommandList);
 
-	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene->GetGraphicsRootSignature());
+	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene.GetGraphicsRootSignature());
 	m_pPlayer = pAirplanePlayer;
 	m_pCamera = m_pPlayer->GetCamera();
 
@@ -440,10 +441,9 @@ void D3D_Work::BuildObjects()
 
 	WaitForGpuComplete();
 
-	if (m_pScene)
-		m_pScene->ReleaseUploadBuffers();
+	m_pScene.ReleaseUploadBuffers();
 
-	if (m_pPlayer)
+	if(m_pPlayer)
 		m_pPlayer->ReleaseUploadBuffers();
 
 	m_GameTimer.Reset();
@@ -453,8 +453,7 @@ void D3D_Work::ReleaseObjects()
 {
 	if (m_pPlayer) delete m_pPlayer;
 
-	if (m_pScene) m_pScene->ReleaseObjects();
-	if (m_pScene) delete m_pScene;
+	m_pScene.ReleaseObjects();
 }
 
 void D3D_Work::ProcessInput()
@@ -499,7 +498,7 @@ void D3D_Work::ProcessInput()
 
 void D3D_Work::Update()
 {
-	if (m_pScene) m_pScene->Update(m_GameTimer.GetTimeElapsed());
+	m_pScene.Update(m_GameTimer.GetTimeElapsed());
 }
 
 void D3D_Work::CreateShaderVariables()
@@ -585,13 +584,11 @@ void D3D_Work::FrameAdvance()
 
 	Update();
 
-	if (m_pScene)
-		m_pScene->PrepareRender(m_pd3dCommandList);
+	m_pScene.PrepareRender(m_pd3dCommandList);
 
 	//UpdateShaderVariables();
 
-	if (m_pScene)
-		m_pScene->Render(m_pd3dCommandList, m_pCamera);
+	m_pScene.Render(m_pd3dCommandList, m_pCamera);
 
 #ifdef _WITH_PLAYER_TOP
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);

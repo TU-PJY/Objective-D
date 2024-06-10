@@ -1,7 +1,7 @@
 #pragma once
 #include "D3D_Header.h"
+#include "Scene.h"
 #include "Object.h"
-#include "GlobalRes.h"
 
 class Ufo : public MAIN_OBJ {
 private:
