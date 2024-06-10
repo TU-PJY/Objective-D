@@ -1,11 +1,13 @@
 // LabProject04-5.cpp : 응용 프로그램에 대한 진입점을 정의합니다.
 //
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#include "D3D_CONF.h"
 #include "D3D_Header.h"
 #include "Objective-D.h"
 #include "D3D_Work.h"
 
 #define MAX_LOADSTRING 100
+
 
 HINSTANCE						ghAppInstance;
 TCHAR							szTitle[MAX_LOADSTRING];

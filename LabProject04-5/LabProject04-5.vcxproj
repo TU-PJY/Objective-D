@@ -160,7 +160,6 @@
     <ClInclude Include="Ufo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3D_Work.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinMain.cpp" />

@@ -9,8 +9,12 @@ Mesh* pFlyerMesh;
 // global scope shader
 PseudoLightingShader* pShader;
 
+// global scope camera
+Camera m_pCamera;
+
 // global scope scene
 Scene scene;
+
 
 std::string Mode1(){
 	for(int i = 0; i < 10; ++i)

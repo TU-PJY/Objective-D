@@ -82,5 +82,8 @@ private:
 
 	Timer					m_GameTimer;
 	_TCHAR						m_pszFrameRate[50];
+
+public:
+	TCHAR WindowName[50]{};
 };
 

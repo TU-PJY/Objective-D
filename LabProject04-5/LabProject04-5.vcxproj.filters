@@ -93,9 +93,6 @@
     <ClCompile Include="Shader.cpp">
       <Filter>%285%29____________D3D_System\---D3D_Shader/Mesh---</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>%282%29____________D3D_Camera</Filter>
-    </ClCompile>
     <ClCompile Include="D3D_Header.cpp">
       <Filter>%285%29____________D3D_System\---D3D_Base---</Filter>
     </ClCompile>

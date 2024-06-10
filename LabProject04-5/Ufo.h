@@ -23,7 +23,7 @@ public:
 		std::uniform_real_distribution urd{ -10.0, 10.0 };
 
 		Position.x = urd(rd);
-		Position.y = urd(rd);
+		Position.y = urd(rd) / 10;
 		Position.z = urd(rd);
 	}
 
@@ -67,7 +67,7 @@ public:
 		std::uniform_real_distribution urd{ -10.0, 10.0 };
 
 		Position.x = urd(rd);
-		Position.y = urd(rd);
+		Position.y = urd(rd) / 10;
 		Position.z = urd(rd);
 	}
 

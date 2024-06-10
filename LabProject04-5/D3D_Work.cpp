@@ -1,9 +1,9 @@
 //-----------------------------------------------------------------------------
 // File: CGameFramework.cpp
 //-----------------------------------------------------------------------------
-
 #include "D3D_Header.h"
 #include "D3D_Work.h"
+#include "D3D_CONF.h"
 #include "Camera.h"
 #include "Scene.h"
 
@@ -173,7 +173,9 @@ D3D_Work::D3D_Work() {
 	m_pdxgiSwapChain = NULL;
 	m_pd3dDevice = NULL;
 
-	for (int i = 0; i < m_nSwapChainBuffers; i++) m_ppd3dSwapChainBackBuffers[i] = NULL;
+	for (int i = 0; i < m_nSwapChainBuffers; i++) 
+		m_ppd3dSwapChainBackBuffers[i] = NULL;
+
 	m_nSwapChainBufferIndex = 0;
 
 	m_pd3dCommandAllocator = NULL;
@@ -188,12 +190,17 @@ D3D_Work::D3D_Work() {
 
 	m_hFenceEvent = NULL;
 	m_pd3dFence = NULL;
-	for (int i = 0; i < m_nSwapChainBuffers; i++) m_nFenceValues[i] = 0;
+
+	for (int i = 0; i < m_nSwapChainBuffers; i++) 
+		m_nFenceValues[i] = 0;
 
 	m_nWndClientWidth = FRAME_BUFFER_WIDTH;
 	m_nWndClientHeight = FRAME_BUFFER_HEIGHT;
 
-	_tcscpy_s(m_pszFrameRate, _T("LabProject ("));
+	memset(WindowName, 0, sizeof(WindowName));
+	_tcscpy_s(WindowName, D3D_WindowNameLength, D3D_WindowName);
+
+	_tcscpy_s(m_pszFrameRate, WindowName);
 }
 
 D3D_Work::~D3D_Work() {}
@@ -659,6 +666,6 @@ void D3D_Work::FrameAdvance()
 
 	MoveToNextFrame();
 
-	m_GameTimer.GetFrameRate(m_pszFrameRate + 12, 37);
+	m_GameTimer.GetFrameRate(m_pszFrameRate + (D3D_WindowNameLength - 1), 37);
 	::SetWindowText(m_hWnd, m_pszFrameRate);
 }
