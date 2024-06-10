@@ -9,10 +9,13 @@ private:
 	float rotation{};
 
 public:
-	Ufo() {
+	Ufo(MainLayer mainlayer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(pUfoMesh);
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
+
+		Layer = mainlayer;
+		Tag = tag;
 	}
 
 	void Update(float FT) {
@@ -21,5 +24,8 @@ public:
 		rotation += FT * 200;
 		SetPosition(position);
 		Rotate(0.0, rotation, 0.0);
+
+		if(rotation > 600)
+			m_pScene.DeleteObject(this, Layer);
 	}
 };

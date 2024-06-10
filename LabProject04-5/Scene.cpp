@@ -20,5 +20,5 @@ void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dC
 
 	pUfoMesh = MeshLoader(pd3dDevice, pd3dCommandList, "Models//UFO.txt");
 
-	AddObject(new Ufo(), MainLayer::L1);
+	AddObject(new Ufo(MainLayer::L1, "ufo"), MainLayer::L1);
 }

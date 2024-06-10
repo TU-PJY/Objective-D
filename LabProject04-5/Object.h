@@ -3,9 +3,12 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include "D3D_CONF.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Shader.h"
+
+#include <string>
 
 class Shader;
 
@@ -16,6 +19,8 @@ public:
 	Shader							*m_pShader = NULL;
 	Mesh							*m_pMesh = NULL;
 
+	MainLayer Layer;
+	std::string Tag;
 
 	MAIN_OBJ();
 	~MAIN_OBJ();
