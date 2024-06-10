@@ -43,21 +43,21 @@ void Player::CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsComma
 {
 	if (m_pCamera) m_pCamera->CreateShaderVariables(pd3dDevice, pd3dCommandList);
 
-	MAIN_OBJ::CreateShaderVariables(pd3dDevice, pd3dCommandList);
+	OBJ::CreateShaderVariables(pd3dDevice, pd3dCommandList);
 }
 
 void Player::UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList)
 {
 	if (m_pCamera) m_pCamera->UpdateShaderVariables(pd3dCommandList);
 
-	MAIN_OBJ::UpdateShaderVariables(pd3dCommandList);
+	OBJ::UpdateShaderVariables(pd3dCommandList);
 }
 
 void Player::ReleaseShaderVariables()
 {
 	if (m_pCamera) m_pCamera->ReleaseShaderVariables();
 
-	MAIN_OBJ::ReleaseShaderVariables();
+	OBJ::ReleaseShaderVariables();
 }
 
 void Player::Move(DWORD dwDirection, float fDistance, bool bUpdateVelocity)
@@ -232,7 +232,7 @@ void Player::OnPrepareRender()
 void Player::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera)
 {
 	DWORD nCameraMode = (pCamera) ? pCamera->GetMode() : 0x00;
-	if (nCameraMode == THIRD_PERSON_CAMERA) MAIN_OBJ::Render(pd3dCommandList, pCamera);
+	if (nCameraMode == THIRD_PERSON_CAMERA) OBJ::Render(pd3dCommandList, pCamera);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

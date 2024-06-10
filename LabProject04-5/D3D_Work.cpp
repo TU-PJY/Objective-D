@@ -55,6 +55,14 @@ void D3D_Work::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wPara
 
 void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
+	case WM_KEYDOWN:
+		switch (wParam) {
+		case 'R':
+			auto ptr = scene.FindObject("ufo", LayerRange::Single, D3D_Layer::L1);
+			if (ptr) ptr->SetRotation();
+		}
+		break;
+
 	case WM_KEYUP:
 		switch (wParam) {
 		case VK_ESCAPE:

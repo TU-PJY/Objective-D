@@ -13,18 +13,38 @@
 class Shader;
 
 
-class MAIN_OBJ {
+class OBJ {
 public:
-	XMFLOAT4X4						Matrix;
-	XMFLOAT3						ModelColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
-	Shader							*m_pShader = NULL;
-	Mesh							*m_pMesh = NULL;
+	// define custom member function here /////////////
+	virtual void SetRotation() {}
 
-	MainLayer Layer;
-	std::string Tag;
 
-	MAIN_OBJ();
-	~MAIN_OBJ();
+
+
+
+
+
+
+
+
+
+
+
+
+
+	///////////////////////////////////////////////////
+
+	XMFLOAT4X4 Matrix{};
+	XMFLOAT3 ModelColor{};
+
+	Shader* m_pShader{};
+	Mesh* m_pMesh{};
+
+	D3D_Layer Layer{};
+	std::string Tag{};
+
+	OBJ();
+	~OBJ();
 
 	void SetMesh(Mesh* pMesh);
 	void SetShader(Shader* pShader);

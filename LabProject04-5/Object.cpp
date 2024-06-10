@@ -2,74 +2,74 @@
 #include "Object.h"
 
 
-void MAIN_OBJ::InitTransform() {
+void OBJ::InitTransform() {
 	Matrix = Mat4::Identity();
 }
 
 
-void MAIN_OBJ::SetPosition(float x, float y, float z) {
+void OBJ::SetPosition(float x, float y, float z) {
 	Matrix._41 = x;
 	Matrix._42 = y;
 	Matrix._43 = z;
 }
 
 
-void MAIN_OBJ::SetPosition(XMFLOAT3 xmf3Position) {
+void OBJ::SetPosition(XMFLOAT3 xmf3Position) {
 	SetPosition(xmf3Position.x, xmf3Position.y, xmf3Position.z);
 }
 
 
-XMFLOAT3 MAIN_OBJ::GetPosition() {
+XMFLOAT3 OBJ::GetPosition() {
 	return(XMFLOAT3(Matrix._41, Matrix._42, Matrix._43));
 }
 
 
-XMFLOAT3 MAIN_OBJ::GetLook() {
+XMFLOAT3 OBJ::GetLook() {
 	return(Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33)));
 }
 
 
-XMFLOAT3 MAIN_OBJ::GetUp() {
+XMFLOAT3 OBJ::GetUp() {
 	return(Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23)));
 }
 
 
-XMFLOAT3 MAIN_OBJ::GetRight() {
+XMFLOAT3 OBJ::GetRight() {
 	return(Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13)));
 }
 
 
-void MAIN_OBJ::MoveStrafe(float fDistance) {
+void OBJ::MoveStrafe(float fDistance) {
 	XMFLOAT3 xmf3Position = GetPosition();
 	XMFLOAT3 xmf3Right = GetRight();
 	xmf3Position = Vec3::Add(xmf3Position, xmf3Right, fDistance);
-	MAIN_OBJ::SetPosition(xmf3Position);
+	OBJ::SetPosition(xmf3Position);
 }
 
 
-void MAIN_OBJ::MoveUp(float fDistance) {
+void OBJ::MoveUp(float fDistance) {
 	XMFLOAT3 xmf3Position = GetPosition();
 	XMFLOAT3 xmf3Up = GetUp();
 	xmf3Position = Vec3::Add(xmf3Position, xmf3Up, fDistance);
-	MAIN_OBJ::SetPosition(xmf3Position);
+	OBJ::SetPosition(xmf3Position);
 }
 
 
-void MAIN_OBJ::MoveForward(float fDistance) {
+void OBJ::MoveForward(float fDistance) {
 	XMFLOAT3 xmf3Position = GetPosition();
 	XMFLOAT3 xmf3Look = GetLook();
 	xmf3Position = Vec3::Add(xmf3Position, xmf3Look, fDistance);
-	MAIN_OBJ::SetPosition(xmf3Position);
+	OBJ::SetPosition(xmf3Position);
 }
 
 
-void MAIN_OBJ::Rotate(float fPitch, float fYaw, float fRoll) {
+void OBJ::Rotate(float fPitch, float fYaw, float fRoll) {
 	XMMATRIX mtxRotate = XMMatrixRotationRollPitchYaw(XMConvertToRadians(fPitch), XMConvertToRadians(fYaw), XMConvertToRadians(fRoll));
 	Matrix = Mat4::Multiply(mtxRotate, Matrix);
 }
 
 
-void MAIN_OBJ::Rotate(XMFLOAT3* pxmf3Axis, float fAngle) {
+void OBJ::Rotate(XMFLOAT3* pxmf3Axis, float fAngle) {
 	XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(pxmf3Axis), XMConvertToRadians(fAngle));
 	Matrix = Mat4::Multiply(mtxRotate, Matrix);
 }
@@ -78,35 +78,35 @@ void MAIN_OBJ::Rotate(XMFLOAT3* pxmf3Axis, float fAngle) {
 
 
 
-MAIN_OBJ::MAIN_OBJ() {
+OBJ::OBJ() {
 	Matrix = Mat4::Identity();
 }
 
 
-MAIN_OBJ::~MAIN_OBJ() {
+OBJ::~OBJ() {
 	if (m_pMesh) m_pMesh->Release();
 	if (m_pShader) m_pShader->Release();
 }
 
 
-void MAIN_OBJ::SetMesh(Mesh* pMesh) {
+void OBJ::SetMesh(Mesh* pMesh) {
 	if (m_pMesh) m_pMesh->Release();
 	m_pMesh = pMesh;
 	if (m_pMesh) m_pMesh->AddRef();
 }
 
 
-void MAIN_OBJ::SetShader(Shader* pShader) {
+void OBJ::SetShader(Shader* pShader) {
 	if (m_pShader) m_pShader->Release();
 	m_pShader = pShader;
 	if (m_pShader) m_pShader->AddRef();
 }
 
 
-void MAIN_OBJ::CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {}
+void OBJ::CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {}
 
 
-void MAIN_OBJ::UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList) {
+void OBJ::UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
 	pd3dCommandList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
@@ -115,7 +115,7 @@ void MAIN_OBJ::UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList)
 }
 
 
-void MAIN_OBJ::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera) {
+void OBJ::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera) {
 	OnPrepareRender();
 
 	if (m_pShader)
@@ -128,17 +128,17 @@ void MAIN_OBJ::Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamer
 }
 
 
-void MAIN_OBJ::ReleaseUploadBuffers() {
+void OBJ::ReleaseUploadBuffers() {
 	if (m_pMesh)
 		m_pMesh->ReleaseUploadBuffers();
 }
 
 
-void MAIN_OBJ::ReleaseShaderVariables() {}
+void OBJ::ReleaseShaderVariables() {}
 
 
-void MAIN_OBJ::Update(float fTimeElapsed) {}
+void OBJ::Update(float fTimeElapsed) {}
 
 
-void MAIN_OBJ::OnPrepareRender() {}
+void OBJ::OnPrepareRender() {}
 

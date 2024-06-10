@@ -3,29 +3,39 @@
 #include "Scene.h"
 #include "Object.h"
 
-class Ufo : public MAIN_OBJ {
+class Ufo : public OBJ {
 private:
-	XMFLOAT3 position{ 5.0, 0.0, 5.0 };
-	float rotation{};
+	XMFLOAT3 Position{0.0, 0.0, 10.0};
+	float Rotation{};
+	bool rotate{};
+
 
 public:
-	Ufo(MainLayer mainlayer, std::string tag) {
+	Ufo(D3D_Layer layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(pUfoMesh);
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 
-		Layer = mainlayer;
+		Layer = layer;
 		Tag = tag;
 	}
+
+
+	void SetRotation() {
+		if (!rotate)
+			rotate = true;
+		else
+			rotate = false;
+	}
+
 
 	void Update(float FT) {
 		InitTransform();
 		
-		rotation += FT * 200;
-		SetPosition(position);
-		Rotate(0.0, rotation, 0.0);
+		if(rotate)
+			Rotation += FT * 200;
 
-		//if(rotation > 600)
-			//scene.DeleteObject(this, Layer);
+		SetPosition(Position);
+		Rotate(0.0, Rotation, 0.0);
 	}
 };

@@ -15,13 +15,19 @@ extern Mesh* pFlyerMesh;
 extern PseudoLightingShader* pShader;
 
 
-constexpr int NUM_MAIN_LAYER = static_cast<int>(MainLayer::END);
+enum class ObjRange
+{ Single, All };
+
+enum class LayerRange
+{ Single, All };
+
+constexpr int NUM_LAYER = static_cast<int>(D3D_Layer::END);
 
 class Scene {
 protected:
 	ID3D12RootSignature* m_pd3dGraphicsRootSignature = NULL;
 
-	std::array<std::deque<MAIN_OBJ*>, NUM_MAIN_LAYER> MainCont;
+	std::array<std::deque<OBJ*>, NUM_LAYER> MainCont;
 
 
 public:
@@ -29,7 +35,7 @@ public:
 
 
 	void Update(float fTimeElapsed) {
-		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
+		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
 				if (*It) (*It)->Update(fTimeElapsed);
 				if (*It) ++It;
@@ -37,11 +43,12 @@ public:
 		}
 	}
 
+
 	void Render(ID3D12GraphicsCommandList* pd3dCommandList, Camera* pCamera = NULL) {
 		pCamera->SetViewportsAndScissorRects(pd3dCommandList);
 		pCamera->UpdateShaderVariables(pd3dCommandList);
 
-		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
+		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
 				if (*It) (*It)->Render(pd3dCommandList, pCamera);
 				if (*It) ++It;
@@ -49,21 +56,51 @@ public:
 		}
 	}
 
-	void AddObject(MAIN_OBJ* object, MainLayer mainlayer) {
-		int layer = static_cast<int>(mainlayer);
+
+	void AddObject(OBJ*&& object, D3D_Layer d3dlayer) {
+		int layer = static_cast<int>(d3dlayer);
 
 		MainCont[layer].push_back(object);
 	}
 
 
-	void DeleteObject(MAIN_OBJ* object, MainLayer mainlayer) {
-		int layer = static_cast<int>(mainlayer);
+	void DeleteObject(OBJ* object, D3D_Layer d3dlayer) {
+		int layer = static_cast<int>(d3dlayer);
 
 		auto It = std::ranges::find(MainCont[layer], object);
 		if (It != std::ranges::end(MainCont[layer])) {
 			delete* It;
 			*It = nullptr;
 			It = MainCont[layer].erase(It);
+		}
+	}
+
+
+	OBJ* FindObject(std::string tag, LayerRange range, D3D_Layer d3dlayer = static_cast<D3D_Layer>(0)) {
+		int layer = static_cast<int>(d3dlayer);
+
+		if (range == LayerRange::Single) {
+			auto It = std::ranges::find_if(MainCont[layer], [&tag](OBJ*& obj) { return obj->Tag == tag; });
+			if (It != std::ranges::end(MainCont[layer]))
+				return *It;
+			else
+				return nullptr;
+		}
+
+		else if (range == LayerRange::All) {
+			for (int i = 0; i < NUM_LAYER; ++i) {
+				auto It = std::ranges::begin(MainCont[i]);
+
+				while (It != std::ranges::end(MainCont[i])) {
+					It = std::ranges::find_if(MainCont[i], [&tag](OBJ*& Obj) { return Obj->Tag == tag; });
+
+					if (It != std::ranges::end(MainCont[i]))
+						return *It;
+
+					++It;
+				}
+			}
+			return nullptr;
 		}
 	}
 
@@ -138,7 +175,7 @@ public:
 
 
 	void ReleaseUploadBuffers() {
-		for (int i = 0; i < NUM_MAIN_LAYER; ++i) {
+		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ++It) {
 				if(*It) (*It)->ReleaseUploadBuffers();
 			}

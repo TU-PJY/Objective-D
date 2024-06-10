@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "Camera.h"
 
-class Player : public MAIN_OBJ
+class Player : public OBJ
 {
 protected:
 	XMFLOAT3					m_xmf3Position;
