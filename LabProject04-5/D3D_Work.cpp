@@ -6,6 +6,115 @@
 #include "D3D_Work.h"
 #include "Scene.h"
 
+
+void D3D_Work::BuildObjects() {
+	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
+
+	m_pScene.InitScene(m_pd3dDevice, m_pd3dCommandList);
+
+	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene.GetGraphicsRootSignature());
+	m_pPlayer = pAirplanePlayer;
+	m_pCamera = m_pPlayer->GetCamera();
+
+	m_pd3dCommandList->Close();
+	ID3D12CommandList* ppd3dCommandLists[] = { m_pd3dCommandList };
+	m_pd3dCommandQueue->ExecuteCommandLists(1, ppd3dCommandLists);
+
+	WaitForGpuComplete();
+
+	m_pScene.ReleaseUploadBuffers();
+
+	if (m_pPlayer)
+		m_pPlayer->ReleaseUploadBuffers();
+
+	m_GameTimer.Reset();
+}
+
+
+void D3D_Work::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	switch (nMessageID) {
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		::SetCapture(hWnd);
+		::GetCursorPos(&m_ptOldCursorPos);
+		break;
+
+	case WM_LBUTTONUP:
+	case WM_RBUTTONUP:
+		::ReleaseCapture();
+		break;
+
+	case WM_MOUSEMOVE:
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	switch (nMessageID) {
+	case WM_KEYUP:
+		switch (wParam) {
+		case VK_ESCAPE:
+			::PostQuitMessage(0);
+			break;
+
+		case VK_RETURN:
+			break;
+
+		case VK_F1:
+		case VK_F2:
+		case VK_F3:
+			m_pCamera = m_pPlayer->ChangeCamera((DWORD)(wParam - VK_F1 + 1), m_GameTimer.GetTimeElapsed());
+			break;
+
+		case VK_F9:
+			ChangeSwapChainState();
+			break;
+
+		default:
+			break;
+		}
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+LRESULT CALLBACK D3D_Work::OnProcessingWindowMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	switch (nMessageID) {
+	case WM_ACTIVATE: 
+		if (LOWORD(wParam) == WA_INACTIVE)
+			m_GameTimer.Stop();
+		else
+			m_GameTimer.Start();
+		break;
+
+	case WM_SIZE:
+		break;
+
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONUP:
+	case WM_MOUSEMOVE:
+		OnProcessingMouseMessage(hWnd, nMessageID, wParam, lParam);
+		break;
+
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+		OnProcessingKeyboardMessage(hWnd, nMessageID, wParam, lParam);
+		break;
+	}
+
+	return(0);
+}
+
+
 D3D_Work::D3D_Work() {
 	m_pdxgiFactory = NULL;
 	m_pdxgiSwapChain = NULL;
@@ -316,84 +425,6 @@ void D3D_Work::ChangeSwapChainState()
 	CreateRenderTargetViews();
 }
 
-void D3D_Work::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
-{
-	switch (nMessageID)
-	{
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&m_ptOldCursorPos);
-		break;
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
-		::ReleaseCapture();
-		break;
-	case WM_MOUSEMOVE:
-		break;
-	default:
-		break;
-	}
-}
-
-void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
-{
-	switch (nMessageID)
-	{
-	case WM_KEYUP:
-		switch (wParam)
-		{
-		case VK_ESCAPE:
-			::PostQuitMessage(0);
-			break;
-		case VK_RETURN:
-			break;
-		case VK_F1:
-		case VK_F2:
-		case VK_F3:
-			m_pCamera = m_pPlayer->ChangeCamera((DWORD)(wParam - VK_F1 + 1), m_GameTimer.GetTimeElapsed());
-			break;
-		case VK_F9:
-			ChangeSwapChainState();
-			break;
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-}
-
-LRESULT CALLBACK D3D_Work::OnProcessingWindowMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)
-{
-	switch (nMessageID)
-	{
-	case WM_ACTIVATE:
-	{
-		if (LOWORD(wParam) == WA_INACTIVE)
-			m_GameTimer.Stop();
-		else
-			m_GameTimer.Start();
-		break;
-	}
-	case WM_SIZE:
-		break;
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
-	case WM_MOUSEMOVE:
-		OnProcessingMouseMessage(hWnd, nMessageID, wParam, lParam);
-		break;
-	case WM_KEYDOWN:
-	case WM_KEYUP:
-		OnProcessingKeyboardMessage(hWnd, nMessageID, wParam, lParam);
-		break;
-	}
-	return(0);
-}
-
 void D3D_Work::OnDestroy()
 {
 	ReleaseObjects();
@@ -420,33 +451,6 @@ void D3D_Work::OnDestroy()
 #if defined(_DEBUG)
 	if (m_pd3dDebugController) m_pd3dDebugController->Release();
 #endif
-}
-
-void D3D_Work::BuildObjects()
-{
-	m_pd3dCommandList->Reset(m_pd3dCommandAllocator, NULL);
-
-	//m_pScene = new Scene();
-
-	//if (m_pScene)
-	m_pScene.InitScene(m_pd3dDevice, m_pd3dCommandList);
-
-	CAirplanePlayer* pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene.GetGraphicsRootSignature());
-	m_pPlayer = pAirplanePlayer;
-	m_pCamera = m_pPlayer->GetCamera();
-
-	m_pd3dCommandList->Close();
-	ID3D12CommandList* ppd3dCommandLists[] = { m_pd3dCommandList };
-	m_pd3dCommandQueue->ExecuteCommandLists(1, ppd3dCommandLists);
-
-	WaitForGpuComplete();
-
-	m_pScene.ReleaseUploadBuffers();
-
-	if(m_pPlayer)
-		m_pPlayer->ReleaseUploadBuffers();
-
-	m_GameTimer.Reset();
 }
 
 void D3D_Work::ReleaseObjects()

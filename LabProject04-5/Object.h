@@ -7,10 +7,11 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Shader.h"
-
 #include <string>
 
+
 class Shader;
+
 
 class MAIN_OBJ {
 public:
