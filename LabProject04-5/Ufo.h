@@ -20,7 +20,7 @@ public:
 
 	void Update(float FT) {
 		InitTransform();
-
+		
 		rotation += FT * 200;
 		SetPosition(position);
 		Rotate(0.0, rotation, 0.0);

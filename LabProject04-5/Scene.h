@@ -17,8 +17,6 @@ extern PseudoLightingShader* pShader;
 
 constexpr int NUM_MAIN_LAYER = static_cast<int>(MainLayer::END);
 
-
-
 class Scene {
 protected:
 	ID3D12RootSignature* m_pd3dGraphicsRootSignature = NULL;
