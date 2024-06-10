@@ -58,8 +58,8 @@ void D3D_Work::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case 'R':
-			auto ptr = scene.FindObject("ufo", LayerRange::Single, D3D_Layer::L1);
-			if (ptr) ptr->SetRotation();
+			scene.DeleteObject("ufo", ObjectRange::Single, LayerRange::Single, D3D_Layer::L1);
+			break;
 		}
 		break;
 

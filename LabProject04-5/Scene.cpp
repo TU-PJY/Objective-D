@@ -12,6 +12,12 @@ PseudoLightingShader* pShader;
 // global scope scene
 Scene scene;
 
+std::string Mode1(){
+	scene.AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
+
+	return __func__;
+}
+
 
 void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList) {
 	m_pd3dGraphicsRootSignature = CreateGraphicsRootSignature(pd3dDevice);
@@ -20,5 +26,5 @@ void Scene::InitScene(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dC
 
 	pUfoMesh = MeshLoader(pd3dDevice, pd3dCommandList, "Models//UFO.txt");
 
-	AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
+	RunningMode = Mode1();
 }

@@ -16,18 +16,6 @@
     <Filter Include="%285%29____________D3D_System">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%285%29____________D3D_System\D3D_Object">
-      <UniqueIdentifier>{698482d9-309b-47d4-9ea9-5b12799b176c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%285%29____________D3D_System\D3D_Base">
-      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%285%29____________D3D_System\D3D_Shader/Mesh">
-      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%285%29____________D3D_System\D3D_Work">
-      <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%286%29____________Win_System">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
@@ -37,6 +25,18 @@
     </Filter>
     <Filter Include="%287%29_____________D3D_Shader">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\---D3D_Base---">
+      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\---D3D_Object---">
+      <UniqueIdentifier>{698482d9-309b-47d4-9ea9-5b12799b176c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\---D3D_Shader/Mesh---">
+      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\---D3D_Work---">
+      <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,28 +50,28 @@
       <Filter>%286%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="D3D_Work.h">
-      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Work---</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>%285%29____________D3D_System\D3D_Object</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Object---</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>%283%29_____________D3D_Scene</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Shader/Mesh---</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Shader/Mesh---</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>%282%29____________D3D_Camera</Filter>
     </ClInclude>
     <ClInclude Include="D3D_Header.h">
-      <Filter>%285%29____________D3D_System\D3D_Base</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Base---</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Work---</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>%284%29____________User_Object</Filter>
@@ -85,22 +85,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3D_Work.cpp">
-      <Filter>%285%29____________D3D_System\D3D_Work</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Work---</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>%285%29____________D3D_System\D3D_Object</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Object---</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>%283%29_____________D3D_Scene</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>%285%29____________D3D_System\D3D_Shader/Mesh</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Shader/Mesh---</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>%282%29____________D3D_Camera</Filter>
     </ClCompile>
     <ClCompile Include="D3D_Header.cpp">
-      <Filter>%285%29____________D3D_System\D3D_Base</Filter>
+      <Filter>%285%29____________D3D_System\---D3D_Base---</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>%286%29____________Win_System</Filter>

@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 
+#include <string>
 #include <array>
 #include <deque>
 #include <ranges>
@@ -15,7 +16,7 @@ extern Mesh* pFlyerMesh;
 extern PseudoLightingShader* pShader;
 
 
-enum class ObjRange
+enum class ObjectRange
 { Single, All };
 
 enum class LayerRange
@@ -24,6 +25,11 @@ enum class LayerRange
 constexpr int NUM_LAYER = static_cast<int>(D3D_Layer::END);
 
 class Scene {
+private:
+	std::string RunningMode{};
+
+	typedef std::string(*Function)(void);
+
 protected:
 	ID3D12RootSignature* m_pd3dGraphicsRootSignature = NULL;
 
@@ -32,6 +38,12 @@ protected:
 
 public:
 	void InitScene(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);
+
+
+	void ChangeMode(Function func) {
+		ClearAll();
+		RunningMode = func();
+	}
 
 
 	void Update(float fTimeElapsed) {
@@ -76,6 +88,72 @@ public:
 	}
 
 
+	void DeleteObject(std::string tag, ObjectRange range1, LayerRange range2, D3D_Layer d3dlayer = static_cast<D3D_Layer>(0)) {
+		int layer = static_cast<int>(d3dlayer);
+
+		if (range1 == ObjectRange::Single) {
+			if (range2 == LayerRange::Single) {
+				auto It = std::ranges::find_if(MainCont[layer], [&tag](OBJ*& obj) { return obj->Tag == tag; });
+
+				if (It != std::ranges::end(MainCont[layer])) {
+					delete* It;
+					*It = nullptr;
+					It = MainCont[layer].erase(It);
+				}
+			}
+
+			else if (range2 == LayerRange::All) {
+				for (int i = 0; i < NUM_LAYER; ++i) {
+					auto It = std::ranges::find_if(MainCont[i], [&tag](OBJ*& obj) { return obj->Tag == tag; });
+
+					if (It != std::ranges::end(MainCont[i])) {
+						delete *It;
+						*It = nullptr;
+						It = MainCont[layer].erase(It);
+
+						return;
+					}
+				}
+			}
+		}
+
+		else if (range1 == ObjectRange::All) {
+			if (range2 == LayerRange::Single) {
+				auto It = std::ranges::begin(MainCont[layer]);
+
+				while (It != std::ranges::end(MainCont[layer])) {
+					It = std::ranges::find_if(MainCont[layer], [&tag](OBJ*& obj) { return obj->Tag == tag; });
+
+					if (It != std::ranges::end(MainCont[layer])) {
+						delete* It;
+						*It = nullptr;
+						It = MainCont[layer].erase(It);
+					}
+				}
+			}
+
+			else if (range2 == LayerRange::All) {
+				for (int i = 0; i < NUM_LAYER; ++i) {
+					auto It = std::ranges::begin(MainCont[i]);
+					auto SubRange = std::ranges::subrange(It, std::ranges::end(MainCont[i]));
+
+					while (It != std::ranges::end(MainCont[i])) {
+						It = std::ranges::find_if(SubRange, [&tag](OBJ*& obj) { return obj->Tag == tag; });
+
+						if (It != std::ranges::end(MainCont[i])) {
+							delete* It;
+							*It = nullptr;
+							It = MainCont[i].erase(It);
+
+							SubRange = std::ranges::subrange(It, std::ranges::end(MainCont[i]));
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 	OBJ* FindObject(std::string tag, LayerRange range, D3D_Layer d3dlayer = static_cast<D3D_Layer>(0)) {
 		int layer = static_cast<int>(d3dlayer);
 
@@ -101,6 +179,18 @@ public:
 				}
 			}
 			return nullptr;
+		}
+	}
+
+
+	void ClearAll() {
+		for (int i = 0; i < NUM_LAYER; ++i) {
+			for (auto It = std::ranges::begin(MainCont[i]); It != std::ranges::end(MainCont[i]); ) {
+				delete* It;
+				*It = nullptr;
+
+				It = MainCont[i].erase(It);
+			}
 		}
 	}
 
