@@ -143,16 +143,19 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D_CONF.h" />
-    <ClInclude Include="D3D_Work.h" />
+    <ClInclude Include="D3D_Core.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Framework.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="D3D_Header.h" />
     <ClInclude Include="targetver.h" />
@@ -160,11 +163,11 @@
     <ClInclude Include="Ufo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3D_Work.cpp" />
+    <ClCompile Include="D3D_Core.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Framework.cpp" />
     <ClCompile Include="D3D_Header.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

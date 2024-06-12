@@ -3,12 +3,10 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include "D3D_Header.h"
 #include "D3D_CONF.h"
-#include "Camera.h"
-#include "Mesh.h"
 #include "Shader.h"
-#include <string>
-
+#include "Mesh.h"
 
 class Shader;
 
@@ -37,8 +35,8 @@ public:
 	XMFLOAT4X4 Matrix{};
 	XMFLOAT3 ModelColor{};
 
-	Shader* m_pShader{};
-	Mesh* m_pMesh{};
+	Shader* ObjectShader{};
+	Mesh* ObjectMesh{};
 
 	D3D_Layer Layer{};
 	std::string Tag{};
@@ -46,18 +44,18 @@ public:
 	OBJ();
 	~OBJ();
 
-	void SetMesh(Mesh* pMesh);
-	void SetShader(Shader* pShader);
+	void SetMesh(Mesh* MeshData);
+	void SetShader(Shader* ShaderData);
 
-	virtual void CreateShaderVariables(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
 	virtual void ReleaseShaderVariables();
-	virtual void Update(float fTimeElapsed);
+	virtual void Update(float FT);
 	virtual void OnPrepareRender();
 
-	virtual void Render(ID3D12GraphicsCommandList* pd3dCommandList);
+	virtual void Render(ID3D12GraphicsCommandList* CmdList);
 
 	virtual void ReleaseUploadBuffers();
 
@@ -70,14 +68,14 @@ public:
 	void InitTransform();
 
 	void SetPosition(float x, float y, float z);
-	void SetPosition(XMFLOAT3 xmf3Position);
+	void SetPosition(XMFLOAT3 Position);
 
-	void SetColor(XMFLOAT3 xmf3Color) { ModelColor = xmf3Color; }
+	void SetColor(XMFLOAT3 Color) { ModelColor = Color; }
 
-	void MoveStrafe(float fDistance = 1.0f);
-	void MoveUp(float fDistance = 1.0f);
-	void MoveForward(float fDistance = 1.0f);
+	void MoveStrafe(float Distance = 1.0f);
+	void MoveUp(float Distance = 1.0f);
+	void MoveForward(float Distance = 1.0f);
 
-	void Rotate(float fPitch = 10.0f, float fYaw = 10.0f, float fRoll = 10.0f);
-	void Rotate(XMFLOAT3 *pxmf3Axis, float fAngle);
+	void Rotate(float Pitch = 10.0f, float Yaw = 10.0f, float Roll = 10.0f);
+	void Rotate(XMFLOAT3 *Axis, float Angle);
 };

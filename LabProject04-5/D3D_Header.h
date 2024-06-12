@@ -1,8 +1,3 @@
-// stdafx.h : 자주 사용하지만 자주 변경되지는 않는
-// 표준 시스템 포함 파일 및 프로젝트 관련 포함 파일이
-// 들어 있는 포함 파일입니다.
-//
-
 #pragma once
 
 #define WIN32_LEAN_AND_MEAN 
@@ -40,8 +35,8 @@ using namespace DirectX::PackedVector;
 
 using Microsoft::WRL::ComPtr;
 
-#define FRAME_BUFFER_WIDTH		640
-#define FRAME_BUFFER_HEIGHT		480
+#define FRAME_BUFFER_WIDTH		1500
+#define FRAME_BUFFER_HEIGHT		1000
 
 #define DIR_FORWARD				0x01
 #define DIR_BACKWARD			0x02
@@ -58,9 +53,9 @@ using Microsoft::WRL::ComPtr;
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-extern UINT	gnCbvSrvDescriptorIncrementSize;
+extern UINT	CbvSrvDescriptorIncrementSize;
 
-extern ID3D12Resource *CreateBufferResource(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList, void *pData, UINT nBytes, D3D12_HEAP_TYPE d3dHeapType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES d3dResourceStates = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource **ppd3dUploadBuffer = NULL);
+extern ID3D12Resource *CreateBufferResource(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList, void *Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource **UploadBuffer = NULL);
 
 
 namespace Vec3 {

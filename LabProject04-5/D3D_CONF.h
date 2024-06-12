@@ -1,5 +1,6 @@
 #pragma once
 #include <tchar.h>
+#include <string>
 
 // layer configuration
 enum class D3D_Layer 
@@ -7,7 +8,6 @@ enum class D3D_Layer
 
 // window name configuration
 constexpr TCHAR D3D_WindowName[] = _T("Objective-D (");
-
 
 
 

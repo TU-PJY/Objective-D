@@ -1,110 +1,122 @@
-// LabProject04-5.cpp : 응용 프로그램에 대한 진입점을 정의합니다.
-//
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
-#include "D3D_CONF.h"
-#include "D3D_Header.h"
 #include "Objective-D.h"
-#include "D3D_Work.h"
+#include "D3D_Core.h"
+
 
 #define MAX_LOADSTRING 100
 
 
-HINSTANCE						ghAppInstance;
-TCHAR							szTitle[MAX_LOADSTRING];
-TCHAR							szWindowClass[MAX_LOADSTRING];
+HINSTANCE						AppInstance;
+TCHAR							Title[MAX_LOADSTRING];
+TCHAR							WindowClass[MAX_LOADSTRING];
 
-D3D_Work					gGameFramework;
+
+D3D_Core						D3D_Main;
+
 
 ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE, int);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
-{
+
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	MSG msg;
-	HACCEL hAccelTable;
+	MSG Messege;
+	HACCEL AccelTable;
 
-	::LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	::LoadString(hInstance, IDC_LABPROJECT045, szWindowClass, MAX_LOADSTRING);
+	::LoadString(hInstance, IDS_APP_TITLE, Title, MAX_LOADSTRING);
+	::LoadString(hInstance, IDC_LABPROJECT045, WindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
 
-	if (!InitInstance(hInstance, nCmdShow)) return(FALSE);
+	if (!InitInstance(hInstance, nCmdShow)) 
+		return(FALSE);
 
-	hAccelTable = ::LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LABPROJECT045));
+	AccelTable = ::LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LABPROJECT045));
 
-	while (1)
-	{
-		if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			if (msg.message == WM_QUIT) break;
-			if (!::TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-			{
-				::TranslateMessage(&msg);
-				::DispatchMessage(&msg);
+	while (true) {
+		if (::PeekMessage(&Messege, NULL, 0, 0, PM_REMOVE)) {
+			if (Messege.message == WM_QUIT) 
+				break;
+
+			if (!::TranslateAccelerator(Messege.hwnd, AccelTable, &Messege)) {
+				::TranslateMessage(&Messege);
+				::DispatchMessage(&Messege);
 			}
 		}
+
 		else
-		{
-			gGameFramework.FrameAdvance();
-		}
+			D3D_Main.Routine();
 	}
-	gGameFramework.OnDestroy();
 
-	return((int)msg.wParam);
+	D3D_Main.Destroy();
+
+	return((int)Messege.wParam);
 }
 
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-	WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX);
+ATOM MyRegisterClass(HINSTANCE hInstance) {
+	WNDCLASSEX Wcex;
 
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = WndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
-	wcex.hInstance = hInstance;
-	wcex.hIcon = ::LoadIcon(hInstance, MAKEINTRESOURCE(IDI_LABPROJECT045));
-	wcex.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = NULL;//MAKEINTRESOURCE(IDC_LABPROJECT045);
-	wcex.lpszClassName = szWindowClass;
-	wcex.hIconSm = ::LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	Wcex.cbSize = sizeof(WNDCLASSEX);
 
-	return ::RegisterClassEx(&wcex);
+	Wcex.style = CS_HREDRAW | CS_VREDRAW;
+	Wcex.lpfnWndProc = WndProc;
+	Wcex.cbClsExtra = 0;
+	Wcex.cbWndExtra = 0;
+	Wcex.hInstance = hInstance;
+	Wcex.hIcon = ::LoadIcon(hInstance, MAKEINTRESOURCE(IDI_LABPROJECT045));
+	Wcex.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+	Wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	Wcex.lpszMenuName = NULL;//MAKEINTRESOURCE(IDC_LABPROJECT045);
+	Wcex.lpszClassName = WindowClass;
+	Wcex.hIconSm = ::LoadIcon(Wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+
+	return ::RegisterClassEx(&Wcex);
 }
 
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-	ghAppInstance = hInstance;
 
-	RECT rc = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
-	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
-	AdjustWindowRect(&rc, dwStyle, FALSE);
-	HWND hMainWnd = CreateWindow(szWindowClass, szTitle, dwStyle, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance, NULL);
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
+	AppInstance = hInstance;
 
-	if (!hMainWnd) return(FALSE);
+	RECT Rect = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
+	DWORD WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
+	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
-	gGameFramework.OnCreate(hInstance, hMainWnd);
+	HWND MainWnd = CreateWindow(
+		WindowClass, 
+		Title, 
+		WindowStyle, 
+		CW_USEDEFAULT, 
+		CW_USEDEFAULT, 
+		Rect.right - Rect.left, 
+		Rect.bottom - Rect.top, 
+		NULL, 
+		NULL, 
+		hInstance, 
+		NULL
+	);
 
-	::ShowWindow(hMainWnd, nCmdShow);
-	::UpdateWindow(hMainWnd);
+	if (!MainWnd) 
+		return(FALSE);
+
+	D3D_Main.Create(hInstance, MainWnd);
+
+	::ShowWindow(MainWnd, nCmdShow);
+	::UpdateWindow(MainWnd);
 
 	return(TRUE);
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	int wmId, wmEvent;
-	PAINTSTRUCT ps;
-	HDC hdc;
 
-	switch (message)
-	{
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	int wmId, wmEvent;
+	PAINTSTRUCT PaintStruct;
+	HDC Hdc;
+
+	switch (message) {
 	case WM_SIZE:
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP:
@@ -113,50 +125,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 	case WM_KEYDOWN:
 	case WM_KEYUP:
-		gGameFramework.OnProcessingWindowMessage(hWnd, message, wParam, lParam);
+		D3D_Main.WindowsMessegeFunc(hWnd, message, wParam, lParam);
 		break;
+
 	case WM_COMMAND:
 		wmId = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
-		switch (wmId)
-		{
+		switch (wmId) {
 		case IDM_ABOUT:
-			::DialogBox(ghAppInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			::DialogBox(AppInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
+
 		case IDM_EXIT:
 			::DestroyWindow(hWnd);
 			break;
+
 		default:
 			return(::DefWindowProc(hWnd, message, wParam, lParam));
 		}
 		break;
+
 	case WM_PAINT:
-		hdc = ::BeginPaint(hWnd, &ps);
-		EndPaint(hWnd, &ps);
+		Hdc = ::BeginPaint(hWnd, &PaintStruct);
+		EndPaint(hWnd, &PaintStruct);
 		break;
+
 	case WM_DESTROY:
 		::PostQuitMessage(0);
 		break;
+
 	default:
 		return(::DefWindowProc(hWnd, message, wParam, lParam));
 	}
+
 	return 0;
 }
 
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
+
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
+	switch (message) {
 	case WM_INITDIALOG:
 		return((INT_PTR)TRUE);
+
 	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
+		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL) {
 			::EndDialog(hDlg, LOWORD(wParam));
 			return((INT_PTR)TRUE);
 		}
 		break;
 	}
+
 	return((INT_PTR)FALSE);
 }

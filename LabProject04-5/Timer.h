@@ -1,148 +1,148 @@
 #pragma once
-
-
 const ULONG MAX_SAMPLE_COUNT = 50; // Maximum frame time sample count
 
 
 class Timer{
 private:
-	double							m_fTimeScale;
-	float							m_fTimeElapsed;
+	double							TimeScale;
+	float							ElapsedTime;
 
-	__int64							m_nBasePerformanceCounter;
-	__int64							m_nPausedPerformanceCounter;
-	__int64							m_nStopPerformanceCounter;
-	__int64							m_nCurrentPerformanceCounter;
-	__int64							m_nLastPerformanceCounter;
+	__int64							BasePerformanceCounter;
+	__int64							PausedPerformanceCounter;
+	__int64							StopPerformanceCounter;
+	__int64							CurrentPerformanceCounter;
+	__int64							LastPerformanceCounter;
 
-	__int64							m_nPerformanceFrequencyPerSec;
+	__int64							PerformanceFrequencyPerSec;
 
-	float							m_fFrameTime[MAX_SAMPLE_COUNT];
-	ULONG							m_nSampleCount;
+	float							FrameTime[MAX_SAMPLE_COUNT];
+	ULONG							SampleCount;
 
-	unsigned long					m_nCurrentFrameRate;
-	unsigned long					m_nFramesPerSecond;
-	float							m_fFPSTimeElapsed;
+	unsigned long					CurrentFrameRate;
+	unsigned long					FramesPerSecond;
+	float							FPSTimeElapsed;
 
-	bool							m_bStopped;
+	bool							Stopped;
 
 
 public:
 	Timer::Timer() {
-		::QueryPerformanceFrequency((LARGE_INTEGER*)&m_nPerformanceFrequencyPerSec);
-		::QueryPerformanceCounter((LARGE_INTEGER*)&m_nLastPerformanceCounter);
-		m_fTimeScale = 1.0 / (double)m_nPerformanceFrequencyPerSec;
+		::QueryPerformanceFrequency((LARGE_INTEGER*)&PerformanceFrequencyPerSec);
+		::QueryPerformanceCounter((LARGE_INTEGER*)&LastPerformanceCounter);
+		TimeScale = 1.0 / (double)PerformanceFrequencyPerSec;
 
-		m_nBasePerformanceCounter = m_nLastPerformanceCounter;
-		m_nPausedPerformanceCounter = 0;
-		m_nStopPerformanceCounter = 0;
+		BasePerformanceCounter = LastPerformanceCounter;
+		PausedPerformanceCounter = 0;
+		StopPerformanceCounter = 0;
 
-		m_nSampleCount = 0;
-		m_nCurrentFrameRate = 0;
-		m_nFramesPerSecond = 0;
-		m_fFPSTimeElapsed = 0.0f;
+		SampleCount = 0;
+		CurrentFrameRate = 0;
+		FramesPerSecond = 0;
+		FPSTimeElapsed = 0.0f;
 	}
 
 
 	virtual Timer::~Timer() {}
 
 
-	void Timer::Tick(float fLockFPS) {
-		if (m_bStopped) {
-			m_fTimeElapsed = 0.0f;
+	void Timer::Tick(float LockFPS) {
+		if (Stopped) {
+			ElapsedTime = 0.0f;
 			return;
 		}
 
-		float fTimeElapsed;
+		float DeltaTime;
 
-		::QueryPerformanceCounter((LARGE_INTEGER*)&m_nCurrentPerformanceCounter);
-		fTimeElapsed = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
+		::QueryPerformanceCounter((LARGE_INTEGER*)&CurrentPerformanceCounter);
+		DeltaTime = float((CurrentPerformanceCounter - LastPerformanceCounter) * TimeScale);
 
-		if (fLockFPS > 0.0f) {
-			while (fTimeElapsed < (1.0f / fLockFPS)) {
-				::QueryPerformanceCounter((LARGE_INTEGER*)&m_nCurrentPerformanceCounter);
-				fTimeElapsed = float((m_nCurrentPerformanceCounter - m_nLastPerformanceCounter) * m_fTimeScale);
+		if (LockFPS > 0.0f) {
+			while (DeltaTime < (1.0f / LockFPS)) {
+				::QueryPerformanceCounter((LARGE_INTEGER*)&CurrentPerformanceCounter);
+				DeltaTime = float((CurrentPerformanceCounter - LastPerformanceCounter) * TimeScale);
 			}
 		}
 
-		m_nLastPerformanceCounter = m_nCurrentPerformanceCounter;
+		LastPerformanceCounter = CurrentPerformanceCounter;
 
-		if (fabsf(fTimeElapsed - m_fTimeElapsed) < 1.0f) {
-			::memmove(&m_fFrameTime[1], m_fFrameTime, (MAX_SAMPLE_COUNT - 1) * sizeof(float));
-			m_fFrameTime[0] = fTimeElapsed;
-			if (m_nSampleCount < MAX_SAMPLE_COUNT) m_nSampleCount++;
+		if (fabsf(DeltaTime - ElapsedTime) < 1.0f) {
+			::memmove(&FrameTime[1], FrameTime, (MAX_SAMPLE_COUNT - 1) * sizeof(float));
+			FrameTime[0] = DeltaTime;
+
+			if (SampleCount < MAX_SAMPLE_COUNT) 
+				SampleCount++;
 		}
 
-		m_nFramesPerSecond++;
-		m_fFPSTimeElapsed += fTimeElapsed;
+		FramesPerSecond++;
+		FPSTimeElapsed += DeltaTime;
 
-		if (m_fFPSTimeElapsed > 1.0f) {
-			m_nCurrentFrameRate = m_nFramesPerSecond;
-			m_nFramesPerSecond = 0;
-			m_fFPSTimeElapsed = 0.0f;
+		if (FPSTimeElapsed > 1.0f) {
+			CurrentFrameRate = FramesPerSecond;
+			FramesPerSecond = 0;
+			FPSTimeElapsed = 0.0f;
 		}
 
-		m_fTimeElapsed = 0.0f;
+		ElapsedTime = 0.0f;
 
-		for (ULONG i = 0; i < m_nSampleCount; i++)
-			m_fTimeElapsed += m_fFrameTime[i];
+		for (ULONG i = 0; i < SampleCount; i++)
+			ElapsedTime += FrameTime[i];
 
-		if (m_nSampleCount > 0)
-			m_fTimeElapsed /= m_nSampleCount;
+		if (SampleCount > 0)
+			ElapsedTime /= SampleCount;
 	}
 
 
-	unsigned long Timer::GetFrameRate(LPTSTR lpszString, int nCharacters) {
-		if (lpszString) {
-			_itow_s(m_nCurrentFrameRate, lpszString, nCharacters, 10);
-			wcscat_s(lpszString, nCharacters, _T(" FPS)"));
+	unsigned long Timer::GetFrameRate(LPTSTR String, int Characters) {
+		if (String) {
+			_itow_s(CurrentFrameRate, String, Characters, 10);
+			wcscat_s(String, Characters, _T(" FPS)"));
 		}
 
-		return(m_nCurrentFrameRate);
+		return(CurrentFrameRate);
 	}
 
 
 	float Timer::GetTimeElapsed() {
-		return(m_fTimeElapsed);
+		return(ElapsedTime);
 	}
 
 
 	float Timer::GetTotalTime() {
-		if (m_bStopped)
-			return(float(((m_nStopPerformanceCounter - m_nPausedPerformanceCounter) - m_nBasePerformanceCounter) * m_fTimeScale));
+		if (Stopped)
+			return(float(((StopPerformanceCounter - PausedPerformanceCounter) - BasePerformanceCounter) * TimeScale));
 
-		return(float(((m_nCurrentPerformanceCounter - m_nPausedPerformanceCounter) - m_nBasePerformanceCounter) * m_fTimeScale));
+		return(float(((CurrentPerformanceCounter - PausedPerformanceCounter) - BasePerformanceCounter) * TimeScale));
 	}
 
 
 	void Timer::Reset() {
-		__int64 nPerformanceCounter;
-		::QueryPerformanceCounter((LARGE_INTEGER*)&nPerformanceCounter);
+		__int64 PerformanceCounter;
+		::QueryPerformanceCounter((LARGE_INTEGER*)&PerformanceCounter);
 
-		m_nBasePerformanceCounter = nPerformanceCounter;
-		m_nLastPerformanceCounter = nPerformanceCounter;
-		m_nStopPerformanceCounter = 0;
-		m_bStopped = false;
+		BasePerformanceCounter = PerformanceCounter;
+		LastPerformanceCounter = PerformanceCounter;
+		StopPerformanceCounter = 0;
+		Stopped = false;
 	}
 
 
 	void Timer::Start() {
-		__int64 nPerformanceCounter;
-		::QueryPerformanceCounter((LARGE_INTEGER*)&nPerformanceCounter);
+		__int64 PerformanceCounter;
+		::QueryPerformanceCounter((LARGE_INTEGER*)&PerformanceCounter);
 
-		if (m_bStopped) {
-			m_nPausedPerformanceCounter += (nPerformanceCounter - m_nStopPerformanceCounter);
-			m_nLastPerformanceCounter = nPerformanceCounter;
-			m_nStopPerformanceCounter = 0;
-			m_bStopped = false;
+		if (Stopped) {
+			PausedPerformanceCounter += (PerformanceCounter - StopPerformanceCounter);
+			LastPerformanceCounter = PerformanceCounter;
+			StopPerformanceCounter = 0;
+			Stopped = false;
 		}
 	}
 
 
 	void Timer::Stop() {
-		if (!m_bStopped) {
-			::QueryPerformanceCounter((LARGE_INTEGER*)&m_nStopPerformanceCounter);
-			m_bStopped = true;
+		if (!Stopped) {
+			::QueryPerformanceCounter((LARGE_INTEGER*)&StopPerformanceCounter);
+			Stopped = true;
 		}
 	}
 };

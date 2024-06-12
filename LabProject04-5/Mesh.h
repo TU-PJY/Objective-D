@@ -3,16 +3,16 @@
 
 class CVertex {
 protected:
-    XMFLOAT3						m_xmf3Position;	
+    XMFLOAT3						Position;	
 
 public:
 	CVertex() { 
-		m_xmf3Position = XMFLOAT3(0.0f, 0.0f, 0.0f); 
+		Position = XMFLOAT3(0.0f, 0.0f, 0.0f); 
 	}
 
 
-	CVertex(XMFLOAT3 xmf3Position) { 
-		m_xmf3Position = xmf3Position; 
+	CVertex(XMFLOAT3 Position) { 
+		Position = Position; 
 	}
 
 
@@ -25,22 +25,22 @@ public:
 
 class CDiffusedVertex : public CVertex {
 protected:
-    XMFLOAT4						m_xmf4Diffuse;		
+    XMFLOAT4						Diffuse;		
 
 
 public:
 	CDiffusedVertex() { 
-		m_xmf3Position = XMFLOAT3(0.0f, 0.0f, 0.0f); m_xmf4Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f); 
+		Position = XMFLOAT3(0.0f, 0.0f, 0.0f); Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f); 
 	}
 
 
-	CDiffusedVertex(float x, float y, float z, XMFLOAT4 xmf4Diffuse) { 
-		m_xmf3Position = XMFLOAT3(x, y, z); m_xmf4Diffuse = xmf4Diffuse; 
+	CDiffusedVertex(float x, float y, float z, XMFLOAT4 Diffuse) { 
+		Position = XMFLOAT3(x, y, z); Diffuse = Diffuse; 
 	}
 
 
-	CDiffusedVertex(XMFLOAT3 xmf3Position, XMFLOAT4 xmf4Diffuse) { 
-		m_xmf3Position = xmf3Position; m_xmf4Diffuse = xmf4Diffuse; 
+	CDiffusedVertex(XMFLOAT3 Position, XMFLOAT4 Diffuse) { 
+		Position = Position; Diffuse = Diffuse; 
 	}
 
 
@@ -52,205 +52,205 @@ public:
 
 class Mesh {
 private:
-	int m_nReferences = 0;
+	int Ref = 0;
 
 
 public:
 	void AddRef() { 
-		m_nReferences++; 
+		Ref++; 
 	}
 
 
 	void Release() { 
-		if (--m_nReferences <= 0)
+		if (--Ref <= 0)
 			delete this;
 	}
 
 
 protected:
-	BoundingBox						m_xmBoundingBox;
+	BoundingBox						MeshBoundingBox;
 
-	UINT							m_nVertices = 0;
-	XMFLOAT3						*m_pxmf3Positions = NULL;
-	ID3D12Resource					*m_pd3dPositionBuffer = NULL;
-	ID3D12Resource					*m_pd3dPositionUploadBuffer = NULL;
+	UINT							Vertices = 0;
+	XMFLOAT3						*Position = NULL;
+	ID3D12Resource					*PositionBuffer = NULL;
+	ID3D12Resource					*PositionUploadBuffer = NULL;
 
-	XMFLOAT3						*m_pxmf3Normals = NULL;
-	ID3D12Resource					*m_pd3dNormalBuffer = NULL;
-	ID3D12Resource					*m_pd3dNormalUploadBuffer = NULL;
+	XMFLOAT3						*Normal = NULL;
+	ID3D12Resource					*NormalBuffer = NULL;
+	ID3D12Resource					*NormalUploadBuffer = NULL;
 
-	XMFLOAT2						*m_pxmf2TextureCoords = NULL;
-	ID3D12Resource					*m_pd3dTextureCoordBuffer = NULL;
-	ID3D12Resource					*m_pd3dTextureCoordUploadBuffer = NULL;
+	XMFLOAT2						*TextureCoords = NULL;
+	ID3D12Resource					*TextureCoordBuffer = NULL;
+	ID3D12Resource					*TextureCoordUploadBuffer = NULL;
 
-	UINT							m_nIndices = 0;
-	UINT							*m_pnIndices = NULL;
-	ID3D12Resource					*m_pd3dIndexBuffer = NULL;
-	ID3D12Resource					*m_pd3dIndexUploadBuffer = NULL;
+	UINT							Indices = 0;
+	UINT							*PnIndices = NULL;
+	ID3D12Resource					*IndexBuffer = NULL;
+	ID3D12Resource					*IndexUploadBuffer = NULL;
 
-	UINT							m_nVertexBufferViews = 0;
-	D3D12_VERTEX_BUFFER_VIEW		*m_pd3dVertexBufferViews = NULL;
+	UINT							NumVertexBufferViews = 0;
+	D3D12_VERTEX_BUFFER_VIEW		*VertexBufferViews = NULL;
 
-	D3D12_INDEX_BUFFER_VIEW			m_d3dIndexBufferView;
+	D3D12_INDEX_BUFFER_VIEW			IndexBufferView;
 
-	D3D12_PRIMITIVE_TOPOLOGY		m_d3dPrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	UINT							m_nSlot = 0;
-	UINT							m_nStride = 0;
-	UINT							m_nOffset = 0;
+	D3D12_PRIMITIVE_TOPOLOGY		PromitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	UINT							Slot = 0;
+	UINT							Stride = 0;
+	UINT							Offset = 0;
 
-	UINT							m_nStartIndex = 0;
-	int								m_nBaseVertex = 0;
+	UINT							StartIndex = 0;
+	int								BaseVertex = 0;
 
 
 public:
-	Mesh(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, char* pstrFileName, bool bTextFile) {
-		if (pstrFileName) LoadMeshFromFile(pd3dDevice, pd3dCommandList, pstrFileName, bTextFile);
+	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
+		if (Directory) LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 	}
 
 
 	~Mesh() {
-		if (m_pxmf3Positions) delete[] m_pxmf3Positions;
-		if (m_pxmf3Normals) delete[] m_pxmf3Normals;
-		if (m_pxmf2TextureCoords) delete[] m_pxmf2TextureCoords;
+		if (Position) delete[] Position;
+		if (Normal) delete[] Normal;
+		if (TextureCoords) delete[] TextureCoords;
 
-		if (m_pnIndices) delete[] m_pnIndices;
+		if (PnIndices) delete[] PnIndices;
 
-		if (m_pd3dVertexBufferViews) delete[] m_pd3dVertexBufferViews;
+		if (VertexBufferViews) delete[] VertexBufferViews;
 
-		if (m_pd3dPositionBuffer) m_pd3dPositionBuffer->Release();
-		if (m_pd3dNormalBuffer) m_pd3dNormalBuffer->Release();
-		if (m_pd3dTextureCoordBuffer) m_pd3dTextureCoordBuffer->Release();
-		if (m_pd3dIndexBuffer) m_pd3dIndexBuffer->Release();
+		if (PositionBuffer) PositionBuffer->Release();
+		if (NormalBuffer) NormalBuffer->Release();
+		if (TextureCoordBuffer) TextureCoordBuffer->Release();
+		if (IndexBuffer) IndexBuffer->Release();
 	}
 
 
 	void ReleaseUploadBuffers() {
-		if (m_pd3dPositionUploadBuffer) m_pd3dPositionUploadBuffer->Release();
-		if (m_pd3dNormalUploadBuffer) m_pd3dNormalUploadBuffer->Release();
-		if (m_pd3dTextureCoordUploadBuffer) m_pd3dTextureCoordUploadBuffer->Release();
-		if (m_pd3dIndexUploadBuffer) m_pd3dIndexUploadBuffer->Release();
+		if (PositionUploadBuffer) PositionUploadBuffer->Release();
+		if (NormalUploadBuffer) NormalUploadBuffer->Release();
+		if (TextureCoordUploadBuffer) TextureCoordUploadBuffer->Release();
+		if (IndexUploadBuffer) IndexUploadBuffer->Release();
 
-		m_pd3dPositionUploadBuffer = NULL;
-		m_pd3dNormalUploadBuffer = NULL;
-		m_pd3dTextureCoordUploadBuffer = NULL;
-		m_pd3dIndexUploadBuffer = NULL;
+		PositionUploadBuffer = NULL;
+		NormalUploadBuffer = NULL;
+		TextureCoordUploadBuffer = NULL;
+		IndexUploadBuffer = NULL;
 	};
 
 
-	void Render(ID3D12GraphicsCommandList* pd3dCommandList) {
-		pd3dCommandList->IASetPrimitiveTopology(m_d3dPrimitiveTopology);
-		pd3dCommandList->IASetVertexBuffers(m_nSlot, m_nVertexBufferViews, m_pd3dVertexBufferViews);
-		if (m_pd3dIndexBuffer) {
-			pd3dCommandList->IASetIndexBuffer(&m_d3dIndexBufferView);
-			pd3dCommandList->DrawIndexedInstanced(m_nIndices, 1, 0, 0, 0);
+	void Render(ID3D12GraphicsCommandList* CmdList) {
+		CmdList->IASetPrimitiveTopology(PromitiveTopology);
+		CmdList->IASetVertexBuffers(Slot, NumVertexBufferViews, VertexBufferViews);
+		if (IndexBuffer) {
+			CmdList->IASetIndexBuffer(&IndexBufferView);
+			CmdList->DrawIndexedInstanced(Indices, 1, 0, 0, 0);
 		}
 
 		else
-			pd3dCommandList->DrawInstanced(m_nVertices, 1, m_nOffset, 0);
+			CmdList->DrawInstanced(Vertices, 1, Offset, 0);
 	}
 
 
-	void LoadMeshFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, char* pstrFileName, bool bTextFile)	{
-		char pstrToken[64] = { '\0' };
+	void LoadMeshFromFile(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode)	{
+		char Token[64] = { '\0' };
 
-		if (bTextFile) {
-			std::ifstream InFile(pstrFileName);
+		if (TextMode) {
+			std::ifstream In(Directory);
 
 			while(true) {
-				InFile >> pstrToken;
-				if (!InFile) break;
+				In >> Token;
+				if (!In) break;
 
-				if (!strcmp(pstrToken, "<Vertices>:")) {
-					InFile >> m_nVertices;
-					m_pxmf3Positions = new XMFLOAT3[m_nVertices];
-					for (UINT i = 0; i < m_nVertices; i++) InFile >> m_pxmf3Positions[i].x >> m_pxmf3Positions[i].y >> m_pxmf3Positions[i].z;
+				if (!strcmp(Token, "<Vertices>:")) {
+					In >> Vertices;
+					Position = new XMFLOAT3[Vertices];
+					for (UINT i = 0; i < Vertices; i++) In >> Position[i].x >> Position[i].y >> Position[i].z;
 				}
 
-				else if (!strcmp(pstrToken, "<Normals>:")) {
-					InFile >> pstrToken;
-					m_pxmf3Normals = new XMFLOAT3[m_nVertices];
-					for (UINT i = 0; i < m_nVertices; i++) InFile >> m_pxmf3Normals[i].x >> m_pxmf3Normals[i].y >> m_pxmf3Normals[i].z;
+				else if (!strcmp(Token, "<Normals>:")) {
+					In >> Token;
+					Normal = new XMFLOAT3[Vertices];
+					for (UINT i = 0; i < Vertices; i++) In >> Normal[i].x >> Normal[i].y >> Normal[i].z;
 				}
 
-				else if (!strcmp(pstrToken, "<TextureCoords>:")) {
-					InFile >> pstrToken;
-					m_pxmf2TextureCoords = new XMFLOAT2[m_nVertices];
-					for (UINT i = 0; i < m_nVertices; i++) InFile >> m_pxmf2TextureCoords[i].x >> m_pxmf2TextureCoords[i].y;
+				else if (!strcmp(Token, "<TextureCoords>:")) {
+					In >> Token;
+					TextureCoords = new XMFLOAT2[Vertices];
+					for (UINT i = 0; i < Vertices; i++) In >> TextureCoords[i].x >> TextureCoords[i].y;
 				}
 
-				else if (!strcmp(pstrToken, "<Indices>:")) {
-					InFile >> m_nIndices;
-					m_pnIndices = new UINT[m_nIndices];
-					for (UINT i = 0; i < m_nIndices; i++) InFile >> m_pnIndices[i];
+				else if (!strcmp(Token, "<Indices>:")) {
+					In >> Indices;
+					PnIndices = new UINT[Indices];
+					for (UINT i = 0; i < Indices; i++) In >> PnIndices[i];
 				}
 			}
 		}
 
 		else {
-			FILE* pFile = NULL;
-			::fopen_s(&pFile, pstrFileName, "rb");
-			::rewind(pFile);
+			FILE* File = NULL;
+			::fopen_s(&File, Directory, "rb");
+			::rewind(File);
 
-			char pstrToken[64] = { '\0' };
+			char Token[64] = { '\0' };
 
-			BYTE nStrLength = 0;
-			UINT nReads = 0;
+			BYTE StrLength = 0;
+			UINT Reads = 0;
 
-			nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pFile);
-			nReads = (UINT)::fread(pstrToken, sizeof(char), 14, pFile); //"<BoundingBox>:"
-			nReads = (UINT)::fread(&m_xmBoundingBox.Center, sizeof(float), 3, pFile);
-			nReads = (UINT)::fread(&m_xmBoundingBox.Extents, sizeof(float), 3, pFile);
+			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
+			Reads = (UINT)::fread(Token, sizeof(char), 14, File); //"<BoundingBox>:"
+			Reads = (UINT)::fread(&MeshBoundingBox.Center, sizeof(float), 3, File);
+			Reads = (UINT)::fread(&MeshBoundingBox.Extents, sizeof(float), 3, File);
 
-			nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pFile);
-			nReads = (UINT)::fread(pstrToken, sizeof(char), 11, pFile); //"<Vertices>:"
-			nReads = (UINT)::fread(&m_nVertices, sizeof(int), 1, pFile);
-			m_pxmf3Positions = new XMFLOAT3[m_nVertices];
-			nReads = (UINT)::fread(m_pxmf3Positions, sizeof(float), 3 * m_nVertices, pFile);
+			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
+			Reads = (UINT)::fread(Token, sizeof(char), 11, File); //"<Vertices>:"
+			Reads = (UINT)::fread(&Vertices, sizeof(int), 1, File);
+			Position = new XMFLOAT3[Vertices];
+			Reads = (UINT)::fread(Position, sizeof(float), 3 * Vertices, File);
 
-			nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pFile);
-			nReads = (UINT)::fread(pstrToken, sizeof(char), 10, pFile); //"<Normals>:"
-			nReads = (UINT)::fread(&m_nVertices, sizeof(int), 1, pFile);
-			m_pxmf3Normals = new XMFLOAT3[m_nVertices];
-			nReads = (UINT)::fread(m_pxmf3Normals, sizeof(float), 3 * m_nVertices, pFile);
+			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
+			Reads = (UINT)::fread(Token, sizeof(char), 10, File); //"<Normals>:"
+			Reads = (UINT)::fread(&Vertices, sizeof(int), 1, File);
+			Normal = new XMFLOAT3[Vertices];
+			Reads = (UINT)::fread(Normal, sizeof(float), 3 * Vertices, File);
 
-			nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pFile);
-			nReads = (UINT)::fread(pstrToken, sizeof(char), 16, pFile); //"<TextureCoords>:"
-			nReads = (UINT)::fread(&m_nVertices, sizeof(int), 1, pFile);
-			m_pxmf2TextureCoords = new XMFLOAT2[m_nVertices];
-			nReads = (UINT)::fread(m_pxmf2TextureCoords, sizeof(float), 2 * m_nVertices, pFile);
+			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
+			Reads = (UINT)::fread(Token, sizeof(char), 16, File); //"<TextureCoords>:"
+			Reads = (UINT)::fread(&Vertices, sizeof(int), 1, File);
+			TextureCoords = new XMFLOAT2[Vertices];
+			Reads = (UINT)::fread(TextureCoords, sizeof(float), 2 * Vertices, File);
 
-			nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pFile);
-			nReads = (UINT)::fread(pstrToken, sizeof(char), 10, pFile); //"<Indices>:"
-			nReads = (UINT)::fread(&m_nIndices, sizeof(int), 1, pFile);
-			m_pnIndices = new UINT[m_nIndices];
-			nReads = (UINT)::fread(m_pnIndices, sizeof(UINT), m_nIndices, pFile);
+			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
+			Reads = (UINT)::fread(Token, sizeof(char), 10, File); //"<Indices>:"
+			Reads = (UINT)::fread(&Indices, sizeof(int), 1, File);
+			PnIndices = new UINT[Indices];
+			Reads = (UINT)::fread(PnIndices, sizeof(UINT), Indices, File);
 
-			::fclose(pFile);
+			::fclose(File);
 		}
 
-		m_pd3dPositionBuffer = ::CreateBufferResource(pd3dDevice, pd3dCommandList, m_pxmf3Positions, sizeof(XMFLOAT3) * m_nVertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &m_pd3dPositionUploadBuffer);
-		m_pd3dNormalBuffer = ::CreateBufferResource(pd3dDevice, pd3dCommandList, m_pxmf3Normals, sizeof(XMFLOAT3) * m_nVertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &m_pd3dNormalUploadBuffer);
-		m_pd3dTextureCoordBuffer = ::CreateBufferResource(pd3dDevice, pd3dCommandList, m_pxmf2TextureCoords, sizeof(XMFLOAT2) * m_nVertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &m_pd3dTextureCoordUploadBuffer);
+		PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
+		NormalBuffer = ::CreateBufferResource(Device, CmdList, Normal, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &NormalUploadBuffer);
+		TextureCoordBuffer = ::CreateBufferResource(Device, CmdList, TextureCoords, sizeof(XMFLOAT2) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &TextureCoordUploadBuffer);
 
-		m_nVertexBufferViews = 3;
-		m_pd3dVertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[m_nVertexBufferViews];
+		NumVertexBufferViews = 3;
+		VertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[NumVertexBufferViews];
 
-		m_pd3dVertexBufferViews[0].BufferLocation = m_pd3dPositionBuffer->GetGPUVirtualAddress();
-		m_pd3dVertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
-		m_pd3dVertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * m_nVertices;
+		VertexBufferViews[0].BufferLocation = PositionBuffer->GetGPUVirtualAddress();
+		VertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
+		VertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
 
-		m_pd3dVertexBufferViews[1].BufferLocation = m_pd3dNormalBuffer->GetGPUVirtualAddress();
-		m_pd3dVertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
-		m_pd3dVertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * m_nVertices;
+		VertexBufferViews[1].BufferLocation = NormalBuffer->GetGPUVirtualAddress();
+		VertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
+		VertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
 
-		m_pd3dVertexBufferViews[2].BufferLocation = m_pd3dTextureCoordBuffer->GetGPUVirtualAddress();
-		m_pd3dVertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
-		m_pd3dVertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * m_nVertices;
+		VertexBufferViews[2].BufferLocation = TextureCoordBuffer->GetGPUVirtualAddress();
+		VertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
+		VertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * Vertices;
 
-		m_pd3dIndexBuffer = ::CreateBufferResource(pd3dDevice, pd3dCommandList, m_pnIndices, sizeof(UINT) * m_nIndices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &m_pd3dIndexUploadBuffer);
+		IndexBuffer = ::CreateBufferResource(Device, CmdList, PnIndices, sizeof(UINT) * Indices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &IndexUploadBuffer);
 
-		m_d3dIndexBufferView.BufferLocation = m_pd3dIndexBuffer->GetGPUVirtualAddress();
-		m_d3dIndexBufferView.Format = DXGI_FORMAT_R32_UINT;
-		m_d3dIndexBufferView.SizeInBytes = sizeof(UINT) * m_nIndices;
+		IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
+		IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
+		IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
 	}
 };

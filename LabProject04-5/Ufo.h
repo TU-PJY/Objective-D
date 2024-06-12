@@ -1,6 +1,4 @@
 #pragma once
-#include "D3D_Header.h"
-#include "Scene.h"
 #include "Object.h"
 #include <random>
 
@@ -13,7 +11,7 @@ private:
 public:
 	Ufo(D3D_Layer layer, std::string tag) {
 		SetShader(pShader);
-		SetMesh(pUfoMesh);
+		SetMesh(fw.FindMesh("pUfoMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 
 		Layer = layer;
@@ -57,7 +55,7 @@ private:
 public:
 	Aircraft(D3D_Layer layer, std::string tag) {
 		SetShader(pShader);
-		SetMesh(pFlyerMesh);
+		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 
 		Layer = layer;
