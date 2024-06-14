@@ -168,7 +168,7 @@ public:
 		CamPos.z += Shift.z; 
 	}
 
-	void TrackObject(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
+	void TrackCamera(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
 		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 		XMFLOAT3 xmf3Right = Object->Right;
 		XMFLOAT3 xmf3Up = Object->Up;

@@ -2,12 +2,12 @@
 #include "Object.h"
 #include <random>
 
-class Ufo : public OBJ {
+class Aircraft : public OBJ {
 private:
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 
 public:
-	Ufo(LayerFW layer, std::string tag) {
+	Aircraft(LayerFW layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
@@ -17,7 +17,7 @@ public:
 	}
 
 
-	void MoveUfo(float FT) {
+	void MoveAircraft(float FT) {
 		if (MoveFront) 
 			MoveForward(FT * 10);
 		if (MoveBack) 
@@ -32,13 +32,12 @@ public:
 	void Update(float FT) {
 		InitTransform();
 
-		MoveUfo(FT);
+		MoveAircraft(FT);
 
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		cam.TrackObject(Position, this, FT);
-		cam.RegenerateViewMatrix();
+		cam.TrackCamera(Position, this, FT);
 	}
 
 
@@ -84,35 +83,5 @@ public:
 			}
 			break;
 		}
-	}
-};
-
-
-class Aircraft : public OBJ {
-private:
-	XMFLOAT3 Position{ 0.0, 0.0, 10.0 };
-	float Rotation{};
-
-public:
-	Aircraft(LayerFW layer, std::string tag) {
-		SetShader(pShader);
-		SetMesh(fw.FindMesh("pFlyerMesh"));
-		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
-
-		Layer = layer;
-		Tag = tag;
-
-		std::random_device rd;
-		std::uniform_real_distribution urd{ -10.0, 10.0 };
-
-		Position.x = urd(rd);
-		Position.y = 0.0;
-		Position.z = urd(rd);
-	}
-
-	void Update(float FT) {
-		InitTransform();
-
-		SetPosition(Position);
 	}
 };

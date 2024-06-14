@@ -99,9 +99,6 @@
     <ClCompile Include="Framework.cpp">
       <Filter>%283%29_____________Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>%286%29____________D3D_System\%284%29---Shader</Filter>
-    </ClCompile>
     <ClCompile Include="D3DHeader.cpp">
       <Filter>%286%29____________D3D_System\%281%29----Header</Filter>
     </ClCompile>

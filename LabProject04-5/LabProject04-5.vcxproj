@@ -165,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DMain.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="D3DHeader.cpp">
