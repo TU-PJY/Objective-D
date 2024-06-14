@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="%284%29____________User_Object">
-      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%285%29____________D3D_System">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
@@ -20,9 +17,6 @@
     <Filter Include="%285%29____________D3D_System\%281%29----Header">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%285%29____________D3D_System\%283%29---Object">
-      <UniqueIdentifier>{698482d9-309b-47d4-9ea9-5b12799b176c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%285%29____________D3D_System\%284%29---Shader">
       <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
     </Filter>
@@ -38,7 +32,16 @@
     <Filter Include="%287%29___________________HLSL">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%285%29____________D3D_System\%282%29----Core">
+    <Filter Include="%284%29________________Object">
+      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%284%29________________Object\%281%29----Object_Base">
+      <UniqueIdentifier>{9f24e764-45d2-4ea4-b595-0e65de4e8636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%284%29________________Object\%282%29--Custom_Object">
+      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%285%29____________D3D_System\%282%29----Main">
       <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -52,11 +55,8 @@
     <ClInclude Include="Objective-D.h">
       <Filter>%286%29____________Win_System</Filter>
     </ClInclude>
-    <ClInclude Include="D3D_Core.h">
-      <Filter>%285%29____________D3D_System\%282%29----Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>%285%29____________D3D_System\%283%29---Object</Filter>
+    <ClInclude Include="D3DMain.h">
+      <Filter>%285%29____________D3D_System\%282%29----Main</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
       <Filter>%283%29_____________Framework</Filter>
@@ -67,28 +67,28 @@
     <ClInclude Include="Camera.h">
       <Filter>%282%29________________Camera</Filter>
     </ClInclude>
-    <ClInclude Include="D3D_Header.h">
+    <ClInclude Include="D3DHeader.h">
       <Filter>%285%29____________D3D_System\%281%29----Header</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>%285%29____________D3D_System\%282%29----Core</Filter>
+      <Filter>%285%29____________D3D_System\%282%29----Main</Filter>
     </ClInclude>
-    <ClInclude Include="Ufo.h">
-      <Filter>%284%29____________User_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="D3D_CONF.h">
+    <ClInclude Include="CONF.h">
       <Filter>%281%29__________________CONF</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>%285%29____________D3D_System\%285%29----Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Ufo.h">
+      <Filter>%284%29________________Object\%282%29--Custom_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>%284%29________________Object\%281%29----Object_Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3D_Core.cpp">
-      <Filter>%285%29____________D3D_System\%282%29----Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>%285%29____________D3D_System\%283%29---Object</Filter>
+    <ClCompile Include="D3DMain.cpp">
+      <Filter>%285%29____________D3D_System\%282%29----Main</Filter>
     </ClCompile>
     <ClCompile Include="Framework.cpp">
       <Filter>%283%29_____________Framework</Filter>
@@ -96,11 +96,14 @@
     <ClCompile Include="Shader.cpp">
       <Filter>%285%29____________D3D_System\%284%29---Shader</Filter>
     </ClCompile>
-    <ClCompile Include="D3D_Header.cpp">
+    <ClCompile Include="D3DHeader.cpp">
       <Filter>%285%29____________D3D_System\%281%29----Header</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>%286%29____________Win_System</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>%284%29________________Object\%281%29----Object_Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

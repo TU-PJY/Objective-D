@@ -1,11 +1,11 @@
 #pragma once
-#include "D3D_Header.h"
+#include "D3DHeader.h"
 #include "Timer.h"
 
-class D3D_Core {
+class D3DMain {
 public:
-	D3D_Core();
-	~D3D_Core();
+	D3DMain();
+	~D3DMain();
 
 	bool Create(HINSTANCE hInstance, HWND hMainWnd);
 	void Destroy();

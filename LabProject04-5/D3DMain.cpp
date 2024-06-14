@@ -1,10 +1,10 @@
-#include "D3D_Core.h"
-#include "D3D_CONF.h"
+#include "D3DMain.h"
+#include "CONF.h"
 #include "Camera.h"
 #include "Framework.h"
 
 
-void D3D_Core::Init() {
+void D3DMain::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
 	fw.Init(Device, CmdList);
@@ -26,7 +26,7 @@ void D3D_Core::Init() {
 }
 
 
-void D3D_Core::MouseFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+void D3DMain::MouseFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
@@ -50,7 +50,7 @@ void D3D_Core::MouseFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 
 #include "Ufo.h"
 
-void D3D_Core::KeyboardFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+void D3DMain::KeyboardFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 		switch (wParam) {
@@ -136,7 +136,7 @@ void D3D_Core::KeyboardFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lP
 }
 
 
-LRESULT CALLBACK D3D_Core::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_ACTIVATE: 
 		if (LOWORD(wParam) == WA_INACTIVE)
@@ -166,7 +166,7 @@ LRESULT CALLBACK D3D_Core::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM
 }
 
 
-void D3D_Core::ProcessInput() {
+void D3DMain::ProcessInput() {
 	static UCHAR KeyBuffer[256];
 	DWORD Direction = 0;
 
@@ -192,7 +192,7 @@ void D3D_Core::ProcessInput() {
 }
 
 
-void D3D_Core::Routine() {
+void D3DMain::Routine() {
 	Timer.Tick(0.0f);
 
 	HRESULT hResult = CmdAllocator->Reset();
@@ -261,7 +261,7 @@ void D3D_Core::Routine() {
 }
 
 
-D3D_Core::D3D_Core() {
+D3DMain::D3DMain() {
 	DxgiFactory = NULL;
 	DxgiSwapChain = NULL;
 	Device = NULL;
@@ -296,10 +296,10 @@ D3D_Core::D3D_Core() {
 }
 
 
-D3D_Core::~D3D_Core() {}
+D3DMain::~D3DMain() {}
 
 
-bool D3D_Core::Create(HINSTANCE hInstance, HWND hMainWnd) {
+bool D3DMain::Create(HINSTANCE hInstance, HWND hMainWnd) {
 	hInstance = hInstance;
 	hWnd = hMainWnd;
 
@@ -315,7 +315,7 @@ bool D3D_Core::Create(HINSTANCE hInstance, HWND hMainWnd) {
 }
 
 
-void D3D_Core::CreateSwapChain() {
+void D3DMain::CreateSwapChain() {
 	RECT rcClient;
 	::GetClientRect(hWnd, &rcClient);
 	CLIENT_WIDTH = rcClient.right - rcClient.left;
@@ -382,7 +382,7 @@ void D3D_Core::CreateSwapChain() {
 }
 
 
-void D3D_Core::CreateDirect3DDevice() {
+void D3DMain::CreateDirect3DDevice() {
 	HRESULT hResult;
 
 	UINT DxgiFactoryFlags = 0;
@@ -441,7 +441,7 @@ void D3D_Core::CreateDirect3DDevice() {
 }
 
 
-void D3D_Core::CreateCommandQueueAndList() {
+void D3DMain::CreateCommandQueueAndList() {
 	D3D12_COMMAND_QUEUE_DESC CommandQueueDesc;
 	::ZeroMemory(&CommandQueueDesc, sizeof(D3D12_COMMAND_QUEUE_DESC));
 	CommandQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
@@ -455,7 +455,7 @@ void D3D_Core::CreateCommandQueueAndList() {
 }
 
 
-void D3D_Core::CreateRtvAndDsvDescriptorHeaps() {
+void D3DMain::CreateRtvAndDsvDescriptorHeaps() {
 	D3D12_DESCRIPTOR_HEAP_DESC DescriptorHeapDesc;
 	::ZeroMemory(&DescriptorHeapDesc, sizeof(D3D12_DESCRIPTOR_HEAP_DESC));
 	DescriptorHeapDesc.NumDescriptors = SwapChainBuffers;
@@ -470,7 +470,7 @@ void D3D_Core::CreateRtvAndDsvDescriptorHeaps() {
 }
 
 
-void D3D_Core::CreateRenderTargetViews() {
+void D3DMain::CreateRenderTargetViews() {
 	D3D12_CPU_DESCRIPTOR_HANDLE RtvCPUDescriptorHandle = RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	for (UINT i = 0; i < SwapChainBuffers; i++) {
 		DxgiSwapChain->GetBuffer(i, __uuidof(ID3D12Resource), (void**)&SwapChainBackBuffers[i]);
@@ -480,7 +480,7 @@ void D3D_Core::CreateRenderTargetViews() {
 }
 
 
-void D3D_Core::CreateDepthStencilView() {
+void D3DMain::CreateDepthStencilView() {
 
 	D3D12_RESOURCE_DESC ResourceDesc;
 	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -535,7 +535,7 @@ void D3D_Core::CreateDepthStencilView() {
 }
 
 
-void D3D_Core::CreateRenderTargetViewsAndDepthStencilView() {
+void D3DMain::CreateRenderTargetViewsAndDepthStencilView() {
 	CmdList->Reset(CmdAllocator, NULL);
 
 	CreateRenderTargetViews();
@@ -549,7 +549,7 @@ void D3D_Core::CreateRenderTargetViewsAndDepthStencilView() {
 }
 
 
-void D3D_Core::ChangeSwapChainState() {
+void D3DMain::ChangeSwapChainState() {
 	WaitForGpuComplete();
 
 	BOOL FullScreenState = FALSE;
@@ -582,7 +582,7 @@ void D3D_Core::ChangeSwapChainState() {
 }
 
 
-void D3D_Core::Destroy() {
+void D3DMain::Destroy() {
 	ReleaseObjects();
 
 	::CloseHandle(FenceEvent);
@@ -630,18 +630,18 @@ void D3D_Core::Destroy() {
 }
 
 
-void D3D_Core::ReleaseObjects() {
+void D3DMain::ReleaseObjects() {
 	fw.ReleaseObjects();
 }
 
 
-void D3D_Core::Update(){
+void D3DMain::Update(){
 	cam.UpdateCamera(Timer.GetTimeElapsed());
 	fw.Update(Timer.GetTimeElapsed());
 }
 
 
-void D3D_Core::Render(ID3D12GraphicsCommandList* CmdList) {
+void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
 	fw.PrepareRender(CmdList);
 
 	//UpdateShaderVariables();
@@ -650,13 +650,13 @@ void D3D_Core::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 
-void D3D_Core::CreateShaderVariables(){}
+void D3DMain::CreateShaderVariables(){}
 
 
-void D3D_Core::ReleaseShaderVariables(){}
+void D3DMain::ReleaseShaderVariables(){}
 
 
-void D3D_Core::UpdateShaderVariables() {
+void D3DMain::UpdateShaderVariables() {
 	float CurrentTime = Timer.GetTotalTime();
 	float ElapsedTime = Timer.GetTimeElapsed();
 
@@ -674,7 +674,7 @@ void D3D_Core::UpdateShaderVariables() {
 }
 
 
-void D3D_Core::WaitForGpuComplete() {
+void D3DMain::WaitForGpuComplete() {
 	UINT64 FenceValue = ++FenceValues[SwapChainBufferIndex];
 	HRESULT hResult = CmdQueue->Signal(m_pd3dFence, FenceValue);
 
@@ -685,7 +685,7 @@ void D3D_Core::WaitForGpuComplete() {
 }
 
 
-void D3D_Core::MoveToNextFrame() {
+void D3DMain::MoveToNextFrame() {
 	SwapChainBufferIndex = DxgiSwapChain->GetCurrentBackBufferIndex();
 
 	UINT64 FenceValue = ++FenceValues[SwapChainBufferIndex];

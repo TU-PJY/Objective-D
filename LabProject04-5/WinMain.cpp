@@ -1,6 +1,6 @@
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #include "Objective-D.h"
-#include "D3D_Core.h"
+#include "D3DMain.h"
 
 
 #define MAX_LOADSTRING 100
@@ -11,7 +11,7 @@ TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];
 
 
-D3D_Core						D3D_Main;
+D3DMain						D3D_Main;
 
 
 ATOM MyRegisterClass(HINSTANCE hInstance);

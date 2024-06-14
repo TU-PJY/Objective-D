@@ -149,26 +149,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="D3D_CONF.h" />
-    <ClInclude Include="D3D_Core.h" />
+    <ClInclude Include="CONF.h" />
+    <ClInclude Include="D3DMain.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="D3D_Header.h" />
+    <ClInclude Include="D3DHeader.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Ufo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3D_Core.cpp" />
+    <ClCompile Include="D3DMain.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="D3D_Header.cpp">
+    <ClCompile Include="D3DHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

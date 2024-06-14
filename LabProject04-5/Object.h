@@ -3,8 +3,8 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
-#include "D3D_Header.h"
-#include "D3D_CONF.h"
+#include "D3DHeader.h"
+#include "CONF.h"
 #include "Shader.h"
 #include "Mesh.h"
 
