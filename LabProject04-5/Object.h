@@ -20,7 +20,6 @@ public:
 
 
 	///////////////////////////////////////////////////
-
 	XMFLOAT4X4 Matrix{};
 	XMFLOAT3 ModelColor{};
 
@@ -37,46 +36,123 @@ public:
 	LayerFW Layer{};
 	std::string Tag{};
 
-	OBJ();
-	~OBJ();
 
-	void SetMesh(Mesh* MeshData);
-	void SetShader(Shader* ShaderData);
+	OBJ() {
+		Matrix = Mat4::Identity();
+	}
 
-	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
+	~OBJ() {
+	}
 
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
+	void SetMesh(Mesh* MeshData) {
+		ObjectMesh = MeshData;
+	}
 
-	virtual void ReleaseShaderVariables();
-	virtual void Update(float FT);
-	virtual void OnPrepareRender();
+	void SetShader(Shader* ShaderData) {
+		ObjectShader = ShaderData;
+	}
 
-	virtual void Render(ID3D12GraphicsCommandList* CmdList);
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
+		XMFLOAT4X4 xmf4x4World;
+		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
+		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
+
+		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
+	}
+
+	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
+		OnPrepareRender();
+
+		if (ObjectShader)
+			ObjectShader->Render(CmdList);
+
+		UpdateShaderVariables(CmdList);
+
+		if (ObjectMesh)
+			ObjectMesh->Render(CmdList);
+	}
+
+	virtual void ReleaseUploadBuffers() {
+		if (ObjectMesh)
+			ObjectMesh->ReleaseUploadBuffers();
+	}
+
+	virtual void ReleaseShaderVariables() {}
+
+	virtual void Update(float FT) {}
+
+	virtual void OnPrepareRender() {}
 
 	virtual void ObjectController(UINT nMessageID, WPARAM wParam) {}
 
-	virtual void ReleaseUploadBuffers();
+
+	void InitTransform() {
+		Matrix = Mat4::Identity();
+	}
+
+	void SetPosition(float x, float y, float z) {
+		Matrix._41 = x;
+		Matrix._42 = y;
+		Matrix._43 = z;
+	}
+
+	void SetPosition(XMFLOAT3 Position) {
+		Matrix._41 = Position.x;
+		Matrix._42 = Position.y;
+		Matrix._43 = Position.z;
+	}
+
+	void SetColor(XMFLOAT3 Color) { 
+		ModelColor = Color; 
+	}
+
+	void MoveStrafe(float Distance) {
+		Position = Vec3::Add(Position, Right, Distance);
+		OBJ::SetPosition(Position);
+	}
 
 
-	XMFLOAT3 GetPosition();
-	XMFLOAT3 GetLook();
-	XMFLOAT3 GetUp();
-	XMFLOAT3 GetRight();
+	void MoveForward(float Distance) {
+		Position = Vec3::Add(Position, Look, Distance);
+		OBJ::SetPosition(Position);
+	}
 
-	void InitTransform();
 
-	void SetPosition(float x, float y, float z);
-	void SetPosition(XMFLOAT3 Position);
+	void MoveUp(float Distance) {
+		Position = Vec3::Add(Position, Up, Distance);
+		OBJ::SetPosition(Position);
+	}
 
-	void SetColor(XMFLOAT3 Color) { ModelColor = Color; }
+	void Rotate(float Pitch, float Yaw, float Roll) {
+		XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+		XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
-	void MoveStrafe(float Distance = 1.0f);
-	void MoveUp(float Distance = 1.0f);
-	void MoveForward(float Distance = 1.0f);
+		XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
+		Matrix = Mat4::Multiply(RotateMat, Matrix);
 
-	void SetVelocity(const XMFLOAT3& xmf3Shift);
-	void Move(const XMFLOAT3& xmf3Shift);
+		Up = {
+			XMVectorGetX(XMVector3TransformNormal(UpVector, RotateMat)),
+			XMVectorGetY(XMVector3TransformNormal(UpVector, RotateMat)),
+			XMVectorGetZ(XMVector3TransformNormal(UpVector, RotateMat))
+		};
 
-	void Rotate(float Pitch = 10.0f, float Yaw = 10.0f, float Roll = 10.0f);
-	void Rotate(XMFLOAT3 *Axis, float Angle);
+		Look = {
+			XMVectorGetX(XMVector3TransformNormal(LookVector, RotateMat)),
+			XMVectorGetY(XMVector3TransformNormal(LookVector, RotateMat)),
+			XMVectorGetZ(XMVector3TransformNormal(LookVector, RotateMat))
+		};
+
+		Right = {
+			XMVectorGetX(XMVector3TransformNormal(RightVector, RotateMat)),
+			XMVectorGetY(XMVector3TransformNormal(RightVector, RotateMat)),
+			XMVectorGetZ(XMVector3TransformNormal(RightVector, RotateMat))
+		};
+	}
+
+
+	void Rotate(XMFLOAT3* Axis, float Angle) {
+		XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(Axis), XMConvertToRadians(Angle));
+		Matrix = Mat4::Multiply(mtxRotate, Matrix);
+	}
 };

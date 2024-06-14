@@ -505,9 +505,8 @@ void D3DMain::ReleaseObjects() {
 
 
 void D3DMain::Update(){
-	cam.UpdateCamera(Timer.GetTimeElapsed());
+	fw.MouseMotionController(PrevCursorPosition, hWnd);
 	fw.Update(Timer.GetTimeElapsed());
-	fw.MouseMoveController(PrevCursorPosition, hWnd);
 }
 
 

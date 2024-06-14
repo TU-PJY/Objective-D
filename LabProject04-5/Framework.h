@@ -14,6 +14,7 @@ extern PseudoLightingShader* pShader;
 
 extern std::unordered_map<std::string, char*> MeshList;
 
+constexpr int NUM_LAYER = static_cast<int>(LayerFW::END);
 
 enum class ObjectRange
 { Single, All };
@@ -21,37 +22,29 @@ enum class ObjectRange
 enum class LayerRange
 { Single, All };
 
-constexpr int NUM_LAYER = static_cast<int>(LayerFW::END);
-
 
 class Framework {
 private:
 	std::string RunningMode{};
-
 	std::unordered_map<std::string, Mesh*> LoadedMeshList;
-
+	bool LButtonDownState{}, RButtonDownState{};
 	typedef std::string(*Function)(void);
-
 
 protected:
 	ID3D12RootSignature* RootSignature = nullptr;
-
 	std::array<std::deque<OBJ*>, NUM_LAYER> ObjectCont;
-
 
 public:
 	void Init(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList);
-
 
 	void SetMode(Function ModeFunction) {
 		ClearAll();
 		RunningMode = ModeFunction();
 	}
 
-
 	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void MouseMoveController(POINT PrevCursorPosition, HWND hwnd);
+	void MouseMotionController(POINT PrevCursorPosition, HWND hwnd);
 
 	void Update(float FT) {
 		for (int i = 0; i < NUM_LAYER; ++i) {
@@ -61,7 +54,6 @@ public:
 			}
 		}
 	}
-
 
 	void Render(ID3D12GraphicsCommandList* CmdList) {
 		cam.SetViewportsAndScissorRects(CmdList);
@@ -75,13 +67,11 @@ public:
 		}
 	}
 
-
 	void AddObject(OBJ*&& Object, LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
 
 		ObjectCont[layer].push_back(Object);
 	}
-
 
 	void DeleteObject(OBJ* Object, LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
@@ -93,7 +83,6 @@ public:
 			It = ObjectCont[layer].erase(It);
 		}
 	}
-
 
 	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, LayerFW Layer = static_cast<LayerFW>(0)) {
 		int layer = static_cast<int>(Layer);
@@ -157,7 +146,6 @@ public:
 		}
 	}
 
-
 	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, LayerFW Layer = static_cast<LayerFW>(0)) {
 		int layer = static_cast<int>(Layer);
 
@@ -186,7 +174,6 @@ public:
 		}
 	}
 
-
 	OBJ* FindObject(std::string ObjectTag, LayerFW Layer, int Index) {
 		int layer = static_cast<int>(Layer);
 
@@ -196,13 +183,11 @@ public:
 			return false;
 	}
 
-
 	size_t Size(LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
 
 		return ObjectCont[layer].size();
 	}
-
 
 	void ClearAll() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
@@ -216,24 +201,20 @@ public:
 		}
 	}
 
-
 	void LoadMeshFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : MeshList)
 			LoadedMeshList.insert(make_pair(MeshName, MeshLoader(Device, CmdList, Directory)));
 	}
 
-
 	Mesh* FindMesh(std::string MeshName) {
 		return LoadedMeshList.find(MeshName)->second;
 	}
-
 
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true) {
 		Mesh* mesh = new Mesh(Device, CmdList, Directory, TextMode);
 
 		return mesh;
 	}
-
 
 	PseudoLightingShader* ShaderLoader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		PseudoLightingShader* shader = new PseudoLightingShader();
@@ -242,7 +223,6 @@ public:
 
 		return shader;
 	}
-
 
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device) {
 		ID3D12RootSignature* GraphicsRootSignature = NULL;
@@ -285,17 +265,14 @@ public:
 		return(GraphicsRootSignature);
 	}
 
-
 	ID3D12RootSignature* GetGraphicsRootSignature() { 
 		return(RootSignature); 
 	}
-
 
 	void ReleaseObjects() {
 		if (RootSignature) 
 			RootSignature->Release();
 	}
-
 
 	void ReleaseUploadBuffers() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
@@ -304,11 +281,9 @@ public:
 		 }
 	}
 
-
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList) {
 		CmdList->SetGraphicsRootSignature(RootSignature);
 	}
-
 
 	Framework() {};
 	~Framework() {};

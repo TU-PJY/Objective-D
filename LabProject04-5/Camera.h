@@ -55,19 +55,11 @@ public:
 		CamTimeDelay = 0.0f;
 	}
 
-
 	virtual ~Camera() {}
-
-	void UpdateCamera(float FT) {
-
-	}
-
 
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 
-
 	virtual void ReleaseShaderVariables() {}
-
 
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 		XMFLOAT4X4 xmf4x4View;
@@ -81,11 +73,9 @@ public:
 		CmdList->SetGraphicsRoot32BitConstants(2, 3, &CamPos, 32);
 	}
 
-
 	void GenerateViewMatrix() {
 		Cam4x4View = Mat4::LookAtLH(CamPos, CamLookAtWorld, CamUp);
 	}
-
 
 	void GenerateViewMatrix(XMFLOAT3 Position, XMFLOAT3 LookAt, XMFLOAT3 Up) {
 		CamPos = Position;
@@ -94,7 +84,6 @@ public:
 
 		GenerateViewMatrix();
 	}
-
 
 	void RegenerateViewMatrix() {
 		CamLook = Vec3::Normalize(CamLook);
@@ -117,7 +106,6 @@ public:
 		CamFrustumView.Transform(CamFrustumWorld, XMLoadFloat4x4(&Cam4x4InverseView));
 	}
 
-
 	void GenerateProjectionMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
 		//	Cam4x4Projection = Mat4::PerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
 		XMMATRIX Projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
@@ -128,7 +116,6 @@ public:
 #endif
 	}
 
-
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f) {
 		CamViewport.TopLeftX = float(xTopLeft);
 		CamViewport.TopLeftY = float(yTopLeft);
@@ -138,7 +125,6 @@ public:
 		CamViewport.MaxDepth = zMax;
 	}
 
-
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 		CamScissorRect.left = xLeft;
 		CamScissorRect.top = yTop;
@@ -146,12 +132,10 @@ public:
 		CamScissorRect.bottom = yBottom;
 	}
 
-
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 		CmdList->RSSetViewports(1, &CamViewport);
 		CmdList->RSSetScissorRects(1, &CamScissorRect);
 	}
-
 
 	void SetPosition(XMFLOAT3 Position) { CamPos = Position; }
 	XMFLOAT3& GetPosition() { return(CamPos); }
@@ -178,19 +162,17 @@ public:
 	D3D12_VIEWPORT GetViewport() { return(CamViewport); }
 	D3D12_RECT GetScissorRect() { return(CamScissorRect); }
 
-
 	void Move(const XMFLOAT3& Shift) { 
 		CamPos.x += Shift.x; 
 		CamPos.y += Shift.y; 
 		CamPos.z += Shift.z; 
 	}
 
-
 	void TrackObject(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
 		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
-		XMFLOAT3 xmf3Right = Object->GetRight();
-		XMFLOAT3 xmf3Up = Object->GetUp();
-		XMFLOAT3 xmf3Look = Object->GetLook();
+		XMFLOAT3 xmf3Right = Object->Right;
+		XMFLOAT3 xmf3Up = Object->Up;
+		XMFLOAT3 xmf3Look = Object->Look;
 
 		xmf4x4Rotate._11 = xmf3Right.x;
 		xmf4x4Rotate._12 = xmf3Right.y;
@@ -205,7 +187,7 @@ public:
 		xmf4x4Rotate._33 = xmf3Look.z;
 
 		XMFLOAT3 xmf3Offset = Vec3::TransformCoord(CamOffset, xmf4x4Rotate);
-		XMFLOAT3 xmf3Position = Vec3::Add(Object->GetPosition(), xmf3Offset);
+		XMFLOAT3 xmf3Position = Vec3::Add(Object->Position, xmf3Offset);
 		XMFLOAT3 xmf3Direction = Vec3::Subtract(xmf3Position, CamPos);
 
 		float fLength = Vec3::Length(xmf3Direction);
@@ -224,14 +206,12 @@ public:
 		SetLookAt(LookAt, Object);
 	}
 
-
 	void SetLookAt(XMFLOAT3& LookAt, OBJ* Object) {
-		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, Object->GetUp());
+		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, Object->Up);
 		CamRight = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
 		CamUp = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
 		CamLook = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
 	}
-
 
 	void CalculateFrustumPlanes() {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
@@ -273,7 +253,6 @@ public:
 			CamFrustumPlanes[i] = Plane::Normalize(CamFrustumPlanes[i]);
 #endif
 	}
-
 
 	bool IsInFrustum(BoundingBox& BoundingBox) {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
@@ -328,7 +307,6 @@ public:
 		return(true);
 #endif
 	}
-
 
 	bool IsInFrustum(BoundingOrientedBox& BoundingBox) {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM

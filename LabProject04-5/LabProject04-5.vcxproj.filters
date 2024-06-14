@@ -76,7 +76,7 @@
     <ClInclude Include="Timer.h">
       <Filter>%286%29____________D3D_System\%282%29----Main</Filter>
     </ClInclude>
-    <ClInclude Include="CONF.h">
+    <ClInclude Include="Conf.h">
       <Filter>%281%29__________________CONF</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -107,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>%287%29____________Win_System</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>%284%29________________Object\%281%29----Object_Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

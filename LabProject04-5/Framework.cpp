@@ -9,16 +9,11 @@ Framework fw;
 Camera cam;
 
 
-
-
 // mesh list to load
 std::unordered_map<std::string, char*> MeshList {
 	{ "pUfoMesh", "Models//UFO.txt" },
 	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
 };
-
-
-
 
 
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
@@ -33,11 +28,16 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
+		LButtonDownState = true;
 		break;
-
+	case WM_RBUTTONDOWN:
+		RButtonDownState = true;
+		break;
 	case WM_LBUTTONUP:
+		LButtonDownState = false;
+		break;
 	case WM_RBUTTONUP:
+		RButtonDownState = false;
 		break;
 
 	case WM_MOUSEMOVE:
@@ -66,11 +66,11 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 }
 
 
-void Framework::MouseMoveController(POINT PrevCursorPosition, HWND hwnd) {
+void Framework::MouseMotionController(POINT PrevCursorPosition, HWND hwnd) {
 	static UCHAR pKeysBuffer[256];
 	float cxDelta = 0.0f, cyDelta = 0.0f;
 
-	if (GetCapture() == hwnd) {
+	if (GetCapture() == hwnd && LButtonDownState) {
 		::SetCursor(NULL);
 		POINT CursorPos;
 		::GetCursorPos(&CursorPos);
@@ -78,15 +78,10 @@ void Framework::MouseMoveController(POINT PrevCursorPosition, HWND hwnd) {
 		cyDelta = (float)(CursorPos.y - PrevCursorPosition.y) / 3.0f;
 		::SetCursorPos(PrevCursorPosition.x, PrevCursorPosition.y);
 
-		std::cout << cxDelta << std::endl;
-
-		
-		if (cxDelta || cyDelta) {
-			auto ptr = FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-			if (ptr) {
-				ptr->Rotation.y += cxDelta;
-				ptr->Rotation.x += cyDelta;
-			}
+		auto ptr = FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+		if (ptr) {
+			ptr->Rotation.y += cxDelta;
+			ptr->Rotation.x += cyDelta;
 		}
 	}
 }
