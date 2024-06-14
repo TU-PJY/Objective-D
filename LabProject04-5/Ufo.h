@@ -9,7 +9,7 @@ private:
 	bool rotate{};
 
 public:
-	Ufo(D3D_Layer layer, std::string tag) {
+	Ufo(LayerFW layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pUfoMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
@@ -53,7 +53,7 @@ private:
 	bool rotate{};
 
 public:
-	Aircraft(D3D_Layer layer, std::string tag) {
+	Aircraft(LayerFW layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));

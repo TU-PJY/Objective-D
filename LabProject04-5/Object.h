@@ -38,7 +38,7 @@ public:
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
 
-	D3D_Layer Layer{};
+	LayerFW Layer{};
 	std::string Tag{};
 
 	OBJ();

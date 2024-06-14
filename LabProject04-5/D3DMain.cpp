@@ -26,116 +26,6 @@ void D3DMain::Init() {
 }
 
 
-void D3DMain::MouseFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-	switch (nMessageID) {
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&PrevCursorPosition);
-		break;
-
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
-		::ReleaseCapture();
-		break;
-
-	case WM_MOUSEMOVE:
-		break;
-
-	default:
-		break;
-	}
-}
-
-
-#include "Ufo.h"
-
-void D3DMain::KeyboardFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-	switch (nMessageID) {
-	case WM_KEYDOWN:
-		switch (wParam) {
-		case '1':
-			fw.AddObject(new Aircraft(D3D_Layer::L1, "aircraft"), D3D_Layer::L1);
-			break;
-
-		case '2':
-			fw.AddObject(new Ufo(D3D_Layer::L1, "ufo"), D3D_Layer::L1);
-			break;
-
-		case 'U':
-			fw.DeleteObject("ufo", ObjectRange::Single, LayerRange::Single, D3D_Layer::L1);
-			break;
-
-		case 'F':
-			fw.DeleteObject("aircraft", ObjectRange::Single, LayerRange::Single, D3D_Layer::L1);
-			break;
-
-		case 'C':
-			fw.ClearAll();
-			break;
-
-		case 'Z':
-			fw.DeleteObject("ufo", ObjectRange::All, LayerRange::All, D3D_Layer::L1);
-			break;
-
-		case 'X':
-			fw.DeleteObject("aircraft", ObjectRange::All, LayerRange::All, D3D_Layer::L1);
-			break;
-
-		case VK_UP:
-			cam.MoveFront = true;
-			break;
-
-		case VK_DOWN:
-			cam.MoveBack = true;
-			break;
-
-		case VK_RIGHT:
-			cam.MoveRight = true;
-			break;
-
-		case VK_LEFT:
-			cam.MoveLeft = true;
-			break;
-		}
-		break;
-
-	case WM_KEYUP:
-		switch (wParam) {
-		case VK_ESCAPE:
-			::PostQuitMessage(0);
-			break;
-
-		case VK_RETURN:
-			break;
-
-		case VK_UP:
-			cam.MoveFront = false;
-			break;
-
-		case VK_DOWN:
-			cam.MoveBack = false;
-			break;
-
-		case VK_RIGHT:
-			cam.MoveRight = false;
-			break;
-
-		case VK_LEFT:
-			cam.MoveLeft = false;
-			break;
-
-		default:
-			break;
-		}
-		break;
-
-	default:
-		break;
-	}
-}
-
-
 LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_ACTIVATE: 
@@ -148,21 +38,18 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 	case WM_SIZE:
 		break;
 
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
+	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
+	case WM_LBUTTONUP: case WM_RBUTTONUP:
 	case WM_MOUSEMOVE:
-		MouseFunc(hWnd, nMessageID, wParam, lParam);
+		fw.MouseController(hWnd, nMessageID, wParam, lParam, PrevCursorPosition);
 		break;
 
-	case WM_KEYDOWN:
-	case WM_KEYUP:
-		KeyboardFunc(hWnd, nMessageID, wParam, lParam);
+	case WM_KEYDOWN: case WM_KEYUP:
+		fw.KeyboardController(hWnd, nMessageID, wParam, lParam);
 		break;
 	}
 
-	return(0);
+	return 0;
 }
 
 

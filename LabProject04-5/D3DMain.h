@@ -37,8 +37,6 @@ public:
 	void WaitForGpuComplete();
 	void MoveToNextFrame();
 
-	void MouseFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void KeyboardFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 
 private:

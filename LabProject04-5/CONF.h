@@ -3,7 +3,7 @@
 #include <string>
 
 // layer configuration
-enum class D3D_Layer 
+enum class LayerFW 
 {L1, L2, L3, END};
 
 // window name configuration

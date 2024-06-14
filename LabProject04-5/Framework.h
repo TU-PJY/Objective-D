@@ -21,7 +21,7 @@ enum class ObjectRange
 enum class LayerRange
 { Single, All };
 
-constexpr int NUM_LAYER = static_cast<int>(D3D_Layer::END);
+constexpr int NUM_LAYER = static_cast<int>(LayerFW::END);
 
 
 class Framework {
@@ -49,6 +49,10 @@ public:
 	}
 
 
+	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, POINT PrevCursorPos);
+
+
 	void Update(float FT) {
 		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
@@ -72,14 +76,14 @@ public:
 	}
 
 
-	void AddObject(OBJ*&& Object, D3D_Layer Layer) {
+	void AddObject(OBJ*&& Object, LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
 
 		ObjectCont[layer].push_back(Object);
 	}
 
 
-	void DeleteObject(OBJ* Object, D3D_Layer Layer) {
+	void DeleteObject(OBJ* Object, LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
 
 		auto It = std::ranges::find(ObjectCont[layer], Object);
@@ -91,7 +95,7 @@ public:
 	}
 
 
-	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, D3D_Layer Layer = static_cast<D3D_Layer>(0)) {
+	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, LayerFW Layer = static_cast<LayerFW>(0)) {
 		int layer = static_cast<int>(Layer);
 
 		if (Range1 == ObjectRange::Single) {
@@ -154,7 +158,7 @@ public:
 	}
 
 
-	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, D3D_Layer Layer = static_cast<D3D_Layer>(0)) {
+	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, LayerFW Layer = static_cast<LayerFW>(0)) {
 		int layer = static_cast<int>(Layer);
 
 		if (Range1 == LayerRange::Single) {
@@ -183,7 +187,7 @@ public:
 	}
 
 
-	OBJ* FindObject(std::string ObjectTag, D3D_Layer Layer, int Index) {
+	OBJ* FindObject(std::string ObjectTag, LayerFW Layer, int Index) {
 		int layer = static_cast<int>(Layer);
 
 		if (ObjectCont[layer][Index]->Tag == ObjectTag)
@@ -193,7 +197,7 @@ public:
 	}
 
 
-	size_t Size(D3D_Layer Layer) {
+	size_t Size(LayerFW Layer) {
 		int layer = static_cast<int>(Layer);
 
 		return ObjectCont[layer].size();
