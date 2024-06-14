@@ -10,7 +10,7 @@ void D3DMain::Init() {
 	fw.Init(Device, CmdList);
 
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
-//	cam.SetTimeLag(0.25f);
+	cam.SetTimeLag(0.25f);
 	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
@@ -40,9 +40,18 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 		break;
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
+		::SetCapture(hWnd);
+		::GetCursorPos(&PrevCursorPosition);
+		fw.MouseController(hWnd, nMessageID, wParam, lParam);
+		break;
+
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
+		::ReleaseCapture();
+		fw.MouseController(hWnd, nMessageID, wParam, lParam);
+		break;
+
 	case WM_MOUSEMOVE:
-		fw.MouseController(hWnd, nMessageID, wParam, lParam, PrevCursorPosition);
+		fw.MouseController(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_KEYDOWN: case WM_KEYUP:
@@ -51,32 +60,6 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 	}
 
 	return 0;
-}
-
-
-void D3DMain::ProcessInput() {
-	static UCHAR KeyBuffer[256];
-	DWORD Direction = 0;
-
-	if (::GetKeyboardState(KeyBuffer)) {
-		if (KeyBuffer[VK_UP] & 0xF0) Direction |= DIR_FORWARD;
-		if (KeyBuffer[VK_DOWN] & 0xF0) Direction |= DIR_BACKWARD;
-		if (KeyBuffer[VK_LEFT] & 0xF0) Direction |= DIR_LEFT;
-		if (KeyBuffer[VK_RIGHT] & 0xF0) Direction |= DIR_RIGHT;
-		if (KeyBuffer[VK_PRIOR] & 0xF0) Direction |= DIR_UP;
-		if (KeyBuffer[VK_NEXT] & 0xF0) Direction |= DIR_DOWN;
-	}
-
-	float cxDelta = 0.0f, cyDelta = 0.0f;
-
-	if (GetCapture() == hWnd) {
-		::SetCursor(NULL);
-		POINT CursorPos;
-		::GetCursorPos(&CursorPos);
-		cxDelta = (float)(CursorPos.x - PrevCursorPosition.x) / 3.0f;
-		cyDelta = (float)(CursorPos.y - PrevCursorPosition.y) / 3.0f;
-		::SetCursorPos(PrevCursorPosition.x, PrevCursorPosition.y);
-	}
 }
 
 
@@ -524,6 +507,7 @@ void D3DMain::ReleaseObjects() {
 void D3DMain::Update(){
 	cam.UpdateCamera(Timer.GetTimeElapsed());
 	fw.Update(Timer.GetTimeElapsed());
+	fw.MouseMoveController(PrevCursorPosition, hWnd);
 }
 
 

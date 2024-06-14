@@ -25,7 +25,6 @@ public:
     void Init();
     void ReleaseObjects();
 
-    void ProcessInput();
     void Routine();
     void Update();
 	void Render(ID3D12GraphicsCommandList* CmdList);

@@ -50,8 +50,8 @@ public:
 
 
 	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, POINT PrevCursorPos);
-
+	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void MouseMoveController(POINT PrevCursorPosition, HWND hwnd);
 
 	void Update(float FT) {
 		for (int i = 0; i < NUM_LAYER; ++i) {

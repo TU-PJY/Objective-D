@@ -19,22 +19,13 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
 	///////////////////////////////////////////////////
 
 	XMFLOAT4X4 Matrix{};
 	XMFLOAT3 ModelColor{};
 
 	XMFLOAT3 Position{};
+	XMFLOAT3 Rotation{};
 
 	XMFLOAT3 Look{0.0, 0.0, 1.0};
 	XMFLOAT3 Up{0.0, 1.0, 0.0};
@@ -42,10 +33,6 @@ public:
 
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
-
-	XMFLOAT3 Velocity{};
-	float MaxVelocityXZ{};
-	float MaxVelocityY{};
 
 	LayerFW Layer{};
 	std::string Tag{};

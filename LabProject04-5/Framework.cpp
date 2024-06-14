@@ -30,17 +30,14 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 }
 
 
-void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, POINT PrevCursorPos) {
+void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&PrevCursorPos);
 		break;
 
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
-		::ReleaseCapture();
 		break;
 
 	case WM_MOUSEMOVE:
@@ -52,32 +49,44 @@ void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARA
 void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
-		switch (wParam) {
-		case VK_UP: case VK_DOWN: case VK_RIGHT: case VK_LEFT:
-		{
-			auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-			if (ufo) ufo->ObjectController(nMessageID, wParam);
-		}
-		break;
-
-		}
-		break;
+	{
+		auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+		if (ufo) ufo->ObjectController(nMessageID, wParam);
+	}
+	break;
 
 
 	case WM_KEYUP:
-		switch (wParam) {
-		case VK_ESCAPE:
-			::PostQuitMessage(0);
-			break;
+	{
+		auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+		if (ufo) ufo->ObjectController(nMessageID, wParam);
+	}
+	break;
+	}
+}
 
-		case VK_UP: case VK_DOWN: case VK_RIGHT: case VK_LEFT:
-		{
-			auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-			if (ufo) ufo->ObjectController(nMessageID, wParam);
-		}
-		break;
 
+void Framework::MouseMoveController(POINT PrevCursorPosition, HWND hwnd) {
+	static UCHAR pKeysBuffer[256];
+	float cxDelta = 0.0f, cyDelta = 0.0f;
+
+	if (GetCapture() == hwnd) {
+		::SetCursor(NULL);
+		POINT CursorPos;
+		::GetCursorPos(&CursorPos);
+		cxDelta = (float)(CursorPos.x - PrevCursorPosition.x) / 3.0f;
+		cyDelta = (float)(CursorPos.y - PrevCursorPosition.y) / 3.0f;
+		::SetCursorPos(PrevCursorPosition.x, PrevCursorPosition.y);
+
+		std::cout << cxDelta << std::endl;
+
+		
+		if (cxDelta || cyDelta) {
+			auto ptr = FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+			if (ptr) {
+				ptr->Rotation.y += cxDelta;
+				ptr->Rotation.x += cyDelta;
+			}
 		}
-		break;
 	}
 }

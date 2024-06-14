@@ -178,7 +178,13 @@ public:
 	D3D12_VIEWPORT GetViewport() { return(CamViewport); }
 	D3D12_RECT GetScissorRect() { return(CamScissorRect); }
 
-	void Move(const XMFLOAT3& Shift) { CamPos.x += Shift.x; CamPos.y += Shift.y; CamPos.z += Shift.z; }
+
+	void Move(const XMFLOAT3& Shift) { 
+		CamPos.x += Shift.x; 
+		CamPos.y += Shift.y; 
+		CamPos.z += Shift.z; 
+	}
+
 
 	void TrackObject(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
 		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
@@ -205,7 +211,7 @@ public:
 		float fLength = Vec3::Length(xmf3Direction);
 		xmf3Direction = Vec3::Normalize(xmf3Direction);
 
-		float fTimeLagScale = (CamTimeDelay) ? fTimeElapsed * (10.0f / CamTimeDelay) : 1.0f;
+		float fTimeLagScale = (CamTimeDelay) ? fTimeElapsed * (5.0f / CamTimeDelay) : 1.0f;
 		float fDistance = fLength * fTimeLagScale;
 
 		if (fDistance > fLength) 
@@ -215,7 +221,11 @@ public:
 			fDistance = fLength;
 
 		CamPos = Vec3::Add(CamPos, xmf3Direction, fDistance);
+		SetLookAt(LookAt, Object);
+	}
 
+
+	void SetLookAt(XMFLOAT3& LookAt, OBJ* Object) {
 		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, Object->GetUp());
 		CamRight = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
 		CamUp = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);

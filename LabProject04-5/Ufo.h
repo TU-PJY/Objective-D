@@ -4,13 +4,12 @@
 
 class Ufo : public OBJ {
 private:
-	float Rotation{};
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 
 public:
 	Ufo(LayerFW layer, std::string tag) {
 		SetShader(pShader);
-		SetMesh(fw.FindMesh("pUfoMesh"));
+		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 
 		Layer = layer;
@@ -19,17 +18,14 @@ public:
 
 
 	void MoveUfo(float FT) {
-		if (MoveFront) {
+		if (MoveFront) 
 			MoveForward(FT * 10);
-
-		}
-		if (MoveBack) {
+		if (MoveBack) 
 			MoveForward(-FT * 10);
-		}
 		if (MoveRight)
-			Rotation += 50 * FT;
+			MoveStrafe(FT * 10);
 		if (MoveLeft)
-			Rotation -= 50 * FT;
+			MoveStrafe(-FT * 10);
 	}
 
 
@@ -39,9 +35,8 @@ public:
 		MoveUfo(FT);
 
 		SetPosition(Position);
-		Rotate(0.0, Rotation, 0.0);
+		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		cam.SetPosition(Vec3::Add(Position, cam.GetOffset()));
 		cam.TrackObject(Position, this, FT);
 		cam.RegenerateViewMatrix();
 	}
@@ -51,19 +46,19 @@ public:
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			switch (wParam) {
-			case VK_UP:
+			case 'W':
 				MoveFront = true;
 				break;
 
-			case VK_DOWN:
+			case 'S':
 				MoveBack = true;
 				break;
 
-			case VK_RIGHT:
+			case 'D':
 				MoveRight = true;
 				break;
 
-			case VK_LEFT:
+			case 'A':
 				MoveLeft = true;
 				break;
 			}
@@ -71,19 +66,19 @@ public:
 
 		case WM_KEYUP:
 			switch (wParam) {
-			case VK_UP:
+			case 'W':
 				MoveFront = false;
 				break;
 
-			case VK_DOWN:
+			case 'S':
 				MoveBack = false;
 				break;
 
-			case VK_RIGHT:
+			case 'D':
 				MoveRight = false;
 				break;
 
-			case VK_LEFT:
+			case 'A':
 				MoveLeft = false;
 				break;
 			}

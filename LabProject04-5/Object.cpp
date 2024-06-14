@@ -19,22 +19,22 @@ void OBJ::SetPosition(XMFLOAT3 Position) {
 
 
 XMFLOAT3 OBJ::GetPosition() {
-	return(XMFLOAT3(Matrix._41, Matrix._42, Matrix._43));
+	return Position;
 }
 
 
 XMFLOAT3 OBJ::GetLook() {
-	return(Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33)));
+	return Look;
 }
 
 
 XMFLOAT3 OBJ::GetUp() {
-	return(Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23)));
+	return Up;
 }
 
 
 XMFLOAT3 OBJ::GetRight() {
-	return(Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13)));
+	return Right;
 }
 
 
@@ -64,13 +64,23 @@ void OBJ::Rotate(float Pitch, float Yaw, float Roll) {
 	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
 	Matrix = Mat4::Multiply(RotateMat, Matrix);
 
-	XMVECTOR UpdatedUpVector = XMVector3TransformNormal(UpVector, RotateMat);
-	XMVECTOR UpdatedLookVector = XMVector3TransformNormal(LookVector, RotateMat);
-	XMVECTOR UpdatedRightVector = XMVector3TransformNormal(RightVector, RotateMat);
+	Up = { 
+		XMVectorGetX(XMVector3TransformNormal(UpVector, RotateMat)), 
+		XMVectorGetY(XMVector3TransformNormal(UpVector, RotateMat)),
+		XMVectorGetZ(XMVector3TransformNormal(UpVector, RotateMat))
+	};
 
-	Up = { XMVectorGetX(UpdatedUpVector), XMVectorGetY(UpdatedUpVector), XMVectorGetZ(UpdatedUpVector) };
-	Look = { XMVectorGetX(UpdatedLookVector), XMVectorGetY(UpdatedLookVector), XMVectorGetZ(UpdatedLookVector) };
-	Right = { XMVectorGetX(UpdatedRightVector), XMVectorGetY(UpdatedRightVector), XMVectorGetZ(UpdatedRightVector) };
+	Look = { 
+		XMVectorGetX(XMVector3TransformNormal(LookVector, RotateMat)), 
+		XMVectorGetY(XMVector3TransformNormal(LookVector, RotateMat)),
+		XMVectorGetZ(XMVector3TransformNormal(LookVector, RotateMat)) 
+	};
+
+	Right = { 
+		XMVectorGetX(XMVector3TransformNormal(RightVector, RotateMat)),
+		XMVectorGetY(XMVector3TransformNormal(RightVector, RotateMat)),
+		XMVectorGetZ(XMVector3TransformNormal(RightVector, RotateMat))
+	};
 }
 
 
