@@ -2,7 +2,6 @@
 #include "Object.h"
 #define ASPECT_RATIO				(float(FRAME_BUFFER_WIDTH) / float(FRAME_BUFFER_HEIGHT))
 
-
 class Camera {
 protected:
 	XMFLOAT3						CamPos{};
@@ -33,6 +32,7 @@ protected:
 	D3D12_VIEWPORT					CamViewport{};
 	D3D12_RECT						CamScissorRect{};
 
+
 public:
 	Camera() {
 		Cam4x4View = Mat4::Identity();
@@ -56,6 +56,8 @@ public:
 	}
 
 	virtual ~Camera() {}
+
+	void Update(float FT);
 
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 

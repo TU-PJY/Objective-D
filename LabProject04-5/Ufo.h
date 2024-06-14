@@ -37,7 +37,7 @@ public:
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		cam.TrackCamera(Position, this, FT);
+		//cam.TrackCamera(Position, this, FT);
 	}
 
 

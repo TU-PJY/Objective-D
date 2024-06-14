@@ -50,16 +50,16 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 	{
-		auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-		if (ufo) ufo->ObjectController(nMessageID, wParam);
+		auto obj = fw.FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		if (obj) obj->ObjectController(nMessageID, wParam);
 	}
 	break;
 
 
 	case WM_KEYUP:
 	{
-		auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-		if (ufo) ufo->ObjectController(nMessageID, wParam);
+		auto obj = fw.FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		if (obj) obj->ObjectController(nMessageID, wParam);
 	}
 	break;
 	}
@@ -78,10 +78,10 @@ void Framework::MouseMotionController(POINT PrevCursorPosition, HWND hwnd) {
 		cyDelta = (float)(CursorPos.y - PrevCursorPosition.y) / 3.0f;
 		::SetCursorPos(PrevCursorPosition.x, PrevCursorPosition.y);
 
-		auto ptr = FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-		if (ptr) {
-			ptr->Rotation.y += cxDelta;
-			ptr->Rotation.x += cyDelta;
+		auto obj = FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		if (obj) {
+			obj->Rotation.y += cxDelta;
+			obj->Rotation.x += cyDelta;
 		}
 	}
 }

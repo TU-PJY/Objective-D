@@ -22,18 +22,6 @@
     <Filter Include="%286%29____________D3D_System">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%286%29____________D3D_System\%281%29----Header">
-      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%286%29____________D3D_System\%284%29---Shader">
-      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%286%29____________D3D_System\%285%29----Mesh">
-      <UniqueIdentifier>{8492b908-5a19-427d-9a38-924fd6e391f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%286%29____________D3D_System\%282%29----Main">
-      <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%287%29____________Win_System">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
@@ -47,6 +35,18 @@
     <Filter Include="%285%29_________________Modes">
       <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="%286%29____________D3D_System\%284%29-------Shader">
+      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%286%29____________D3D_System\%285%29--------Mesh">
+      <UniqueIdentifier>{8492b908-5a19-427d-9a38-924fd6e391f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%286%29____________D3D_System\%282%29--------Main">
+      <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%286%29____________D3D_System\%281%29--------Header">
+      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -59,28 +59,28 @@
       <Filter>%287%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="D3DMain.h">
-      <Filter>%286%29____________D3D_System\%282%29----Main</Filter>
+      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
       <Filter>%283%29_____________Framework</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>%286%29____________D3D_System\%284%29---Shader</Filter>
+      <Filter>%286%29____________D3D_System\%284%29-------Shader</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>%282%29________________Camera</Filter>
     </ClInclude>
     <ClInclude Include="D3DHeader.h">
-      <Filter>%286%29____________D3D_System\%281%29----Header</Filter>
+      <Filter>%286%29____________D3D_System\%281%29--------Header</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>%286%29____________D3D_System\%282%29----Main</Filter>
+      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
     </ClInclude>
     <ClInclude Include="Conf.h">
       <Filter>%281%29__________________CONF</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>%286%29____________D3D_System\%285%29----Mesh</Filter>
+      <Filter>%286%29____________D3D_System\%285%29--------Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Ufo.h">
       <Filter>%284%29________________Object\%282%29--Custom_Object</Filter>
@@ -94,16 +94,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DMain.cpp">
-      <Filter>%286%29____________D3D_System\%282%29----Main</Filter>
+      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
     </ClCompile>
-    <ClCompile Include="Framework.cpp">
+    <ClCompile Include="FrameworkController.cpp">
       <Filter>%283%29_____________Framework</Filter>
     </ClCompile>
     <ClCompile Include="D3DHeader.cpp">
-      <Filter>%286%29____________D3D_System\%281%29----Header</Filter>
+      <Filter>%286%29____________D3D_System\%281%29--------Header</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
       <Filter>%287%29____________Win_System</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>%282%29________________Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

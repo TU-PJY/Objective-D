@@ -507,6 +507,8 @@ void D3DMain::ReleaseObjects() {
 void D3DMain::Update(){
 	cam.RegenerateViewMatrix();
 
+	cam.Update(Timer.GetTimeElapsed());
+
 	fw.MouseMotionController(PrevCursorPosition, hWnd);
 
 	fw.Update(Timer.GetTimeElapsed());

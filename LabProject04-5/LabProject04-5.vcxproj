@@ -164,9 +164,10 @@
     <ClInclude Include="Ufo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="D3DMain.cpp" />
     <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="FrameworkController.cpp" />
     <ClCompile Include="D3DHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
