@@ -1,5 +1,7 @@
 #pragma once
+#include "Object.h"
 #define ASPECT_RATIO				(float(FRAME_BUFFER_WIDTH) / float(FRAME_BUFFER_HEIGHT))
+
 
 class Camera {
 protected:
@@ -32,12 +34,6 @@ protected:
 	D3D12_RECT						CamScissorRect{};
 
 public:
-
-	bool MoveFront{};
-	bool MoveBack{};
-	bool MoveRight{};
-	bool MoveLeft{};
-
 	Camera() {
 		Cam4x4View = Mat4::Identity();
 		Cam4x4Projection = Mat4::Identity();
@@ -62,16 +58,8 @@ public:
 
 	virtual ~Camera() {}
 
-
 	void UpdateCamera(float FT) {
-		if (MoveFront)
-			CamPos.z += FT * 10;
-		if (MoveBack)
-			CamPos.z -= FT * 10;
-		if (MoveRight)
-			CamPos.x += FT * 10;
-		if (MoveLeft)
-			CamPos.x -= FT * 10;
+
 	}
 
 
@@ -190,10 +178,49 @@ public:
 	D3D12_VIEWPORT GetViewport() { return(CamViewport); }
 	D3D12_RECT GetScissorRect() { return(CamScissorRect); }
 
-	virtual void Move(const XMFLOAT3& Shift) { CamPos.x += Shift.x; CamPos.y += Shift.y; CamPos.z += Shift.z; }
-	virtual void Rotate(float Pitch = 0.0f, float Yaw = 0.0f, float Roll = 0.0f) { }
-	//virtual void Update(XMFLOAT3& LookAt, float fTimeElapsed) { }
-	virtual void SetLookAt(XMFLOAT3& LookAt) { }
+	void Move(const XMFLOAT3& Shift) { CamPos.x += Shift.x; CamPos.y += Shift.y; CamPos.z += Shift.z; }
+
+	void TrackObject(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
+		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
+		XMFLOAT3 xmf3Right = Object->GetRight();
+		XMFLOAT3 xmf3Up = Object->GetUp();
+		XMFLOAT3 xmf3Look = Object->GetLook();
+
+		xmf4x4Rotate._11 = xmf3Right.x;
+		xmf4x4Rotate._12 = xmf3Right.y;
+		xmf4x4Rotate._13 = xmf3Right.z;
+
+		xmf4x4Rotate._21 = xmf3Up.x;
+		xmf4x4Rotate._22 = xmf3Up.y;
+		xmf4x4Rotate._23 = xmf3Up.z;
+
+		xmf4x4Rotate._31 = xmf3Look.x;
+		xmf4x4Rotate._32 = xmf3Look.y;
+		xmf4x4Rotate._33 = xmf3Look.z;
+
+		XMFLOAT3 xmf3Offset = Vec3::TransformCoord(CamOffset, xmf4x4Rotate);
+		XMFLOAT3 xmf3Position = Vec3::Add(Object->GetPosition(), xmf3Offset);
+		XMFLOAT3 xmf3Direction = Vec3::Subtract(xmf3Position, CamPos);
+
+		float fLength = Vec3::Length(xmf3Direction);
+		xmf3Direction = Vec3::Normalize(xmf3Direction);
+
+		float fTimeLagScale = (CamTimeDelay) ? fTimeElapsed * (10.0f / CamTimeDelay) : 1.0f;
+		float fDistance = fLength * fTimeLagScale;
+
+		if (fDistance > fLength) 
+			fDistance = fLength;
+
+		if (fLength < 0.01f) 
+			fDistance = fLength;
+
+		CamPos = Vec3::Add(CamPos, xmf3Direction, fDistance);
+
+		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, Object->GetUp());
+		CamRight = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
+		CamUp = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
+		CamLook = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
+	}
 
 
 	void CalculateFrustumPlanes() {

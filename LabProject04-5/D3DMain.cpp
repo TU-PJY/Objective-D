@@ -9,8 +9,9 @@ void D3DMain::Init() {
 
 	fw.Init(Device, CmdList);
 
-	cam.SetPosition(XMFLOAT3(0.0, 0.0, -20.0));
-	cam.SetOffset(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
+//	cam.SetTimeLag(0.25f);
+	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
@@ -98,14 +99,12 @@ void D3DMain::Routine() {
 	D3D12_CPU_DESCRIPTOR_HANDLE RtvCPUDescriptorHandle = RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	RtvCPUDescriptorHandle.ptr += (SwapChainBufferIndex * RtvDescriptorIncrementSize);
 
-	float BackGroundColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float BackGroundColor[4] = { 0.196078, 0.6, 0.8, 1.0f };
 	CmdList->ClearRenderTargetView(RtvCPUDescriptorHandle, BackGroundColor/*Colors::Azure*/, 0, NULL);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE DsvCPUDescriptorHandle = DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
-
-	cam.RegenerateViewMatrix();
 
 	Update();
 	Render(CmdList);

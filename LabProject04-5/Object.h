@@ -14,8 +14,7 @@ class Shader;
 class OBJ {
 public:
 	// define custom member function here /////////////
-	virtual void SetRotation() {}
-
+	
 
 
 
@@ -35,8 +34,18 @@ public:
 	XMFLOAT4X4 Matrix{};
 	XMFLOAT3 ModelColor{};
 
+	XMFLOAT3 Position{};
+
+	XMFLOAT3 Look{0.0, 0.0, 1.0};
+	XMFLOAT3 Up{0.0, 1.0, 0.0};
+	XMFLOAT3 Right{1.0, 0.0, 0.0};
+
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
+
+	XMFLOAT3 Velocity{};
+	float MaxVelocityXZ{};
+	float MaxVelocityY{};
 
 	LayerFW Layer{};
 	std::string Tag{};
@@ -57,6 +66,8 @@ public:
 
 	virtual void Render(ID3D12GraphicsCommandList* CmdList);
 
+	virtual void ObjectController(UINT nMessageID, WPARAM wParam) {}
+
 	virtual void ReleaseUploadBuffers();
 
 
@@ -75,6 +86,9 @@ public:
 	void MoveStrafe(float Distance = 1.0f);
 	void MoveUp(float Distance = 1.0f);
 	void MoveForward(float Distance = 1.0f);
+
+	void SetVelocity(const XMFLOAT3& xmf3Shift);
+	void Move(const XMFLOAT3& xmf3Shift);
 
 	void Rotate(float Pitch = 10.0f, float Yaw = 10.0f, float Roll = 10.0f);
 	void Rotate(XMFLOAT3 *Axis, float Angle);

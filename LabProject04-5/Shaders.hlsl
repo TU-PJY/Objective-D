@@ -140,7 +140,7 @@ float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET
 	cColor.rgb += fSurfaceReduction * gf3AmbientSpecularColor * FresnelLerp(gf3SpecularColor, fGrazingTerm, nv);
 
 	float fRim = saturate(dot(f3ToCamera, f3Normal));
-	cColor.rgb += float3(0.25f, 0.0f, 0.0f) * pow(fRim, 4.0f) + (sin(gfCurrentTime) * 0.3f);
+    cColor.rgb += float3(1.0f, 1.0f, 1.0f) * pow(fRim, 4.0f) + (sin(gfCurrentTime) * 0.3f);
 
 //	return(float4(f3Normal * 0.5f + 0.5f, 1.0f));
 	return(cColor);

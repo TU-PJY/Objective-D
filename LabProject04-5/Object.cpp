@@ -39,32 +39,38 @@ XMFLOAT3 OBJ::GetRight() {
 
 
 void OBJ::MoveStrafe(float Distance) {
-	XMFLOAT3 xmf3Position = GetPosition();
-	XMFLOAT3 xmf3Right = GetRight();
-	xmf3Position = Vec3::Add(xmf3Position, xmf3Right, Distance);
-	OBJ::SetPosition(xmf3Position);
-}
-
-
-void OBJ::MoveUp(float Distance) {
-	XMFLOAT3 xmf3Position = GetPosition();
-	XMFLOAT3 xmf3Up = GetUp();
-	xmf3Position = Vec3::Add(xmf3Position, xmf3Up, Distance);
-	OBJ::SetPosition(xmf3Position);
+	Position = Vec3::Add(Position, Right, Distance);
+	OBJ::SetPosition(Position);
 }
 
 
 void OBJ::MoveForward(float Distance) {
-	XMFLOAT3 xmf3Position = GetPosition();
-	XMFLOAT3 xmf3Look = GetLook();
-	xmf3Position = Vec3::Add(xmf3Position, xmf3Look, Distance);
-	OBJ::SetPosition(xmf3Position);
+	Position = Vec3::Add(Position, Look, Distance);
+	OBJ::SetPosition(Position);
+}
+
+
+void OBJ::MoveUp(float Distance) {
+	Position = Vec3::Add(Position, Up, Distance);
+	OBJ::SetPosition(Position);
 }
 
 
 void OBJ::Rotate(float Pitch, float Yaw, float Roll) {
-	XMMATRIX mtxRotate = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
-	Matrix = Mat4::Multiply(mtxRotate, Matrix);
+	XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+
+	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
+	Matrix = Mat4::Multiply(RotateMat, Matrix);
+
+	XMVECTOR UpdatedUpVector = XMVector3TransformNormal(UpVector, RotateMat);
+	XMVECTOR UpdatedLookVector = XMVector3TransformNormal(LookVector, RotateMat);
+	XMVECTOR UpdatedRightVector = XMVector3TransformNormal(RightVector, RotateMat);
+
+	Up = { XMVectorGetX(UpdatedUpVector), XMVectorGetY(UpdatedUpVector), XMVectorGetZ(UpdatedUpVector) };
+	Look = { XMVectorGetX(UpdatedLookVector), XMVectorGetY(UpdatedLookVector), XMVectorGetZ(UpdatedLookVector) };
+	Right = { XMVectorGetX(UpdatedRightVector), XMVectorGetY(UpdatedRightVector), XMVectorGetZ(UpdatedRightVector) };
 }
 
 

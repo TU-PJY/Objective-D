@@ -4,9 +4,8 @@
 
 class Ufo : public OBJ {
 private:
-	XMFLOAT3 Position{0.0, 0.0, 10.0};
 	float Rotation{};
-	bool rotate{};
+	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 
 public:
 	Ufo(LayerFW layer, std::string tag) {
@@ -16,32 +15,80 @@ public:
 
 		Layer = layer;
 		Tag = tag;
-
-		std::random_device rd;
-		std::uniform_real_distribution urd{ -10.0, 10.0 };
-
-		Position.x = urd(rd);
-		Position.y = urd(rd) / 10;
-		Position.z = urd(rd);
 	}
 
 
-	void SetRotation() {
-		if (!rotate)
-			rotate = true;
-		else
-			rotate = false;
+	void MoveUfo(float FT) {
+		if (MoveFront) {
+			MoveForward(FT * 10);
+
+		}
+		if (MoveBack) {
+			MoveForward(-FT * 10);
+		}
+		if (MoveRight)
+			Rotation += 50 * FT;
+		if (MoveLeft)
+			Rotation -= 50 * FT;
 	}
 
 
 	void Update(float FT) {
 		InitTransform();
-		
-		if(rotate)
-			Rotation += FT * 200;
+
+		MoveUfo(FT);
 
 		SetPosition(Position);
 		Rotate(0.0, Rotation, 0.0);
+
+		cam.SetPosition(Vec3::Add(Position, cam.GetOffset()));
+		cam.TrackObject(Position, this, FT);
+		cam.RegenerateViewMatrix();
+	}
+
+
+	void ObjectController(UINT nMessageID, WPARAM wParam) {
+		switch (nMessageID) {
+		case WM_KEYDOWN:
+			switch (wParam) {
+			case VK_UP:
+				MoveFront = true;
+				break;
+
+			case VK_DOWN:
+				MoveBack = true;
+				break;
+
+			case VK_RIGHT:
+				MoveRight = true;
+				break;
+
+			case VK_LEFT:
+				MoveLeft = true;
+				break;
+			}
+			break;
+
+		case WM_KEYUP:
+			switch (wParam) {
+			case VK_UP:
+				MoveFront = false;
+				break;
+
+			case VK_DOWN:
+				MoveBack = false;
+				break;
+
+			case VK_RIGHT:
+				MoveRight = false;
+				break;
+
+			case VK_LEFT:
+				MoveLeft = false;
+				break;
+			}
+			break;
+		}
 	}
 };
 
@@ -50,7 +97,6 @@ class Aircraft : public OBJ {
 private:
 	XMFLOAT3 Position{ 0.0, 0.0, 10.0 };
 	float Rotation{};
-	bool rotate{};
 
 public:
 	Aircraft(LayerFW layer, std::string tag) {
@@ -65,26 +111,13 @@ public:
 		std::uniform_real_distribution urd{ -10.0, 10.0 };
 
 		Position.x = urd(rd);
-		Position.y = urd(rd) / 10;
+		Position.y = 0.0;
 		Position.z = urd(rd);
 	}
-
-
-	void SetRotation() {
-		if (!rotate)
-			rotate = true;
-		else
-			rotate = false;
-	}
-
 
 	void Update(float FT) {
 		InitTransform();
 
-		if (rotate)
-			Rotation += FT * 200;
-
 		SetPosition(Position);
-		Rotate(0.0, Rotation, 0.0);
 	}
 };

@@ -3,10 +3,10 @@
 
 // global scope shader
 PseudoLightingShader* pShader;
-// global scope camera
-Camera cam;
 // global scope framework
 Framework fw;
+// global scope camera
+Camera cam;
 
 
 
@@ -53,35 +53,13 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 		switch (wParam) {
-		case '1':
+		case VK_UP: case VK_DOWN: case VK_RIGHT: case VK_LEFT:
 		{
-			auto obj = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
-			if (obj) obj->SetRotation();
+			auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+			if (ufo) ufo->ObjectController(nMessageID, wParam);
 		}
-			break;
+		break;
 
-		case '2':
-		{
-			auto obj = fw.FindObject("aircraft_target", LayerRange::Single, LayerFW::L1);
-			if (obj)obj->SetRotation();
-		}
-			break;
-
-		case VK_UP:
-			cam.MoveFront = true;
-			break;
-
-		case VK_DOWN:
-			cam.MoveBack = true;
-			break;
-
-		case VK_RIGHT:
-			cam.MoveRight = true;
-			break;
-
-		case VK_LEFT:
-			cam.MoveLeft = true;
-			break;
 		}
 		break;
 
@@ -92,21 +70,13 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 			::PostQuitMessage(0);
 			break;
 
-		case VK_UP:
-			cam.MoveFront = false;
-			break;
+		case VK_UP: case VK_DOWN: case VK_RIGHT: case VK_LEFT:
+		{
+			auto ufo = fw.FindObject("ufo_target", LayerRange::Single, LayerFW::L1);
+			if (ufo) ufo->ObjectController(nMessageID, wParam);
+		}
+		break;
 
-		case VK_DOWN:
-			cam.MoveBack = false;
-			break;
-
-		case VK_RIGHT:
-			cam.MoveRight = false;
-			break;
-
-		case VK_LEFT:
-			cam.MoveLeft = false;
-			break;
 		}
 		break;
 	}
