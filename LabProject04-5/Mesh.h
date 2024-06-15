@@ -68,8 +68,6 @@ public:
 
 
 protected:
-	BoundingBox						MeshBoundingBox;
-
 	UINT							Vertices = 0;
 	XMFLOAT3						*Position = NULL;
 	ID3D12Resource					*PositionBuffer = NULL;
@@ -103,6 +101,9 @@ protected:
 
 
 public:
+	BoundingOrientedBox				OOBB = BoundingOrientedBox();
+
+
 	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 		if (Directory) LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 	}
@@ -198,8 +199,8 @@ public:
 
 			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
 			Reads = (UINT)::fread(Token, sizeof(char), 14, File); //"<BoundingBox>:"
-			Reads = (UINT)::fread(&MeshBoundingBox.Center, sizeof(float), 3, File);
-			Reads = (UINT)::fread(&MeshBoundingBox.Extents, sizeof(float), 3, File);
+			Reads = (UINT)::fread(&OOBB.Center, sizeof(float), 3, File);
+			Reads = (UINT)::fread(&OOBB.Extents, sizeof(float), 3, File);
 
 			Reads = (UINT)::fread(&StrLength, sizeof(BYTE), 1, File);
 			Reads = (UINT)::fread(Token, sizeof(char), 11, File); //"<Vertices>:"
@@ -252,5 +253,30 @@ public:
 		IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
 		IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
 		IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
+	}
+
+	BOOL RayIntersectionByTriangle(XMVECTOR& xmRayOrigin, XMVECTOR& xmRayDirection, XMVECTOR v0, XMVECTOR v1, XMVECTOR v2, float* pfNearHitDistance) {
+		float fHitDistance;
+		BOOL bIntersected = TriangleTests::Intersects(xmRayOrigin, xmRayDirection, v0, v1, v2, fHitDistance);
+		if (bIntersected && (fHitDistance < *pfNearHitDistance)) *pfNearHitDistance = fHitDistance;
+
+		return(bIntersected);
+	}
+
+
+	int CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection, float* pfNearHitDistance) {
+		int nIntersections = 0;
+		bool bIntersected = OOBB.Intersects(xmvPickRayOrigin, xmvPickRayDirection, *pfNearHitDistance);
+		if (bIntersected) {
+			for (int i = 0; i < Indices; i += 3) {
+				XMVECTOR v0 = XMLoadFloat3(&Position[PnIndices[i]]);
+				XMVECTOR v1 = XMLoadFloat3(&Position[PnIndices[i + 1]]);
+				XMVECTOR v2 = XMLoadFloat3(&Position[PnIndices[i + 2]]);
+				BOOL bIntersected = RayIntersectionByTriangle(xmvPickRayOrigin, xmvPickRayDirection, v0, v1, v2, pfNearHitDistance);
+				if (bIntersected) nIntersections++;
+			}
+		}
+
+		return(nIntersections);
 	}
 };

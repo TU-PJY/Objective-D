@@ -3,7 +3,7 @@
 #include <string>
 
 // layer configuration
-enum class LayerFW 
+enum class Layer 
 {L1, L2, L3, END};
 
 // window name configuration

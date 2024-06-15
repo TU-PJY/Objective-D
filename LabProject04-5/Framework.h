@@ -13,7 +13,7 @@ extern PseudoLightingShader* pShader;
 
 extern std::unordered_map<std::string, char*> MeshList;
 
-constexpr int NUM_LAYER = static_cast<int>(LayerFW::END);
+constexpr int NUM_LAYER = static_cast<int>(Layer::END);
 
 enum class ObjectRange
 { Single, All };
@@ -66,13 +66,13 @@ public:
 		}
 	}
 
-	void AddObject(OBJ*&& Object, LayerFW Layer) {
+	void AddObject(OBJ*&& Object, Layer Layer) {
 		int layer = static_cast<int>(Layer);
 
 		ObjectCont[layer].push_back(Object);
 	}
 
-	void DeleteObject(OBJ* Object, LayerFW Layer) {
+	void DeleteObject(OBJ* Object, Layer Layer) {
 		int layer = static_cast<int>(Layer);
 
 		auto It = std::ranges::find(ObjectCont[layer], Object);
@@ -83,7 +83,7 @@ public:
 		}
 	}
 
-	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, LayerFW Layer = static_cast<LayerFW>(0)) {
+	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, Layer Layer = static_cast<Layer>(0)) {
 		int layer = static_cast<int>(Layer);
 
 		if (Range1 == ObjectRange::Single) {
@@ -145,7 +145,7 @@ public:
 		}
 	}
 
-	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, LayerFW Layer = static_cast<LayerFW>(0)) {
+	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, Layer Layer = static_cast<Layer>(0)) {
 		int layer = static_cast<int>(Layer);
 
 		if (Range1 == LayerRange::Single) {
@@ -173,7 +173,7 @@ public:
 		}
 	}
 
-	OBJ* FindObject(std::string ObjectTag, LayerFW Layer, int Index) {
+	OBJ* FindObject(std::string ObjectTag, Layer Layer, int Index) {
 		int layer = static_cast<int>(Layer);
 
 		if (ObjectCont[layer][Index]->Tag == ObjectTag)
@@ -182,7 +182,7 @@ public:
 			return false;
 	}
 
-	size_t Size(LayerFW Layer) {
+	size_t Size(Layer Layer) {
 		int layer = static_cast<int>(Layer);
 
 		return ObjectCont[layer].size();
@@ -199,6 +199,14 @@ public:
 			}
 		}
 	}
+
+	bool CheckCollision(OBJ* From, OBJ* To) {
+		if (From->OOBB.Intersects(To->OOBB))
+			return true;
+
+		return false;
+	}
+
 
 	void LoadMeshFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : MeshList)

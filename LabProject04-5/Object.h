@@ -33,8 +33,10 @@ public:
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
 
-	LayerFW Layer{};
+	Layer ObjectLayer{};
 	std::string Tag{};
+
+	BoundingOrientedBox			OOBB = BoundingOrientedBox();
 
 
 	OBJ() {
@@ -84,6 +86,13 @@ public:
 	virtual void OnPrepareRender() {}
 
 	virtual void ObjectController(UINT nMessageID, WPARAM wParam) {}
+
+	void UpdateOOBB() {
+		if (ObjectMesh) {
+			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&Matrix));
+			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
+		}
+	}
 
 
 	void InitTransform() {

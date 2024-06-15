@@ -9,12 +9,12 @@ private:
 	float SpeedStrafe{};
 
 public:
-	Aircraft(LayerFW layer, std::string tag) {
+	Aircraft(Layer layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 
-		Layer = layer;
+		ObjectLayer = layer;
 		Tag = tag;
 	}
 
@@ -50,6 +50,14 @@ public:
 
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
+
+		for (int i = 0; i < fw.Size(Layer::L2); ++i) {
+			auto obj = fw.FindObject("test_obj", Layer::L2, i);
+			if (fw.CheckCollision(this, obj))
+				fw.DeleteObject(obj, Layer::L2);
+		}
+
+		UpdateOOBB();
 	}
 
 
@@ -95,5 +103,33 @@ public:
 			}
 			break;
 		}
+	}
+};
+
+
+class TestObject : public OBJ {
+private:
+
+public:
+	TestObject(Layer layer, std::string tag) {
+		SetShader(pShader);
+		SetMesh(fw.FindMesh("pFlyerMesh"));
+		SetColor(XMFLOAT3(1.0, 0.0, 0.0));
+
+		std::random_device rd;
+		std::uniform_real_distribution urd{ -30.0, 30.0 };
+
+		Position.x = urd(rd);
+		Position.y = urd(rd) / 2;
+		Position.z = 30;
+
+		ObjectLayer = layer;
+		Tag = tag;
+
+		SetPosition(Position);
+		UpdateOOBB();
+	}
+
+	void Update(float FT) {
 	}
 };

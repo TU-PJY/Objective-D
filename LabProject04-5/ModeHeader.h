@@ -4,11 +4,11 @@
 #include <string>
 
 inline std::string Mode1() {
-	fw.AddObject(new Aircraft(LayerFW::L1, "obj1"), LayerFW::L1);
-	fw.AddObject(new Aircraft(LayerFW::L1, "obj2"), LayerFW::L1);
-	fw.AddObject(new Aircraft(LayerFW::L1, "obj3"), LayerFW::L1);
-	fw.AddObject(new Aircraft(LayerFW::L1, "obj3"), LayerFW::L1);
-	fw.AddObject(new Aircraft(LayerFW::L1, "obj5"), LayerFW::L1);
+	for (int i = 0; i < 10; ++i)
+		fw.AddObject(new TestObject(Layer::L2, "test_obj"), Layer::L2);
+
+	fw.AddObject(new Aircraft(Layer::L1, "obj1"), Layer::L1);
+
 
 	return __func__;
 }

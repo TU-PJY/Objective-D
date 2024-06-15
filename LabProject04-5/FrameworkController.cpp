@@ -50,7 +50,7 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 	{
-		auto obj = fw.FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
 		if (obj) obj->ObjectController(nMessageID, wParam);
 	}
 	break;
@@ -58,7 +58,7 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 
 	case WM_KEYUP:
 	{
-		auto obj = fw.FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
 		if (obj) obj->ObjectController(nMessageID, wParam);
 	}
 	break;
@@ -78,7 +78,7 @@ void Framework::MouseMotionController(POINT PrevCursorPosition, HWND hwnd) {
 		cyDelta = (float)(CursorPos.y - PrevCursorPosition.y) / 3.0f;
 		::SetCursorPos(PrevCursorPosition.x, PrevCursorPosition.y);
 
-		auto obj = FindObject("obj1", LayerRange::Single, LayerFW::L1);
+		auto obj = FindObject("obj1", LayerRange::Single, Layer::L1);
 		if (obj) {
 			obj->Rotation.y += cxDelta;
 			obj->Rotation.x += cyDelta;
