@@ -75,8 +75,6 @@ private:
 	ID3D12Debug					*DebugController;
 #endif
 
-	POINT						PrevCursorPosition;
-
 	Timer						Timer;
 	_TCHAR						FrameRate[50];
 

@@ -13,21 +13,11 @@
     <Filter Include="%284%29________________Object">
       <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%284%29________________Object\%281%29----Object_Base">
-      <UniqueIdentifier>{9f24e764-45d2-4ea4-b595-0e65de4e8636}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%284%29________________Object\%282%29--Custom_Object">
-      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%286%29____________D3D_System">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
     <Filter Include="%287%29____________Win_System">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%287%29____________Win_System\리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="%288%29___________________HLSL">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
@@ -35,17 +25,18 @@
     <Filter Include="%285%29_________________Modes">
       <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%286%29____________D3D_System\%284%29-------Shader">
-      <UniqueIdentifier>{b44d2277-da83-4a4f-8b84-1cd15d03ee6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%286%29____________D3D_System\%285%29--------Mesh">
-      <UniqueIdentifier>{8492b908-5a19-427d-9a38-924fd6e391f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%286%29____________D3D_System\%282%29--------Main">
-      <UniqueIdentifier>{69252792-97d5-4339-84e8-d67563f1bcfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="%286%29____________D3D_System\%281%29--------Header">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%287%29____________Win_System\%281%29----------Res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="%284%29________________Object\%281%29--Custom_Object">
+      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%289%29_________Class_Template">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,14 +49,8 @@
     <ClInclude Include="Objective-D.h">
       <Filter>%287%29____________Win_System</Filter>
     </ClInclude>
-    <ClInclude Include="D3DMain.h">
-      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
-    </ClInclude>
     <ClInclude Include="Framework.h">
       <Filter>%283%29_____________Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>%286%29____________D3D_System\%284%29-------Shader</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>%282%29________________Camera</Filter>
@@ -73,29 +58,32 @@
     <ClInclude Include="D3DHeader.h">
       <Filter>%286%29____________D3D_System\%281%29--------Header</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
-    </ClInclude>
     <ClInclude Include="Conf.h">
       <Filter>%281%29__________________CONF</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>%286%29____________D3D_System\%285%29--------Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Ufo.h">
-      <Filter>%284%29________________Object\%282%29--Custom_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>%284%29________________Object\%281%29----Object_Base</Filter>
+      <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
     </ClInclude>
     <ClInclude Include="ModeHeader.h">
       <Filter>%285%29_________________Modes</Filter>
     </ClInclude>
+    <ClInclude Include="D3DMain.h">
+      <Filter>%286%29____________D3D_System</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>%286%29____________D3D_System</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>%286%29____________D3D_System</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>%286%29____________D3D_System</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>%284%29________________Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3DMain.cpp">
-      <Filter>%286%29____________D3D_System\%282%29--------Main</Filter>
-    </ClCompile>
     <ClCompile Include="FrameworkController.cpp">
       <Filter>%283%29_____________Framework</Filter>
     </ClCompile>
@@ -108,23 +96,31 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>%282%29________________Camera</Filter>
     </ClCompile>
+    <ClCompile Include="D3DMain.cpp">
+      <Filter>%286%29____________D3D_System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>%287%29____________Win_System\리소스 파일</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>%287%29____________Win_System\리소스 파일</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>%287%29____________Win_System\리소스 파일</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders.hlsl">
       <Filter>%288%29___________________HLSL</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ClassTemplate.txt">
+      <Filter>%289%29_________Class_Template</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -25,15 +25,23 @@ enum class LayerRange
 class Framework {
 private:
 	std::string RunningMode{};
+
 	std::unordered_map<std::string, Mesh*> LoadedMeshList;
-	bool LButtonDownState{}, RButtonDownState{};
+
 	typedef std::string(*Function)(void);
+
+	POINT PrevCursorPosition{};
+
 
 protected:
 	ID3D12RootSignature* RootSignature = nullptr;
+
 	std::array<std::deque<OBJ*>, NUM_LAYER> ObjectCont;
 
+
 public:
+	bool LButtonDownState{}, RButtonDownState{};
+
 	void Init(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList);
 
 	void SetMode(Function ModeFunction) {
@@ -43,7 +51,7 @@ public:
 
 	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void MouseMotionController(POINT PrevCursorPosition, HWND hwnd);
+	void MouseMotionController(HWND hwnd);
 
 	void Update(float FT) {
 		for (int i = 0; i < NUM_LAYER; ++i) {

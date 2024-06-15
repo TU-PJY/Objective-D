@@ -10,11 +10,11 @@ void D3DMain::Init() {
 	fw.Init(Device, CmdList);
 
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
-	cam.SetTimeLag(0.25f);
 	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
+	cam.SetTimeLag(0.25f);
 
 	CmdList->Close();
 	ID3D12CommandList* CmdLists[] = { CmdList };
@@ -40,13 +40,10 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 		break;
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&PrevCursorPosition);
 		fw.MouseController(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
-		::ReleaseCapture();
 		fw.MouseController(hWnd, nMessageID, wParam, lParam);
 		break;
 
@@ -60,6 +57,22 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 	}
 
 	return 0;
+}
+
+
+void D3DMain::Update() {
+	cam.RegenerateViewMatrix();
+	cam.Update(Timer.GetTimeElapsed());
+
+	fw.MouseMotionController(hWnd);
+	fw.Update(Timer.GetTimeElapsed());
+}
+
+
+void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
+	fw.PrepareRender(CmdList);
+	//UpdateShaderVariables();
+	fw.Render(CmdList);
 }
 
 
@@ -501,26 +514,6 @@ void D3DMain::Destroy() {
 
 void D3DMain::ReleaseObjects() {
 	fw.ReleaseObjects();
-}
-
-
-void D3DMain::Update(){
-	cam.RegenerateViewMatrix();
-
-	cam.Update(Timer.GetTimeElapsed());
-
-	fw.MouseMotionController(PrevCursorPosition, hWnd);
-
-	fw.Update(Timer.GetTimeElapsed());
-}
-
-
-void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
-	fw.PrepareRender(CmdList);
-
-	//UpdateShaderVariables();
-
-	fw.Render(CmdList);
 }
 
 

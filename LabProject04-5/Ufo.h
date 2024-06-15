@@ -18,30 +18,24 @@ public:
 		Tag = tag;
 	}
 
-
 	void MoveAircraft(float FT) {
 		if (MoveFront)
 			LerpAcc(SpeedForward, 0.05, 5, FT);
-
 		if (MoveBack)
 			LerpAcc(SpeedForward, -0.05, 5, FT);
-
 		if (MoveRight)
 			LerpAcc(SpeedStrafe, 0.05, 5, FT);
-			
 		if (MoveLeft)
 			LerpAcc(SpeedStrafe, -0.05, 5, FT);
 
 		if(!MoveFront && !MoveBack)
 			LerpDcc(SpeedForward, 5, FT);
-
 		if (!MoveRight && !MoveLeft) 
 			LerpDcc(SpeedStrafe, 5, FT);
 
 		MoveForward(SpeedForward);
 		MoveStrafe(SpeedStrafe);
 	}
-
 
 	void Update(float FT) {
 		InitTransform();
@@ -60,8 +54,7 @@ public:
 		UpdateOOBB();
 	}
 
-
-	void ObjectController(UINT nMessageID, WPARAM wParam) {
+	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			switch (wParam) {
@@ -104,7 +97,25 @@ public:
 			break;
 		}
 	}
+
+
+	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {
+		if (LButtonDownState) {
+			float cxDelta = 0.0;
+			float cyDelta = 0.0;
+
+			cxDelta = (float)(CursorPos.x - PrevCursorPos.x) / 3.0f;
+			cyDelta = (float)(CursorPos.y - PrevCursorPos.y) / 3.0f;
+			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
+
+			UpdateRotation(cyDelta, cxDelta, 0.0); 
+		}
+	}
 };
+
+
+
+
 
 
 class TestObject : public OBJ {
@@ -128,8 +139,5 @@ public:
 
 		SetPosition(Position);
 		UpdateOOBB();
-	}
-
-	void Update(float FT) {
 	}
 };

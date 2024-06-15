@@ -101,11 +101,12 @@ protected:
 
 
 public:
-	BoundingOrientedBox				OOBB = BoundingOrientedBox();
+	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
 
 	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
-		if (Directory) LoadMeshFromFile(Device, CmdList, Directory, TextMode);
+		if (Directory) 
+			LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 	}
 
 

@@ -13,14 +13,7 @@ class Shader;
 
 class OBJ {
 public:
-	// define custom member function here /////////////
-	
-
-
-
-
-	///////////////////////////////////////////////////
-	XMFLOAT4X4 Matrix{};
+	XMFLOAT4X4 Matrix = Mat4::Identity();
 	XMFLOAT3 ModelColor{};
 
 	XMFLOAT3 Position{};
@@ -36,15 +29,11 @@ public:
 	Layer ObjectLayer{};
 	std::string Tag{};
 
-	BoundingOrientedBox			OOBB = BoundingOrientedBox();
+	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 
-	OBJ() {
-		Matrix = Mat4::Identity();
-	}
-
-	~OBJ() {
-	}
+	OBJ() {}
+	~OBJ() {}
 
 	void SetMesh(Mesh* MeshData) {
 		ObjectMesh = MeshData;
@@ -52,6 +41,29 @@ public:
 
 	void SetShader(Shader* ShaderData) {
 		ObjectShader = ShaderData;
+	}
+
+	virtual void Update(float FT) {}
+
+	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
+		if (ObjectShader)
+			ObjectShader->Render(CmdList);
+
+		UpdateShaderVariables(CmdList);
+
+		if (ObjectMesh)
+			ObjectMesh->Render(CmdList);
+	}
+
+	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
+	virtual void ObjectMouseController(bool LButtonDownState, bool RButtonDownState) {}
+	virtual void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+
+	void UpdateOOBB() {
+		if (ObjectMesh) {
+			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&Matrix));
+			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
+		}
 	}
 
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
@@ -62,37 +74,12 @@ public:
 		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
 	}
 
-	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
-		OnPrepareRender();
-
-		if (ObjectShader)
-			ObjectShader->Render(CmdList);
-
-		UpdateShaderVariables(CmdList);
-
-		if (ObjectMesh)
-			ObjectMesh->Render(CmdList);
-	}
-
 	virtual void ReleaseUploadBuffers() {
 		if (ObjectMesh)
 			ObjectMesh->ReleaseUploadBuffers();
 	}
 
 	virtual void ReleaseShaderVariables() {}
-
-	virtual void Update(float FT) {}
-
-	virtual void OnPrepareRender() {}
-
-	virtual void ObjectController(UINT nMessageID, WPARAM wParam) {}
-
-	void UpdateOOBB() {
-		if (ObjectMesh) {
-			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&Matrix));
-			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
-		}
-	}
 
 
 	void InitTransform() {
@@ -167,6 +154,12 @@ public:
 	void Rotate(XMFLOAT3* Axis, float Angle) {
 		XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(Axis), XMConvertToRadians(Angle));
 		Matrix = Mat4::Multiply(mtxRotate, Matrix);
+	}
+
+	void UpdateRotation(float Pitch, float Yaw, float Roll) {
+		Rotation.x += Pitch;
+		Rotation.y += Yaw;
+		Rotation.z += Roll;
 	}
 
 	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
