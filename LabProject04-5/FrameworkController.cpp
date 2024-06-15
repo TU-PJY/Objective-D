@@ -66,11 +66,7 @@ void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARA
 
 void Framework::MouseMotionController(HWND hwnd) {
 	if (GetCapture() == hwnd) {
-		::SetCursor(NULL);
-		POINT CursorPos;
-		::GetCursorPos(&CursorPos);
-
 		auto obj = FindObject("obj1", LayerRange::Single, Layer::L1);
-		if (obj) obj->ObjectMouseMotionController(CursorPos, PrevCursorPosition, LButtonDownState, RButtonDownState);
+		if (obj) obj->ObjectMouseMotionController(PrevCursorPosition, LButtonDownState, RButtonDownState);
 	}
 }

@@ -99,13 +99,17 @@ public:
 	}
 
 
-	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {
+	void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {
 		if (LButtonDownState) {
+			::SetCursor(NULL);
+			POINT CursorPos;
+			::GetCursorPos(&CursorPos);
+
 			float cxDelta = 0.0;
 			float cyDelta = 0.0;
 
-			cxDelta = (float)(CursorPos.x - PrevCursorPos.x) / 3.0f;
-			cyDelta = (float)(CursorPos.y - PrevCursorPos.y) / 3.0f;
+			cxDelta = (float)(CursorPos.x - PrevCursorPos.x) / 5.0f;
+			cyDelta = (float)(CursorPos.y - PrevCursorPos.y) / 5.0f;
 			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
 
 			UpdateRotation(cyDelta, cxDelta, 0.0); 

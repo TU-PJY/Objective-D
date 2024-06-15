@@ -59,7 +59,7 @@ public:
 
 	void Update(float FT);
 
-	void Camera::CameraController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void Camera::CameraKeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 
@@ -172,7 +172,7 @@ public:
 		CamPos.z += Shift.z; 
 	}
 
-	void TrackCamera(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
+	void Track(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
 		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 		XMFLOAT3 xmf3Right = Object->Right;
 		XMFLOAT3 xmf3Up = Object->Up;

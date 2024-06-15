@@ -56,8 +56,8 @@ public:
 	}
 
 	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
-	virtual void ObjectMouseController(bool LButtonDownState, bool RButtonDownState) {}
-	virtual void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	virtual void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	virtual void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
 
 	void UpdateOOBB() {
 		if (ObjectMesh) {
@@ -70,7 +70,6 @@ public:
 		XMFLOAT4X4 xmf4x4World;
 		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
 		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
-
 		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
 	}
 
@@ -104,19 +103,19 @@ public:
 
 	void MoveStrafe(float Distance) {
 		Position = Vec3::Add(Position, Right, Distance);
-		OBJ::SetPosition(Position);
+		SetPosition(Position);
 	}
 
 
 	void MoveForward(float Distance) {
 		Position = Vec3::Add(Position, Look, Distance);
-		OBJ::SetPosition(Position);
+		SetPosition(Position);
 	}
 
 
 	void MoveUp(float Distance) {
 		Position = Vec3::Add(Position, Up, Distance);
-		OBJ::SetPosition(Position);
+		SetPosition(Position);
 	}
 
 	void Rotate(float Pitch, float Yaw, float Roll) {

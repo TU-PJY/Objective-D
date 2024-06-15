@@ -4,11 +4,11 @@
 
 void Camera::Update(float FT) {
 	auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
-	if (obj) TrackCamera(obj->Position, obj, FT);
+	if (obj) Track(obj->Position, obj, FT);
 }
 
 
-void Camera::CameraController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+void Camera::CameraKeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 		break;
