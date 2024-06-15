@@ -130,9 +130,12 @@ public:
 
 	void Update(float FT) {
 		InitTransform();
+
+
 		auto ptr = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
 		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
 
+		Scale(0.5, 0.5, 0.5);
 		SetPosition(Position);
 	}
 };
