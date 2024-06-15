@@ -14,7 +14,7 @@ void D3DMain::Init() {
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
-	cam.SetTimeLag(0.25f);
+	cam.SetTimeLag(0.05f);
 	cam.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();

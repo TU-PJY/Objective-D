@@ -214,6 +214,52 @@ public:
 			return false;
 	}
 
+	bool CheckPickingByCursor(LPARAM lParam, OBJ* Object) {
+		float xClient = LOWORD(lParam);
+		float yClient = HIWORD(lParam);
+
+		XMFLOAT3 xmf3PickPosition;
+		xmf3PickPosition.x = (((2.0f * xClient) / (float)cam.CamViewport.Width) - 1) / cam.Cam4x4Projection._11;
+		xmf3PickPosition.y = -(((2.0f * yClient) / (float)cam.CamViewport.Height) - 1) / cam.Cam4x4Projection._22;
+		xmf3PickPosition.z = 1.0f;
+
+		XMVECTOR xmvPickPosition = XMLoadFloat3(&xmf3PickPosition);
+		XMMATRIX xmmtxView = XMLoadFloat4x4(&cam.Cam4x4View);
+
+		int nIntersected = 0;
+		float fNearestHitDistance = FLT_MAX;
+		float fHitDistance = FLT_MAX;
+		nIntersected = Object->PickObjectByRayIntersection(xmvPickPosition, xmmtxView, &fHitDistance);
+
+		if ((nIntersected > 0) && (fHitDistance < fNearestHitDistance)) 
+			return true;
+
+		return false;
+	}
+
+	bool CheckPickingByCoordinate(float X, float Y, OBJ* Object) {
+		float xClient = (X + 1.0) / 2.0 * FRAME_BUFFER_WIDTH;
+		float yClient = (1.0 - Y) / 2.0 * FRAME_BUFFER_HEIGHT;
+
+		XMFLOAT3 xmf3PickPosition;
+		xmf3PickPosition.x = (((2.0f * xClient) / (float)cam.CamViewport.Width) - 1) / cam.Cam4x4Projection._11;
+		xmf3PickPosition.y = -(((2.0f * yClient) / (float)cam.CamViewport.Height) - 1) / cam.Cam4x4Projection._22;
+		xmf3PickPosition.z = 1.0f;
+
+		XMVECTOR xmvPickPosition = XMLoadFloat3(&xmf3PickPosition);
+		XMMATRIX xmmtxView = XMLoadFloat4x4(&cam.Cam4x4View);
+
+		int nIntersected = 0;
+		float fNearestHitDistance = FLT_MAX;
+		float fHitDistance = FLT_MAX;
+		nIntersected = Object->PickObjectByRayIntersection(xmvPickPosition, xmmtxView, &fHitDistance);
+
+		if ((nIntersected > 0) && (fHitDistance < fNearestHitDistance))
+			return true;
+
+		return false;
+	}
+
 
 	void LoadMeshFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : MeshList)

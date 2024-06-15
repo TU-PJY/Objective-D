@@ -19,8 +19,6 @@ protected:
 	XMFLOAT3						CamOffset{};
 	float           				CamTimeDelay{};
 
-	XMFLOAT4X4						Cam4x4View{};
-	XMFLOAT4X4						Cam4x4Projection{};
 
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	BoundingFrustum					CamFrustumView{};
@@ -30,7 +28,6 @@ protected:
 	XMFLOAT4						CamFrustumPlanes[6]{};
 #endif
 
-	D3D12_VIEWPORT					CamViewport{};
 	D3D12_RECT						CamScissorRect{};
 
 private:
@@ -38,6 +35,10 @@ private:
 
 
 public:
+	D3D12_VIEWPORT					CamViewport{};
+	XMFLOAT4X4						Cam4x4View{};
+	XMFLOAT4X4						Cam4x4Projection{};
+
 	Camera() {
 		Cam4x4View = Mat4::Identity();
 		Cam4x4Projection = Mat4::Identity();

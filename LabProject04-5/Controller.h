@@ -21,5 +21,6 @@ namespace Mode_1 {
 		}
 	}
 
-	inline void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+	inline void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	}
 }

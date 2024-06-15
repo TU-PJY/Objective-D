@@ -212,4 +212,25 @@ public:
 	void LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT) {
 		CurrentSpeed = std::lerp(CurrentSpeed, 0.0, DecelerationValue * FT);
 	}
+
+
+	void GenerateRayForPicking(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
+		XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&Matrix) * xmmtxView);
+		XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
+		xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
+		xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
+		xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
+	}
+
+	int PickObjectByRayIntersection(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
+		int nIntersected = 0;
+
+		if (ObjectMesh){
+			XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
+			GenerateRayForPicking(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
+			nIntersected = ObjectMesh->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
+		}
+
+		return(nIntersected);
+	}
 };
