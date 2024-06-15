@@ -1,4 +1,5 @@
 #pragma once
+#include "Conf.h"
 #include "Object.h"
 #define ASPECT_RATIO				(float(FRAME_BUFFER_WIDTH) / float(FRAME_BUFFER_HEIGHT))
 
@@ -31,6 +32,9 @@ protected:
 
 	D3D12_VIEWPORT					CamViewport{};
 	D3D12_RECT						CamScissorRect{};
+
+private:
+	CamMode RunningMode{};
 
 
 public:
@@ -139,6 +143,10 @@ public:
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 		CmdList->RSSetViewports(1, &CamViewport);
 		CmdList->RSSetScissorRects(1, &CamScissorRect);
+	}
+
+	void SetCameraMode(CamMode Mode) {
+		RunningMode = Mode;
 	}
 
 	void SetPosition(XMFLOAT3 Position) { CamPos = Position; }

@@ -25,7 +25,7 @@ public:
 		}
 	}
 
-	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
-
 	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+
+	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
 };

@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Conf.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="D3DMain.h" />
     <ClInclude Include="ModeHeader.h" />
     <ClInclude Include="Objective-D.h" />
@@ -193,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ClassTemplate.txt" />
+    <Text Include="ControllerTemplate.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

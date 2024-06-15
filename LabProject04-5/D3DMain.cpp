@@ -15,6 +15,7 @@ void D3DMain::Init() {
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
 	cam.SetTimeLag(0.25f);
+	cam.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();
 	ID3D12CommandList* CmdLists[] = { CmdList };
@@ -40,14 +41,7 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 		break;
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
-		fw.MouseController(hWnd, nMessageID, wParam, lParam);
-		break;
-
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
-		fw.MouseController(hWnd, nMessageID, wParam, lParam);
-		break;
-
-	case WM_MOUSEMOVE:
 		fw.MouseController(hWnd, nMessageID, wParam, lParam);
 		break;
 

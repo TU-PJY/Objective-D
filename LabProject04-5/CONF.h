@@ -6,6 +6,10 @@
 enum class Layer 
 {L1, L2, L3, END};
 
+// camera mode configuration
+enum class CamMode
+{MODE1, MODE2, MODE3};
+
 // window name configuration
 constexpr TCHAR D3D_WindowName[] = _T("Objective-D (");
 

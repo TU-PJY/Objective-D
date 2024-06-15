@@ -3,8 +3,10 @@
 
 
 void Camera::Update(float FT) {
-	auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
-	if (obj) Track(obj->Position, obj, FT);
+	if (RunningMode == CamMode::MODE1) {
+		auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
+		if (obj) Track(obj->Position, obj, FT);
+	}
 }
 
 

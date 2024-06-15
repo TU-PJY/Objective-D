@@ -119,18 +119,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	switch (message) {
 	case WM_SIZE:
 	case WM_LBUTTONDOWN:
-	case WM_LBUTTONUP:
 	case WM_RBUTTONDOWN:
+	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
-	case WM_MOUSEMOVE:
 	case WM_KEYDOWN:
 	case WM_KEYUP:
+	case WM_MOUSEMOVE:
 		D3D_Main.WindowsMessegeFunc(hWnd, message, wParam, lParam);
 		break;
 
 	case WM_COMMAND:
 		wmId = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
+
 		switch (wmId) {
 		case IDM_ABOUT:
 			::DialogBox(AppInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
@@ -143,6 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		default:
 			return(::DefWindowProc(hWnd, message, wParam, lParam));
 		}
+
 		break;
 
 	case WM_PAINT:
