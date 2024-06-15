@@ -59,6 +59,8 @@ public:
 
 	void Update(float FT);
 
+	void Camera::CameraController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 
 	virtual void ReleaseShaderVariables() {}

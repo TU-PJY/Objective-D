@@ -1,5 +1,4 @@
 #pragma once
-#include "D3DHeader.h"
 #include "CONF.h"
 #include "Object.h"
 #include "Camera.h"

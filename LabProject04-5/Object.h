@@ -3,10 +3,10 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
-#include "D3DHeader.h"
 #include "CONF.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include <cmath>
 
 class Shader;
 
@@ -128,7 +128,12 @@ public:
 		XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 		XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
-		XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
+		XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
+			XMConvertToRadians(Pitch), 
+			XMConvertToRadians(Yaw), 
+			XMConvertToRadians(Roll)
+		);
+
 		Matrix = Mat4::Multiply(RotateMat, Matrix);
 
 		Up = {
@@ -150,9 +155,44 @@ public:
 		};
 	}
 
-
 	void Rotate(XMFLOAT3* Axis, float Angle) {
 		XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(Axis), XMConvertToRadians(Angle));
 		Matrix = Mat4::Multiply(mtxRotate, Matrix);
+	}
+
+	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
+		if (SpeedLimit > 0.0) {
+			CurrentSpeed += AccelerationValue * FT;
+			if (CurrentSpeed >= SpeedLimit)
+				CurrentSpeed = SpeedLimit;
+		}
+
+		else if (SpeedLimit < 0.0) {
+			CurrentSpeed -= AccelerationValue * FT;
+			if (CurrentSpeed <= SpeedLimit)
+				CurrentSpeed = SpeedLimit;
+		}
+	}
+
+	void LinearDcc(float& CurrentSpeed, float DecelerationValue, float FT) {
+		if (CurrentSpeed > 0.0) {
+			CurrentSpeed -= DecelerationValue * FT;
+			if (CurrentSpeed <= 0.0)
+				CurrentSpeed = 0.0;
+		}
+
+		else if (CurrentSpeed < 0.0) {
+			CurrentSpeed += DecelerationValue * FT;
+			if (CurrentSpeed >= 0.0)
+				CurrentSpeed = 0.0;
+		}
+	}
+
+	void LerpAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
+		CurrentSpeed = std::lerp(CurrentSpeed, SpeedLimit, AccelerationValue * FT);
+	}
+
+	void LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT) {
+		CurrentSpeed = std::lerp(CurrentSpeed, 0.0, DecelerationValue * FT);
 	}
 };

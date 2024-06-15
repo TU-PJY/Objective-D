@@ -5,6 +5,8 @@
 class Aircraft : public OBJ {
 private:
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
+	float SpeedForward{};
+	float SpeedStrafe{};
 
 public:
 	Aircraft(LayerFW layer, std::string tag) {
@@ -18,14 +20,26 @@ public:
 
 
 	void MoveAircraft(float FT) {
-		if (MoveFront) 
-			MoveForward(FT * 10);
-		if (MoveBack) 
-			MoveForward(-FT * 10);
+		if (MoveFront)
+			LerpAcc(SpeedForward, 0.05, 5, FT);
+
+		if (MoveBack)
+			LerpAcc(SpeedForward, -0.05, 5, FT);
+
 		if (MoveRight)
-			MoveStrafe(FT * 10);
+			LerpAcc(SpeedStrafe, 0.05, 5, FT);
+			
 		if (MoveLeft)
-			MoveStrafe(-FT * 10);
+			LerpAcc(SpeedStrafe, -0.05, 5, FT);
+
+		if(!MoveFront && !MoveBack)
+			LerpDcc(SpeedForward, 5, FT);
+
+		if (!MoveRight && !MoveLeft) 
+			LerpDcc(SpeedStrafe, 5, FT);
+
+		MoveForward(SpeedForward);
+		MoveStrafe(SpeedStrafe);
 	}
 
 
@@ -36,8 +50,6 @@ public:
 
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
-
-		//cam.TrackCamera(Position, this, FT);
 	}
 
 
