@@ -204,10 +204,14 @@ public:
 	}
 
 	bool CheckCollision(OBJ* From, OBJ* To) {
-		if (From->OOBB.Intersects(To->OOBB))
-			return true;
-
-		return false;
+		if (From && To) {
+			if (From->OOBB.Intersects(To->OOBB))
+				return true;
+			else 
+				return false;
+		}
+		else
+			return false;
 	}
 
 

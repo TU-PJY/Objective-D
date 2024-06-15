@@ -46,6 +46,7 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 		break;
 
 	case WM_KEYDOWN: case WM_KEYUP:
+		cam.CameraKeyboardController(hWnd, nMessageID, wParam, lParam);
 		fw.KeyboardController(hWnd, nMessageID, wParam, lParam);
 		break;
 	}

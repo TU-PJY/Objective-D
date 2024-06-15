@@ -45,12 +45,6 @@ public:
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		for (int i = 0; i < fw.Size(Layer::L2); ++i) {
-			auto obj = fw.FindObject("test_obj", Layer::L2, i);
-			if (fw.CheckCollision(this, obj))
-				fw.DeleteObject(obj, Layer::L2);
-		}
-
 		UpdateOOBB();
 	}
 
@@ -118,30 +112,27 @@ public:
 };
 
 
-
-
-
-
 class TestObject : public OBJ {
 private:
 
 public:
-	TestObject(Layer layer, std::string tag) {
+	TestObject(Layer layer, std::string tag, XMFLOAT3 position, XMFLOAT3 color) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
-		SetColor(XMFLOAT3(1.0, 0.0, 0.0));
-
-		std::random_device rd;
-		std::uniform_real_distribution urd{ -30.0, 30.0 };
-
-		Position.x = urd(rd);
-		Position.y = urd(rd) / 2;
-		Position.z = 30;
+		ModelColor = color;
+		Position = position;
 
 		ObjectLayer = layer;
 		Tag = tag;
 
-		SetPosition(Position);
 		UpdateOOBB();
+	}
+
+	void Update(float FT) {
+		InitTransform();
+		auto ptr = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
+		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
+
+		SetPosition(Position);
 	}
 };

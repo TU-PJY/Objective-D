@@ -155,6 +155,17 @@ public:
 		Matrix = Mat4::Multiply(mtxRotate, Matrix);
 	}
 
+	void LookAt(XMFLOAT3& Target, XMFLOAT3& UpVector){
+		XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(Position, Target, UpVector);
+		Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
+		Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
+		Matrix._31 = xmf4x4View._13; Matrix._32 = xmf4x4View._23; Matrix._33 = xmf4x4View._33;
+
+		Up = Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23));
+		Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
+		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
+	}
+
 	void UpdateRotation(float Pitch, float Yaw, float Roll) {
 		Rotation.x += Pitch;
 		Rotation.y += Yaw;

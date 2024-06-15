@@ -10,62 +10,48 @@ public:
 		Position = XMFLOAT3(0.0f, 0.0f, 0.0f); 
 	}
 
-
 	CVertex(XMFLOAT3 Position) { 
 		Position = Position; 
 	}
 
-
 	~CVertex() { }
 };
-
-
-
 
 
 class CDiffusedVertex : public CVertex {
 protected:
     XMFLOAT4						Diffuse;		
 
-
 public:
 	CDiffusedVertex() { 
 		Position = XMFLOAT3(0.0f, 0.0f, 0.0f); Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f); 
 	}
 
-
 	CDiffusedVertex(float x, float y, float z, XMFLOAT4 Diffuse) { 
 		Position = XMFLOAT3(x, y, z); Diffuse = Diffuse; 
 	}
-
 
 	CDiffusedVertex(XMFLOAT3 Position, XMFLOAT4 Diffuse) { 
 		Position = Position; Diffuse = Diffuse; 
 	}
 
-
 	~CDiffusedVertex() {}
 };
-
-
 
 
 class Mesh {
 private:
 	int Ref = 0;
 
-
 public:
 	void AddRef() { 
 		Ref++; 
 	}
 
-
 	void Release() { 
 		if (--Ref <= 0)
 			delete this;
 	}
-
 
 protected:
 	UINT							Vertices = 0;
@@ -103,12 +89,10 @@ protected:
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
-
 	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 		if (Directory) 
 			LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 	}
-
 
 	~Mesh() {
 		if (Position) delete[] Position;
@@ -125,7 +109,6 @@ public:
 		if (IndexBuffer) IndexBuffer->Release();
 	}
 
-
 	void ReleaseUploadBuffers() {
 		if (PositionUploadBuffer) PositionUploadBuffer->Release();
 		if (NormalUploadBuffer) NormalUploadBuffer->Release();
@@ -138,7 +121,6 @@ public:
 		IndexUploadBuffer = NULL;
 	};
 
-
 	void Render(ID3D12GraphicsCommandList* CmdList) {
 		CmdList->IASetPrimitiveTopology(PromitiveTopology);
 		CmdList->IASetVertexBuffers(Slot, NumVertexBufferViews, VertexBufferViews);
@@ -150,7 +132,6 @@ public:
 		else
 			CmdList->DrawInstanced(Vertices, 1, Offset, 0);
 	}
-
 
 	void LoadMeshFromFile(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode)	{
 		char Token[64] = { '\0' };
@@ -263,7 +244,6 @@ public:
 
 		return(bIntersected);
 	}
-
 
 	int CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection, float* pfNearHitDistance) {
 		int nIntersections = 0;

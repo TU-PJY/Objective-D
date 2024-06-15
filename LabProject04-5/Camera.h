@@ -205,7 +205,7 @@ public:
 		float fLength = Vec3::Length(xmf3Direction);
 		xmf3Direction = Vec3::Normalize(xmf3Direction);
 
-		float fTimeLagScale = (CamTimeDelay) ? fTimeElapsed * (5.0f / CamTimeDelay) : 1.0f;
+		float fTimeLagScale = (CamTimeDelay) ? fTimeElapsed * (1.0f / CamTimeDelay) : 1.0f;
 		float fDistance = fLength * fTimeLagScale;
 
 		if (fDistance > fLength) 
