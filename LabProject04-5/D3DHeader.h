@@ -30,13 +30,21 @@
 
 #include <Mmsystem.h>
 
+
+
+
+// screen size
+extern int FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT;
+
+// full screen option
+constexpr bool START_WITH_FULL_SCREEN = true;
+
+
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
 using Microsoft::WRL::ComPtr;
 
-#define FRAME_BUFFER_WIDTH		1500
-#define FRAME_BUFFER_HEIGHT		1000
 
 #define DIR_FORWARD				0x01
 #define DIR_BACKWARD			0x02

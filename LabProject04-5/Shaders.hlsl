@@ -55,8 +55,8 @@ static float3 gf3LightColor = float3(0.65f, 0.65f, 0.65f);
 static float3 gf3SpecularColor = float3(0.85f, 0.85f, 0.85f);
 
 static float gfSpecular = 0.0f; // Ω∫∆Â≈ß∑Ø ∞≠µµ ¡¶∞≈
-static float gfGlossiness = 0.3f;
-static float gfSmoothness = 0.2f;
+static float gfGlossiness = 0.0f;
+static float gfSmoothness = 0.0f;
 static float gfOneMinusReflectivity = 0.15f;
 
 inline float Pow5(float x)

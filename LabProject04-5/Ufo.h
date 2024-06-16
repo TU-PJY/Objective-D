@@ -8,8 +8,6 @@ private:
 	float SpeedForward{};
 	float SpeedStrafe{};
 
-	Mesh* mapMesh;
-
 public:
 	Aircraft(Layer layer, std::string tag) {
 		SetShader(pShader);
@@ -153,7 +151,7 @@ private:
 public:
 	Map(Layer layer, std::string tag) {
 		SetShader(pShader);
-		SetMesh(fw.FindTerrain("pTerrain"));
+		SetTerrain(fw.FindTerrain("pTerrain"));
 		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
 
 		ObjectLayer = layer;

@@ -263,8 +263,8 @@ public:
 	}
 
 	bool CheckTerrainFloor(OBJ* Object, OBJ* Terrain) {
-		if (Terrain->ObjectMesh) {
-			if (Object->Position.y < Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+		if (Terrain->TerrainMesh) {
+			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 				return true;
 		}
 
@@ -272,13 +272,13 @@ public:
 	}
 
 	void MoveToTerrainFloor(OBJ* Object, OBJ* Terrain) {
-		Object->Position.y = Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+		Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
 	}
 	
 	void CheckCollisionnTerrain(OBJ* Object, OBJ* Terrain) {
-		if (Terrain->ObjectMesh) {
-			if (Object->Position.y < Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
-				Object->Position.y = Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+		if (Terrain->TerrainMesh) {
+			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+				Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
 		}
 	}
 

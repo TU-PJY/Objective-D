@@ -43,7 +43,7 @@ public:
 		Cam4x4View = Mat4::Identity();
 		Cam4x4Projection = Mat4::Identity();
 
-		CamViewport = { 0, 0, FRAME_BUFFER_WIDTH , FRAME_BUFFER_HEIGHT, 0.0f, 1.0f };
+		CamViewport = { 0, 0, float(FRAME_BUFFER_WIDTH), float(FRAME_BUFFER_HEIGHT), 0.0f, 1.0f };
 		CamScissorRect = { 0, 0, FRAME_BUFFER_WIDTH , FRAME_BUFFER_HEIGHT };
 
 		CamPos = XMFLOAT3(0.0f, 0.0f, 0.0f);

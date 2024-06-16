@@ -11,6 +11,10 @@ TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];
 
 
+int FRAME_BUFFER_WIDTH = GetSystemMetrics(SM_CXSCREEN);
+int FRAME_BUFFER_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+
+
 D3DMain						D3D_Main;
 
 
@@ -80,9 +84,13 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	AppInstance = hInstance;
+	DWORD WindowStyle{};
+	RECT Rect{};
 
-	RECT Rect = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
-	DWORD WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
+	Rect = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
+	WindowStyle = WS_POPUP;
+	D3D_Main.FullScreenState = true;
+
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
 	HWND MainWnd = CreateWindow(
@@ -107,16 +115,37 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	::ShowWindow(MainWnd, nCmdShow);
 	::UpdateWindow(MainWnd);
 
+	if (!START_WITH_FULL_SCREEN)
+		D3D_Main.SwitchToWindowMode(MainWnd);
+
 	return(TRUE);
 }
 
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+void DisplayStateChanger(HWND hWnd, UINT nMessageID, WPARAM wParam) {
+	switch (nMessageID) {
+	case WM_KEYDOWN:
+		switch (wParam) {
+		case VK_F11:
+			if (D3D_Main.FullScreenState)
+				D3D_Main.SwitchToWindowMode(hWnd);
+			else
+				D3D_Main.SwitchToFullscreenMode(hWnd);
+			break;
+		}
+		break;
+	}
+}
+
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	int wmId, wmEvent;
 	PAINTSTRUCT PaintStruct;
 	HDC Hdc;
 
-	switch (message) {
+	DisplayStateChanger(hWnd, nMessageID, wParam);
+
+	switch (nMessageID) {
 	case WM_SIZE:
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
@@ -125,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_MOUSEMOVE:
-		D3D_Main.WindowsMessegeFunc(hWnd, message, wParam, lParam);
+		D3D_Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_COMMAND:
@@ -142,7 +171,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			break;
 
 		default:
-			return(::DefWindowProc(hWnd, message, wParam, lParam));
+			return(::DefWindowProc(hWnd, nMessageID, wParam, lParam));
 		}
 
 		break;
@@ -157,16 +186,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 
 	default:
-		return(::DefWindowProc(hWnd, message, wParam, lParam));
+		return(::DefWindowProc(hWnd, nMessageID, wParam, lParam));
 	}
 
 	return 0;
 }
 
 
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+INT_PTR CALLBACK About(HWND hDlg, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	UNREFERENCED_PARAMETER(lParam);
-	switch (message) {
+	switch (nMessageID) {
 	case WM_INITDIALOG:
 		return((INT_PTR)TRUE);
 

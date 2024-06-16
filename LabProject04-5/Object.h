@@ -25,6 +25,7 @@ public:
 
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
+	Mesh* TerrainMesh{};
 
 	Layer ObjectLayer{};
 	std::string Tag{};
@@ -37,6 +38,10 @@ public:
 
 	void SetMesh(Mesh* MeshData) {
 		ObjectMesh = MeshData;
+	}
+
+	void SetTerrain(Mesh* TerrainData) {
+		TerrainMesh = TerrainData;
 	}
 
 	void SetShader(Shader* ShaderData) {
@@ -53,6 +58,9 @@ public:
 
 		if (ObjectMesh)
 			ObjectMesh->Render(CmdList);
+
+		if (TerrainMesh)
+			TerrainMesh->Render(CmdList);
 	}
 
 	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}

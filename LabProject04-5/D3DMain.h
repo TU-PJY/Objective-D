@@ -38,6 +38,11 @@ public:
 
 	LRESULT CALLBACK WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 
+	void SwitchToWindowMode(HWND hwnd);
+	void SwitchToFullscreenMode(HWND hwnd);
+
+	bool FullScreenState{};
+
 private:
 	HINSTANCE					hInstance;
 	HWND						hWnd; 

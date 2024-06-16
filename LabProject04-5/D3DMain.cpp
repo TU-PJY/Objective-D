@@ -14,7 +14,7 @@ void D3DMain::Init() {
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
-	cam.SetTimeLag(0.05f);
+	cam.SetTimeLag(0.25f);
 	cam.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();
@@ -72,7 +72,7 @@ void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
 
 
 void D3DMain::Routine() {
-	Timer.Tick(0.0f);
+	Timer.Tick(165.0f);
 
 	HRESULT hResult = CmdAllocator->Reset();
 	hResult = CmdList->Reset(CmdAllocator, NULL);
@@ -137,6 +137,25 @@ void D3DMain::Routine() {
 	::SetWindowText(hWnd, FrameRate);
 }
 
+void D3DMain::SwitchToWindowMode(HWND hwnd) {
+	FRAME_BUFFER_WIDTH /= 2;
+	FRAME_BUFFER_HEIGHT /= 2 * ASPECT_RATIO;
+
+	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+	ShowWindow(hwnd, SW_NORMAL);
+	SetWindowPos(hwnd, NULL, 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER );
+	FullScreenState = FALSE;
+}
+
+void D3DMain::SwitchToFullscreenMode(HWND hwnd) {
+	FRAME_BUFFER_WIDTH = GetSystemMetrics(SM_CXSCREEN);
+	FRAME_BUFFER_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+
+	SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
+	ShowWindow(hwnd, SW_MAXIMIZE);
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	FullScreenState = TRUE;
+}
 
 D3DMain::D3DMain() {
 	DxgiFactory = NULL;
@@ -443,7 +462,10 @@ void D3DMain::ChangeSwapChainState() {
 	DxgiTargetParameters.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	DxgiSwapChain->ResizeTarget(&DxgiTargetParameters);
 
-	for (int i = 0; i < SwapChainBuffers; i++) if (SwapChainBackBuffers[i]) SwapChainBackBuffers[i]->Release();
+	for (int i = 0; i < SwapChainBuffers; i++) 
+		if (SwapChainBackBuffers[i]) 
+			SwapChainBackBuffers[i]->Release();
+
 #ifdef _WITH_ONLY_RESIZE_BACKBUFFERS
 	DXGI_SWAP_CHAIN_DESC DxgiSwapChainDesc;
 	DxgiSwapChain->GetDesc(&DxgiSwapChainDesc);

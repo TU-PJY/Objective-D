@@ -10,6 +10,13 @@ namespace Mode_1 {
 			auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
 			if (obj) obj->ObjectKeyboardController(nMessageID, wParam);
 		}
+
+		switch (wParam) {
+		case VK_ESCAPE:
+			PostQuitMessage(1);
+			break;
+		}
+
 		break;
 		}
 	}
