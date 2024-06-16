@@ -21,13 +21,13 @@ public:
 
 	void MoveAircraft(float FT) {
 		if (MoveFront)
-			LerpAcc(SpeedForward, 0.05, 5, FT);
+			LerpAcc(SpeedForward, 0.15, 5, FT);
 		if (MoveBack)
-			LerpAcc(SpeedForward, -0.05, 5, FT);
+			LerpAcc(SpeedForward, -0.15, 5, FT);
 		if (MoveRight)
-			LerpAcc(SpeedStrafe, 0.05, 5, FT);
+			LerpAcc(SpeedStrafe, 0.15, 5, FT);
 		if (MoveLeft)
-			LerpAcc(SpeedStrafe, -0.05, 5, FT);
+			LerpAcc(SpeedStrafe, -0.15, 5, FT);
 
 		if(!MoveFront && !MoveBack)
 			LerpDcc(SpeedForward, 5, FT);
@@ -153,13 +153,10 @@ public:
 		SetShader(pShader);
 		SetTerrain(fw.FindTerrain("pTerrain"));
 		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
+		Scale(5.0, 5.0, 5.0);
 
 		ObjectLayer = layer;
 		Tag = tag;
-	}
-
-	void Update(float FT) {
-		InitTransform();
 	}
 
 	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
