@@ -16,11 +16,17 @@ std::unordered_map<std::string, char*> MeshList {
 	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
 };
 
+// teerain list to load
+std::unordered_map<std::string, char*> TerrainList {
+	{ "pTerrain", "Models//map.txt"}
+};
+
 
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	RootSignature = CreateGraphicsRootSignature(Device);
 	pShader = ShaderLoader(RootSignature, Device, CmdList);
 	LoadMeshFromList(Device, CmdList);
+	LoadTerrainFromList(Device, CmdList);
 
 	SetMode(Mode1);
 }

@@ -12,6 +12,7 @@
 extern PseudoLightingShader* pShader;
 
 extern std::unordered_map<std::string, char*> MeshList;
+extern std::unordered_map<std::string, char*> TerrainList;
 
 constexpr int NUM_LAYER = static_cast<int>(Layer::END);
 
@@ -26,6 +27,7 @@ class Framework {
 private:
 	std::string RunningMode{};
 	std::unordered_map<std::string, Mesh*> LoadedMeshList;
+	std::unordered_map<std::string, Mesh*> LoadedTerrainList;
 	typedef std::string(*Function)(void);
 
 protected:
@@ -260,14 +262,36 @@ public:
 		return false;
 	}
 
+	bool CheckMapFloor(OBJ* Object, OBJ* Map) {
+		if (Map->ObjectMesh) {
+			if (Object->Position.y < Map->ObjectMesh->GetHeightAtPosition(Map->ObjectMesh, Object->Position.x, Object->Position.z, Map->Matrix))
+				return true;
+		}
+
+		return false;
+	}
+
+	void SetPositionToMapFloor(OBJ* Object, OBJ* Map) {
+		Object->Position.y = Map->ObjectMesh->GetHeightAtPosition(Map->ObjectMesh, Object->Position.x, Object->Position.z, Map->Matrix);
+	}
+
 
 	void LoadMeshFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : MeshList)
 			LoadedMeshList.insert(make_pair(MeshName, MeshLoader(Device, CmdList, Directory)));
 	}
 
+	void LoadTerrainFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+		for (const auto& [MeshName, Directory] : TerrainList)
+			LoadedTerrainList.insert(make_pair(MeshName, MeshLoader(Device, CmdList, Directory)));
+	}
+
 	Mesh* FindMesh(std::string MeshName) {
 		return LoadedMeshList.find(MeshName)->second;
+	}
+
+	Mesh* FindTerrain(std::string TerrainName) {
+		return LoadedTerrainList.find(TerrainName)->second;
 	}
 
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true) {

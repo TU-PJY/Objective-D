@@ -8,11 +8,14 @@ private:
 	float SpeedForward{};
 	float SpeedStrafe{};
 
+	Mesh* mapMesh;
+
 public:
 	Aircraft(Layer layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
+
 
 		ObjectLayer = layer;
 		Tag = tag;
@@ -44,6 +47,12 @@ public:
 
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
+
+		auto ptr = fw.FindObject("map", LayerRange::Single, Layer::L3);
+		if (ptr) {
+			if (fw.CheckMapFloor(this, ptr))
+				fw.SetPositionToMapFloor(this, ptr);
+		}
 
 		UpdateOOBB();
 	}
@@ -138,4 +147,37 @@ public:
 		Scale(0.5, 0.5, 0.5);
 		SetPosition(Position);
 	}
+};
+
+
+class Map : public OBJ {
+private:
+
+public:
+	Map(Layer layer, std::string tag) {
+		SetShader(pShader);
+		SetMesh(fw.FindTerrain("pTerrain"));
+		SetColor(XMFLOAT3(0.133333,	0.545098,	0.133333));
+
+		ObjectLayer = layer;
+		Tag = tag;
+	}
+
+	void Update(float FT) {
+		InitTransform();
+	}
+
+	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
+		switch (nMessageID) {
+		case WM_KEYDOWN:
+			break;
+
+		case WM_KEYUP:
+			break;
+		}
+	}
+
+	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+
+	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
 };

@@ -2,7 +2,7 @@
 private:
 
 public:
-	Aircraft(Layer layer, std::string tag) {
+	ClassName(Layer layer, std::string tag) {
 		SetShader();
 		SetMesh();
 
