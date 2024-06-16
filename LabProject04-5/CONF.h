@@ -4,7 +4,7 @@
 
 // layer configuration
 enum class Layer 
-{L1, L2, L3, END};
+{Terrain, L1, L2, END};
 
 // camera mode configuration
 enum class CamMode

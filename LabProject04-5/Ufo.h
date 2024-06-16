@@ -48,11 +48,8 @@ public:
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		auto ptr = fw.FindObject("map", LayerRange::Single, Layer::L3);
-		if (ptr) {
-			if (fw.CheckMapFloor(this, ptr))
-				fw.SetPositionToMapFloor(this, ptr);
-		}
+		auto ptr = fw.FindObject("map", LayerRange::Single, Layer::Terrain);
+		if (ptr) fw.CheckCollisionnTerrain(this, ptr);
 
 		UpdateOOBB();
 	}
@@ -141,7 +138,7 @@ public:
 		InitTransform();
 
 
-		auto ptr = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
+		auto ptr = fw.FindObject("obj1", LayerRange::Single, Layer::Terrain);
 		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
 
 		Scale(0.5, 0.5, 0.5);
@@ -157,7 +154,7 @@ public:
 	Map(Layer layer, std::string tag) {
 		SetShader(pShader);
 		SetMesh(fw.FindTerrain("pTerrain"));
-		SetColor(XMFLOAT3(0.133333,	0.545098,	0.133333));
+		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
 
 		ObjectLayer = layer;
 		Tag = tag;

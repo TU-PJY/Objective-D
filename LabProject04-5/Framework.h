@@ -262,17 +262,24 @@ public:
 		return false;
 	}
 
-	bool CheckMapFloor(OBJ* Object, OBJ* Map) {
-		if (Map->ObjectMesh) {
-			if (Object->Position.y < Map->ObjectMesh->GetHeightAtPosition(Map->ObjectMesh, Object->Position.x, Object->Position.z, Map->Matrix))
+	bool CheckTerrainFloor(OBJ* Object, OBJ* Terrain) {
+		if (Terrain->ObjectMesh) {
+			if (Object->Position.y < Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 				return true;
 		}
 
 		return false;
 	}
 
-	void SetPositionToMapFloor(OBJ* Object, OBJ* Map) {
-		Object->Position.y = Map->ObjectMesh->GetHeightAtPosition(Map->ObjectMesh, Object->Position.x, Object->Position.z, Map->Matrix);
+	void MoveToTerrainFloor(OBJ* Object, OBJ* Terrain) {
+		Object->Position.y = Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+	}
+	
+	void CheckCollisionnTerrain(OBJ* Object, OBJ* Terrain) {
+		if (Terrain->ObjectMesh) {
+			if (Object->Position.y < Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+				Object->Position.y = Terrain->ObjectMesh->GetHeightAtPosition(Terrain->ObjectMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+		}
 	}
 
 
