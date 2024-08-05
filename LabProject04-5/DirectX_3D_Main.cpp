@@ -26,16 +26,13 @@ void DirectX_3D_Main::Init() {
 	Timer.Reset();
 }
 
-LRESULT CALLBACK DirectX_3D_Main::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_ACTIVATE: 
 		if (LOWORD(wParam) == WA_INACTIVE)
 			Timer.Stop();
 		else
 			Timer.Start();
-		break;
-
-	case WM_SIZE:
 		break;
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
@@ -46,15 +43,13 @@ LRESULT CALLBACK DirectX_3D_Main::WindowsMessegeFunc(HWND hWnd, UINT nMessageID,
 	case WM_KEYDOWN: case WM_KEYUP:
 		fw.InputKey(hWnd, nMessageID, wParam, lParam);
 		break;
+
+	case WM_MOUSEMOVE:
+		fw.InputMouseMotion(hWnd);
+		break;
 	}
 
 	return 0;
-}
-
-void DirectX_3D_Main::Render(ID3D12GraphicsCommandList* CmdList) {
-	fw.PrepareRender(CmdList);
-	//UpdateShaderVariables();
-	fw.Render(CmdList);
 }
 
 void DirectX_3D_Main::Update() {
@@ -85,10 +80,13 @@ void DirectX_3D_Main::Update() {
 
 	cam.RegenerateViewMatrix();
 	cam.Update(Timer.GetTimeElapsed());
-	fw.InputMouseMotion(hWnd);
+
 	fw.Update(Timer.GetTimeElapsed());
 
-	Render(CmdList);
+	fw.PrepareRender(CmdList);
+	cam.SetViewportsAndScissorRects(CmdList);
+	cam.UpdateShaderVariables(CmdList);
+	fw.Render(CmdList);
 
 #ifdef _WITH_PLAYER_TOP
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
@@ -261,7 +259,6 @@ void DirectX_3D_Main::CreateSwapChain() {
 	CreateRenderTargetViews();
 #endif
 }
-
 
 void DirectX_3D_Main::CreateDirect3DDevice() {
 	HRESULT hResult;

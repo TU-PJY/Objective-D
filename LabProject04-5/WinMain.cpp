@@ -150,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_MOUSEMOVE:
-		D3D_Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
+		D3D_Main.WindowsMessageFunc(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_COMMAND:

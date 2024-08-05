@@ -25,7 +25,6 @@ public:
     void ReleaseObjects();
 
     void Update();
-	void Render(ID3D12GraphicsCommandList* CmdList);
 
 	virtual void CreateShaderVariables();
 	virtual void UpdateShaderVariables();
@@ -34,7 +33,7 @@ public:
 	void WaitForGpuComplete();
 	void MoveToNextFrame();
 
-	LRESULT CALLBACK WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK WindowsMessageFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 
 	void SwitchToWindowMode(HWND hwnd);
 	void SwitchToFullscreenMode(HWND hwnd);

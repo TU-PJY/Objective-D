@@ -61,8 +61,7 @@ public:
 	}
 
 	void Render(ID3D12GraphicsCommandList* CmdList) {
-		cam.SetViewportsAndScissorRects(CmdList);
-		cam.UpdateShaderVariables(CmdList);
+		
 
 		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It) {
