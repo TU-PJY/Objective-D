@@ -4,7 +4,7 @@
 
 class Shader;
 
-class OBJ {
+class BASE {
 public:
 	XMFLOAT4X4 Matrix = Mat4::Identity();
 	XMFLOAT3 ModelColor{};
@@ -200,7 +200,7 @@ public:
 	
 	////////// virtual functions
 
-	virtual ~OBJ() {}
+	virtual ~BASE() {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 		XMFLOAT4X4 xmf4x4World;
 		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
@@ -234,4 +234,4 @@ public:
 };
 
 // dummy object for avoiding iterator error
-class DUMMY : public OBJ {};
+class DUMMY : public BASE {};

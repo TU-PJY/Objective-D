@@ -4,7 +4,7 @@
 
 class CVertex {
 protected:
-    XMFLOAT3						Position;	
+	XMFLOAT3 Position{};
 
 public:
 	CVertex() { 
@@ -21,7 +21,7 @@ public:
 
 class CDiffusedVertex : public CVertex {
 protected:
-    XMFLOAT4						Diffuse;		
+	XMFLOAT4 Diffuse{};
 
 public:
 	CDiffusedVertex() { 
@@ -42,7 +42,7 @@ public:
 
 class Mesh {
 private:
-	int Ref = 0;
+	int Ref{};
 
 public:
 	void AddRef() { 

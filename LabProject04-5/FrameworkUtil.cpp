@@ -2,13 +2,6 @@
 #include "ModeHeader.h"
 #include "Controller.h"
 
-// global scope shader
-PseudoLightingShader* pShader;
-// global scope framework
-Framework fw;
-// global scope camera
-Camera cam;
-
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	RootSignature = CreateGraphicsRootSignature(Device);
 	pShader = ShaderLoader(RootSignature, Device, CmdList);

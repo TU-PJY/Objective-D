@@ -1,9 +1,9 @@
 #include "Config.h"
-#include "D3D_Main.h"
+#include "DirectX_3D_Main.h"
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 
-void D3DMain::Init() {
+void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
 	fw.Init(Device, CmdList);
@@ -26,7 +26,7 @@ void D3DMain::Init() {
 	Timer.Reset();
 }
 
-LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK DirectX_3D_Main::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_ACTIVATE: 
 		if (LOWORD(wParam) == WA_INACTIVE)
@@ -51,13 +51,13 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 	return 0;
 }
 
-void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
+void DirectX_3D_Main::Render(ID3D12GraphicsCommandList* CmdList) {
 	fw.PrepareRender(CmdList);
 	//UpdateShaderVariables();
 	fw.Render(CmdList);
 }
 
-void D3DMain::Update() {
+void DirectX_3D_Main::Update() {
 	Timer.Tick(165.0f);
 
 	HRESULT hResult = CmdAllocator->Reset();
@@ -127,7 +127,7 @@ void D3DMain::Update() {
 	::SetWindowText(hWnd, FrameRate);
 }
 
-void D3DMain::SwitchToWindowMode(HWND hwnd) {
+void DirectX_3D_Main::SwitchToWindowMode(HWND hwnd) {
 	WIDTH /= 2;
 	HEIGHT /= 2 * ASPECT_RATIO;
 
@@ -137,7 +137,7 @@ void D3DMain::SwitchToWindowMode(HWND hwnd) {
 	FullScreenState = FALSE;
 }
 
-void D3DMain::SwitchToFullscreenMode(HWND hwnd) {
+void DirectX_3D_Main::SwitchToFullscreenMode(HWND hwnd) {
 	WIDTH = GetSystemMetrics(SM_CXSCREEN);
 	HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
@@ -147,7 +147,7 @@ void D3DMain::SwitchToFullscreenMode(HWND hwnd) {
 	FullScreenState = TRUE;
 }
 
-D3DMain::D3DMain() {
+DirectX_3D_Main::DirectX_3D_Main() {
 	DxgiFactory = NULL;
 	DxgiSwapChain = NULL;
 	Device = NULL;
@@ -181,7 +181,7 @@ D3DMain::D3DMain() {
 	_tcscpy_s(FrameRate, WindowName);
 }
 
-bool D3DMain::Create(HINSTANCE hInstance, HWND hMainWnd) {
+bool DirectX_3D_Main::Create(HINSTANCE hInstance, HWND hMainWnd) {
 	hInstance = hInstance;
 	hWnd = hMainWnd;
 
@@ -196,7 +196,7 @@ bool D3DMain::Create(HINSTANCE hInstance, HWND hMainWnd) {
 	return(true);
 }
 
-void D3DMain::CreateSwapChain() {
+void DirectX_3D_Main::CreateSwapChain() {
 	RECT rcClient;
 	::GetClientRect(hWnd, &rcClient);
 	CLIENT_WIDTH = rcClient.right - rcClient.left;
@@ -263,7 +263,7 @@ void D3DMain::CreateSwapChain() {
 }
 
 
-void D3DMain::CreateDirect3DDevice() {
+void DirectX_3D_Main::CreateDirect3DDevice() {
 	HRESULT hResult;
 
 	UINT DxgiFactoryFlags = 0;
@@ -321,7 +321,7 @@ void D3DMain::CreateDirect3DDevice() {
 	DsvDescriptorIncrementSize = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 }
 
-void D3DMain::CreateCommandQueueAndList() {
+void DirectX_3D_Main::CreateCommandQueueAndList() {
 	D3D12_COMMAND_QUEUE_DESC CommandQueueDesc;
 	::ZeroMemory(&CommandQueueDesc, sizeof(D3D12_COMMAND_QUEUE_DESC));
 	CommandQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
@@ -334,7 +334,7 @@ void D3DMain::CreateCommandQueueAndList() {
 	hResult = CmdList->Close();
 }
 
-void D3DMain::CreateRtvAndDsvDescriptorHeaps() {
+void DirectX_3D_Main::CreateRtvAndDsvDescriptorHeaps() {
 	D3D12_DESCRIPTOR_HEAP_DESC DescriptorHeapDesc;
 	::ZeroMemory(&DescriptorHeapDesc, sizeof(D3D12_DESCRIPTOR_HEAP_DESC));
 	DescriptorHeapDesc.NumDescriptors = SwapChainBuffers;
@@ -348,7 +348,7 @@ void D3DMain::CreateRtvAndDsvDescriptorHeaps() {
 	hResult = Device->CreateDescriptorHeap(&DescriptorHeapDesc, __uuidof(ID3D12DescriptorHeap), (void**)&DsvDescriptorHeap);
 }
 
-void D3DMain::CreateRenderTargetViews() {
+void DirectX_3D_Main::CreateRenderTargetViews() {
 	D3D12_CPU_DESCRIPTOR_HANDLE RtvCPUDescriptorHandle = RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	for (UINT i = 0; i < SwapChainBuffers; i++) {
 		DxgiSwapChain->GetBuffer(i, __uuidof(ID3D12Resource), (void**)&SwapChainBackBuffers[i]);
@@ -357,7 +357,7 @@ void D3DMain::CreateRenderTargetViews() {
 	}
 }
 
-void D3DMain::CreateDepthStencilView() {
+void DirectX_3D_Main::CreateDepthStencilView() {
 	D3D12_RESOURCE_DESC ResourceDesc;
 	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	ResourceDesc.Alignment = 0;
@@ -410,7 +410,7 @@ void D3DMain::CreateDepthStencilView() {
 	Device->CreateDepthStencilView(DepthStencilBuffer, &DepthStencilViewDesc, DsvCPUDescriptorHandle);
 }
 
-void D3DMain::CreateRenderTargetViewsAndDepthStencilView() {
+void DirectX_3D_Main::CreateRenderTargetViewsAndDepthStencilView() {
 	CmdList->Reset(CmdAllocator, NULL);
 
 	CreateRenderTargetViews();
@@ -423,7 +423,7 @@ void D3DMain::CreateRenderTargetViewsAndDepthStencilView() {
 	WaitForGpuComplete();
 }
 
-void D3DMain::ChangeSwapChainState() {
+void DirectX_3D_Main::ChangeSwapChainState() {
 	WaitForGpuComplete();
 
 	BOOL FullScreenState = FALSE;
@@ -458,7 +458,7 @@ void D3DMain::ChangeSwapChainState() {
 	CreateRenderTargetViews();
 }
 
-void D3DMain::Destroy() {
+void DirectX_3D_Main::Destroy() {
 	ReleaseObjects();
 
 	::CloseHandle(FenceEvent);
@@ -505,15 +505,15 @@ void D3DMain::Destroy() {
 #endif
 }
 
-void D3DMain::ReleaseObjects() {
+void DirectX_3D_Main::ReleaseObjects() {
 	fw.ReleaseObjects();
 }
 
-void D3DMain::CreateShaderVariables(){}
+void DirectX_3D_Main::CreateShaderVariables(){}
 
-void D3DMain::ReleaseShaderVariables(){}
+void DirectX_3D_Main::ReleaseShaderVariables(){}
 
-void D3DMain::UpdateShaderVariables() {
+void DirectX_3D_Main::UpdateShaderVariables() {
 	float CurrentTime = Timer.GetTotalTime();
 	float ElapsedTime = Timer.GetTimeElapsed();
 
@@ -530,7 +530,7 @@ void D3DMain::UpdateShaderVariables() {
 	CmdList->SetGraphicsRoot32BitConstants(0, 1, &yCursorPos, 3);
 }
 
-void D3DMain::WaitForGpuComplete() {
+void DirectX_3D_Main::WaitForGpuComplete() {
 	UINT64 FenceValue = ++FenceValues[SwapChainBufferIndex];
 	HRESULT hResult = CmdQueue->Signal(m_pd3dFence, FenceValue);
 
@@ -540,7 +540,7 @@ void D3DMain::WaitForGpuComplete() {
 	}
 }
 
-void D3DMain::MoveToNextFrame() {
+void DirectX_3D_Main::MoveToNextFrame() {
 	SwapChainBufferIndex = DxgiSwapChain->GetCurrentBackBufferIndex();
 
 	UINT64 FenceValue = ++FenceValues[SwapChainBufferIndex];

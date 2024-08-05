@@ -180,7 +180,7 @@ public:
 		CamPos.z += Shift.z; 
 	}
 
-	void Track(XMFLOAT3& LookAt, OBJ* Object, float fTimeElapsed) { 
+	void Track(XMFLOAT3& LookAt, BASE* Object, float fTimeElapsed) { 
 		XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 		XMFLOAT3 xmf3Right = Object->Right;
 		XMFLOAT3 xmf3Up = Object->Up;
@@ -218,7 +218,7 @@ public:
 		SetLookAt(LookAt, Object);
 	}
 
-	void SetLookAt(XMFLOAT3& LookAt, OBJ* Object) {
+	void SetLookAt(XMFLOAT3& LookAt, BASE* Object) {
 		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, Object->Up);
 		CamRight = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
 		CamUp = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);

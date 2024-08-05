@@ -2,7 +2,7 @@
 #include "ObjectBase.h"
 #include <random>
 
-class Aircraft : public OBJ {
+class Aircraft : public BASE {
 private:
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 	float SpeedForward{};
@@ -112,7 +112,7 @@ public:
 };
 
 
-class TestObject : public OBJ {
+class TestObject : public BASE {
 private:
 
 public:
@@ -138,7 +138,7 @@ public:
 };
 
 
-class Map : public OBJ {
+class Map : public BASE {
 private:
 
 public:

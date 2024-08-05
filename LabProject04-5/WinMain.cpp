@@ -1,11 +1,19 @@
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
-#include "Objective-D.h"
-#include "D3D_Main.h"
 #define MAX_LOADSTRING 100
+#include "Config.h"
+#include "Objective-D.h"
+#include "DirectX_3D_Main.h"
+#include "CameraUtil.h"
+#include "FrameworkUtil.h"
+#include "ShaderUtil.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
-D3DMain Main;
+
+DirectX_3D_Main D3D_Main;
+Framework fw;
+Camera cam;
+PseudoLightingShader* pShader;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
@@ -44,10 +52,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		}
 
 		else
-			Main.Update();
+			D3D_Main.Update();
 	}
 
-	Main.Destroy();
+	D3D_Main.Destroy();
 
 	return((int)Messege.wParam);
 }
@@ -79,7 +87,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 
 	Rect = { 0, 0, WIDTH, HEIGHT };
 	WindowStyle = WS_POPUP;
-	Main.FullScreenState = true;
+	D3D_Main.FullScreenState = true;
 
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
@@ -100,13 +108,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	if (!MainWnd) 
 		return(FALSE);
 
-	Main.Create(hInstance, MainWnd);
+	D3D_Main.Create(hInstance, MainWnd);
 
 	::ShowWindow(MainWnd, nCmdShow);
 	::UpdateWindow(MainWnd);
 
 	if (!START_WITH_FULL_SCREEN)
-		Main.SwitchToWindowMode(MainWnd);
+		D3D_Main.SwitchToWindowMode(MainWnd);
 
 	return(TRUE);
 }
@@ -116,10 +124,10 @@ void DisplayStateChanger(HWND hWnd, UINT nMessageID, WPARAM wParam) {
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_F11:
-			if (Main.FullScreenState)
-				Main.SwitchToWindowMode(hWnd);
+			if (D3D_Main.FullScreenState)
+				D3D_Main.SwitchToWindowMode(hWnd);
 			else
-				Main.SwitchToFullscreenMode(hWnd);
+				D3D_Main.SwitchToFullscreenMode(hWnd);
 			break;
 		}
 		break;
@@ -142,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_MOUSEMOVE:
-		Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
+		D3D_Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_COMMAND:

@@ -25,14 +25,14 @@ class Framework {
 private:
 	std::map<std::string, Mesh*> LoadedMeshList;
 	std::map<std::string, Mesh*> LoadedTerrainList;
-	std::multimap<std::string, OBJ*> ObjectList;
+	std::multimap<std::string, BASE*> ObjectList;
 
 	std::string RunningMode{};
 	Function ControllerPtr{};
 
 protected:
 	ID3D12RootSignature* RootSignature{};
-	std::array<std::deque<OBJ*>, NUM_LAYER> Container;
+	std::array<std::deque<BASE*>, NUM_LAYER> Container;
 
 public:
 	POINT PrevCursorPosition{};
@@ -73,7 +73,7 @@ public:
 	}
 
 	void UpdateContainer(int Index) {
-		std::erase_if(ObjectList, [](const std::pair<std::string, OBJ*>& Object) {
+		std::erase_if(ObjectList, [](const std::pair<std::string, BASE*>& Object) {
 			return Object.second->DeleteDesc;
 			});
 
@@ -89,7 +89,7 @@ public:
 		}
 	}
 
-	void AddObject(OBJ*&& Object, std::string Tag, Layer Layer) {
+	void AddObject(BASE*&& Object, std::string Tag, Layer Layer) {
 		int layer = static_cast<int>(Layer);
 
 		Container[layer].push_back(Object);
@@ -97,7 +97,7 @@ public:
 		ObjectList.insert(std::pair(Tag, Container[layer].back()));
 	}
 
-	void DeleteSelf(OBJ* Object) {
+	void DeleteSelf(BASE* Object) {
 		Object->DeleteDesc = true;
 	}
 
@@ -117,7 +117,7 @@ public:
 		}
 	}
 
-	OBJ* Find(std::string Tag) {
+	BASE* Find(std::string Tag) {
 		auto It = ObjectList.find(Tag);
 		if (It != std::end(ObjectList))
 			return It->second;
@@ -125,7 +125,7 @@ public:
 			return nullptr;
 	}
 
-	OBJ* Find(std::string Tag, Layer TargetLayer, int Index) {
+	BASE* Find(std::string Tag, Layer TargetLayer, int Index) {
 		int layer = static_cast<int>(TargetLayer);
 
 		if (Container[layer][Index]->ObjectTag == Tag)
@@ -139,7 +139,7 @@ public:
 			O.second->DeleteDesc = true;
 	}
 
-	bool CheckCollision(OBJ* From, OBJ* To) {
+	bool CheckCollision(BASE* From, BASE* To) {
 		if (From && To) {
 			if (From->OOBB.Intersects(To->OOBB))
 				return true;
@@ -151,7 +151,7 @@ public:
 			return false;
 	}
 
-	bool CheckPickingByCursor(LPARAM lParam, OBJ* Object) {
+	bool CheckPickingByCursor(LPARAM lParam, BASE* Object) {
 		float xClient = LOWORD(lParam);
 		float yClient = HIWORD(lParam);
 
@@ -174,7 +174,7 @@ public:
 		return false;
 	}
 
-	bool CheckPickingByCoordinate(float X, float Y, OBJ* Object) {
+	bool CheckPickingByCoordinate(float X, float Y, BASE* Object) {
 		float xClient = (X + 1.0) / 2.0 * WIDTH;
 		float yClient = (1.0 - Y) / 2.0 * HEIGHT;
 
@@ -197,7 +197,7 @@ public:
 		return false;
 	}
 
-	bool CheckTerrainFloor(OBJ* Object, OBJ* Terrain) {
+	bool CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 		if (Terrain->TerrainMesh) {
 			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 				return true;
@@ -206,11 +206,11 @@ public:
 		return false;
 	}
 
-	void MoveToTerrainFloor(OBJ* Object, OBJ* Terrain) {
+	void MoveToTerrainFloor(BASE* Object, BASE* Terrain) {
 		Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
 	}
 	
-	void CheckCollisionnTerrain(OBJ* Object, OBJ* Terrain) {
+	void CheckCollisionnTerrain(BASE* Object, BASE* Terrain) {
 		if (Terrain->TerrainMesh) {
 			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 				Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
@@ -236,9 +236,7 @@ public:
 	}
 
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true) {
-		Mesh* mesh = new Mesh(Device, CmdList, Directory, TextMode);
-
-		return mesh;
+		return new Mesh(Device, CmdList, Directory, TextMode);
 	}
 
 	PseudoLightingShader* ShaderLoader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
@@ -301,7 +299,7 @@ public:
 
 	void ReleaseUploadBuffers() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(Container[i]); It != std::ranges::end(Container[i]); ++It)
+			for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It)
 				if(*It) (*It)->ReleaseUploadBuffers();
 		 }
 	}

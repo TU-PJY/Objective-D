@@ -88,7 +88,7 @@
     <ClInclude Include="Controller.h">
       <Filter>[1]_______[ Game Mode ]\[ Mode1 ]\[ Controller ]</Filter>
     </ClInclude>
-    <ClInclude Include="D3D_Main.h">
+    <ClInclude Include="DirectX_3D_Main.h">
       <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
     <ClInclude Include="MeshUtil.h">
@@ -123,7 +123,7 @@
     <ClCompile Include="DirectX_3D.cpp">
       <Filter>[4]_______[ DirectX 3D ]\[ Header ]</Filter>
     </ClCompile>
-    <ClCompile Include="D3D_Main.cpp">
+    <ClCompile Include="DirectX_3D_Main.cpp">
       <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />

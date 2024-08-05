@@ -34,9 +34,6 @@
 // screen size
 extern int WIDTH, HEIGHT;
 
-// full screen option
-constexpr bool START_WITH_FULL_SCREEN = true;
-
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 using Microsoft::WRL::ComPtr;

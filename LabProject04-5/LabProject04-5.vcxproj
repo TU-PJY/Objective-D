@@ -152,7 +152,7 @@
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Controller.h" />
-    <ClInclude Include="D3D_Main.h" />
+    <ClInclude Include="DirectX_3D_Main.h" />
     <ClInclude Include="ModeHeader.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="MeshUtil.h" />
@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
-    <ClCompile Include="D3D_Main.cpp" />
+    <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="FrameworkUtil.cpp" />
