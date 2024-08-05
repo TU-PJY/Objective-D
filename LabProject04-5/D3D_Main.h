@@ -5,7 +5,6 @@
 class D3DMain {
 public:
 	D3DMain();
-	~D3DMain();
 
 	bool Create(HINSTANCE hInstance, HWND hMainWnd);
 	void Destroy();
@@ -25,7 +24,6 @@ public:
     void Init();
     void ReleaseObjects();
 
-    void Routine();
     void Update();
 	void Render(ID3D12GraphicsCommandList* CmdList);
 

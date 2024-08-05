@@ -1,6 +1,6 @@
 #include "DirectX_3D.h"
 
-UINT	CbvSrvDescriptorIncrementSize = 0;
+UINT CbvSrvDescriptorIncrementSize = 0;
 
 ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeapType, D3D12_RESOURCE_STATES ResourceState, ID3D12Resource** UploadBuffer) {
 	ID3D12Resource* Buffer = NULL;

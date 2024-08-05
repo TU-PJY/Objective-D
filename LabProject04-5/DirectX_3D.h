@@ -1,22 +1,26 @@
 #pragma once
+#pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
 
 #define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
+#define _WITH_DIERECTX_MATH_FRUSTUM
 
+#include <windows.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-#include <math.h>
-
-#include <string>
+#include <wchar.h>
 #include <wrl.h>
 #include <shellapi.h>
+#include <Mmsystem.h>
 
 #include <fstream>
-#include <stdio.h>
-#include <wchar.h>
 #include <vector>
+#include <string>
+#include <cmath>
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -25,13 +29,7 @@
 #include <DirectXPackedVector.h>
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
-
 #include <D3d12SDKLayers.h>
-
-#include <Mmsystem.h>
-
-
-
 
 // screen size
 extern int WIDTH, HEIGHT;
@@ -39,32 +37,12 @@ extern int WIDTH, HEIGHT;
 // full screen option
 constexpr bool START_WITH_FULL_SCREEN = true;
 
-
 using namespace DirectX;
 using namespace DirectX::PackedVector;
-
 using Microsoft::WRL::ComPtr;
 
-
-#define DIR_FORWARD				0x01
-#define DIR_BACKWARD			0x02
-#define DIR_LEFT				0x04
-#define DIR_RIGHT				0x08
-#define DIR_UP					0x10
-#define DIR_DOWN				0x20
-
-#define RANDOM_COLOR			XMFLOAT4(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX))
-
-#define _WITH_DIERECTX_MATH_FRUSTUM
-
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
 extern UINT	CbvSrvDescriptorIncrementSize;
-
 extern ID3D12Resource *CreateBufferResource(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList, void *Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource **UploadBuffer = NULL);
-
 
 namespace Vec3 {
 	inline XMFLOAT3 XMVectorToFloat3(XMVECTOR& xmvVector) {
@@ -164,9 +142,6 @@ namespace Vec4 {
 	}
 }
 
-
-
-
 namespace Mat4 {
 	inline XMFLOAT4X4 Identity() {
 		XMFLOAT4X4 xmmtx4x4Result;
@@ -217,17 +192,11 @@ namespace Mat4 {
 	}
 }
 
-
-
-
 namespace Triangle {
 	inline bool Intersect(XMFLOAT3& xmf3RayPosition, XMFLOAT3& xmf3RayDirection, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2, float& fHitDistance) {
 		return(TriangleTests::Intersects(XMLoadFloat3(&xmf3RayPosition), XMLoadFloat3(&xmf3RayDirection), XMLoadFloat3(&v0), XMLoadFloat3(&v1), XMLoadFloat3(&v2), fHitDistance));
 	}
 }
-
-
-
 
 namespace Plane {
 	inline XMFLOAT4 Normalize(XMFLOAT4& xmf4Plane) {

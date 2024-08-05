@@ -44,7 +44,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		}
 
 		else
-			Main.Routine();
+			Main.Update();
 	}
 
 	Main.Destroy();
