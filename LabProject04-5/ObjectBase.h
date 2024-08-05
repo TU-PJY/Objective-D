@@ -1,11 +1,8 @@
 #pragma once
-#include "Conf.h"
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
-#include <cmath>
 
 class Shader;
-
 
 class OBJ {
 public:

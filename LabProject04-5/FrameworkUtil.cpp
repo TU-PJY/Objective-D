@@ -9,19 +9,6 @@ Framework fw;
 // global scope camera
 Camera cam;
 
-
-// mesh list to load
-std::unordered_map<std::string, char*> MeshList {
-	{ "pUfoMesh", "Models//UFO.txt" },
-	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
-};
-
-// teerain list to load
-std::unordered_map<std::string, char*> TerrainList {
-	{ "pTerrain", "Models//map.txt"}
-};
-
-
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	RootSignature = CreateGraphicsRootSignature(Device);
 	pShader = ShaderLoader(RootSignature, Device, CmdList);

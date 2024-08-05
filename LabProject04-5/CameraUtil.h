@@ -1,7 +1,7 @@
 #pragma once
-#include "Conf.h"
-#include "ObjectBase.h"
+#include "Config.h"
 #include "DirectX_3D.h"
+#include "ObjectBase.h"
 #define ASPECT_RATIO				(float(WIDTH) / float(HEIGHT))
 
 class Camera {

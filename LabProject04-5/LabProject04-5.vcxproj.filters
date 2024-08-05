@@ -1,154 +1,163 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="[ DirectX 3D ]">
+    <Filter Include="[0]_______[ Configuration ]">
+      <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]_______[ Game Mode ]">
+      <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]_______[ Game Mode ]\[ Mode1 ]">
+      <UniqueIdentifier>{64814673-b711-4547-a2fa-f83b097a05fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]_______[ Game Mode ]\[ Mode1 ]\[ Controller ]">
+      <UniqueIdentifier>{cc6b1633-4fe7-443c-9241-d96e5dcf7d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]_______[ Object ]">
+      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]_______[ Object ]\[ CustomObject ]">
+      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]">
+      <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Camera Util ]">
+      <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Mesh Util ]">
+      <UniqueIdentifier>{e06f5344-112a-46aa-8b30-1ab19c3f4755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Timer Util ]">
+      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Shader Util ]">
+      <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Framework Util ]">
+      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]_______[ DirectX 3D ]">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Header ]">
+    <Filter Include="[4]_______[ DirectX 3D ]\[ Header ]">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Main ]">
+    <Filter Include="[4]_______[ DirectX 3D ]\[ Main ]">
       <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ WinAPI ]">
+    <Filter Include="[5]_______[ WinAPI ]">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ WinAPI ]\[ Res ]">
+    <Filter Include="[5]_______[ WinAPI ]\[ Res ]">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="[ WinAPI ]\[ Header ]">
+    <Filter Include="[5]_______[ WinAPI ]\[ Header ]">
       <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ Conf ]">
-      <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ HLSL ]">
+    <Filter Include="[6]_______[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ Template ]">
+    <Filter Include="[7]_______[ Resource List ]">
+      <UniqueIdentifier>{517a4e13-9e31-4063-a3c0-0decb62883fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]_______[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Game Mode ]">
-      <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Game Mode ]\[ Mode1 ]">
-      <UniqueIdentifier>{64814673-b711-4547-a2fa-f83b097a05fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Game Mode ]\[ Mode1 ]\[ Controller ]">
-      <UniqueIdentifier>{cc6b1633-4fe7-443c-9241-d96e5dcf7d75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Object ]">
-      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Object ]\[ CustomObject ]">
-      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]">
-      <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]\[ Camera Util ]">
-      <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]\[ Mesh Util ]">
-      <UniqueIdentifier>{e06f5344-112a-46aa-8b30-1ab19c3f4755}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]\[ Timer Util ]">
-      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]\[ Shader Util ]">
-      <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ Util ]\[ Framework Util ]">
-      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
-      <Filter>[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Framework Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
-      <Filter>[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Camera Util ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
-      <Filter>[ DirectX 3D ]\[ Header ]</Filter>
+      <Filter>[4]_______[ DirectX 3D ]\[ Header ]</Filter>
     </ClInclude>
-    <ClInclude Include="Conf.h">
-      <Filter>[ Conf ]</Filter>
+    <ClInclude Include="Config.h">
+      <Filter>[0]_______[ Configuration ]</Filter>
     </ClInclude>
     <ClInclude Include="Ufo.h">
-      <Filter>[ Object ]\[ CustomObject ]</Filter>
+      <Filter>[2]_______[ Object ]\[ CustomObject ]</Filter>
     </ClInclude>
     <ClInclude Include="ObjectBase.h">
-      <Filter>[ Object ]</Filter>
+      <Filter>[2]_______[ Object ]</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
-      <Filter>[ Game Mode ]\[ Mode1 ]\[ Controller ]</Filter>
+      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]\[ Controller ]</Filter>
     </ClInclude>
     <ClInclude Include="D3D_Main.h">
-      <Filter>[ DirectX 3D ]\[ Main ]</Filter>
+      <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
     <ClInclude Include="MeshUtil.h">
-      <Filter>[ Util ]\[ Mesh Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TimerUtil.h">
-      <Filter>[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Timer Util ]</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
-      <Filter>[ Util ]\[ Shader Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="ModeHeader.h">
-      <Filter>[ Game Mode ]\[ Mode1 ]</Filter>
+      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceList.h">
+      <Filter>[7]_______[ Resource List ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
-      <Filter>[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[3]_______[ Util ]\[ Framework Util ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
-      <Filter>[ DirectX 3D ]\[ Header ]</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraUtil.cpp">
-      <Filter>[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[4]_______[ DirectX 3D ]\[ Header ]</Filter>
     </ClCompile>
     <ClCompile Include="D3D_Main.cpp">
-      <Filter>[ DirectX 3D ]\[ Main ]</Filter>
+      <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="ResourceList.cpp">
+      <Filter>[7]_______[ Resource List ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Camera Util ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders.hlsl">
-      <Filter>[ HLSL ]</Filter>
+      <Filter>[6]_______[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ClassTemplate.txt">
-      <Filter>[ Template ]</Filter>
+      <Filter>[8]_______[ Template ]</Filter>
     </Text>
     <Text Include="ControllerTemplate.txt">
-      <Filter>[ Template ]</Filter>
+      <Filter>[8]_______[ Template ]</Filter>
     </Text>
   </ItemGroup>
 </Project>

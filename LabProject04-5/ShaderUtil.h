@@ -1,11 +1,9 @@
 #pragma once
 #include "DirectX_3D.h"
 
-
 struct CB_GAMEOBJECT_INFO {
 	XMFLOAT4X4						Matrix;
 };
-
 
 class Shader {
 private:

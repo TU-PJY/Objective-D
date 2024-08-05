@@ -1,4 +1,4 @@
-#include "CONF.h"
+#include "Config.h"
 #include "D3D_Main.h"
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"

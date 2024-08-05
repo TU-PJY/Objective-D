@@ -1,20 +1,16 @@
 #pragma once
-#include "CONF.h"
+#include "Config.h"
 #include "ObjectBase.h"
 #include "CameraUtil.h"
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
+#include "ResourceList.h"
 #include <deque>
 #include <ranges>
-#include <unordered_map>
 #include <map>
 
 // global scope shader
 extern PseudoLightingShader* pShader;
-
-extern std::unordered_map<std::string, char*> MeshList;
-extern std::unordered_map<std::string, char*> TerrainList;
-
 constexpr int NUM_LAYER = static_cast<int>(Layer::END);
 
 enum class ObjectRange
@@ -23,19 +19,19 @@ enum class ObjectRange
 enum class LayerRange
 { Single, All };
 
+typedef std::string(*Function)(void);
 
 class Framework {
 private:
-	std::string RunningMode{};
-	std::unordered_map<std::string, Mesh*> LoadedMeshList;
-	std::unordered_map<std::string, Mesh*> LoadedTerrainList;
+	std::map<std::string, Mesh*> LoadedMeshList;
+	std::map<std::string, Mesh*> LoadedTerrainList;
 	std::multimap<std::string, OBJ*> ObjectList;
 
-	typedef std::string(*Function)(void);
+	std::string RunningMode{};
 	Function ControllerPtr{};
 
 protected:
-	ID3D12RootSignature* RootSignature = nullptr;
+	ID3D12RootSignature* RootSignature{};
 	std::array<std::deque<OBJ*>, NUM_LAYER> Container;
 
 public:
@@ -221,15 +217,14 @@ public:
 		}
 	}
 
-
 	void LoadMeshFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : MeshList)
-			LoadedMeshList.insert(make_pair(MeshName, MeshLoader(Device, CmdList, Directory)));
+			LoadedMeshList.insert(std::pair(MeshName, MeshLoader(Device, CmdList, Directory)));
 	}
 
 	void LoadTerrainFromList(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		for (const auto& [MeshName, Directory] : TerrainList)
-			LoadedTerrainList.insert(make_pair(MeshName, MeshLoader(Device, CmdList, Directory)));
+			LoadedTerrainList.insert(std::pair(MeshName, MeshLoader(Device, CmdList, Directory)));
 	}
 
 	Mesh* FindMesh(std::string MeshName) {

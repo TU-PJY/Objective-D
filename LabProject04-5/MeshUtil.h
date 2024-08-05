@@ -1,6 +1,6 @@
 #pragma once
 #include "DirectX_3D.h"
-#include <iostream>
+#include <fstream>
 
 class CVertex {
 protected:
