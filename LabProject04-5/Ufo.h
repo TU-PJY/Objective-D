@@ -9,14 +9,10 @@ private:
 	float SpeedStrafe{};
 
 public:
-	Aircraft(Layer layer, std::string tag) {
+	Aircraft() {
 		SetShader(pShader);
 		SetMesh(fw.FindMesh("pFlyerMesh"));
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
-
-
-		ObjectLayer = layer;
-		Tag = tag;
 	}
 
 	void MoveAircraft(float FT) {
@@ -46,7 +42,7 @@ public:
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		auto ptr = fw.FindObject("map", LayerRange::Single, Layer::Terrain);
+		auto ptr = fw.Find("map");
 		if (ptr) fw.CheckCollisionnTerrain(this, ptr);
 
 		UpdateOOBB();
@@ -126,9 +122,6 @@ public:
 		ModelColor = color;
 		Position = position;
 
-		ObjectLayer = layer;
-		Tag = tag;
-
 		UpdateOOBB();
 	}
 
@@ -136,7 +129,7 @@ public:
 		InitTransform();
 
 
-		auto ptr = fw.FindObject("obj1", LayerRange::Single, Layer::Terrain);
+		auto ptr = fw.Find("obj1");
 		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
 
 		Scale(0.5, 0.5, 0.5);
@@ -149,14 +142,11 @@ class Map : public OBJ {
 private:
 
 public:
-	Map(Layer layer, std::string tag) {
+	Map() {
 		SetShader(pShader);
 		SetTerrain(fw.FindTerrain("pTerrain"));
 		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
 		Scale(5.0, 5.0, 5.0);
-
-		ObjectLayer = layer;
-		Tag = tag;
 	}
 
 	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {

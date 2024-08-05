@@ -7,6 +7,7 @@
 #include <deque>
 #include <ranges>
 #include <unordered_map>
+#include <map>
 
 // global scope shader
 extern PseudoLightingShader* pShader;
@@ -28,34 +29,38 @@ private:
 	std::string RunningMode{};
 	std::unordered_map<std::string, Mesh*> LoadedMeshList;
 	std::unordered_map<std::string, Mesh*> LoadedTerrainList;
+	std::multimap<std::string, OBJ*> ObjectList;
+
 	typedef std::string(*Function)(void);
+	Function ControllerPtr{};
 
 protected:
 	ID3D12RootSignature* RootSignature = nullptr;
-	std::array<std::deque<OBJ*>, NUM_LAYER> ObjectCont;
+	std::array<std::deque<OBJ*>, NUM_LAYER> Container;
 
 public:
 	POINT PrevCursorPosition{};
 	bool LButtonDownState{}, RButtonDownState{};
 
-
 	void Init(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList);
 
-	void SetMode(Function ModeFunction) {
+	void SwitchMode(Function ModeFunction) {
 		ClearAll();
 		RunningMode = ModeFunction();
 	}
 
-	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void MouseMotionController(HWND hwnd);
+	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void InputMouseMotion(HWND hwnd);
 
 	void Update(float FT) {
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
-				if (*It) (*It)->Update(FT);
-				if (*It) ++It;
+			for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It) {
+				if(!(*It)->DeleteDesc)
+					(*It)->Update(FT);
 			}
+
+			UpdateContainer(i);
 		}
 	}
 
@@ -64,145 +69,81 @@ public:
 		cam.UpdateShaderVariables(CmdList);
 
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
-				if (*It) (*It)->Render(CmdList);
-				if (*It) ++It;
+			for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It) {
+				if (!(*It)->DeleteDesc)
+					(*It)->Render(CmdList);
 			}
 		}
 	}
 
-	void AddObject(OBJ*&& Object, Layer Layer) {
-		int layer = static_cast<int>(Layer);
+	void UpdateContainer(int Index) {
+		std::erase_if(ObjectList, [](const std::pair<std::string, OBJ*>& Object) {
+			return Object.second->DeleteDesc;
+			});
 
-		ObjectCont[layer].push_back(Object);
-	}
-
-	void DeleteObject(OBJ* Object, Layer Layer) {
-		int layer = static_cast<int>(Layer);
-
-		auto It = std::ranges::find(ObjectCont[layer], Object);
-		if (It != std::ranges::end(ObjectCont[layer])) {
-			delete* It;
-			*It = nullptr;
-			It = ObjectCont[layer].erase(It);
+		for (auto It = std::begin(Container[Index]); It != std::end(Container[Index]);) {
+			if ((*It)->DeleteDesc) {
+				delete* It;
+				*It = nullptr;
+				It = Container[Index].erase(It);
+				continue;
+			}
+				
+			++It;
 		}
 	}
 
-	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, Layer Layer = static_cast<Layer>(0)) {
+	void AddObject(OBJ*&& Object, std::string Tag, Layer Layer) {
 		int layer = static_cast<int>(Layer);
 
-		if (Range1 == ObjectRange::Single) {
-			if (Range2 == LayerRange::Single) {
-				auto It = std::ranges::find_if(ObjectCont[layer], [&ObjectTag](OBJ*& obj) { return obj->Tag == ObjectTag; });
+		Container[layer].push_back(Object);
+		Container[layer].back()->ObjectTag = Tag;
+		ObjectList.insert(std::pair(Tag, Container[layer].back()));
+	}
 
-				if (It != std::ranges::end(ObjectCont[layer])) {
-					delete* It;
-					*It = nullptr;
-					It = ObjectCont[layer].erase(It);
-				}
-			}
+	void DeleteSelf(OBJ* Object) {
+		Object->DeleteDesc = true;
+	}
 
-			else if (Range2 == LayerRange::All) {
-				for (int i = 0; i < NUM_LAYER; ++i) {
-					auto It = std::ranges::find_if(ObjectCont[i], [&ObjectTag](OBJ*& obj) { return obj->Tag == ObjectTag; });
+	void DeleteObject(std::string Tag) {
+		auto It = ObjectList.find(Tag);
+		if (It != std::end(ObjectList))
+			It->second->DeleteDesc = true;
+	}
 
-					if (It != std::ranges::end(ObjectCont[i])) {
-						delete *It;
-						*It = nullptr;
-						It = ObjectCont[layer].erase(It);
+	void DeleteObject(std::string Tag, Layer TargetLayer) {
+		int layer = static_cast<int>(TargetLayer);
+		size_t NumObject = Container[layer].size();
 
-						return;
-					}
-				}
-			}
-		}
-
-		else if (Range1 == ObjectRange::All) {
-			if (Range2 == LayerRange::Single) {
-				auto It = std::ranges::begin(ObjectCont[layer]);
-
-				while (It != std::ranges::end(ObjectCont[layer])) {
-					It = std::ranges::find_if(ObjectCont[layer], [&ObjectTag](OBJ*& Obj) { return Obj->Tag == ObjectTag; });
-
-					if (It != std::ranges::end(ObjectCont[layer])) {
-						delete* It;
-						*It = nullptr;
-						It = ObjectCont[layer].erase(It);
-					}
-				}
-			}
-
-			else if (Range2 == LayerRange::All) {
-				for (int i = 0; i < NUM_LAYER; ++i) {
-					auto It = std::ranges::begin(ObjectCont[i]);
-
-					while (It != std::ranges::end(ObjectCont[i])) {
-						It = std::ranges::find_if(ObjectCont[i], [&ObjectTag](OBJ*& Obj) { return Obj->Tag == ObjectTag; });
-
-						if (It != std::ranges::end(ObjectCont[i])) {
-							delete* It;
-							*It = nullptr;
-							It = ObjectCont[i].erase(It);
-						}
-					}
-				}
-			}
+		for (int i = 0; i < NumObject; ++i) {
+			if (Container[layer][i]->ObjectTag == Tag)
+				Container[layer][i]->DeleteDesc = true;
 		}
 	}
 
-	OBJ* FindObject(std::string ObjectTag, LayerRange Range1, Layer Layer = static_cast<Layer>(0)) {
-		int layer = static_cast<int>(Layer);
+	OBJ* Find(std::string Tag) {
+		auto It = ObjectList.find(Tag);
+		if (It != std::end(ObjectList))
+			return It->second;
+		else
+			return nullptr;
+	}
 
-		if (Range1 == LayerRange::Single) {
-			auto It = std::ranges::find_if(ObjectCont[layer], [&ObjectTag](OBJ*& obj) { return obj->Tag == ObjectTag; });
-			if (It != std::ranges::end(ObjectCont[layer]))
-				return *It;
+	OBJ* Find(std::string Tag, Layer TargetLayer, int Index) {
+		int layer = static_cast<int>(TargetLayer);
+		size_t NumObject = Container[layer].size();
+
+		for (int i = 0; i < NumObject; ++i) {
+			if (Container[layer][i]->ObjectTag == Tag)
+				return Container[layer][i];
 			else
 				return nullptr;
 		}
-
-		else if (Range1 == LayerRange::All) {
-			for (int i = 0; i < NUM_LAYER; ++i) {
-				auto It = std::ranges::begin(ObjectCont[i]);
-
-				while (It != std::ranges::end(ObjectCont[i])) {
-					It = std::ranges::find_if(ObjectCont[i], [&ObjectTag](OBJ*& Obj) { return Obj->Tag == ObjectTag; });
-
-					if (It != std::ranges::end(ObjectCont[i]))
-						return *It;
-
-					++It;
-				}
-			}
-			return nullptr;
-		}
-	}
-
-	OBJ* FindObject(std::string ObjectTag, Layer Layer, int Index) {
-		int layer = static_cast<int>(Layer);
-
-		if (ObjectCont[layer][Index]->Tag == ObjectTag)
-			return ObjectCont[layer][Index];
-		else
-			return false;
-	}
-
-	size_t Size(Layer Layer) {
-		int layer = static_cast<int>(Layer);
-
-		return ObjectCont[layer].size();
 	}
 
 	void ClearAll() {
-		for (int i = 0; i < NUM_LAYER; ++i) {
-			auto It = std::ranges::begin(ObjectCont[i]);
-
-			while (It != std::ranges::end(ObjectCont[i])) {
-				delete* It;
-				*It = nullptr;
-				It = ObjectCont[i].erase(It);
-			}
-		}
+		for (const auto& O : ObjectList)
+			O.second->DeleteDesc = true;
 	}
 
 	bool CheckCollision(OBJ* From, OBJ* To) {
@@ -212,6 +153,7 @@ public:
 			else 
 				return false;
 		}
+
 		else
 			return false;
 	}
@@ -367,7 +309,7 @@ public:
 
 	void ReleaseUploadBuffers() {
 		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ++It)
+			for (auto It = std::ranges::begin(Container[i]); It != std::ranges::end(Container[i]); ++It)
 				if(*It) (*It)->ReleaseUploadBuffers();
 		 }
 	}

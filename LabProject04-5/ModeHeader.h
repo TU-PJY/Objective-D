@@ -4,8 +4,8 @@
 #include <string>
 
 inline std::string Mode1() {
-	fw.AddObject(new Aircraft(Layer::L1, "obj1"), Layer::L1);
-	fw.AddObject(new Map(Layer::Terrain, "map"), Layer::Terrain);
+	fw.AddObject(new Aircraft, "obj1", Layer::L1);
+	fw.AddObject(new Map, "map", Layer::Terrain);
 
 	return __func__;
 }

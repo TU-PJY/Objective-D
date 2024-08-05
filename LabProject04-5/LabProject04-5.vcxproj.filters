@@ -23,35 +23,11 @@
     <Filter Include="[ Conf ]">
       <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]">
-      <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Camera Util ]">
-      <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Mesh Util ]">
-      <UniqueIdentifier>{e06f5344-112a-46aa-8b30-1ab19c3f4755}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Timer Util ]">
-      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Shader Util ]">
-      <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
     <Filter Include="[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Framework Util ]">
-      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Object Util ]">
-      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[ DirectX 3D ]\[ Util ]\[ Object Util ]\[ CustomObject ]">
-      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
     <Filter Include="[ Game Mode ]">
       <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
@@ -62,13 +38,37 @@
     <Filter Include="[ Game Mode ]\[ Mode1 ]\[ Controller ]">
       <UniqueIdentifier>{cc6b1633-4fe7-443c-9241-d96e5dcf7d75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[ Object ]">
+      <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Object ]\[ CustomObject ]">
+      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]">
+      <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]\[ Camera Util ]">
+      <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]\[ Mesh Util ]">
+      <UniqueIdentifier>{e06f5344-112a-46aa-8b30-1ab19c3f4755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]\[ Timer Util ]">
+      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]\[ Shader Util ]">
+      <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[ Util ]\[ Framework Util ]">
+      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[ Util ]\[ Framework Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[ Util ]\[ Camera Util ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
       <Filter>[ DirectX 3D ]\[ Header ]</Filter>
@@ -77,10 +77,10 @@
       <Filter>[ Conf ]</Filter>
     </ClInclude>
     <ClInclude Include="Ufo.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Object Util ]\[ CustomObject ]</Filter>
+      <Filter>[ Object ]\[ CustomObject ]</Filter>
     </ClInclude>
     <ClInclude Include="ObjectBase.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Object Util ]</Filter>
+      <Filter>[ Object ]</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
       <Filter>[ Game Mode ]\[ Mode1 ]\[ Controller ]</Filter>
@@ -89,13 +89,13 @@
       <Filter>[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
     <ClInclude Include="MeshUtil.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Mesh Util ]</Filter>
+      <Filter>[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TimerUtil.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[ Util ]\[ Timer Util ]</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Shader Util ]</Filter>
+      <Filter>[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>[ WinAPI ]\[ Header ]</Filter>
@@ -112,13 +112,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[ Util ]\[ Framework Util ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
       <Filter>[ DirectX 3D ]\[ Header ]</Filter>
     </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
-      <Filter>[ DirectX 3D ]\[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[ Util ]\[ Camera Util ]</Filter>
     </ClCompile>
     <ClCompile Include="D3D_Main.cpp">
       <Filter>[ DirectX 3D ]\[ Main ]</Filter>

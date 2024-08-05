@@ -28,20 +28,24 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	LoadMeshFromList(Device, CmdList);
 	LoadTerrainFromList(Device, CmdList);
 
-	SetMode(Mode1);
+	// add dummy object
+	for (int i = 0; i < NUM_LAYER; ++i)
+		AddObject(new DUMMY, "__DUMMY__", static_cast<Layer>(i));
+
+	SwitchMode(Mode1);
 }
 
-void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+void Framework::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	if (RunningMode == "Mode1")
 		Mode_1::KeyboardController(hWnd, nMessageID, wParam, lParam);
 }
 
-void Framework::MouseMotionController(HWND hwnd) {
+void Framework::InputMouseMotion(HWND hwnd) {
 	if (RunningMode == "Mode1")
 		Mode_1::MouseMotionController(hwnd);
 }
 
-void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+void Framework::InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_LBUTTONDOWN:
 		::SetCapture(hWnd);

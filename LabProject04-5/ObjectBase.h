@@ -23,14 +23,10 @@ public:
 	Mesh* ObjectMesh{};
 	Mesh* TerrainMesh{};
 
-	Layer ObjectLayer{};
-	std::string Tag{};
+	std::string ObjectTag{};
+	bool DeleteDesc{};
 
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
-
-
-	OBJ() {}
-	~OBJ() {}
 
 	void SetMesh(Mesh* MeshData) {
 		ObjectMesh = MeshData;
@@ -44,46 +40,12 @@ public:
 		ObjectShader = ShaderData;
 	}
 
-	virtual void Update(float FT) {}
-
-	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
-		if (ObjectShader)
-			ObjectShader->Render(CmdList);
-
-		UpdateShaderVariables(CmdList);
-
-		if (ObjectMesh)
-			ObjectMesh->Render(CmdList);
-
-		if (TerrainMesh)
-			TerrainMesh->Render(CmdList);
-	}
-
-	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
-	virtual void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
-	virtual void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
-
 	void UpdateOOBB() {
 		if (ObjectMesh) {
 			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&Matrix));
 			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
 		}
 	}
-
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
-		XMFLOAT4X4 xmf4x4World;
-		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
-		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
-		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
-	}
-
-	virtual void ReleaseUploadBuffers() {
-		if (ObjectMesh)
-			ObjectMesh->ReleaseUploadBuffers();
-	}
-
-	virtual void ReleaseShaderVariables() {}
-
 
 	void InitTransform() {
 		Matrix = Mat4::Identity();
@@ -237,4 +199,42 @@ public:
 
 		return(nIntersected);
 	}
+
+	
+	////////// virtual functions
+
+	virtual ~OBJ() {}
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
+		XMFLOAT4X4 xmf4x4World;
+		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
+		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
+		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
+	}
+
+	virtual void ReleaseUploadBuffers() {
+		if (ObjectMesh)
+			ObjectMesh->ReleaseUploadBuffers();
+	}
+
+	virtual void ReleaseShaderVariables() {}
+	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
+	virtual void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	virtual void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+
+	virtual void Update(float FT) {}
+	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
+		if (ObjectShader)
+			ObjectShader->Render(CmdList);
+
+		UpdateShaderVariables(CmdList);
+
+		if (ObjectMesh)
+			ObjectMesh->Render(CmdList);
+
+		if (TerrainMesh)
+			TerrainMesh->Render(CmdList);
+	}
 };
+
+// dummy object for avoiding iterator error
+class DUMMY : public OBJ {};

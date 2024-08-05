@@ -40,11 +40,11 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
-		fw.MouseController(hWnd, nMessageID, wParam, lParam);
+		fw.InputMouse(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_KEYDOWN: case WM_KEYUP:
-		fw.KeyboardController(hWnd, nMessageID, wParam, lParam);
+		fw.InputKey(hWnd, nMessageID, wParam, lParam);
 		break;
 	}
 
@@ -85,7 +85,7 @@ void D3DMain::Update() {
 
 	cam.RegenerateViewMatrix();
 	cam.Update(Timer.GetTimeElapsed());
-	fw.MouseMotionController(hWnd);
+	fw.InputMouseMotion(hWnd);
 	fw.Update(Timer.GetTimeElapsed());
 
 	Render(CmdList);

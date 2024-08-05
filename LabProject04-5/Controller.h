@@ -7,8 +7,8 @@ namespace Mode_1 {
 		switch (nMessageID) {
 		case WM_KEYDOWN: case WM_KEYUP:
 		{
-			auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
-			if (obj) obj->ObjectKeyboardController(nMessageID, wParam);
+			if (auto obj = fw.Find("obj1"); obj)
+				obj->ObjectKeyboardController(nMessageID, wParam);
 		}
 
 		switch (wParam) {
@@ -23,8 +23,8 @@ namespace Mode_1 {
 
 	inline void MouseMotionController(HWND hwnd) {
 		if (GetCapture() == hwnd) {
-			auto obj = fw.FindObject("obj1", LayerRange::Single, Layer::L1);
-			if (obj) obj->ObjectMouseMotionController(fw.PrevCursorPosition, fw.LButtonDownState, fw.RButtonDownState);
+			if(auto obj = fw.Find("obj1"); obj)
+				obj->ObjectMouseMotionController(fw.PrevCursorPosition, fw.LButtonDownState, fw.RButtonDownState);
 		}
 	}
 
