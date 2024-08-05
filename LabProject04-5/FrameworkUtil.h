@@ -131,14 +131,11 @@ public:
 
 	OBJ* Find(std::string Tag, Layer TargetLayer, int Index) {
 		int layer = static_cast<int>(TargetLayer);
-		size_t NumObject = Container[layer].size();
 
-		for (int i = 0; i < NumObject; ++i) {
-			if (Container[layer][i]->ObjectTag == Tag)
-				return Container[layer][i];
-			else
-				return nullptr;
-		}
+		if (Container[layer][Index]->ObjectTag == Tag)
+			return Container[layer][Index];
+		else
+			return nullptr;
 	}
 
 	void ClearAll() {
