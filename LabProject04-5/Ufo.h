@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "ObjectBase.h"
 #include <random>
 
 class Aircraft : public OBJ {

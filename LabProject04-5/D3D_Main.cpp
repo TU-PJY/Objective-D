@@ -1,7 +1,7 @@
-#include "D3DMain.h"
+#include "D3D_Main.h"
 #include "CONF.h"
-#include "Camera.h"
-#include "Framework.h"
+#include "CameraUtil.h"
+#include "FrameworkUtil.h"
 
 
 void D3DMain::Init() {
@@ -12,8 +12,8 @@ void D3DMain::Init() {
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
-	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
+	cam.SetViewport(0, 0, WIDTH, HEIGHT, 0.0f, 1.0f);
+	cam.SetScissorRect(0, 0, WIDTH, HEIGHT);
 	cam.SetTimeLag(0.1f);
 	cam.SetCameraMode(CamMode::MODE1);
 
@@ -133,27 +133,27 @@ void D3DMain::Routine() {
 
 	MoveToNextFrame();
 
-	Timer.GetFrameRate(FrameRate + (D3D_WindowNameLength - 1), 37);
+	Timer.GetFrameRate(FrameRate + (WindowNameLength - 1), 37);
 	::SetWindowText(hWnd, FrameRate);
 }
 
 void D3DMain::SwitchToWindowMode(HWND hwnd) {
-	FRAME_BUFFER_WIDTH /= 2;
-	FRAME_BUFFER_HEIGHT /= 2 * ASPECT_RATIO;
+	WIDTH /= 2;
+	HEIGHT /= 2 * ASPECT_RATIO;
 
 	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 	ShowWindow(hwnd, SW_NORMAL);
-	SetWindowPos(hwnd, NULL, 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER );
+	SetWindowPos(hwnd, NULL, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER );
 	FullScreenState = FALSE;
 }
 
 void D3DMain::SwitchToFullscreenMode(HWND hwnd) {
-	FRAME_BUFFER_WIDTH = GetSystemMetrics(SM_CXSCREEN);
-	FRAME_BUFFER_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+	WIDTH = GetSystemMetrics(SM_CXSCREEN);
+	HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 	SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
 	ShowWindow(hwnd, SW_MAXIMIZE);
-	SetWindowPos(hwnd, HWND_TOP, 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
 	FullScreenState = TRUE;
 }
 
@@ -183,11 +183,11 @@ D3DMain::D3DMain() {
 	for (int i = 0; i < SwapChainBuffers; i++) 
 		FenceValues[i] = 0;
 
-	CLIENT_WIDTH = FRAME_BUFFER_WIDTH;
-	CLIENT_HEIGHT = FRAME_BUFFER_HEIGHT;
+	CLIENT_WIDTH = WIDTH;
+	CLIENT_HEIGHT = HEIGHT;
 
 	memset(WindowName, 0, sizeof(WindowName));
-	_tcscpy_s(WindowName, D3D_WindowNameLength, D3D_WindowName);
+	_tcscpy_s(WindowName, WindowNameLength, WindowName);
 	_tcscpy_s(FrameRate, WindowName);
 }
 

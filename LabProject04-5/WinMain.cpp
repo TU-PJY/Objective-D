@@ -1,28 +1,20 @@
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #include "Objective-D.h"
-#include "D3DMain.h"
-
-
+#include "D3D_Main.h"
 #define MAX_LOADSTRING 100
 
+int WIDTH = GetSystemMetrics(SM_CXSCREEN);
+int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+D3DMain Main;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];
 
-
-int FRAME_BUFFER_WIDTH = GetSystemMetrics(SM_CXSCREEN);
-int FRAME_BUFFER_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
-
-
-D3DMain						D3D_Main;
-
-
 ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE, int);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
-
 
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -52,14 +44,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		}
 
 		else
-			D3D_Main.Routine();
+			Main.Routine();
 	}
 
-	D3D_Main.Destroy();
+	Main.Destroy();
 
 	return((int)Messege.wParam);
 }
-
 
 ATOM MyRegisterClass(HINSTANCE hInstance) {
 	WNDCLASSEX Wcex;
@@ -81,15 +72,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 	return ::RegisterClassEx(&Wcex);
 }
 
-
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	AppInstance = hInstance;
 	DWORD WindowStyle{};
 	RECT Rect{};
 
-	Rect = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
+	Rect = { 0, 0, WIDTH, HEIGHT };
 	WindowStyle = WS_POPUP;
-	D3D_Main.FullScreenState = true;
+	Main.FullScreenState = true;
 
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
@@ -110,33 +100,31 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	if (!MainWnd) 
 		return(FALSE);
 
-	D3D_Main.Create(hInstance, MainWnd);
+	Main.Create(hInstance, MainWnd);
 
 	::ShowWindow(MainWnd, nCmdShow);
 	::UpdateWindow(MainWnd);
 
 	if (!START_WITH_FULL_SCREEN)
-		D3D_Main.SwitchToWindowMode(MainWnd);
+		Main.SwitchToWindowMode(MainWnd);
 
 	return(TRUE);
 }
-
 
 void DisplayStateChanger(HWND hWnd, UINT nMessageID, WPARAM wParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_F11:
-			if (D3D_Main.FullScreenState)
-				D3D_Main.SwitchToWindowMode(hWnd);
+			if (Main.FullScreenState)
+				Main.SwitchToWindowMode(hWnd);
 			else
-				D3D_Main.SwitchToFullscreenMode(hWnd);
+				Main.SwitchToFullscreenMode(hWnd);
 			break;
 		}
 		break;
 	}
 }
-
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	int wmId, wmEvent;
@@ -154,7 +142,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_MOUSEMOVE:
-		D3D_Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
+		Main.WindowsMessegeFunc(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_COMMAND:
@@ -191,7 +179,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 
 	return 0;
 }
-
 
 INT_PTR CALLBACK About(HWND hDlg, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	UNREFERENCED_PARAMETER(lParam);

@@ -1,11 +1,7 @@
-//------------------------------------------------------- ----------------------
-// File: Object.h
-//-----------------------------------------------------------------------------
-
 #pragma once
-#include "CONF.h"
-#include "Shader.h"
-#include "Mesh.h"
+#include "Conf.h"
+#include "ShaderUtil.h"
+#include "MeshUtil.h"
 #include <cmath>
 
 class Shader;

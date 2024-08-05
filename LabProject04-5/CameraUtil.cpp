@@ -1,5 +1,5 @@
-#include "Camera.h"
-#include "Framework.h"
+#include "CameraUtil.h"
+#include "FrameworkUtil.h"
 
 
 void Camera::Update(float FT) {

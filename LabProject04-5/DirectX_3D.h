@@ -34,7 +34,7 @@
 
 
 // screen size
-extern int FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT;
+extern int WIDTH, HEIGHT;
 
 // full screen option
 constexpr bool START_WITH_FULL_SCREEN = true;

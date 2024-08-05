@@ -1,4 +1,4 @@
-#include "D3DHeader.h"
+#include "DirectX_3D.h"
 
 UINT	CbvSrvDescriptorIncrementSize = 0;
 

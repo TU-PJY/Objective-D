@@ -1,5 +1,5 @@
 #pragma once
-#include "D3DHeader.h"
+#include "DirectX_3D.h"
 
 
 struct CB_GAMEOBJECT_INFO {

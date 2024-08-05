@@ -1,7 +1,8 @@
 #pragma once
 #include "Conf.h"
-#include "Object.h"
-#define ASPECT_RATIO				(float(FRAME_BUFFER_WIDTH) / float(FRAME_BUFFER_HEIGHT))
+#include "ObjectBase.h"
+#include "DirectX_3D.h"
+#define ASPECT_RATIO				(float(WIDTH) / float(HEIGHT))
 
 class Camera {
 protected:
@@ -43,8 +44,8 @@ public:
 		Cam4x4View = Mat4::Identity();
 		Cam4x4Projection = Mat4::Identity();
 
-		CamViewport = { 0, 0, float(FRAME_BUFFER_WIDTH), float(FRAME_BUFFER_HEIGHT), 0.0f, 1.0f };
-		CamScissorRect = { 0, 0, FRAME_BUFFER_WIDTH , FRAME_BUFFER_HEIGHT };
+		CamViewport = { 0, 0, float(WIDTH), float(HEIGHT), 0.0f, 1.0f };
+		CamScissorRect = { 0, 0, WIDTH , HEIGHT };
 
 		CamPos = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		CamPitch = 0.0f;

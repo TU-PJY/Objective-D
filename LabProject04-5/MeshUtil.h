@@ -1,4 +1,5 @@
 #pragma once
+#include "DirectX_3D.h"
 #include <iostream>
 
 class CVertex {

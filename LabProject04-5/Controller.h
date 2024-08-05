@@ -1,5 +1,5 @@
 #pragma once
-#include "Framework.h"
+#include "FrameworkUtil.h"
 
 // 모드마다 별도의 네임스페이스
 namespace Mode_1 {

@@ -1,6 +1,7 @@
 #pragma once
-const ULONG MAX_SAMPLE_COUNT = 50; // Maximum frame time sample count
+#include "DirectX_3D.h"
 
+const ULONG MAX_SAMPLE_COUNT = 50; // Maximum frame time sample count
 
 class Timer{
 private:

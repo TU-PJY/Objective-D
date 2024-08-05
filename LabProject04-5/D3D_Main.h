@@ -1,6 +1,6 @@
 #pragma once
-#include "D3DHeader.h"
-#include "Timer.h"
+#include "DirectX_3D.h"
+#include "TimerUtil.h"
 
 class D3DMain {
 public:

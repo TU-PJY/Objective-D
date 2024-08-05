@@ -1,9 +1,9 @@
 #pragma once
 #include "CONF.h"
-#include "Object.h"
-#include "Camera.h"
-#include "Shader.h"
-#include "Mesh.h"
+#include "ObjectBase.h"
+#include "CameraUtil.h"
+#include "ShaderUtil.h"
+#include "MeshUtil.h"
 #include <deque>
 #include <ranges>
 #include <unordered_map>
@@ -240,8 +240,8 @@ public:
 	}
 
 	bool CheckPickingByCoordinate(float X, float Y, OBJ* Object) {
-		float xClient = (X + 1.0) / 2.0 * FRAME_BUFFER_WIDTH;
-		float yClient = (1.0 - Y) / 2.0 * FRAME_BUFFER_HEIGHT;
+		float xClient = (X + 1.0) / 2.0 * WIDTH;
+		float yClient = (1.0 - Y) / 2.0 * HEIGHT;
 
 		XMFLOAT3 xmf3PickPosition;
 		xmf3PickPosition.x = (((2.0f * xClient) / (float)cam.CamViewport.Width) - 1) / cam.Cam4x4Projection._11;
