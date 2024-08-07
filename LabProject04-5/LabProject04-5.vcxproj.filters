@@ -65,6 +65,9 @@
     <Filter Include="[8]_______[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Picking Util ]">
+      <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -115,6 +118,9 @@
     <ClInclude Include="ResourceList.h">
       <Filter>[7]_______[ Resource List ]</Filter>
     </ClInclude>
+    <ClInclude Include="PickingUtil.h">
+      <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -135,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="TimerUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Timer Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,9 +11,10 @@ int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 DirectX_3D_Main D3D_Main;
-Framework fw;
-Camera cam;
 PseudoLightingShader* pShader;
+Framework framework;
+Camera cam;
+MeshUtil meshUtil;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
@@ -142,11 +143,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	DisplayStateChanger(hWnd, nMessageID, wParam);
 
 	switch (nMessageID) {
-	case WM_SIZE:
+	//case WM_SIZE:
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
+		framework.InputMouseButton(hWnd, nMessageID, wParam, lParam);
+		break;
+
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 	case WM_MOUSEMOVE:

@@ -25,12 +25,12 @@ public:
 
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
-	void SetMesh(Mesh* MeshData) {
-		ObjectMesh = MeshData;
+	void SetMesh(std::string MeshName) {
+		ObjectMesh = meshUtil.FindMesh(MeshName);
 	}
 
-	void SetTerrain(Mesh* TerrainData) {
-		TerrainMesh = TerrainData;
+	void SetTerrain(std::string TerrainMeshName) {
+		TerrainMesh = meshUtil.FindTerrain(TerrainMeshName);
 	}
 
 	void SetShader(Shader* ShaderData) {
@@ -185,10 +185,10 @@ public:
 		xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
 	}
 
-	int PickObjectByRayIntersection(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
+	int PickRayInter(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
 		int nIntersected = 0;
 
-		if (ObjectMesh){
+		if (ObjectMesh) {
 			XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
 			GenerateRayForPicking(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
 			nIntersected = ObjectMesh->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
@@ -214,9 +214,10 @@ public:
 	}
 
 	virtual void ReleaseShaderVariables() {}
-	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
-	virtual void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
-	virtual void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+
+	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+	virtual void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+	virtual void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {}
 
 	virtual void Update(float FT) {}
 	virtual void Render(ID3D12GraphicsCommandList* CmdList) {

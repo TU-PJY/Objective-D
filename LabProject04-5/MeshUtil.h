@@ -1,6 +1,8 @@
 #pragma once
 #include "DirectX_3D.h"
+#include "ResourceList.h"
 #include <fstream>
+#include <map>
 
 class CVertex {
 protected:
@@ -90,7 +92,7 @@ protected:
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
-	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
+	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode=true) {
 		if (Directory) 
 			LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 	}
@@ -325,3 +327,37 @@ public:
 		return height;
 	}
 };
+
+
+class MeshUtil {
+private:
+	std::map<std::string, Mesh*> LoadedMeshList;
+	std::map<std::string, Mesh*> LoadedTerrainList;
+
+public:
+	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+		for (const auto& [MeshName, Directory] : MeshList)
+			LoadedMeshList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
+
+		for (const auto& [MeshName, Directory] : TerrainList)
+			LoadedTerrainList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
+	}
+
+	Mesh* FindMesh(std::string MeshName) {
+		auto It = LoadedMeshList.find(MeshName);
+		if (It != std::end(LoadedMeshList))
+			return It->second;
+		else
+			return nullptr;
+	}
+
+	Mesh* FindTerrain(std::string TerrainName) {
+		auto It = LoadedTerrainList.find(TerrainName);
+		if (It != std::end(LoadedTerrainList))
+			return It->second;
+		else
+			return nullptr;
+	}
+};
+
+extern MeshUtil meshUtil;

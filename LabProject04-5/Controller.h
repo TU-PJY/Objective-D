@@ -4,30 +4,21 @@
 // 모드마다 별도의 네임스페이스
 namespace Mode_1 {
 	inline void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-		switch (nMessageID) {
-		case WM_KEYDOWN: case WM_KEYUP:
-		{
-			if (auto obj = fw.Find("obj1"); obj)
-				obj->ObjectKeyboardController(nMessageID, wParam);
-		}
+		if (auto obj = framework.Find("obj1"); obj)
+			obj->InputKey(hWnd, nMessageID, wParam, lParam);
 
-		switch (wParam) {
-		case VK_ESCAPE:
-			PostQuitMessage(1);
-			break;
-		}
-
-		break;
-		}
+		// end program
+		if (nMessageID == WM_KEYDOWN && wParam == VK_ESCAPE) 
+			framework.Exit();
 	}
 
-	inline void MouseMotionController(HWND hwnd) {
-		if (GetCapture() == hwnd) {
-			if(auto obj = fw.Find("obj1"); obj)
-				obj->ObjectMouseMotionController(fw.PrevCursorPosition, fw.LButtonDownState, fw.RButtonDownState);
-		}
+	inline void MouseMotionController(HWND hWnd) {
+		if(auto obj = framework.Find("obj1"); obj)
+			obj->InputMouseMotion(hWnd, framework.PrevCursorPos);
 	}
 
-	inline void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	inline void MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+		if (auto obj = framework.Find("obj1"); obj)
+			obj->InputMouseButton(hWnd, nMessageID, wParam, lParam);
 	}
 }

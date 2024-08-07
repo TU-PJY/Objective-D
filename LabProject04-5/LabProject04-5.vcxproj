@@ -157,6 +157,7 @@
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="MeshUtil.h" />
     <ClInclude Include="ObjectBase.h" />
+    <ClInclude Include="PickingUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="FrameworkUtil.h" />
     <ClInclude Include="DirectX_3D.h" />
@@ -169,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
+    <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="TimerUtil.cpp" />
     <ClCompile Include="WinMain.cpp" />

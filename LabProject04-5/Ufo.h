@@ -11,7 +11,7 @@ private:
 public:
 	Aircraft() {
 		SetShader(pShader);
-		SetMesh(fw.FindMesh("pFlyerMesh"));
+		SetMesh("pFlyerMesh");
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 	}
 
@@ -42,13 +42,13 @@ public:
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
-		auto ptr = fw.Find("map");
-		if (ptr) fw.CheckCollisionnTerrain(this, ptr);
+		auto ptr = framework.Find("map");
+		if (ptr) framework.CheckCollisionnTerrain(this, ptr);
 
 		UpdateOOBB();
 	}
 
-	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
+	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			switch (wParam) {
@@ -92,21 +92,42 @@ public:
 		}
 	}
 
-
-	void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {
-		if (LButtonDownState) {
+	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
+		if (framework.LB_DownState && GetCapture() == hWnd) {
 			::SetCursor(NULL);
-			POINT CursorPos;
-			::GetCursorPos(&CursorPos);
 
 			float cxDelta = 0.0;
 			float cyDelta = 0.0;
 
-			cxDelta = (float)(CursorPos.x - PrevCursorPos.x) / 5.0f;
-			cyDelta = (float)(CursorPos.y - PrevCursorPos.y) / 5.0f;
+			cxDelta = (float)(framework.NewCursorPos().x - PrevCursorPos.x) / 5.0f;
+			cyDelta = (float)(framework.NewCursorPos().y - PrevCursorPos.y) / 5.0f;
 			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
 
 			UpdateRotation(cyDelta, cxDelta, 0.0); 
+		}
+	}
+
+	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+		switch (nMessageID) {
+		case WM_LBUTTONDOWN:
+			framework.CaptureMouseMotion(hWnd);
+			framework.UpdateMouseButton(ButtonType::LButton, ButtonState::Down);
+			break;
+
+		case WM_RBUTTONDOWN:
+			framework.CaptureMouseMotion(hWnd);
+			framework.UpdateMouseButton(ButtonType::RButton, ButtonState::Down);
+			break;
+
+		case WM_LBUTTONUP:
+			framework.ReleaseMouseMotion();
+			framework.UpdateMouseButton(ButtonType::LButton, ButtonState::Up);
+			break;
+
+		case WM_RBUTTONUP:
+			framework.ReleaseMouseMotion();
+			framework.UpdateMouseButton(ButtonType::RButton, ButtonState::Up);
+			break;
 		}
 	}
 };
@@ -118,7 +139,7 @@ private:
 public:
 	TestObject(Layer layer, std::string tag, XMFLOAT3 position, XMFLOAT3 color) {
 		SetShader(pShader);
-		SetMesh(fw.FindMesh("pFlyerMesh"));
+		SetMesh("pFlyerMesh");
 		ModelColor = color;
 		Position = position;
 
@@ -129,7 +150,7 @@ public:
 		InitTransform();
 
 
-		auto ptr = fw.Find("obj1");
+		auto ptr = framework.Find("obj1");
 		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
 
 		Scale(0.5, 0.5, 0.5);
@@ -144,12 +165,12 @@ private:
 public:
 	Map() {
 		SetShader(pShader);
-		SetTerrain(fw.FindTerrain("pTerrain"));
+		SetTerrain("pTerrain");
 		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
 		Scale(5.0, 5.0, 5.0);
 	}
 
-	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
+	void InputKey(UINT nMessageID, WPARAM wParam) {
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			break;
@@ -159,7 +180,7 @@ public:
 		}
 	}
 
-	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	void InputMouseMotion(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
 
-	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	void InputMouseButton(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
 };

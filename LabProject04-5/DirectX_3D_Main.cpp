@@ -3,10 +3,18 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 
+#include "ModeHeader.h"
+#include "Controller.h"
+
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
-	fw.Init(Device, CmdList);
+	// mesh util init
+	meshUtil.Init(Device, CmdList);
+
+	// ModeStart
+	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
+
 
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
@@ -22,7 +30,7 @@ void DirectX_3D_Main::Init() {
 
 	WaitForGpuComplete();
 
-	fw.ReleaseUploadBuffers();
+	framework.ReleaseUploadBuffers();
 	Timer.Reset();
 }
 
@@ -37,15 +45,15 @@ LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID,
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
-		fw.InputMouse(hWnd, nMessageID, wParam, lParam);
+		framework.InputMouseButton(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_KEYDOWN: case WM_KEYUP:
-		fw.InputKey(hWnd, nMessageID, wParam, lParam);
+		framework.InputKey(hWnd, nMessageID, wParam, lParam);
 		break;
 
 	case WM_MOUSEMOVE:
-		fw.InputMouseMotion(hWnd);
+		framework.InputMouseMotion(hWnd);
 		break;
 	}
 
@@ -81,12 +89,12 @@ void DirectX_3D_Main::Update() {
 	cam.RegenerateViewMatrix();
 	cam.Update(Timer.GetTimeElapsed());
 
-	fw.Update(Timer.GetTimeElapsed());
+	framework.Update(Timer.GetTimeElapsed());
 
-	fw.PrepareRender(CmdList);
+	framework.PrepareRender(CmdList);
 	cam.SetViewportsAndScissorRects(CmdList);
 	cam.UpdateShaderVariables(CmdList);
-	fw.Render(CmdList);
+	framework.Render(CmdList);
 
 #ifdef _WITH_PLAYER_TOP
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
@@ -503,7 +511,7 @@ void DirectX_3D_Main::Destroy() {
 }
 
 void DirectX_3D_Main::ReleaseObjects() {
-	fw.ReleaseObjects();
+	framework.ReleaseObjects();
 }
 
 void DirectX_3D_Main::CreateShaderVariables(){}

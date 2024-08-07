@@ -204,3 +204,5 @@ public:
 		return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "PSPseudoLighting", "ps_5_1", ShaderBlob));
 	}
 };
+
+extern PseudoLightingShader* pShader;
