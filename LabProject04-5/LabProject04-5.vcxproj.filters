@@ -133,6 +133,9 @@
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Camera Util ]</Filter>
     </ClCompile>
+    <ClCompile Include="TimerUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Timer Util ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">

@@ -170,6 +170,7 @@
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="ResourceList.cpp" />
+    <ClCompile Include="TimerUtil.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="FrameworkUtil.cpp" />
     <ClCompile Include="DirectX_3D.cpp">
