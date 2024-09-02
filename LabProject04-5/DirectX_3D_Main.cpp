@@ -12,9 +12,6 @@ void DirectX_3D_Main::Init() {
 	// mesh util init
 	meshUtil.Init(Device, CmdList);
 
-	// ModeStart
-	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
-
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
@@ -29,7 +26,9 @@ void DirectX_3D_Main::Init() {
 
 	WaitForGpuComplete();
 
-	framework.ReleaseUploadBuffers();
+	// ModeStart
+	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
+
 	Timer.Reset();
 }
 

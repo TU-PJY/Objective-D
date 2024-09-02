@@ -227,7 +227,7 @@ bool Framework::CheckCollision(BASE* From, BASE* To) {
 
 bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 	if (Terrain->TerrainMesh) {
-		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix))
 			return true;
 	}
 
@@ -235,13 +235,13 @@ bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 }
 
 void Framework::ClampToTerrainFloor(BASE* Object, BASE* Terrain) {
-	Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+	Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix);
 }
 
 void Framework::CheckCollisionTerrain(BASE* Object, BASE* Terrain) {
 	if (Terrain->TerrainMesh) {
-		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
-			Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix))
+			Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix);
 	}
 }
 
@@ -301,13 +301,6 @@ ID3D12RootSignature* Framework::GetGraphicsRootSignature() {
 void Framework::ReleaseObjects() {
 	if (RootSignature)
 		RootSignature->Release();
-}
-
-void Framework::ReleaseUploadBuffers() {
-	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto const& O : Container[i])
-			O->ReleaseUploadBuffers();
-	}
 }
 
 void Framework::PrepareRender(ID3D12GraphicsCommandList* CmdList) {

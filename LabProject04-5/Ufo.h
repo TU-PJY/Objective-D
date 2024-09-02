@@ -11,7 +11,7 @@ private:
 public:
 	Aircraft() {
 		SetShader(pShader);
-		SetMesh("pFlyerMesh");
+		SetMesh(ObjectMesh, "pFlyerMesh");
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 	}
 
@@ -132,37 +132,13 @@ public:
 	}
 };
 
-class TestObject : public BASE {
-private:
-
-public:
-	TestObject(Layer layer, std::string tag, XMFLOAT3 position, XMFLOAT3 color) {
-		SetShader(pShader);
-		SetMesh("pFlyerMesh");
-		ModelColor = color;
-		Position = position;
-
-		UpdateOOBB();
-	}
-
-	void Update(float FT) {
-		InitTransform();
-
-		auto ptr = framework.Find("obj1");
-		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));
-
-		Scale(0.5, 0.5, 0.5);
-		SetPosition(Position);
-	}
-};
-
 class Map : public BASE {
 private:
 
 public:
 	Map() {
 		SetShader(pShader);
-		SetTerrain("pTerrain");
+		SetTerrain(TerrainMesh, "pTerrain");
 		SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
 		Scale(5.0, 5.0, 5.0);
 	}

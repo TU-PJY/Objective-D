@@ -1,12 +1,14 @@
 #pragma once
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
+#include <vector>
 
 class Shader;
 
 class BASE {
 public:
-	XMFLOAT4X4 Matrix = Mat4::Identity();
+	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
+	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 	XMFLOAT3 ModelColor{};
 
 	XMFLOAT3 Position{};
@@ -26,12 +28,16 @@ public:
 
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
-	void SetMesh(std::string MeshName) {
-		ObjectMesh = meshUtil.GetMesh(MeshName);
+	void SetMesh(Mesh*& MeshPtr, std::string MeshName) {
+		MeshPtr = meshUtil.GetMesh(MeshName);
+		if (MeshPtr)
+			MeshPtr->ReleaseUploadBuffers();
 	}
 
-	void SetTerrain(std::string TerrainMeshName) {
-		TerrainMesh = meshUtil.GetTerrain(TerrainMeshName);
+	void SetTerrain(Mesh*& TerrainMeshPtr, std::string TerrainMeshName) {
+		TerrainMeshPtr = meshUtil.GetTerrain(TerrainMeshName);
+		if (TerrainMeshPtr)
+			TerrainMeshPtr->ReleaseUploadBuffers();
 	}
 
 	void SetShader(Shader* ShaderData) {
@@ -40,25 +46,26 @@ public:
 
 	void UpdateOOBB() {
 		if (ObjectMesh) {
-			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&Matrix));
+			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&TranslateMatrix));
 			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
 		}
 	}
 
 	void InitTransform() {
-		Matrix = Mat4::Identity();
+		TranslateMatrix = Mat4::Identity();
+		RotateMatrix = Mat4::Identity();
 	}
 
 	void SetPosition(float x, float y, float z) {
-		Matrix._41 = x;
-		Matrix._42 = y;
-		Matrix._43 = z;
+		TranslateMatrix._41 = x;
+		TranslateMatrix._42 = y;
+		TranslateMatrix._43 = z;
 	}
 
 	void SetPosition(XMFLOAT3 Position) {
-		Matrix._41 = Position.x;
-		Matrix._42 = Position.y;
-		Matrix._43 = Position.z;
+		TranslateMatrix._41 = Position.x;
+		TranslateMatrix._42 = Position.y;
+		TranslateMatrix._43 = Position.z;
 	}
 
 	void SetColor(XMFLOAT3 Color) {
@@ -91,7 +98,7 @@ public:
 			XMConvertToRadians(Roll)
 		);
 
-		Matrix = Mat4::Multiply(RotateMat, Matrix);
+		RotateMatrix = Mat4::Multiply(RotateMat, RotateMatrix);
 
 		Up = {
 			XMVectorGetX(XMVector3TransformNormal(UpVector, RotateMat)),
@@ -114,18 +121,18 @@ public:
 
 	void Rotate(XMFLOAT3* Axis, float Angle) {
 		XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(Axis), XMConvertToRadians(Angle));
-		Matrix = Mat4::Multiply(mtxRotate, Matrix);
+		RotateMatrix = Mat4::Multiply(mtxRotate, RotateMatrix);
 	}
 
 	void LookAt(XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
 		XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(Position, TargetPosition, UpVector);
-		Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
-		Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
-		Matrix._31 = xmf4x4View._13; Matrix._32 = xmf4x4View._23; Matrix._33 = xmf4x4View._33;
+		RotateMatrix._11 = xmf4x4View._11; RotateMatrix._12 = xmf4x4View._21; RotateMatrix._13 = xmf4x4View._31;
+		RotateMatrix._21 = xmf4x4View._12; RotateMatrix._22 = xmf4x4View._22; RotateMatrix._23 = xmf4x4View._32;
+		RotateMatrix._31 = xmf4x4View._13; RotateMatrix._32 = xmf4x4View._23; RotateMatrix._33 = xmf4x4View._33;
 
-		Up = Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23));
-		Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
-		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
+		Up = Vec3::Normalize(XMFLOAT3(RotateMatrix._21, RotateMatrix._22, RotateMatrix._23));
+		Right = Vec3::Normalize(XMFLOAT3(RotateMatrix._11, RotateMatrix._12, RotateMatrix._13));
+		Look = Vec3::Normalize(XMFLOAT3(RotateMatrix._31, RotateMatrix._32, RotateMatrix._33));
 	}
 
 	void UpdateRotation(float Pitch, float Yaw, float Roll) {
@@ -136,7 +143,7 @@ public:
 
 	void Scale(float ScaleX, float ScaleY, float ScaleZ) {
 		XMMATRIX scaleMatrix = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
-		Matrix = Mat4::Multiply(scaleMatrix, Matrix);
+		TranslateMatrix = Mat4::Multiply(scaleMatrix, TranslateMatrix);
 	}
 
 	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
@@ -176,7 +183,7 @@ public:
 	}
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-		XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&Matrix) * xmmtxView);
+		XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&TranslateMatrix) * xmmtxView);
 		XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
 		xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
 		xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
@@ -199,15 +206,11 @@ public:
 
 	virtual ~BASE() {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
+		XMMATRIX combinedMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 		XMFLOAT4X4 xmf4x4World;
-		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(XMLoadFloat4x4(&Matrix)));
+		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(combinedMatrix));
 		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
 		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
-	}
-
-	virtual void ReleaseUploadBuffers() {
-		if (ObjectMesh)
-			ObjectMesh->ReleaseUploadBuffers();
 	}
 
 	virtual void ReleaseShaderVariables() {}
