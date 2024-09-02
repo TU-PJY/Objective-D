@@ -66,10 +66,10 @@ public:
 	void ClearAll(); 
 	bool CheckCollision(BASE* From, BASE* To); 
 	bool CheckTerrainFloor(BASE* Object, BASE* Terrain);
-	void MoveToTerrainFloor(BASE* Object, BASE* Terrain); 
-	void CheckCollisionnTerrain(BASE* Object, BASE* Terrain);
+	void ClampToTerrainFloor(BASE* Object, BASE* Terrain); 
+	void CheckCollisionTerrain(BASE* Object, BASE* Terrain);
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true); 
-	PseudoLightingShader* ShaderLoader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
+	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device); 
 	ID3D12RootSignature* GetGraphicsRootSignature(); 
 	void ReleaseObjects(); 

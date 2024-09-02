@@ -43,7 +43,7 @@ public:
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
 		auto ptr = framework.Find("map");
-		if (ptr) framework.CheckCollisionnTerrain(this, ptr);
+		if (ptr) framework.CheckCollisionTerrain(this, ptr);
 
 		UpdateOOBB();
 	}
@@ -148,7 +148,6 @@ public:
 
 	void Update(float FT) {
 		InitTransform();
-
 
 		auto ptr = framework.Find("obj1");
 		if (ptr) LookAt(ptr->Position, XMFLOAT3(0.0, 1.0, 0.0));

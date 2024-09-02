@@ -3,7 +3,7 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 
-#include "ModeHeader.h"
+#include "Mode1.h"
 #include "Controller.h"
 
 void DirectX_3D_Main::Init() {
@@ -16,13 +16,13 @@ void DirectX_3D_Main::Init() {
 	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
 
 
-	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
-	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
-	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-	cam.SetViewport(0, 0, WIDTH, HEIGHT, 0.0f, 1.0f);
-	cam.SetScissorRect(0, 0, WIDTH, HEIGHT);
-	cam.SetTimeLag(0.1f);
-	cam.SetCameraMode(CamMode::MODE1);
+	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
+	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
+	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+	camera.SetViewport(0, 0, WIDTH, HEIGHT, 0.0f, 1.0f);
+	camera.SetScissorRect(0, 0, WIDTH, HEIGHT);
+	camera.SetTimeLag(0.1f);
+	camera.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();
 	ID3D12CommandList* CmdLists[] = { CmdList };
@@ -86,14 +86,15 @@ void DirectX_3D_Main::Update() {
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
 
-	cam.RegenerateViewMatrix();
-	cam.Update(Timer.GetTimeElapsed());
+	camera.RegenerateViewMatrix();
+	camera.Update(Timer.GetTimeElapsed());
 
 	framework.Update(Timer.GetTimeElapsed());
 
 	framework.PrepareRender(CmdList);
-	cam.SetViewportsAndScissorRects(CmdList);
-	cam.UpdateShaderVariables(CmdList);
+	camera.SetViewportsAndScissorRects(CmdList);
+	camera.UpdateShaderVariables(CmdList);
+
 	framework.Render(CmdList);
 
 #ifdef _WITH_PLAYER_TOP

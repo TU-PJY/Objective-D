@@ -21,7 +21,7 @@ public:
 	Mesh* TerrainMesh{};
 
 	std::string ObjectTag{};
-	bool DeleteDesc{};
+	bool DeleteMark{};
 
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
@@ -177,7 +177,7 @@ public:
 	}
 
 
-	void GenerateRayForPicking(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
+	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
 		XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&Matrix) * xmmtxView);
 		XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
 		xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
@@ -190,7 +190,7 @@ public:
 
 		if (ObjectMesh) {
 			XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
-			GenerateRayForPicking(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
+			GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
 			nIntersected = ObjectMesh->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
 		}
 

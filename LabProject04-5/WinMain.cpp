@@ -13,7 +13,7 @@ int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 DirectX_3D_Main D3D_Main;
 PseudoLightingShader* pShader;
 Framework framework;
-Camera cam;
+Camera camera;
 MeshUtil meshUtil;
 
 HINSTANCE						AppInstance;

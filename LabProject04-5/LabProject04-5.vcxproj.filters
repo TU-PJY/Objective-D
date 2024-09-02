@@ -10,9 +10,6 @@
     <Filter Include="[1]_______[ Game Mode ]\[ Mode1 ]">
       <UniqueIdentifier>{64814673-b711-4547-a2fa-f83b097a05fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]_______[ Game Mode ]\[ Mode1 ]\[ Controller ]">
-      <UniqueIdentifier>{cc6b1633-4fe7-443c-9241-d96e5dcf7d75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[2]_______[ Object ]">
       <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
     </Filter>
@@ -68,6 +65,9 @@
     <Filter Include="[3]_______[ Util ]\[ Picking Util ]">
       <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[2]_______[ Object ]\[ Base Object ]">
+      <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -87,9 +87,6 @@
     </ClInclude>
     <ClInclude Include="ObjectBase.h">
       <Filter>[2]_______[ Object ]</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]\[ Controller ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D_Main.h">
       <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
@@ -112,7 +109,7 @@
     <ClInclude Include="Objective-D.h">
       <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
-    <ClInclude Include="ModeHeader.h">
+    <ClInclude Include="Mode1.h">
       <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
     <ClInclude Include="ResourceList.h">
@@ -120,6 +117,12 @@
     </ClInclude>
     <ClInclude Include="PickingUtil.h">
       <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>[2]_______[ Object ]\[ Base Object ]</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

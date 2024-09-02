@@ -6,7 +6,7 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
 	void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
 	void MouseMotionControllerPtr(HWND)) {
 	RootSignature = CreateGraphicsRootSignature(Device);
-	pShader = ShaderLoader(RootSignature, Device, CmdList);
+	pShader = LoadShader(RootSignature, Device, CmdList);
 
 	// add dummy object
 	for (int i = 0; i < NUM_LAYER; ++i)
@@ -82,9 +82,9 @@ void Framework::Exit() {
 
 void Framework::Update(float FT) {
 	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It) {
-			if (!(*It)->DeleteDesc)
-				(*It)->Update(FT);
+		for (auto const& O : Container[i]) {
+			if (!O->DeleteMark)
+				O->Update(FT);
 		}
 
 		UpdateContainer(i);
@@ -93,20 +93,20 @@ void Framework::Update(float FT) {
 
 void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It) {
-			if (!(*It)->DeleteDesc)
-				(*It)->Render(CmdList);
+		for (auto const& O : Container[i]) {
+			if (!O->DeleteMark)
+				O->Render(CmdList);
 		}
 	}
 }
 
 void Framework::UpdateContainer(int Index) {
 	std::erase_if(ObjectList, [](const std::pair<std::string, BASE*>& Object) {
-		return Object.second->DeleteDesc;
+		return Object.second->DeleteMark;
 		});
 
 	for (auto It = std::begin(Container[Index]); It != std::end(Container[Index]);) {
-		if ((*It)->DeleteDesc) {
+		if ((*It)->DeleteMark) {
 			delete* It;
 			*It = nullptr;
 			It = Container[Index].erase(It);
@@ -128,13 +128,13 @@ void Framework::AddObject(BASE*&& Object, std::string Tag, Layer Layer) {
 }
 
 void Framework::DeleteSelf(BASE* Object) {
-	Object->DeleteDesc = true;
+	Object->DeleteMark = true;
 }
 
 void Framework::DeleteObject(std::string Tag) {
 	auto It = ObjectList.find(Tag);
 	if (It != std::end(ObjectList))
-		It->second->DeleteDesc = true;
+		It->second->DeleteMark = true;
 }
 
 void Framework::DeleteObject(std::string Tag, Layer TargetLayer) {
@@ -143,7 +143,7 @@ void Framework::DeleteObject(std::string Tag, Layer TargetLayer) {
 
 	for (int i = 0; i < NumObject; ++i) {
 		if (Container[layer][i]->ObjectTag == Tag)
-			Container[layer][i]->DeleteDesc = true;
+			Container[layer][i]->DeleteMark = true;
 	}
 }
 
@@ -166,7 +166,7 @@ BASE* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
 
 void Framework::ClearAll() {
 	for (const auto& O : ObjectList)
-		O.second->DeleteDesc = true;
+		O.second->DeleteMark = true;
 }
 
 bool Framework::CheckCollision(BASE* From, BASE* To) {
@@ -236,18 +236,18 @@ bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 	return false;
 }
 
-void Framework::MoveToTerrainFloor(BASE* Object, BASE* Terrain) {
+void Framework::ClampToTerrainFloor(BASE* Object, BASE* Terrain) {
 	Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
 }
 
-void Framework::CheckCollisionnTerrain(BASE* Object, BASE* Terrain) {
+void Framework::CheckCollisionTerrain(BASE* Object, BASE* Terrain) {
 	if (Terrain->TerrainMesh) {
 		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 			Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
 	}
 }
 
-PseudoLightingShader* Framework::ShaderLoader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+PseudoLightingShader* Framework::LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	PseudoLightingShader* shader = new PseudoLightingShader();
 	shader->CreateShader(Device, RootSignature);
 	shader->CreateShaderVariables(Device, CmdList);
