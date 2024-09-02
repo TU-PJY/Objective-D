@@ -1,6 +1,6 @@
 #include "FrameworkUtil.h"
 
-void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, 
+void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
 	std::string ModeFunction(),
 	void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM),
 	void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
@@ -10,7 +10,7 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
 
 	// add dummy object
 	for (int i = 0; i < NUM_LAYER; ++i)
-		AddObject(new DUMMY, "__DUMMY__", static_cast<Layer>(i));
+		Container[i].push_back(new DUMMY);
 
 	SwitchMode(ModeFunction, KeyboardControllerPtr, MouseControllerPtr, MouseMotionControllerPtr);
 }
@@ -122,9 +122,7 @@ void Framework::AddObject(BASE*&& Object, std::string Tag, Layer Layer) {
 
 	Container[layer].push_back(Object);
 	Container[layer].back()->ObjectTag = Tag;
-
-	if (Tag != "__DUMMY__")
-		ObjectList.insert(std::pair(Tag, Container[layer].back()));
+	ObjectList.insert(std::pair(Tag, Container[layer].back()));
 }
 
 void Framework::DeleteSelf(BASE* Object) {
@@ -307,8 +305,8 @@ void Framework::ReleaseObjects() {
 
 void Framework::ReleaseUploadBuffers() {
 	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto It = std::begin(Container[i]); It != std::end(Container[i]); ++It)
-			if (*It) (*It)->ReleaseUploadBuffers();
+		for(auto const& O : Container[i])
+			O->ReleaseUploadBuffers();
 	}
 }
 

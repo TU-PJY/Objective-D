@@ -171,6 +171,7 @@
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
+    <ClCompile Include="MeshUtil.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="TimerUtil.cpp" />

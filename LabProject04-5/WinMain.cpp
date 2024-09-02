@@ -36,14 +36,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 	::LoadString(hInstance, IDC_LABPROJECT045, WindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
 
-	if (!InitInstance(hInstance, nCmdShow)) 
+	if (!InitInstance(hInstance, nCmdShow))
 		return(FALSE);
 
 	AccelTable = ::LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LABPROJECT045));
 
 	while (true) {
 		if (::PeekMessage(&Messege, NULL, 0, 0, PM_REMOVE)) {
-			if (Messege.message == WM_QUIT) 
+			if (Messege.message == WM_QUIT)
 				break;
 
 			if (!::TranslateAccelerator(Messege.hwnd, AccelTable, &Messege)) {
@@ -93,20 +93,20 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
 	HWND MainWnd = CreateWindow(
-		WindowClass, 
-		Title, 
-		WindowStyle, 
-		CW_USEDEFAULT, 
-		CW_USEDEFAULT, 
-		Rect.right - Rect.left, 
-		Rect.bottom - Rect.top, 
-		NULL, 
-		NULL, 
-		hInstance, 
+		WindowClass,
+		Title,
+		WindowStyle,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		Rect.right - Rect.left,
+		Rect.bottom - Rect.top,
+		NULL,
+		NULL,
+		hInstance,
 		NULL
 	);
 
-	if (!MainWnd) 
+	if (!MainWnd)
 		return(FALSE);
 
 	D3D_Main.Create(hInstance, MainWnd);
@@ -143,7 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	DisplayStateChanger(hWnd, nMessageID, wParam);
 
 	switch (nMessageID) {
-	//case WM_SIZE:
+		//case WM_SIZE:
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP:

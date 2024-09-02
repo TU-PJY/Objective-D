@@ -20,13 +20,13 @@ public:
 		ReleaseShaderVariables();
 	}
 
-	void AddRef() { 
-		Ref++; 
+	void AddRef() {
+		Ref++;
 	}
 
-	void Release() { 
-		if (--Ref <= 0) 
-			delete this; 
+	void Release() {
+		if (--Ref <= 0)
+			delete this;
 	}
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout() {
@@ -171,9 +171,8 @@ public:
 	}
 
 protected:
-	ID3D12PipelineState				*PipelineState = NULL;
+	ID3D12PipelineState* PipelineState = NULL;
 };
-
 
 class PseudoLightingShader : public Shader {
 public:

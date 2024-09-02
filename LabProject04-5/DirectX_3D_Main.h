@@ -21,10 +21,10 @@ public:
 
 	void ChangeSwapChainState();
 
-    void Init();
-    void ReleaseObjects();
+	void Init();
+	void ReleaseObjects();
 
-    void Update();
+	void Update();
 
 	virtual void CreateShaderVariables();
 	virtual void UpdateShaderVariables();
@@ -42,14 +42,14 @@ public:
 
 private:
 	HINSTANCE					hInstance;
-	HWND						hWnd; 
+	HWND						hWnd;
 
 	int							CLIENT_WIDTH;
 	int							CLIENT_HEIGHT;
-        
-	IDXGIFactory4				*DxgiFactory;
-	IDXGISwapChain3				*DxgiSwapChain;
-	ID3D12Device				*Device;
+
+	IDXGIFactory4* DxgiFactory;
+	IDXGISwapChain3* DxgiSwapChain;
+	ID3D12Device* Device;
 
 	bool						MSAA_4x_Option = false;
 	UINT						MSAA_4x_QualityLevels = 8;
@@ -57,24 +57,24 @@ private:
 	static const UINT			SwapChainBuffers = 2;
 	UINT						SwapChainBufferIndex;
 
-	ID3D12Resource				*SwapChainBackBuffers[SwapChainBuffers];
-	ID3D12DescriptorHeap		*RtvDescriptorHeap;
+	ID3D12Resource* SwapChainBackBuffers[SwapChainBuffers];
+	ID3D12DescriptorHeap* RtvDescriptorHeap;
 	UINT						RtvDescriptorIncrementSize;
 
-	ID3D12Resource				*DepthStencilBuffer;
-	ID3D12DescriptorHeap		*DsvDescriptorHeap;
+	ID3D12Resource* DepthStencilBuffer;
+	ID3D12DescriptorHeap* DsvDescriptorHeap;
 	UINT						DsvDescriptorIncrementSize;
 
-	ID3D12CommandAllocator		*CmdAllocator;
-	ID3D12CommandQueue			*CmdQueue;
-	ID3D12GraphicsCommandList	*CmdList;
+	ID3D12CommandAllocator* CmdAllocator;
+	ID3D12CommandQueue* CmdQueue;
+	ID3D12GraphicsCommandList* CmdList;
 
-	ID3D12Fence					*m_pd3dFence;
+	ID3D12Fence* m_pd3dFence;
 	UINT64						FenceValues[SwapChainBuffers];
 	HANDLE						FenceEvent;
 
 #if defined(_DEBUG)
-	ID3D12Debug					*DebugController;
+	ID3D12Debug* DebugController;
 #endif
 
 	Timer						Timer;
@@ -83,4 +83,3 @@ private:
 public:
 	TCHAR						WindowName[50]{};
 };
-

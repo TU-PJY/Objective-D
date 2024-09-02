@@ -15,7 +15,6 @@ void DirectX_3D_Main::Init() {
 	// ModeStart
 	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
 
-
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
@@ -36,7 +35,7 @@ void DirectX_3D_Main::Init() {
 
 LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
-	case WM_ACTIVATE: 
+	case WM_ACTIVATE:
 		if (LOWORD(wParam) == WA_INACTIVE)
 			Timer.Stop();
 		else
@@ -140,7 +139,7 @@ void DirectX_3D_Main::SwitchToWindowMode(HWND hwnd) {
 
 	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 	ShowWindow(hwnd, SW_NORMAL);
-	SetWindowPos(hwnd, NULL, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER );
+	SetWindowPos(hwnd, NULL, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
 	FullScreenState = FALSE;
 }
 
@@ -159,7 +158,7 @@ DirectX_3D_Main::DirectX_3D_Main() {
 	DxgiSwapChain = NULL;
 	Device = NULL;
 
-	for (int i = 0; i < SwapChainBuffers; i++) 
+	for (int i = 0; i < SwapChainBuffers; i++)
 		SwapChainBackBuffers[i] = NULL;
 
 	SwapChainBufferIndex = 0;
@@ -177,7 +176,7 @@ DirectX_3D_Main::DirectX_3D_Main() {
 	FenceEvent = NULL;
 	m_pd3dFence = NULL;
 
-	for (int i = 0; i < SwapChainBuffers; i++) 
+	for (int i = 0; i < SwapChainBuffers; i++)
 		FenceValues[i] = 0;
 
 	CLIENT_WIDTH = WIDTH;
@@ -291,10 +290,10 @@ void DirectX_3D_Main::CreateDirect3DDevice() {
 	for (UINT i = 0; DXGI_ERROR_NOT_FOUND != DxgiFactory->EnumAdapters1(i, &Adapter); i++) {
 		DXGI_ADAPTER_DESC1 DxgiAdapterDesc;
 		Adapter->GetDesc1(&DxgiAdapterDesc);
-		if (DxgiAdapterDesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) 
+		if (DxgiAdapterDesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
 			continue;
 
-		if (SUCCEEDED(D3D12CreateDevice(Adapter, D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), (void**)&Device))) 
+		if (SUCCEEDED(D3D12CreateDevice(Adapter, D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), (void**)&Device)))
 			break;
 	}
 
@@ -319,7 +318,7 @@ void DirectX_3D_Main::CreateDirect3DDevice() {
 
 	FenceEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
 
-	if (Adapter) 
+	if (Adapter)
 		Adapter->Release();
 
 	::CbvSrvDescriptorIncrementSize = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -446,8 +445,8 @@ void DirectX_3D_Main::ChangeSwapChainState() {
 	DxgiTargetParameters.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	DxgiSwapChain->ResizeTarget(&DxgiTargetParameters);
 
-	for (int i = 0; i < SwapChainBuffers; i++) 
-		if (SwapChainBackBuffers[i]) 
+	for (int i = 0; i < SwapChainBuffers; i++)
+		if (SwapChainBackBuffers[i])
 			SwapChainBackBuffers[i]->Release();
 
 #ifdef _WITH_ONLY_RESIZE_BACKBUFFERS
@@ -469,10 +468,10 @@ void DirectX_3D_Main::Destroy() {
 
 	::CloseHandle(FenceEvent);
 
-	if (DepthStencilBuffer) 
+	if (DepthStencilBuffer)
 		DepthStencilBuffer->Release();
 
-	if (DsvDescriptorHeap) 
+	if (DsvDescriptorHeap)
 		DsvDescriptorHeap->Release();
 
 	for (int i = 0; i < SwapChainBuffers; i++) {
@@ -483,27 +482,27 @@ void DirectX_3D_Main::Destroy() {
 	if (RtvDescriptorHeap)
 		RtvDescriptorHeap->Release();
 
-	if (CmdAllocator) 
+	if (CmdAllocator)
 		CmdAllocator->Release();
 
-	if (CmdQueue) 
+	if (CmdQueue)
 		CmdQueue->Release();
 
-	if (CmdList) 
+	if (CmdList)
 		CmdList->Release();
 
-	if (m_pd3dFence) 
+	if (m_pd3dFence)
 		m_pd3dFence->Release();
 
 	DxgiSwapChain->SetFullscreenState(FALSE, NULL);
 
-	if (DxgiSwapChain) 
+	if (DxgiSwapChain)
 		DxgiSwapChain->Release();
 
-	if (Device) 
+	if (Device)
 		Device->Release();
 
-	if (DxgiFactory) 
+	if (DxgiFactory)
 		DxgiFactory->Release();
 
 #if defined(_DEBUG)
@@ -515,9 +514,9 @@ void DirectX_3D_Main::ReleaseObjects() {
 	framework.ReleaseObjects();
 }
 
-void DirectX_3D_Main::CreateShaderVariables(){}
+void DirectX_3D_Main::CreateShaderVariables() {}
 
-void DirectX_3D_Main::ReleaseShaderVariables(){}
+void DirectX_3D_Main::ReleaseShaderVariables() {}
 
 void DirectX_3D_Main::UpdateShaderVariables() {
 	float CurrentTime = Timer.GetTotalTime();

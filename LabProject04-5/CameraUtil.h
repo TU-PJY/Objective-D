@@ -16,10 +16,9 @@ protected:
 	float           				Roll{};
 	float           				Yaw{};
 
-	XMFLOAT3						LookAtWorld{};
+	XMFLOAT3						LookAt{};
 	XMFLOAT3						Offset{};
 	float           				MovingDelay{};
-
 
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	BoundingFrustum					FrustumView{};
@@ -33,7 +32,6 @@ protected:
 
 private:
 	CamMode Mode{};
-
 
 public:
 	D3D12_VIEWPORT					Viewport{};
@@ -50,7 +48,7 @@ public:
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
 	void GenerateViewMatrix();
-	void GenerateViewMatrix(XMFLOAT3 Position, XMFLOAT3 LookAt, XMFLOAT3 Up);
+	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
 	void RegenerateViewMatrix();
 	void GenerateProjectionMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);

@@ -13,10 +13,14 @@
 constexpr int NUM_LAYER = static_cast<int>(Layer::END);
 
 enum class ButtonState
-{Down, Up};
+{
+	Down, Up
+};
 
 enum class  ButtonType
-{LButton, RButton};
+{
+	LButton, RButton
+};
 
 class Framework {
 private:
@@ -32,18 +36,20 @@ protected:
 	std::array<std::deque<BASE*>, NUM_LAYER> Container;
 
 public:
+	std::string Mode();
 	POINT PrevCursorPos{};
 	bool LB_DownState{}, RB_DownState{};
 
 	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction(),
-		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM),
-		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
-		void MouseMotionController(HWND));
-	std::string Mode();
-	void SwitchMode(std::string ModeFunction(),
 		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM)=nullptr,
-		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM)=nullptr,
-		void MouseMotionControllerPtr(HWND)=nullptr);
+		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
+		void MouseMotionController(HWND) = nullptr);
+
+	void SwitchMode(std::string ModeFunction(),
+		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
+		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
+		void MouseMotionControllerPtr(HWND) = nullptr);
+
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseMotion(HWND hWnd);
@@ -53,27 +59,27 @@ public:
 	void UpdateMouseButton(ButtonType Button, ButtonState ButtonState);
 	void Exit();
 	void Update(float FT);
-	void Render(ID3D12GraphicsCommandList* CmdList); 
+	void Render(ID3D12GraphicsCommandList* CmdList);
 	void UpdateContainer(int Index);
 	void AddObject(BASE*&& Object, std::string Tag, Layer Layer);
 	void DeleteSelf(BASE* Object);
 	void DeleteObject(std::string Tag);
-	void DeleteObject(std::string Tag, Layer TargetLayer); 
-	BASE* Find(std::string Tag); 
-	BASE* Find(std::string Tag, Layer TargetLayer, int Index); 
-	Mesh* FindMesh(std::string MeshName); 
-	Mesh* FindTerrain(std::string TerrainMeshName); 
-	void ClearAll(); 
-	bool CheckCollision(BASE* From, BASE* To); 
+	void DeleteObject(std::string Tag, Layer TargetLayer);
+	BASE* Find(std::string Tag);
+	BASE* Find(std::string Tag, Layer TargetLayer, int Index);
+	Mesh* FindMesh(std::string MeshName);
+	Mesh* FindTerrain(std::string TerrainMeshName);
+	void ClearAll();
+	bool CheckCollision(BASE* From, BASE* To);
 	bool CheckTerrainFloor(BASE* Object, BASE* Terrain);
-	void ClampToTerrainFloor(BASE* Object, BASE* Terrain); 
+	void ClampToTerrainFloor(BASE* Object, BASE* Terrain);
 	void CheckCollisionTerrain(BASE* Object, BASE* Terrain);
-	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true); 
+	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true);
 	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
-	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device); 
-	ID3D12RootSignature* GetGraphicsRootSignature(); 
-	void ReleaseObjects(); 
-	void ReleaseUploadBuffers(); 
+	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
+	ID3D12RootSignature* GetGraphicsRootSignature();
+	void ReleaseObjects();
+	void ReleaseUploadBuffers();
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList);
 };
 

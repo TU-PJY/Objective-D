@@ -148,6 +148,9 @@
     <ClCompile Include="PickingUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
     </ClCompile>
+    <ClCompile Include="MeshUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Mesh Util ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">

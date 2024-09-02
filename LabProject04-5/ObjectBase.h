@@ -12,9 +12,9 @@ public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
 
-	XMFLOAT3 Look{0.0, 0.0, 1.0};
-	XMFLOAT3 Up{0.0, 1.0, 0.0};
-	XMFLOAT3 Right{1.0, 0.0, 0.0};
+	XMFLOAT3 Look{ 0.0, 0.0, 1.0 };
+	XMFLOAT3 Up{ 0.0, 1.0, 0.0 };
+	XMFLOAT3 Right{ 1.0, 0.0, 0.0 };
 
 	Shader* ObjectShader{};
 	Mesh* ObjectMesh{};
@@ -22,15 +22,16 @@ public:
 
 	std::string ObjectTag{};
 	bool DeleteMark{};
+	bool StaticMark{};
 
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 	void SetMesh(std::string MeshName) {
-		ObjectMesh = meshUtil.FindMesh(MeshName);
+		ObjectMesh = meshUtil.GetMesh(MeshName);
 	}
 
 	void SetTerrain(std::string TerrainMeshName) {
-		TerrainMesh = meshUtil.FindTerrain(TerrainMeshName);
+		TerrainMesh = meshUtil.GetTerrain(TerrainMeshName);
 	}
 
 	void SetShader(Shader* ShaderData) {
@@ -60,8 +61,8 @@ public:
 		Matrix._43 = Position.z;
 	}
 
-	void SetColor(XMFLOAT3 Color) { 
-		ModelColor = Color; 
+	void SetColor(XMFLOAT3 Color) {
+		ModelColor = Color;
 	}
 
 	void MoveStrafe(float Distance) {
@@ -69,12 +70,10 @@ public:
 		SetPosition(Position);
 	}
 
-
 	void MoveForward(float Distance) {
 		Position = Vec3::Add(Position, Look, Distance);
 		SetPosition(Position);
 	}
-
 
 	void MoveUp(float Distance) {
 		Position = Vec3::Add(Position, Up, Distance);
@@ -87,8 +86,8 @@ public:
 		XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
 		XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
-			XMConvertToRadians(Pitch), 
-			XMConvertToRadians(Yaw), 
+			XMConvertToRadians(Pitch),
+			XMConvertToRadians(Yaw),
 			XMConvertToRadians(Roll)
 		);
 
@@ -118,7 +117,7 @@ public:
 		Matrix = Mat4::Multiply(mtxRotate, Matrix);
 	}
 
-	void LookAt(XMFLOAT3& TargetPosition, XMFLOAT3& UpVector){
+	void LookAt(XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
 		XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(Position, TargetPosition, UpVector);
 		Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
 		Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
@@ -135,7 +134,7 @@ public:
 		Rotation.z += Roll;
 	}
 
-	void Scale(float ScaleX, float ScaleY, float ScaleZ ) {
+	void Scale(float ScaleX, float ScaleY, float ScaleZ) {
 		XMMATRIX scaleMatrix = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
 		Matrix = Mat4::Multiply(scaleMatrix, Matrix);
 	}
@@ -176,7 +175,6 @@ public:
 		CurrentSpeed = std::lerp(CurrentSpeed, 0.0, DecelerationValue * FT);
 	}
 
-
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
 		XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&Matrix) * xmmtxView);
 		XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
@@ -197,7 +195,6 @@ public:
 		return(nIntersected);
 	}
 
-	
 	////////// virtual functions
 
 	virtual ~BASE() {}

@@ -25,9 +25,9 @@ public:
 		if (MoveLeft)
 			LerpAcc(SpeedStrafe, -0.15, 5, FT);
 
-		if(!MoveFront && !MoveBack)
+		if (!MoveFront && !MoveBack)
 			LerpDcc(SpeedForward, 5, FT);
-		if (!MoveRight && !MoveLeft) 
+		if (!MoveRight && !MoveLeft)
 			LerpDcc(SpeedStrafe, 5, FT);
 
 		MoveForward(SpeedForward);
@@ -103,7 +103,7 @@ public:
 			cyDelta = (float)(framework.NewCursorPos().y - PrevCursorPos.y) / 5.0f;
 			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
 
-			UpdateRotation(cyDelta, cxDelta, 0.0); 
+			UpdateRotation(cyDelta, cxDelta, 0.0);
 		}
 	}
 
@@ -132,7 +132,6 @@ public:
 	}
 };
 
-
 class TestObject : public BASE {
 private:
 
@@ -157,7 +156,6 @@ public:
 	}
 };
 
-
 class Map : public BASE {
 private:
 
@@ -165,7 +163,7 @@ public:
 	Map() {
 		SetShader(pShader);
 		SetTerrain("pTerrain");
-		SetColor(XMFLOAT3(0.133333,	0.545098, 0.133333));
+		SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
 		Scale(5.0, 5.0, 5.0);
 	}
 

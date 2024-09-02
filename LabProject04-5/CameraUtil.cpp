@@ -8,7 +8,7 @@ void Camera::Update(float FT) {
 	}
 }
 
-Camera::Camera () {
+Camera::Camera() {
 	ViewMatrix = Mat4::Identity();
 	ProjectionMatrix = Mat4::Identity();
 
@@ -24,7 +24,7 @@ Camera::Camera () {
 	Look = XMFLOAT3(0.0f, 0.0f, 1.0f);
 	Up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	Offset = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	LookAtWorld = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	LookAt = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	MovingDelay = 0.0f;
 }
@@ -42,13 +42,13 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void Camera::GenerateViewMatrix() {
-	ViewMatrix = Mat4::LookAtLH(Position, LookAtWorld, Up);
+	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
 }
 
-void Camera::GenerateViewMatrix(XMFLOAT3 Position, XMFLOAT3 LookAt, XMFLOAT3 Up) {
+void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, XMFLOAT3 UpVector) {
 	Position = Position;
-	LookAtWorld = LookAt;
-	Up = Up;
+	LookAt = LookAtVector;
+	Up = UpVector;
 
 	GenerateViewMatrix();
 }
@@ -112,8 +112,8 @@ void Camera::SetCameraMode(CamMode Mode) {
 void Camera::SetPosition(XMFLOAT3 Position) { Position = Position; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
 
-void Camera::SetLookAtPosition(XMFLOAT3 LookAt) { LookAtWorld = LookAt; }
-XMFLOAT3& Camera::GetLookAtPosition() { return(LookAtWorld); }
+void Camera::SetLookAtPosition(XMFLOAT3 LookAt) { LookAt = LookAt; }
+XMFLOAT3& Camera::GetLookAtPosition() { return(LookAt); }
 
 XMFLOAT3& Camera::GetRightVector() { return(Right); }
 XMFLOAT3& Camera::GetUpVector() { return(Up); }

@@ -3,7 +3,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-#define WIN32_LEAN_AND_MEAN 
+#define WIN32_LEAN_AND_MEAN
 #define _WITH_DIERECTX_MATH_FRUSTUM
 
 #include <windows.h>
@@ -39,7 +39,7 @@ using namespace DirectX::PackedVector;
 using Microsoft::WRL::ComPtr;
 
 extern UINT	CbvSrvDescriptorIncrementSize;
-extern ID3D12Resource *CreateBufferResource(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList, void *Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource **UploadBuffer = NULL);
+extern ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
 
 namespace Vec3 {
 	inline XMFLOAT3 XMVectorToFloat3(XMVECTOR& xmvVector) {
@@ -127,9 +127,6 @@ namespace Vec3 {
 		return(TransformCoord(xmf3Vector, XMLoadFloat4x4(&xmmtx4x4Matrix)));
 	}
 }
-
-
-
 
 namespace Vec4 {
 	inline XMFLOAT4 Add(XMFLOAT4& xmf4Vector1, XMFLOAT4& xmf4Vector2) {

@@ -8,12 +8,12 @@ namespace Mode_1 {
 			obj->InputKey(hWnd, nMessageID, wParam, lParam);
 
 		// end program
-		if (nMessageID == WM_KEYDOWN && wParam == VK_ESCAPE) 
+		if (nMessageID == WM_KEYDOWN && wParam == VK_ESCAPE)
 			framework.Exit();
 	}
 
 	inline void MouseMotionController(HWND hWnd) {
-		if(auto obj = framework.Find("obj1"); obj)
+		if (auto obj = framework.Find("obj1"); obj)
 			obj->InputMouseMotion(hWnd, framework.PrevCursorPos);
 	}
 
