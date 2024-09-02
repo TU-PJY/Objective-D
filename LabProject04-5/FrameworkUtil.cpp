@@ -6,7 +6,7 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
 	void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
 	void MouseMotionControllerPtr(HWND)) {
 	RootSignature = CreateGraphicsRootSignature(Device);
-	pShader = LoadShader(RootSignature, Device, CmdList);
+	pseudoShader = framework.LoadShader(RootSignature, Device, CmdList);
 
 	// add dummy object
 	for (int i = 0; i < NUM_LAYER; ++i)
@@ -227,7 +227,7 @@ bool Framework::CheckCollision(BASE* From, BASE* To) {
 
 bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 	if (Terrain->TerrainMesh) {
-		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix))
+		if (Object->Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix()))
 			return true;
 	}
 
@@ -235,13 +235,13 @@ bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
 }
 
 void Framework::ClampToTerrainFloor(BASE* Object, BASE* Terrain) {
-	Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix);
+	Object->Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix());
 }
 
 void Framework::CheckCollisionTerrain(BASE* Object, BASE* Terrain) {
-	if (Terrain->TerrainMesh) {
-		if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix))
-			Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->TranslateMatrix);
+	if (Terrain->GetTerrainMesh()) {
+		if (Object->Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix()))
+			Object->Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix());
 	}
 }
 

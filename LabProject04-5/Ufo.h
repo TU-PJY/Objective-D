@@ -8,10 +8,13 @@ private:
 	float SpeedForward{};
 	float SpeedStrafe{};
 
+	Mesh* Mesh;
+	Shader* Shader;
+
 public:
 	Aircraft() {
-		SetShader(pShader);
-		SetMesh(ObjectMesh, "pFlyerMesh");
+		SetShader(Shader, pseudoShader);
+		SetMesh(Mesh, "pFlyerMesh");
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 	}
 
@@ -46,6 +49,11 @@ public:
 		if (ptr) framework.CheckCollisionTerrain(this, ptr);
 
 		UpdateOOBB();
+	}
+
+	void Render(CommandList CmdList) {
+		RenderShader(CmdList, Shader);
+		RenderMesh(CmdList, Mesh);
 	}
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
@@ -134,10 +142,16 @@ public:
 
 class Map : public BASE {
 private:
+	Mesh* TerrainMesh;
+	Shader* Shader;
 
 public:
+	Mesh* GetTerrainMesh() {
+		return TerrainMesh;
+	}
+
 	Map() {
-		SetShader(pShader);
+		SetShader(Shader, pseudoShader);
 		SetTerrain(TerrainMesh, "pTerrain");
 		SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
 		Scale(5.0, 5.0, 5.0);
@@ -151,6 +165,11 @@ public:
 		case WM_KEYUP:
 			break;
 		}
+	}
+
+	void Render(CommandList CmdList) {
+		RenderShader(CmdList, Shader);
+		RenderMesh(CmdList, TerrainMesh);
 	}
 
 	void InputMouseMotion(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}

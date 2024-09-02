@@ -44,4 +44,4 @@ public:
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ShaderBlob);
 };
 
-extern PseudoLightingShader* pShader;
+extern PseudoLightingShader* pseudoShader;

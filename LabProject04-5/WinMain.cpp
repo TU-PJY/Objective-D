@@ -11,7 +11,7 @@ int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 DirectX_3D_Main D3D_Main;
-PseudoLightingShader* pShader;
+PseudoLightingShader* pseudoShader;
 Framework framework;
 Camera camera;
 MeshUtil meshUtil;

@@ -5,12 +5,14 @@
 
 class Shader;
 
+typedef ID3D12GraphicsCommandList* (CommandList);
+
 class BASE {
 public:
 	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
-	XMFLOAT3 ModelColor{};
 
+	XMFLOAT3 ModelColor{};
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
 
@@ -40,13 +42,14 @@ public:
 			TerrainMeshPtr->ReleaseUploadBuffers();
 	}
 
-	void SetShader(Shader* ShaderData) {
-		ObjectShader = ShaderData;
+	void SetShader(Shader*& ShaderPtr, Shader* ShaderData) {
+		ShaderPtr = ShaderData;
 	}
 
 	void UpdateOOBB() {
 		if (ObjectMesh) {
-			ObjectMesh->OOBB.Transform(OOBB, XMLoadFloat4x4(&TranslateMatrix));
+			XMMATRIX combinedMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+			ObjectMesh->OOBB.Transform(OOBB, combinedMatrix);
 			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
 		}
 	}
@@ -206,9 +209,9 @@ public:
 
 	virtual ~BASE() {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
-		XMMATRIX combinedMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+		XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 		XMFLOAT4X4 xmf4x4World;
-		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(combinedMatrix));
+		XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 		CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
 		CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
 	}
@@ -220,18 +223,21 @@ public:
 	virtual void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {}
 
 	virtual void Update(float FT) {}
-	virtual void Render(ID3D12GraphicsCommandList* CmdList) {
-		if (ObjectShader)
-			ObjectShader->Render(CmdList);
 
+	void RenderShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr) {
+		if (ShaderPtr)
+			ShaderPtr->Render(CmdList);
 		UpdateShaderVariables(CmdList);
-
-		if (ObjectMesh)
-			ObjectMesh->Render(CmdList);
-
-		if (TerrainMesh)
-			TerrainMesh->Render(CmdList);
 	}
+
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
+		if (MeshPtr)
+			MeshPtr->Render(CmdList);
+	}
+
+	virtual void Render(CommandList CmdList) {}
+	virtual Mesh* GetTerrainMesh() { return {}; }
+	virtual XMFLOAT4X4 GetTerrainMatrix() {return TranslateMatrix;}
 };
 
 // dummy object for avoiding iterator error
