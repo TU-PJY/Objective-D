@@ -13,8 +13,6 @@ public:
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 
 	XMFLOAT3 ModelColor{};
-	XMFLOAT3 Position{};
-	XMFLOAT3 Rotation{};
 
 	XMFLOAT3 Look{ 0.0, 0.0, 1.0 };
 	XMFLOAT3 Up{ 0.0, 1.0, 0.0 };
@@ -27,8 +25,6 @@ public:
 	std::string ObjectTag{};
 	bool DeleteMark{};
 	bool StaticMark{};
-
-	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 	void SetMesh(Mesh*& MeshPtr, std::string MeshName) {
 		MeshPtr = meshUtil.GetMesh(MeshName);
@@ -46,17 +42,18 @@ public:
 		ShaderPtr = ShaderData;
 	}
 
-	void UpdateOOBB() {
-		if (ObjectMesh) {
-			XMMATRIX combinedMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
-			ObjectMesh->OOBB.Transform(OOBB, combinedMatrix);
+	void UpdateOOBB(BoundingOrientedBox& OOBB, Mesh*& MeshPtr) {
+		if (MeshPtr) {
+			XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+			MeshPtr->OOBB.Transform(OOBB, ResultMatrix);
 			XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
 		}
 	}
 
-	void InitTransform() {
+	void BeginProcess() {
 		TranslateMatrix = Mat4::Identity();
 		RotateMatrix = Mat4::Identity();
+		SetColor(XMFLOAT3(0.0, 0.0, 0.0));
 	}
 
 	void SetPosition(float x, float y, float z) {
@@ -75,19 +72,16 @@ public:
 		ModelColor = Color;
 	}
 
-	void MoveStrafe(float Distance) {
+	void MoveStrafe(XMFLOAT3& Position, float Distance) {
 		Position = Vec3::Add(Position, Right, Distance);
-		SetPosition(Position);
 	}
 
-	void MoveForward(float Distance) {
+	void MoveForward(XMFLOAT3& Position, float Distance) {
 		Position = Vec3::Add(Position, Look, Distance);
-		SetPosition(Position);
 	}
 
-	void MoveUp(float Distance) {
+	void MoveUp(XMFLOAT3& Position, float Distance) {
 		Position = Vec3::Add(Position, Up, Distance);
-		SetPosition(Position);
 	}
 
 	void Rotate(float Pitch, float Yaw, float Roll) {
@@ -127,7 +121,7 @@ public:
 		RotateMatrix = Mat4::Multiply(mtxRotate, RotateMatrix);
 	}
 
-	void LookAt(XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
+	void LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
 		XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(Position, TargetPosition, UpVector);
 		RotateMatrix._11 = xmf4x4View._11; RotateMatrix._12 = xmf4x4View._21; RotateMatrix._13 = xmf4x4View._31;
 		RotateMatrix._21 = xmf4x4View._12; RotateMatrix._22 = xmf4x4View._22; RotateMatrix._23 = xmf4x4View._32;
@@ -136,12 +130,6 @@ public:
 		Up = Vec3::Normalize(XMFLOAT3(RotateMatrix._21, RotateMatrix._22, RotateMatrix._23));
 		Right = Vec3::Normalize(XMFLOAT3(RotateMatrix._11, RotateMatrix._12, RotateMatrix._13));
 		Look = Vec3::Normalize(XMFLOAT3(RotateMatrix._31, RotateMatrix._32, RotateMatrix._33));
-	}
-
-	void UpdateRotation(float Pitch, float Yaw, float Roll) {
-		Rotation.x += Pitch;
-		Rotation.y += Yaw;
-		Rotation.z += Roll;
 	}
 
 	void Scale(float ScaleX, float ScaleY, float ScaleZ) {
@@ -224,13 +212,12 @@ public:
 
 	virtual void Update(float FT) {}
 
-	void RenderShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr) {
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr) {
 		if (ShaderPtr)
 			ShaderPtr->Render(CmdList);
-		UpdateShaderVariables(CmdList);
-	}
 
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
+			UpdateShaderVariables(CmdList);
+
 		if (MeshPtr)
 			MeshPtr->Render(CmdList);
 	}
@@ -238,6 +225,9 @@ public:
 	virtual void Render(CommandList CmdList) {}
 	virtual Mesh* GetTerrainMesh() { return {}; }
 	virtual XMFLOAT4X4 GetTerrainMatrix() {return TranslateMatrix;}
+	virtual XMFLOAT3 GetPosition(){ return {}; }
+	virtual void InputNewPosition(float X=0.0, float Y=0.0, float Z=0.0) {}
+	virtual BoundingOrientedBox GetOOBB() { return {}; }
 };
 
 // dummy object for avoiding iterator error

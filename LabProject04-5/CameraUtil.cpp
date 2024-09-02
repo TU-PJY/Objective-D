@@ -4,7 +4,7 @@
 void Camera::Update(float FT) {
 	if (Mode == CamMode::MODE1) {
 		auto obj = framework.Find("obj1");
-		if (obj) Track(obj->Position, obj, FT);
+		if (obj) Track(obj->GetPosition(), obj, FT);
 	}
 }
 
@@ -159,7 +159,7 @@ void Camera::Track(XMFLOAT3& LookAt, BASE* Object, float fTimeElapsed) {
 	xmf4x4Rotate._33 = xmf3Look.z;
 
 	XMFLOAT3 xmf3Offset = Vec3::TransformCoord(Offset, xmf4x4Rotate);
-	XMFLOAT3 xmf3Position = Vec3::Add(Object->Position, xmf3Offset);
+	XMFLOAT3 xmf3Position = Vec3::Add(Object->GetPosition(), xmf3Offset);
 	XMFLOAT3 xmf3Direction = Vec3::Subtract(xmf3Position, Position);
 
 	float fLength = Vec3::Length(xmf3Direction);

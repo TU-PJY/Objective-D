@@ -8,14 +8,29 @@ private:
 	float SpeedForward{};
 	float SpeedStrafe{};
 
-	Mesh* Mesh;
+	Mesh* ObjectMesh;
 	Shader* Shader;
+
+	XMFLOAT3 ObjPosition{};
+	XMFLOAT3 Rotation{};
+
+	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 public:
 	Aircraft() {
 		SetShader(Shader, pseudoShader);
-		SetMesh(Mesh, "pFlyerMesh");
-		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
+		SetMesh(ObjectMesh, "pFlyerMesh");
+	}
+
+	
+	XMFLOAT3 GetPosition() {
+		return ObjPosition;
+	}
+
+	void InputNewPosition(float X, float Y, float Z) {
+		ObjPosition.x = X;
+		ObjPosition.y = Y;
+		ObjPosition.z = Z;
 	}
 
 	void MoveAircraft(float FT) {
@@ -33,27 +48,29 @@ public:
 		if (!MoveRight && !MoveLeft)
 			LerpDcc(SpeedStrafe, 5, FT);
 
-		MoveForward(SpeedForward);
-		MoveStrafe(SpeedStrafe);
+		MoveForward(ObjPosition, SpeedForward);
+		MoveStrafe(ObjPosition, SpeedStrafe);
 	}
 
 	void Update(float FT) {
-		InitTransform();
-
 		MoveAircraft(FT);
 
-		SetPosition(Position);
-		Rotate(Rotation.x, Rotation.y, Rotation.z);
+		if(auto ptr = framework.Find("map"); ptr)
+			framework.CheckCollisionTerrain(ObjPosition, ptr);
 
-		auto ptr = framework.Find("map");
-		if (ptr) framework.CheckCollisionTerrain(this, ptr);
-
-		UpdateOOBB();
+		UpdateOOBB(OOBB, ObjectMesh);
 	}
 
 	void Render(CommandList CmdList) {
-		RenderShader(CmdList, Shader);
-		RenderMesh(CmdList, Mesh);
+		BeginProcess();
+		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
+		SetPosition(ObjPosition);
+		Rotate(Rotation.x, Rotation.y, Rotation.z);
+		RenderMesh(CmdList, Shader, ObjectMesh);
+
+		BeginProcess();
+		SetPosition(0.0, 50.0, 0.0);
+		RenderMesh(CmdList, Shader, ObjectMesh);
 	}
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
@@ -111,7 +128,9 @@ public:
 			cyDelta = (float)(framework.NewCursorPos().y - PrevCursorPos.y) / 5.0f;
 			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
 
-			UpdateRotation(cyDelta, cxDelta, 0.0);
+			//UpdateRotation(cyDelta, cxDelta, 0.0);
+			Rotation.x += cyDelta;
+			Rotation.y += cxDelta;
 		}
 	}
 
@@ -168,8 +187,7 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		RenderShader(CmdList, Shader);
-		RenderMesh(CmdList, TerrainMesh);
+		RenderMesh(CmdList, Shader, TerrainMesh);
 	}
 
 	void InputMouseMotion(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}

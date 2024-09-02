@@ -70,11 +70,11 @@ public:
 	Mesh* FindMesh(std::string MeshName);
 	Mesh* FindTerrain(std::string TerrainMeshName);
 	void ClearAll();
-	bool CheckCollision(BASE* From, BASE* To);
-	bool CheckTerrainFloor(BASE* Object, BASE* Terrain);
-	void ClampToTerrainFloor(BASE* Object, BASE* Terrain);
-	void CheckCollisionTerrain(BASE* Object, BASE* Terrain);
+	bool CheckCollision(const BoundingOrientedBox& OOBBFrom, const BoundingOrientedBox& OOBBTo);
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true);
+	bool CheckTerrainFloor(XMFLOAT3 Position, BASE* Terrain);
+	void ClampToTerrainFloor(XMFLOAT3& Position, BASE* Terrain);
+	void CheckCollisionTerrain(XMFLOAT3& Position, BASE* Terrain);
 	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

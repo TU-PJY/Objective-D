@@ -167,14 +167,9 @@ void Framework::ClearAll() {
 		O.second->DeleteMark = true;
 }
 
-bool Framework::CheckCollision(BASE* From, BASE* To) {
-	if (From && To) {
-		if (From->OOBB.Intersects(To->OOBB))
-			return true;
-		else
-			return false;
-	}
-
+bool Framework::CheckCollision(const BoundingOrientedBox& OOBBFrom, const BoundingOrientedBox& OOBBTo) {
+	if (OOBBFrom.Intersects(OOBBTo))
+		return true;
 	else
 		return false;
 }
@@ -225,23 +220,23 @@ bool Framework::CheckCollision(BASE* From, BASE* To) {
 //	return false;
 //}
 
-bool Framework::CheckTerrainFloor(BASE* Object, BASE* Terrain) {
+bool Framework::CheckTerrainFloor(XMFLOAT3 Position, BASE* Terrain) {
 	if (Terrain->TerrainMesh) {
-		if (Object->Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix()))
+		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
 			return true;
 	}
 
 	return false;
 }
 
-void Framework::ClampToTerrainFloor(BASE* Object, BASE* Terrain) {
-	Object->Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix());
+void Framework::ClampToTerrainFloor(XMFLOAT3& Position, BASE* Terrain) {
+	Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());
 }
 
-void Framework::CheckCollisionTerrain(BASE* Object, BASE* Terrain) {
+void Framework::CheckCollisionTerrain(XMFLOAT3& Position, BASE* Terrain) {
 	if (Terrain->GetTerrainMesh()) {
-		if (Object->Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix()))
-			Object->Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Object->Position.x, Object->Position.z, Terrain->GetTerrainMatrix());
+		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
+			Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());
 	}
 }
 
