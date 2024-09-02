@@ -24,11 +24,9 @@ Mesh* MeshUtil::GetTerrain(std::string TerrainName) {
 		return nullptr;
 }
 
-
 ////////////////////////////////////
 
-
-Mesh::Mesh(ID3D12Device * Device, ID3D12GraphicsCommandList * CmdList, char* Directory, bool TextMode) {
+Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 	if (Directory)
 		LoadMeshFromFile(Device, CmdList, Directory, TextMode);
 }

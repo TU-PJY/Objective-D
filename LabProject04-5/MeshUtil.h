@@ -49,36 +49,36 @@ public:
 	void Release();
 
 protected:
-	UINT Vertices = 0;
-	XMFLOAT3* Position = NULL;
-	ID3D12Resource* PositionBuffer = NULL;
-	ID3D12Resource* PositionUploadBuffer = NULL;
+	UINT Vertices{};
+	XMFLOAT3* Position{};
+	ID3D12Resource* PositionBuffer{};
+	ID3D12Resource* PositionUploadBuffer{};
 
-	XMFLOAT3* Normal = NULL;
-	ID3D12Resource* NormalBuffer = NULL;
-	ID3D12Resource* NormalUploadBuffer = NULL;
+	XMFLOAT3* Normal{};
+	ID3D12Resource* NormalBuffer{};
+	ID3D12Resource* NormalUploadBuffer{};
 
-	XMFLOAT2* TextureCoords = NULL;
-	ID3D12Resource* TextureCoordBuffer = NULL;
-	ID3D12Resource* TextureCoordUploadBuffer = NULL;
+	XMFLOAT2* TextureCoords{};
+	ID3D12Resource* TextureCoordBuffer{};
+	ID3D12Resource* TextureCoordUploadBuffer{};
 
-	UINT Indices = 0;
-	UINT* PnIndices = NULL;
-	ID3D12Resource* IndexBuffer = NULL;
-	ID3D12Resource* IndexUploadBuffer = NULL;
+	UINT Indices{};
+	UINT* PnIndices{};
+	ID3D12Resource* IndexBuffer{};
+	ID3D12Resource* IndexUploadBuffer{};
 
-	UINT NumVertexBufferViews = 0;
-	D3D12_VERTEX_BUFFER_VIEW* VertexBufferViews = NULL;
+	UINT NumVertexBufferViews{};
+	D3D12_VERTEX_BUFFER_VIEW* VertexBufferViews{};
 
-	D3D12_INDEX_BUFFER_VIEW	IndexBufferView;
+	D3D12_INDEX_BUFFER_VIEW	IndexBufferView{};
 
 	D3D12_PRIMITIVE_TOPOLOGY PromitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	UINT Slot = 0;
-	UINT Stride = 0;
-	UINT Offset = 0;
+	UINT Slot{};
+	UINT Stride{};
+	UINT Offset{};
 
-	UINT StartIndex = 0;
-	int	BaseVertex = 0;
+	UINT StartIndex{};
+	int	BaseVertex{};
 
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();

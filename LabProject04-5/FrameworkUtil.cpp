@@ -305,7 +305,7 @@ void Framework::ReleaseObjects() {
 
 void Framework::ReleaseUploadBuffers() {
 	for (int i = 0; i < NUM_LAYER; ++i) {
-		for(auto const& O : Container[i])
+		for (auto const& O : Container[i])
 			O->ReleaseUploadBuffers();
 	}
 }

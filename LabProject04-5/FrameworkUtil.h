@@ -41,7 +41,7 @@ public:
 	bool LB_DownState{}, RB_DownState{};
 
 	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction(),
-		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM)=nullptr,
+		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
 		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
 		void MouseMotionController(HWND) = nullptr);
 

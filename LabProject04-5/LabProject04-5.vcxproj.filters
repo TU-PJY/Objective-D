@@ -151,6 +151,9 @@
     <ClCompile Include="MeshUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Mesh Util ]</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Shader Util ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
