@@ -6,6 +6,7 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 #include "ShaderUtil.h"
+#include "PickingUtil.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);

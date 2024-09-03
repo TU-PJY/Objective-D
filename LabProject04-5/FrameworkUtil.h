@@ -62,7 +62,7 @@ public:
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	void UpdateContainer(int Index);
 	void AddObject(GameObject*&& Object, std::string Tag, Layer Layer);
-	void DeleteSelf(GameObject* Object);
+	void DeleteObject(GameObject* Object);
 	void DeleteObject(std::string Tag);
 	void DeleteObject(std::string Tag, Layer TargetLayer);
 	GameObject* Find(std::string Tag);

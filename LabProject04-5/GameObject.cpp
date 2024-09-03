@@ -147,25 +147,23 @@ void GameObject::LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT)
 	CurrentSpeed = std::lerp(CurrentSpeed, 0.0, DecelerationValue * FT);
 }
 
-//void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-//	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&TranslateMatrix) * xmmtxView);
-//	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
-//	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
-//	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
-//	xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
-//}
-//
-//int GameObject::PickRayInter(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
-//	int nIntersected = 0;
-//
-//	if (ObjectMesh) {
-//		XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
-//		GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
-//		nIntersected = ObjectMesh->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
-//	}
-//
-//	return(nIntersected);
-//}
+void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
+	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&TranslateMatrix) * xmmtxView);
+	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
+	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
+	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
+	xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
+}
+
+int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
+	int nIntersected = 0;
+
+	XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
+	GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
+	nIntersected = MeshPtr->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
+
+	return(nIntersected);
+}
 
 void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr) {
 	if (ShaderPtr)

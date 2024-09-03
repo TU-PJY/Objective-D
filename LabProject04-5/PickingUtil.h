@@ -3,8 +3,6 @@
 
 class PickingUtil {
 public:
-	bool PickByCursor(LPARAM lParam, int ObjectIntersected);
-	bool PickByCoord(float X, float Y, int ObjectIntersected);
+	bool PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr);
+	bool PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPtr);
 };
-
-extern PickingUtil pickingUtil;

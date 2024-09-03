@@ -40,7 +40,7 @@ public:
 	void LerpAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);
 	void LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT);
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
-	int PickRayInter(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
+	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr);
 
 	////////// virtual functions
@@ -55,6 +55,7 @@ public:
 	virtual void Update(float FT) {}
 	virtual void Render(CommandList CmdList) {}
 	virtual Mesh* GetTerrainMesh() { return {}; }
+	virtual Mesh* GetObjectMesh() { return {}; }
 	virtual XMFLOAT4X4 GetTerrainMatrix() { return TranslateMatrix; }
 	virtual XMFLOAT3 GetPosition() { return {}; }
 	virtual void InputNewPosition(float X = 0.0, float Y = 0.0, float Z = 0.0) {}

@@ -125,7 +125,7 @@ void Framework::AddObject(GameObject*&& Object, std::string Tag, Layer Layer) {
 	ObjectList.insert(std::pair(Tag, Container[layer].back()));
 }
 
-void Framework::DeleteSelf(GameObject* Object) {
+void Framework::DeleteObject(GameObject* Object) {
 	Object->DeleteMark = true;
 }
 
@@ -173,52 +173,6 @@ bool Framework::CheckCollision(const BoundingOrientedBox& OOBBFrom, const Boundi
 	else
 		return false;
 }
-
-//bool Framework::CheckPickingByCursor(LPARAM lParam, BASE* Object) {
-//	float xClient = LOWORD(lParam);
-//	float yClient = HIWORD(lParam);
-//
-//	XMFLOAT3 xmf3PickPosition;
-//	xmf3PickPosition.x = (((2.0f * xClient) / (float)cam.CamViewport.Width) - 1) / cam.Cam4x4Projection._11;
-//	xmf3PickPosition.y = -(((2.0f * yClient) / (float)cam.CamViewport.Height) - 1) / cam.Cam4x4Projection._22;
-//	xmf3PickPosition.z = 1.0f;
-//
-//	XMVECTOR xmvPickPosition = XMLoadFloat3(&xmf3PickPosition);
-//	XMMATRIX xmmtxView = XMLoadFloat4x4(&cam.Cam4x4View);
-//
-//	int nIntersected = 0;
-//	float fNearestHitDistance = FLT_MAX;
-//	float fHitDistance = FLT_MAX;
-//	nIntersected = Object->PickObjectByRayIntersection(xmvPickPosition, xmmtxView, &fHitDistance);
-//
-//	if ((nIntersected > 0) && (fHitDistance < fNearestHitDistance))
-//		return true;
-//
-//	return false;
-//}
-//
-//bool Framework::CheckPickingByCoordinate(float X, float Y, BASE* Object) {
-//	float xClient = (X + 1.0) / 2.0 * WIDTH;
-//	float yClient = (1.0 - Y) / 2.0 * HEIGHT;
-//
-//	XMFLOAT3 xmf3PickPosition;
-//	xmf3PickPosition.x = (((2.0f * xClient) / (float)cam.CamViewport.Width) - 1) / cam.Cam4x4Projection._11;
-//	xmf3PickPosition.y = -(((2.0f * yClient) / (float)cam.CamViewport.Height) - 1) / cam.Cam4x4Projection._22;
-//	xmf3PickPosition.z = 1.0f;
-//
-//	XMVECTOR xmvPickPosition = XMLoadFloat3(&xmf3PickPosition);
-//	XMMATRIX xmmtxView = XMLoadFloat4x4(&cam.Cam4x4View);
-//
-//	int nIntersected = 0;
-//	float fNearestHitDistance = FLT_MAX;
-//	float fHitDistance = FLT_MAX;
-//	nIntersected = Object->PickObjectByRayIntersection(xmvPickPosition, xmmtxView, &fHitDistance);
-//
-//	if ((nIntersected > 0) && (fHitDistance < fNearestHitDistance))
-//		return true;
-//
-//	return false;
-//}
 
 bool Framework::CheckTerrainFloor(XMFLOAT3 Position, GameObject* Terrain) {
 	if (Terrain->GetTerrainMesh()) {

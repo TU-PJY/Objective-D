@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "PickingUtil.h"
 #include <random>
 
 class Aircraft : public GameObject {
@@ -14,6 +15,8 @@ private:
 	XMFLOAT3 ObjPosition{};
 	XMFLOAT3 Rotation{};
 
+	PickingUtil pu;
+
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 public:
@@ -22,8 +25,16 @@ public:
 		SetMesh(ObjectMesh, "pFlyerMesh");
 	}
 
+	Mesh* GetObjectMesh() {
+		return ObjectMesh;
+	}
+
 	XMFLOAT3 GetPosition() {
 		return ObjPosition;
+	}
+
+	BoundingOrientedBox GetOOBB() {
+		return OOBB;
 	}
 
 	void InputNewPosition(float X, float Y, float Z) {
