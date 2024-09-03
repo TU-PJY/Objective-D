@@ -45,37 +45,6 @@ void Framework::InputMouseMotion(HWND hWnd) {
 		MouseMotionController(hWnd);
 }
 
-void Framework::CaptureMouseMotion(HWND hWnd) {
-	::SetCapture(hWnd);
-	::GetCursorPos(&PrevCursorPos);
-}
-
-POINT Framework::NewCursorPos() {
-	POINT CursorPos;
-	::GetCursorPos(&CursorPos);
-	return CursorPos;
-}
-
-void Framework::ReleaseMouseMotion() {
-	::ReleaseCapture();
-}
-
-void Framework::UpdateMouseButton(ButtonType Button, ButtonState ButtonState) {
-	if (Button == ButtonType::LButton) {
-		if (ButtonState == ButtonState::Down)
-			LB_DownState = true;
-		else
-			LB_DownState = false;
-	}
-
-	else if (Button == ButtonType::RButton) {
-		if (ButtonState == ButtonState::Down)
-			RB_DownState = true;
-		else
-			RB_DownState = false;
-	}
-}
-
 void Framework::Exit() {
 	PostQuitMessage(1);
 }

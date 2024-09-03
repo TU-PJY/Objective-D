@@ -1,5 +1,6 @@
 #pragma once
 #include "FrameworkUtil.h"
+#include "MouseUtil.h"
 
 // 모드마다 별도의 네임스페이스
 namespace Mode_1 {
@@ -14,11 +15,13 @@ namespace Mode_1 {
 
 	inline void MouseMotionController(HWND hWnd) {
 		if (auto obj = framework.Find("obj1"); obj)
-			obj->InputMouseMotion(hWnd, framework.PrevCursorPos);
+			obj->InputMouseMotion(hWnd, mouse.PrevCursorPos);
 	}
 
 	inline void MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		if (auto obj = framework.Find("obj1"); obj)
 			obj->InputMouseButton(hWnd, nMessageID, wParam, lParam);
+
+		mouse.UpdateButtonState(nMessageID);
 	}
 }

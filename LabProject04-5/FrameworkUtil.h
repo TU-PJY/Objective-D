@@ -53,10 +53,6 @@ public:
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseMotion(HWND hWnd);
-	void CaptureMouseMotion(HWND hWnd);
-	POINT NewCursorPos();
-	void ReleaseMouseMotion();
-	void UpdateMouseButton(ButtonType Button, ButtonState ButtonState);
 	void Exit();
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);

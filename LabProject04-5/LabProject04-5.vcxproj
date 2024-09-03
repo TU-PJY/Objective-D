@@ -156,6 +156,7 @@
     <ClInclude Include="DirectX_3D_Main.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mode1.h" />
+    <ClInclude Include="MouseUtil.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="MeshUtil.h" />
     <ClInclude Include="PickingUtil.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="MeshUtil.cpp" />
+    <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="TimerUtil.cpp" />

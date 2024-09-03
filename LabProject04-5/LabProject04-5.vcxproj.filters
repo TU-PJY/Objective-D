@@ -71,6 +71,9 @@
     <Filter Include="[3]_______[ Util ]\[ Collision Util ]">
       <UniqueIdentifier>{d8926a5b-3aa1-4959-ab02-5a2302da5eff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Mouse Util ]">
+      <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -127,6 +130,9 @@
     <ClInclude Include="CollisionUtil.h">
       <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="MouseUtil.h">
+      <Filter>[3]_______[ Util ]\[ Mouse Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -162,6 +168,9 @@
     </ClCompile>
     <ClCompile Include="CollisionUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Mouse Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

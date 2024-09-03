@@ -7,6 +7,7 @@
 #include "FrameworkUtil.h"
 #include "CameraUtil.h"
 #include "ShaderUtil.h"
+#include "MouseUtil.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
@@ -18,6 +19,7 @@ PseudoLightingShader* pseudoShader;
 Framework framework;
 Camera camera;
 MeshUtil meshUtil;
+MouseUtil mouse;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
