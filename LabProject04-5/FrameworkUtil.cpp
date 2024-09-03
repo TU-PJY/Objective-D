@@ -101,7 +101,7 @@ void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void Framework::UpdateContainer(int Index) {
-	std::erase_if(ObjectList, [](const std::pair<std::string, BASE*>& Object) {
+	std::erase_if(ObjectList, [](const std::pair<std::string, GameObject*>& Object) {
 		return Object.second->DeleteMark;
 		});
 
@@ -117,7 +117,7 @@ void Framework::UpdateContainer(int Index) {
 	}
 }
 
-void Framework::AddObject(BASE*&& Object, std::string Tag, Layer Layer) {
+void Framework::AddObject(GameObject*&& Object, std::string Tag, Layer Layer) {
 	int layer = static_cast<int>(Layer);
 
 	Container[layer].push_back(Object);
@@ -125,7 +125,7 @@ void Framework::AddObject(BASE*&& Object, std::string Tag, Layer Layer) {
 	ObjectList.insert(std::pair(Tag, Container[layer].back()));
 }
 
-void Framework::DeleteSelf(BASE* Object) {
+void Framework::DeleteSelf(GameObject* Object) {
 	Object->DeleteMark = true;
 }
 
@@ -145,7 +145,7 @@ void Framework::DeleteObject(std::string Tag, Layer TargetLayer) {
 	}
 }
 
-BASE* Framework::Find(std::string Tag) {
+GameObject* Framework::Find(std::string Tag) {
 	auto It = ObjectList.find(Tag);
 	if (It != std::end(ObjectList))
 		return It->second;
@@ -153,7 +153,7 @@ BASE* Framework::Find(std::string Tag) {
 		return nullptr;
 }
 
-BASE* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
+GameObject* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
 	int layer = static_cast<int>(TargetLayer);
 
 	if (Container[layer][Index]->ObjectTag == Tag)
@@ -220,8 +220,8 @@ bool Framework::CheckCollision(const BoundingOrientedBox& OOBBFrom, const Boundi
 //	return false;
 //}
 
-bool Framework::CheckTerrainFloor(XMFLOAT3 Position, BASE* Terrain) {
-	if (Terrain->TerrainMesh) {
+bool Framework::CheckTerrainFloor(XMFLOAT3 Position, GameObject* Terrain) {
+	if (Terrain->GetTerrainMesh()) {
 		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
 			return true;
 	}
@@ -229,11 +229,11 @@ bool Framework::CheckTerrainFloor(XMFLOAT3 Position, BASE* Terrain) {
 	return false;
 }
 
-void Framework::ClampToTerrainFloor(XMFLOAT3& Position, BASE* Terrain) {
+void Framework::ClampToTerrainFloor(XMFLOAT3& Position, GameObject* Terrain) {
 	Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());
 }
 
-void Framework::CheckCollisionTerrain(XMFLOAT3& Position, BASE* Terrain) {
+void Framework::CheckCollisionTerrain(XMFLOAT3& Position, GameObject* Terrain) {
 	if (Terrain->GetTerrainMesh()) {
 		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
 			Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());

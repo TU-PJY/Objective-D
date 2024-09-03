@@ -1,6 +1,6 @@
 #pragma once
 #include "Config.h"
-#include "ObjectBase.h"
+#include "GameObject.h"
 #include "CameraUtil.h"
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
@@ -24,7 +24,7 @@ enum class  ButtonType
 
 class Framework {
 private:
-	std::multimap<std::string, BASE*> ObjectList;
+	std::multimap<std::string, GameObject*> ObjectList;
 
 	std::string RunningMode{};
 	void (*MouseController)(HWND, UINT, WPARAM, LPARAM);
@@ -33,7 +33,7 @@ private:
 
 protected:
 	ID3D12RootSignature* RootSignature{};
-	std::array<std::deque<BASE*>, NUM_LAYER> Container;
+	std::array<std::deque<GameObject*>, NUM_LAYER> Container;
 
 public:
 	std::string Mode();
@@ -61,20 +61,20 @@ public:
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	void UpdateContainer(int Index);
-	void AddObject(BASE*&& Object, std::string Tag, Layer Layer);
-	void DeleteSelf(BASE* Object);
+	void AddObject(GameObject*&& Object, std::string Tag, Layer Layer);
+	void DeleteSelf(GameObject* Object);
 	void DeleteObject(std::string Tag);
 	void DeleteObject(std::string Tag, Layer TargetLayer);
-	BASE* Find(std::string Tag);
-	BASE* Find(std::string Tag, Layer TargetLayer, int Index);
+	GameObject* Find(std::string Tag);
+	GameObject* Find(std::string Tag, Layer TargetLayer, int Index);
 	Mesh* FindMesh(std::string MeshName);
 	Mesh* FindTerrain(std::string TerrainMeshName);
 	void ClearAll();
 	bool CheckCollision(const BoundingOrientedBox& OOBBFrom, const BoundingOrientedBox& OOBBTo);
 	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true);
-	bool CheckTerrainFloor(XMFLOAT3 Position, BASE* Terrain);
-	void ClampToTerrainFloor(XMFLOAT3& Position, BASE* Terrain);
-	void CheckCollisionTerrain(XMFLOAT3& Position, BASE* Terrain);
+	bool CheckTerrainFloor(XMFLOAT3 Position, GameObject* Terrain);
+	void ClampToTerrainFloor(XMFLOAT3& Position, GameObject* Terrain);
+	void CheckCollisionTerrain(XMFLOAT3& Position, GameObject* Terrain);
 	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

@@ -1,8 +1,8 @@
 #pragma once
-#include "ObjectBase.h"
+#include "GameObject.h"
 #include <random>
 
-class Aircraft : public BASE {
+class Aircraft : public GameObject {
 private:
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 	float SpeedForward{};
@@ -22,7 +22,6 @@ public:
 		SetMesh(ObjectMesh, "pFlyerMesh");
 	}
 
-	
 	XMFLOAT3 GetPosition() {
 		return ObjPosition;
 	}
@@ -55,7 +54,7 @@ public:
 	void Update(float FT) {
 		MoveAircraft(FT);
 
-		if(auto ptr = framework.Find("map"); ptr)
+		if (auto ptr = framework.Find("map"); ptr)
 			framework.CheckCollisionTerrain(ObjPosition, ptr);
 
 		UpdateOOBB(OOBB, ObjectMesh);
@@ -159,7 +158,7 @@ public:
 	}
 };
 
-class Map : public BASE {
+class Map : public GameObject {
 private:
 	Mesh* TerrainMesh;
 	Shader* Shader;

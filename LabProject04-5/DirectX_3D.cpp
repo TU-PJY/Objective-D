@@ -69,7 +69,6 @@ ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommand
 			Buffer->Map(0, &ReadRange, (void**)&BufferDataBegin);
 			memcpy(BufferDataBegin, Data, Byte);
 			Buffer->Unmap(0, NULL);
-
 		}
 		break;
 

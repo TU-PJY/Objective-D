@@ -1,7 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "DirectX_3D.h"
-#include "ObjectBase.h"
+#include "GameObject.h"
 #define ASPECT_RATIO				(float(WIDTH) / float(HEIGHT))
 
 class Camera {
@@ -82,8 +82,8 @@ public:
 	D3D12_RECT GetScissorRect();
 
 	void Move(const XMFLOAT3& Shift);
-	void Track(XMFLOAT3& LookAt, BASE* Object, float fTimeElapsed);
-	void SetLookAt(XMFLOAT3& LookAt, BASE* Object);
+	void Track(XMFLOAT3& LookAt, GameObject* Object, float fTimeElapsed);
+	void SetLookAt(XMFLOAT3& LookAt, GameObject* Object);
 	void CalculateFrustumPlanes();
 	bool IsInFrustum(BoundingBox& BoundingBox);
 	bool IsInFrustum(BoundingOrientedBox& BoundingBox);

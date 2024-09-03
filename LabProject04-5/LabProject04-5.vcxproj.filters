@@ -85,9 +85,6 @@
     <ClInclude Include="Ufo.h">
       <Filter>[2]_______[ Object ]\[ CustomObject ]</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectBase.h">
-      <Filter>[2]_______[ Object ]</Filter>
-    </ClInclude>
     <ClInclude Include="DirectX_3D_Main.h">
       <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
@@ -153,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="ShaderUtil.cpp">
       <Filter>[3]_______[ Util ]\[ Shader Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>[2]_______[ Object ]\[ Base Object ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

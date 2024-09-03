@@ -140,7 +140,7 @@ void Camera::Move(const XMFLOAT3& Shift) {
 	Position.z += Shift.z;
 }
 
-void Camera::Track(XMFLOAT3& LookAt, BASE* Object, float fTimeElapsed) {
+void Camera::Track(XMFLOAT3& LookAt, GameObject* Object, float fTimeElapsed) {
 	XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 	XMFLOAT3 xmf3Right = Object->Right;
 	XMFLOAT3 xmf3Up = Object->Up;
@@ -178,7 +178,7 @@ void Camera::Track(XMFLOAT3& LookAt, BASE* Object, float fTimeElapsed) {
 	SetLookAt(LookAt, Object);
 }
 
-void Camera::SetLookAt(XMFLOAT3& LookAt, BASE* Object) {
+void Camera::SetLookAt(XMFLOAT3& LookAt, GameObject* Object) {
 	XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(Position, LookAt, Object->Up);
 	Right = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
 	Up = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
