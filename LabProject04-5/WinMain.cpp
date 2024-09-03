@@ -3,16 +3,18 @@
 #include "Config.h"
 #include "Objective-D.h"
 #include "DirectX_3D_Main.h"
-#include "CameraUtil.h"
+
 #include "FrameworkUtil.h"
+#include "CameraUtil.h"
 #include "ShaderUtil.h"
-#include "PickingUtil.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 DirectX_3D_Main D3D_Main;
+
 PseudoLightingShader* pseudoShader;
+
 Framework framework;
 Camera camera;
 MeshUtil meshUtil;

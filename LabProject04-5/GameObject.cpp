@@ -27,7 +27,6 @@ void GameObject::UpdateOOBB(BoundingOrientedBox& OOBB, Mesh*& MeshPtr) {
 void GameObject::BeginProcess() {
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
-	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
 }
 
 void GameObject::SetPosition(float x, float y, float z) {
@@ -148,7 +147,7 @@ void GameObject::LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT)
 }
 
 void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMLoadFloat4x4(&TranslateMatrix) * xmmtxView);
+	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix)) * xmmtxView);
 	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
 	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
 	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);

@@ -2,6 +2,9 @@
 #include "GameObject.h"
 
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
+	if (!MeshPtr)
+		return false;
+
 	float xclient = LOWORD(lparam);
 	float yclient = HIWORD(lparam);
 
@@ -25,6 +28,9 @@ bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr)
 }
 
 bool PickingUtil::PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPtr) {
+	if (!MeshPtr)
+		return false;
+
 	float xclient = (x + 1.0) / 2.0 * WIDTH;
 	float yclient = (1.0 - y) / 2.0 * HEIGHT;
 

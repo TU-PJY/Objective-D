@@ -1,7 +1,39 @@
 #pragma once
 #include "GameObject.h"
 #include "PickingUtil.h"
+#include "FrameworkUtil.h"
 #include <random>
+
+class Object : public GameObject {
+public:
+	Mesh* ObjectMesh;
+	Shader* ObjectShader;
+	BoundingOrientedBox OOBB = BoundingOrientedBox();
+
+	BoundingOrientedBox GetOOBB() {
+		return OOBB;
+	}
+
+	Mesh* GetObjectMesh() {
+		return ObjectMesh;
+	}
+
+	Object() {
+		SetMesh(ObjectMesh, "pFlyerMesh");
+		SetShader(ObjectShader, pseudoShader);
+		SetColor(XMFLOAT3(0.0, 1.0, 0.0));
+	}
+
+	void Update(float FT) {
+	}
+
+	void Render(CommandList CmdList) {
+		BeginProcess();
+		SetPosition(-50.0, 50.0, -10.0);
+		RenderMesh(CmdList, ObjectShader, ObjectMesh);
+		UpdateOOBB(OOBB, ObjectMesh);
+	}
+};
 
 class Aircraft : public GameObject {
 private:
@@ -16,13 +48,13 @@ private:
 	XMFLOAT3 Rotation{};
 
 	PickingUtil pu;
-
 	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
 public:
 	Aircraft() {
 		SetShader(Shader, pseudoShader);
 		SetMesh(ObjectMesh, "pFlyerMesh");
+		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 	}
 
 	Mesh* GetObjectMesh() {
@@ -67,20 +99,19 @@ public:
 
 		if (auto ptr = framework.Find("map"); ptr)
 			framework.CheckCollisionTerrain(ObjPosition, ptr);
-
-		UpdateOOBB(OOBB, ObjectMesh);
 	}
 
 	void Render(CommandList CmdList) {
 		BeginProcess();
-		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
 		SetPosition(ObjPosition);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, Shader, ObjectMesh);
 
-		BeginProcess();
-		SetPosition(0.0, 50.0, 0.0);
-		RenderMesh(CmdList, Shader, ObjectMesh);
+		UpdateOOBB(OOBB, ObjectMesh);
+
+		if (auto object = framework.Find("obj2"); object)
+			if (framework.CheckCollision(OOBB, object->GetOOBB()))
+				framework.DeleteObject(object);
 	}
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
@@ -149,6 +180,10 @@ public:
 		case WM_LBUTTONDOWN:
 			framework.CaptureMouseMotion(hWnd);
 			framework.UpdateMouseButton(ButtonType::LButton, ButtonState::Down);
+
+			if (auto object = framework.Find("obj2"); object)
+				if (pu.PickByCursor(lParam, object, object->GetObjectMesh()))
+					framework.DeleteObject(object);
 			break;
 
 		case WM_RBUTTONDOWN:
