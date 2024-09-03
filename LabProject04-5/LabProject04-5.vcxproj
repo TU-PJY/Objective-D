@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraUtil.h" />
+    <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="DirectX_3D_Main.h" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
+    <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="MeshUtil.cpp" />

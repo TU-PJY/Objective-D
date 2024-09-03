@@ -1,17 +1,18 @@
 #pragma once
 #include "GameObject.h"
-#include "PickingUtil.h"
 #include "FrameworkUtil.h"
+#include "PickingUtil.h"
 #include <random>
 
 class Object : public GameObject {
 public:
 	Mesh* ObjectMesh;
 	Shader* ObjectShader;
-	BoundingOrientedBox OOBB = BoundingOrientedBox();
 
-	BoundingOrientedBox GetOOBB() {
-		return OOBB;
+	OOBB oobb;
+
+	OOBB GetOOBB() {
+		return oobb;
 	}
 
 	Mesh* GetObjectMesh() {
@@ -31,7 +32,7 @@ public:
 		BeginProcess();
 		SetPosition(-50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);
-		UpdateOOBB(OOBB, ObjectMesh);
+		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix);
 	}
 };
 
@@ -48,7 +49,7 @@ private:
 	XMFLOAT3 Rotation{};
 
 	PickingUtil pu;
-	BoundingOrientedBox OOBB = BoundingOrientedBox();
+	OOBB oobb;
 
 public:
 	Aircraft() {
@@ -65,8 +66,8 @@ public:
 		return ObjPosition;
 	}
 
-	BoundingOrientedBox GetOOBB() {
-		return OOBB;
+	OOBB GetOOBB() {
+		return oobb;
 	}
 
 	void InputNewPosition(float X, float Y, float Z) {
@@ -107,11 +108,10 @@ public:
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, Shader, ObjectMesh);
 
-		UpdateOOBB(OOBB, ObjectMesh);
+		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix);
 
-		if (auto object = framework.Find("obj2"); object)
-			if (framework.CheckCollision(OOBB, object->GetOOBB()))
-				framework.DeleteObject(object);
+		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
+			framework.DeleteObject(object);
 	}
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
@@ -169,7 +169,6 @@ public:
 			cyDelta = (float)(framework.NewCursorPos().y - PrevCursorPos.y) / 5.0f;
 			::SetCursorPos(PrevCursorPos.x, PrevCursorPos.y);
 
-			//UpdateRotation(cyDelta, cxDelta, 0.0);
 			Rotation.x += cyDelta;
 			Rotation.y += cxDelta;
 		}

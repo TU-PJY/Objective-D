@@ -1,5 +1,4 @@
 #include "PickingUtil.h"
-#include "GameObject.h"
 
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)

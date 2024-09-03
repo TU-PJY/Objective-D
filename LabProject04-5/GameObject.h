@@ -1,6 +1,7 @@
 #pragma once
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
+#include "CollisionUtil.h"
 
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
@@ -59,7 +60,7 @@ public:
 	virtual XMFLOAT4X4 GetTerrainMatrix() { return TranslateMatrix; }
 	virtual XMFLOAT3 GetPosition() { return {}; }
 	virtual void InputNewPosition(float X = 0.0, float Y = 0.0, float Z = 0.0) {}
-	virtual BoundingOrientedBox GetOOBB() { return {}; }
+	virtual OOBB GetOOBB() { return {}; }
 };
 
 // dummy object for avoiding iterator error

@@ -68,6 +68,9 @@
     <Filter Include="[2]_______[ Object ]\[ Base Object ]">
       <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]_______[ Util ]\[ Collision Util ]">
+      <UniqueIdentifier>{d8926a5b-3aa1-4959-ab02-5a2302da5eff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -121,6 +124,9 @@
     <ClInclude Include="Controller.h">
       <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionUtil.h">
+      <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -153,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>[2]_______[ Object ]\[ Base Object ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionUtil.cpp">
+      <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
