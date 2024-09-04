@@ -111,10 +111,10 @@ void Camera::SetCameraMode(CamMode ModeValue) {
 	Mode = ModeValue;
 }
 
-void Camera::SetPosition(XMFLOAT3 Position) { Position = Position; }
+void Camera::SetPosition(XMFLOAT3 PositionValue) { Position = PositionValue; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
 
-void Camera::SetLookAtPosition(XMFLOAT3 LookAt) { LookAt = LookAt; }
+void Camera::SetLookAtPosition(XMFLOAT3 LookAtValue) { LookAt = LookAtValue; }
 XMFLOAT3& Camera::GetLookAtPosition() { return(LookAt); }
 
 XMFLOAT3& Camera::GetRightVector() { return(Right); }

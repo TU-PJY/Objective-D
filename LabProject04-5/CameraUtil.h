@@ -56,10 +56,10 @@ public:
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);
 	void SetCameraMode(CamMode Mode);
 
-	void SetPosition(XMFLOAT3 Position);
+	void SetPosition(XMFLOAT3 PositionValue);
 	XMFLOAT3& GetPosition();
 
-	void SetLookAtPosition(XMFLOAT3 LookAt);
+	void SetLookAtPosition(XMFLOAT3 LookAtValue);
 	XMFLOAT3& GetLookAtPosition();
 
 	XMFLOAT3& GetRightVector();
