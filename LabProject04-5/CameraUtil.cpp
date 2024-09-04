@@ -2,9 +2,11 @@
 #include "FrameworkUtil.h"
 
 void Camera::Update(float FT) {
-	if (Mode == CamMode::MODE1) {
-		auto obj = framework.Find("obj1");
-		if (obj) Track(obj->GetPosition(), obj, FT);
+	switch (Mode) {
+	case CamMode::MODE1:
+		if(auto object = framework.Find("obj1"); object)
+			Track(object->GetPosition(), object, FT);
+		break;
 	}
 }
 
@@ -105,8 +107,8 @@ void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->RSSetScissorRects(1, &ScissorRect);
 }
 
-void Camera::SetCameraMode(CamMode Mode) {
-	Mode = Mode;
+void Camera::SetCameraMode(CamMode ModeValue) {
+	Mode = ModeValue;
 }
 
 void Camera::SetPosition(XMFLOAT3 Position) { Position = Position; }

@@ -16,17 +16,10 @@ void GameObject::SetShader(Shader*& ShaderPtr, Shader* ShaderData) {
 	ShaderPtr = ShaderData;
 }
 
-void GameObject::UpdateOOBB(BoundingOrientedBox& OOBB, Mesh*& MeshPtr) {
-	if (MeshPtr) {
-		XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
-		MeshPtr->OOBB.Transform(OOBB, ResultMatrix);
-		XMStoreFloat4(&OOBB.Orientation, XMQuaternionNormalize(XMLoadFloat4(&OOBB.Orientation)));
-	}
-}
-
 void GameObject::BeginProcess() {
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
+	ScaleMatrix = Mat4::Identity();
 }
 
 void GameObject::SetPosition(float x, float y, float z) {
@@ -106,8 +99,13 @@ void GameObject::LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& 
 }
 
 void GameObject::Scale(float ScaleX, float ScaleY, float ScaleZ) {
-	XMMATRIX scaleMatrix = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
-	TranslateMatrix = Mat4::Multiply(scaleMatrix, TranslateMatrix);
+	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
+	TranslateMatrix = Mat4::Multiply(ScaleMat, ScaleMatrix);
+}
+
+void GameObject::ScaleTerrain(float ScaleX, float ScaleY, float ScaleZ){
+	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
+	TranslateMatrix = Mat4::Multiply(ScaleMat, TranslateMatrix);
 }
 
 void GameObject::LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
@@ -147,7 +145,10 @@ void GameObject::LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT)
 }
 
 void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix)) * xmmtxView);
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
+	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
+
+	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, ResultMatrix * xmmtxView);
 	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
 	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
 	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
@@ -177,7 +178,8 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPt
 ////////// virtual functions
 
 void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
+	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 	CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);

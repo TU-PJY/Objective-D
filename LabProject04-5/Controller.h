@@ -19,9 +19,10 @@ namespace Mode_1 {
 	}
 
 	inline void MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+		mouse.UpdateButtonState(nMessageID);
+
 		if (auto obj = framework.Find("obj1"); obj)
 			obj->InputMouseButton(hWnd, nMessageID, wParam, lParam);
 
-		mouse.UpdateButtonState(nMessageID);
 	}
 }

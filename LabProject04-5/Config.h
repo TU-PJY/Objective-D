@@ -4,15 +4,11 @@
 
 // layer configuration
 enum class Layer
-{
-	Terrain, L1, L2, END
-};
+{ Terrain, L1, L2, END };
 
 // camera mode configuration
 enum class CamMode
-{
-	MODE1
-};
+{ MODE1 };
 
 // full screen option
 constexpr bool START_WITH_FULL_SCREEN = true;

@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "FrameworkUtil.h"
 #include "PickingUtil.h"
-#include "MouseUtil.h"
 
 #include <random>
 
@@ -22,19 +21,17 @@ public:
 	}
 
 	Object() {
-		SetMesh(ObjectMesh, "pFlyerMesh");
+		SetMesh(ObjectMesh, "pUfoMesh");
 		SetShader(ObjectShader, pseudoShader);
 		SetColor(XMFLOAT3(0.0, 1.0, 0.0));
 	}
 
-	void Update(float FT) {
-	}
-
 	void Render(CommandList CmdList) {
 		BeginProcess();
+		Scale(1.0, 1.0, 1.0);
 		SetPosition(-50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);
-		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix);
+		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
 	}
 };
 
@@ -90,47 +87,23 @@ public:
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			switch (wParam) {
-			case 'W':
-				MoveFront = true;
-				break;
-
-			case 'S':
-				MoveBack = true;
-				break;
-
-			case 'D':
-				MoveRight = true;
-				break;
-
-			case 'A':
-				MoveLeft = true;
-				break;
+			case 'W': MoveFront = true; break;
+			case 'S': MoveBack = true; break;
+			case 'A': MoveLeft = true; break;
+			case 'D': MoveRight = true; break;
 			}
 			break;
 
 		case WM_KEYUP:
 			switch (wParam) {
-			case 'W':
-				MoveFront = false;
-				break;
-
-			case 'S':
-				MoveBack = false;
-				break;
-
-			case 'D':
-				MoveRight = false;
-				break;
-
-			case 'A':
-				MoveLeft = false;
-				break;
+			case 'W': MoveFront = false; break; 
+			case 'S': MoveBack = false; break; 
+			case 'A': MoveLeft = false; break; 
+			case 'D': MoveRight = false; break;  
 			}
 			break;
 		}
 	}
-
-
 
 	Aircraft() {
 		SetShader(Shader, pseudoShader);
@@ -184,11 +157,13 @@ public:
 
 	void Render(CommandList CmdList) {
 		BeginProcess();
+		Scale(1.0, 1.0, 1.0);
 		SetPosition(ObjPosition);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, Shader, ObjectMesh);
 
-		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix);
+	//	oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
+		oobb.Update(ObjPosition, XMFLOAT3(5.0, 5.0, 5.0), Rotation);
 		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
 			framework.DeleteObject(object);
 	}
@@ -210,7 +185,7 @@ public:
 		SetShader(Shader, pseudoShader);
 		SetTerrain(TerrainMesh, "pTerrain");
 		SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
-		Scale(5.0, 5.0, 5.0);
+		ScaleTerrain(5.0, 5.0, 5.0);
 	}
 
 	void Render(CommandList CmdList) {

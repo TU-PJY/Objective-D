@@ -1,202 +1,202 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="[0]_______[ Configuration ]">
+    <Filter Include="[0]____________[ Configuration ]">
       <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]_______[ Game Mode ]">
+    <Filter Include="[1]____________[ Game Mode ]">
       <UniqueIdentifier>{453fd586-1c73-44fe-a61b-78ef8806db07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]_______[ Game Mode ]\[ Mode1 ]">
+    <Filter Include="[1]____________[ Game Mode ]\[ Mode1 ]">
       <UniqueIdentifier>{64814673-b711-4547-a2fa-f83b097a05fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[2]_______[ Object ]">
+    <Filter Include="[2]____________[ Object ]">
       <UniqueIdentifier>{ff900b4e-0c5d-4b64-8b68-91350d32ea6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[2]_______[ Object ]\[ CustomObject ]">
-      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[3]_______[ Util ]">
+    <Filter Include="[3]____________[ Util ]">
       <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Camera Util ]">
+    <Filter Include="[3]____________[ Util ]\[ Camera Util ]">
       <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Mesh Util ]">
+    <Filter Include="[3]____________[ Util ]\[ Mesh Util ]">
       <UniqueIdentifier>{e06f5344-112a-46aa-8b30-1ab19c3f4755}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Timer Util ]">
+    <Filter Include="[3]____________[ Util ]\[ Timer Util ]">
       <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Shader Util ]">
+    <Filter Include="[3]____________[ Util ]\[ Shader Util ]">
       <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Framework Util ]">
+    <Filter Include="[3]____________[ Util ]\[ Framework Util ]">
       <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]_______[ DirectX 3D ]">
+    <Filter Include="[3]____________[ Util ]\[ Picking Util ]">
+      <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Collision Util ]">
+      <UniqueIdentifier>{d8926a5b-3aa1-4959-ab02-5a2302da5eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Mouse Util ]">
+      <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ DirectX 3D ]">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]_______[ DirectX 3D ]\[ Header ]">
+    <Filter Include="[4]____________[ DirectX 3D ]\[ Header ]">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]_______[ DirectX 3D ]\[ Main ]">
+    <Filter Include="[4]____________[ DirectX 3D ]\[ Main ]">
       <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]_______[ WinAPI ]">
+    <Filter Include="[5]____________[ WinAPI ]">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]_______[ WinAPI ]\[ Res ]">
+    <Filter Include="[5]____________[ WinAPI ]\[ Res ]">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="[5]_______[ WinAPI ]\[ Header ]">
+    <Filter Include="[5]____________[ WinAPI ]\[ Header ]">
       <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[6]_______[ HLSL ]">
+    <Filter Include="[6]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]_______[ Resource List ]">
+    <Filter Include="[7]____________[ Resource List ]">
       <UniqueIdentifier>{517a4e13-9e31-4063-a3c0-0decb62883fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[8]_______[ Template ]">
+    <Filter Include="[8]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Picking Util ]">
-      <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[2]_______[ Object ]\[ Base Object ]">
+    <Filter Include="[2]____________[ Object ]\[1] [ Base Object ]">
       <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Collision Util ]">
-      <UniqueIdentifier>{d8926a5b-3aa1-4959-ab02-5a2302da5eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[3]_______[ Util ]\[ Mouse Util ]">
-      <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
+    <Filter Include="[2]____________[ Object ]\[2] [ CustomObject ]">
+      <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
-      <Filter>[3]_______[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Framework Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
-      <Filter>[3]_______[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
-      <Filter>[4]_______[ DirectX 3D ]\[ Header ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
-      <Filter>[0]_______[ Configuration ]</Filter>
+      <Filter>[0]____________[ Configuration ]</Filter>
     </ClInclude>
     <ClInclude Include="Ufo.h">
-      <Filter>[2]_______[ Object ]\[ CustomObject ]</Filter>
+      <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D_Main.h">
-      <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
     <ClInclude Include="MeshUtil.h">
-      <Filter>[3]_______[ Util ]\[ Mesh Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TimerUtil.h">
-      <Filter>[3]_______[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Timer Util ]</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
-      <Filter>[3]_______[ Util ]\[ Shader Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>[5]_______[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Mode1.h">
-      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
+      <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
     <ClInclude Include="ResourceList.h">
-      <Filter>[7]_______[ Resource List ]</Filter>
+      <Filter>[7]____________[ Resource List ]</Filter>
     </ClInclude>
     <ClInclude Include="PickingUtil.h">
-      <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Picking Util ]</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>[2]_______[ Object ]\[ Base Object ]</Filter>
+      <Filter>[2]____________[ Object ]\[1] [ Base Object ]</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
-      <Filter>[1]_______[ Game Mode ]\[ Mode1 ]</Filter>
+      <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
     <ClInclude Include="CollisionUtil.h">
-      <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Collision Util ]</Filter>
     </ClInclude>
     <ClInclude Include="MouseUtil.h">
-      <Filter>[3]_______[ Util ]\[ Mouse Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Mouse Util ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Framework Util ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
-      <Filter>[4]_______[ DirectX 3D ]\[ Header ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Header ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D_Main.cpp">
-      <Filter>[4]_______[ DirectX 3D ]\[ Main ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="ResourceList.cpp">
-      <Filter>[7]_______[ Resource List ]</Filter>
+      <Filter>[7]____________[ Resource List ]</Filter>
     </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Camera Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClCompile>
     <ClCompile Include="TimerUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Timer Util ]</Filter>
     </ClCompile>
     <ClCompile Include="PickingUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Picking Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Picking Util ]</Filter>
     </ClCompile>
     <ClCompile Include="MeshUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Mesh Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Mesh Util ]</Filter>
     </ClCompile>
     <ClCompile Include="ShaderUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Shader Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Shader Util ]</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>[2]_______[ Object ]\[ Base Object ]</Filter>
+      <Filter>[2]____________[ Object ]\[1] [ Base Object ]</Filter>
     </ClCompile>
     <ClCompile Include="CollisionUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Collision Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Collision Util ]</Filter>
     </ClCompile>
     <ClCompile Include="MouseUtil.cpp">
-      <Filter>[3]_______[ Util ]\[ Mouse Util ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Mouse Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Res ]</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Res ]</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>[5]_______[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[5]____________[ WinAPI ]\[ Res ]</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders.hlsl">
-      <Filter>[6]_______[ HLSL ]</Filter>
+      <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ClassTemplate.txt">
-      <Filter>[8]_______[ Template ]</Filter>
+      <Filter>[8]____________[ Template ]</Filter>
     </Text>
     <Text Include="ControllerTemplate.txt">
-      <Filter>[8]_______[ Template ]</Filter>
+      <Filter>[8]____________[ Template ]</Filter>
     </Text>
   </ItemGroup>
 </Project>
