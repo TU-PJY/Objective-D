@@ -8,6 +8,7 @@
 #include "CameraUtil.h"
 #include "ShaderUtil.h"
 #include "MouseUtil.h"
+#include "TerrainUtil.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
@@ -20,6 +21,7 @@ Framework framework;
 Camera camera;
 MeshUtil meshUtil;
 MouseUtil mouse;
+TerrainUtil terrainUtil;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];

@@ -1,9 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
-#include "CameraUtil.h"
 #include "ShaderUtil.h"
-#include "MeshUtil.h"
 #include "ResourceList.h"
 #include <deque>
 #include <ranges>
@@ -11,16 +9,6 @@
 
 // global scope shader
 constexpr int NUM_LAYER = static_cast<int>(Layer::END);
-
-enum class ButtonState
-{
-	Down, Up
-};
-
-enum class  ButtonType
-{
-	LButton, RButton
-};
 
 class Framework {
 private:
@@ -63,14 +51,7 @@ public:
 	void DeleteObject(std::string Tag, Layer TargetLayer);
 	GameObject* Find(std::string Tag);
 	GameObject* Find(std::string Tag, Layer TargetLayer, int Index);
-	Mesh* FindMesh(std::string MeshName);
-	Mesh* FindTerrain(std::string TerrainMeshName);
 	void ClearAll();
-	bool CheckCollision(const BoundingOrientedBox& OOBBFrom, const BoundingOrientedBox& OOBBTo);
-	Mesh* MeshLoader(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true);
-	bool CheckTerrainFloor(XMFLOAT3 Position, GameObject* Terrain);
-	void ClampToTerrainFloor(XMFLOAT3& Position, GameObject* Terrain);
-	void CheckCollisionTerrain(XMFLOAT3& Position, GameObject* Terrain);
 	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

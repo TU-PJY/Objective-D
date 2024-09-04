@@ -11,11 +11,7 @@ void OOBB::Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLO
 
 void OOBB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size, const XMFLOAT3& Rotation) {
 	oobb.Center = Center;
-
-	// 반직경(크기) 설정
 	oobb.Extents = Size;
-
-	// 회전 설정 (Euler 각도를 쿼터니언으로 변환)
 	XMVECTOR quaternion = XMQuaternionRotationRollPitchYaw(Rotation.x, Rotation.y, Rotation.z);
 	XMStoreFloat4(&oobb.Orientation, quaternion);
 }

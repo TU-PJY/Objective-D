@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "MouseUtil.h"
 #include "FrameworkUtil.h"
 #include "PickingUtil.h"
-
-#include <random>
+#include "TerrainUtil.h"
+#include "CollisionUtil.h"
 
 class Object : public GameObject {
 public:
@@ -31,7 +32,7 @@ public:
 		Scale(1.0, 1.0, 1.0);
 		SetPosition(-50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);
-		oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
+		oobb.Update(XMFLOAT3(-50.0, 50.0, -10.0), XMFLOAT3(3.0, 3.0, 3.0), XMFLOAT3(0.0, 0.0, 0.0));
 	}
 };
 
@@ -150,9 +151,7 @@ public:
 
 	void Update(float FT) {
 		MoveAircraft(FT);
-
-		if (auto ptr = framework.Find("map"); ptr)
-			framework.CheckCollisionTerrain(ObjPosition, ptr);
+		terrainUtil.CheckCollision(ObjPosition);
 	}
 
 	void Render(CommandList CmdList) {
@@ -162,8 +161,7 @@ public:
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, Shader, ObjectMesh);
 
-	//	oobb.Update(ObjectMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
-		oobb.Update(ObjPosition, XMFLOAT3(5.0, 5.0, 5.0), Rotation);
+		oobb.Update(ObjPosition, XMFLOAT3(1.0, 1.0, 1.0), Rotation);
 		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
 			framework.DeleteObject(object);
 	}
@@ -172,23 +170,15 @@ public:
 
 
 class Map : public GameObject {
-private:
-	Mesh* TerrainMesh;
-	Shader* Shader;
-
 public:
-	Mesh* GetTerrainMesh() {
-		return TerrainMesh;
-	}
-
 	Map() {
-		SetShader(Shader, pseudoShader);
-		SetTerrain(TerrainMesh, "pTerrain");
-		SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
-		ScaleTerrain(5.0, 5.0, 5.0);
+		terrainUtil.SetShader(pseudoShader);
+		terrainUtil.SetMesh("pTerrain");
+		terrainUtil.Scale(XMFLOAT3(5.0, 5.0, 5.0));
+		terrainUtil.SetColor(XMFLOAT3(0.133333, 0.545098, 0.133333));
 	}
 
 	void Render(CommandList CmdList) {
-		RenderMesh(CmdList, Shader, TerrainMesh);
+		terrainUtil.Render(CmdList);
 	}
 };

@@ -74,6 +74,9 @@
     <Filter Include="[2]____________[ Object ]\[2] [ CustomObject ]">
       <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Terrain Util ]">
+      <UniqueIdentifier>{19a62344-2409-47b7-bb75-4d6abbcb9220}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -133,6 +136,9 @@
     <ClInclude Include="MouseUtil.h">
       <Filter>[3]____________[ Util ]\[ Mouse Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="TerrainUtil.h">
+      <Filter>[3]____________[ Util ]\[ Terrain Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -171,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="MouseUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Mouse Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ Terrain Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

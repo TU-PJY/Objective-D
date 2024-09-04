@@ -6,12 +6,6 @@ void GameObject::SetMesh(Mesh*& MeshPtr, std::string MeshName) {
 		MeshPtr->ReleaseUploadBuffers();
 }
 
-void GameObject::SetTerrain(Mesh*& TerrainMeshPtr, std::string TerrainMeshName) {
-	TerrainMeshPtr = meshUtil.GetTerrain(TerrainMeshName);
-	if (TerrainMeshPtr)
-		TerrainMeshPtr->ReleaseUploadBuffers();
-}
-
 void GameObject::SetShader(Shader*& ShaderPtr, Shader* ShaderData) {
 	ShaderPtr = ShaderData;
 }
@@ -101,11 +95,6 @@ void GameObject::LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& 
 void GameObject::Scale(float ScaleX, float ScaleY, float ScaleZ) {
 	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
 	TranslateMatrix = Mat4::Multiply(ScaleMat, ScaleMatrix);
-}
-
-void GameObject::ScaleTerrain(float ScaleX, float ScaleY, float ScaleZ){
-	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
-	TranslateMatrix = Mat4::Multiply(ScaleMat, TranslateMatrix);
 }
 
 void GameObject::LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {

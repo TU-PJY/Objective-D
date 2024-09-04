@@ -136,33 +136,6 @@ void Framework::ClearAll() {
 		O.second->DeleteMark = true;
 }
 
-bool Framework::CheckCollision(const BoundingOrientedBox& OOBBFrom, const BoundingOrientedBox& OOBBTo) {
-	if (OOBBFrom.Intersects(OOBBTo))
-		return true;
-	else
-		return false;
-}
-
-bool Framework::CheckTerrainFloor(XMFLOAT3 Position, GameObject* Terrain) {
-	if (Terrain->GetTerrainMesh()) {
-		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
-			return true;
-	}
-
-	return false;
-}
-
-void Framework::ClampToTerrainFloor(XMFLOAT3& Position, GameObject* Terrain) {
-	Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());
-}
-
-void Framework::CheckCollisionTerrain(XMFLOAT3& Position, GameObject* Terrain) {
-	if (Terrain->GetTerrainMesh()) {
-		if (Position.y < Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix()))
-			Position.y = Terrain->GetTerrainMesh()->GetHeightAtPosition(Terrain->GetTerrainMesh(), Position.x, Position.z, Terrain->GetTerrainMatrix());
-	}
-}
-
 PseudoLightingShader* Framework::LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	PseudoLightingShader* shader = new PseudoLightingShader();
 	shader->CreateShader(Device, RootSignature);

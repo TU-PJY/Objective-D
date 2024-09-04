@@ -1,7 +1,6 @@
 #pragma once
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
-#include "MouseUtil.h"
 #include "CollisionUtil.h"
 
 class Shader;
@@ -24,7 +23,6 @@ public:
 	bool DeleteMark{};
 
 	void SetMesh(Mesh*& MeshPtr, std::string MeshName);
-	void SetTerrain(Mesh*& TerrainMeshPtr, std::string TerrainMeshName);
 	void SetShader(Shader*& ShaderPtr, Shader* ShaderData);
 	void BeginProcess();
 	void SetPosition(float x, float y, float z);
@@ -37,7 +35,6 @@ public:
 	void Rotate(XMFLOAT3* Axis, float Angle);
 	void LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& UpVector);
 	void Scale(float ScaleX, float ScaleY, float ScaleZ);
-	void ScaleTerrain(float ScaleX, float ScaleY, float ScaleZ);
 	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);
 	void LinearDcc(float& CurrentSpeed, float DecelerationValue, float FT);
 	void LerpAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);
