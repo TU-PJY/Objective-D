@@ -152,7 +152,6 @@
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="Controller.h" />
     <ClInclude Include="DirectX_3D_Main.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mode1.h" />
@@ -176,6 +175,7 @@
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="MeshUtil.cpp" />
+    <ClCompile Include="Mode1.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="ResourceList.cpp" />

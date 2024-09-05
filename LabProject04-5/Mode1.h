@@ -1,12 +1,10 @@
 #pragma once
 #include "FrameworkUtil.h"
-#include "Ufo.h"
 #include <string>
 
-inline std::string Mode1() {
-	framework.AddObject(new Aircraft, "obj1", Layer::L1);
-	framework.AddObject(new Object, "obj2", Layer::L1);
-	framework.AddObject(new Map, "map", Layer::Terrain);
-
-	return __func__;
+namespace Mode_1 {
+	std::string Mode1();
+	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void MouseMotionController(HWND hWnd);
+	void MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 }

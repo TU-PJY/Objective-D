@@ -4,7 +4,6 @@
 #include "FrameworkUtil.h"
 
 #include "Mode1.h"
-#include "Controller.h"
 
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
@@ -27,7 +26,7 @@ void DirectX_3D_Main::Init() {
 	WaitForGpuComplete();
 
 	// ModeStart
-	framework.Init(Device, CmdList, Mode1, Mode_1::KeyboardController, Mode_1::MouseButtonController, Mode_1::MouseMotionController);
+	framework.Init(Device, CmdList, Mode_1::Mode1);
 
 	Timer.Reset();
 }

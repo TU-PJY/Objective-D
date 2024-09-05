@@ -27,12 +27,15 @@ public:
 		SetColor(XMFLOAT3(0.0, 1.0, 0.0));
 	}
 
+	void Update(float FT) {
+		oobb.Update(XMFLOAT3(-50.0, 50.0, -10.0), XMFLOAT3(1.0, 1.0, 1.0), XMFLOAT3(0.0, 0.0, 0.0));
+	}
+
 	void Render(CommandList CmdList) {
 		BeginProcess();
 		Scale(1.0, 1.0, 1.0);
 		SetPosition(-50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);
-		oobb.Update(XMFLOAT3(-50.0, 50.0, -10.0), XMFLOAT3(3.0, 3.0, 3.0), XMFLOAT3(0.0, 0.0, 0.0));
 	}
 };
 
@@ -75,7 +78,7 @@ public:
 
 		case WM_RBUTTONDOWN:
 			if (auto object = framework.Find("obj2"); object && pu.PickByCursor(lParam, object, object->GetObjectMesh()))
-				framework.DeleteObject(object);
+				object->SetColor(0.0, 1.0, 0.0);
 			break;
 
 		case WM_LBUTTONUP:
@@ -152,6 +155,9 @@ public:
 	void Update(float FT) {
 		MoveAircraft(FT);
 		terrainUtil.CheckCollision(ObjPosition);
+		oobb.Update(ObjPosition, XMFLOAT3(3.0, 1.0, 8.0), Rotation);
+		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
+			object->SetColor(1.0, 0.0, 0.0);
 	}
 
 	void Render(CommandList CmdList) {
@@ -160,10 +166,6 @@ public:
 		SetPosition(ObjPosition);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, Shader, ObjectMesh);
-
-		oobb.Update(ObjPosition, XMFLOAT3(1.0, 1.0, 1.0), Rotation);
-		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
-			framework.DeleteObject(object);
 	}
 };
 

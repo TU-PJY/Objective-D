@@ -32,6 +32,12 @@ void GameObject::SetColor(XMFLOAT3 Color) {
 	ModelColor = Color;
 }
 
+void GameObject::SetColor(float R, float G, float B) {
+	ModelColor.x = R;
+	ModelColor.y = G;
+	ModelColor.z = B;
+}
+
 void GameObject::MoveStrafe(XMFLOAT3& Position, float Distance) {
 	Position = Vec3::Add(Position, Right, Distance);
 }

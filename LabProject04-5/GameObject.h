@@ -28,6 +28,7 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetPosition(XMFLOAT3 Position);
 	void SetColor(XMFLOAT3 Color);
+	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, float Distance);
 	void MoveForward(XMFLOAT3& Position, float Distance);
 	void MoveUp(XMFLOAT3& Position, float Distance);
@@ -45,9 +46,8 @@ public:
 
 	////////// virtual functions
 
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
-
 	virtual ~GameObject() {}
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 	virtual void ReleaseShaderVariables() {}
 	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
 	virtual void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}

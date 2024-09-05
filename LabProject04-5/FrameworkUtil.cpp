@@ -1,10 +1,6 @@
 #include "FrameworkUtil.h"
 
-void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
-	std::string ModeFunction(),
-	void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM),
-	void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
-	void MouseMotionControllerPtr(HWND)) {
+void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction()) {
 	RootSignature = CreateGraphicsRootSignature(Device);
 	pseudoShader = framework.LoadShader(RootSignature, Device, CmdList);
 
@@ -12,21 +8,27 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList,
 	for (int i = 0; i < NUM_LAYER; ++i)
 		Container[i].push_back(new DUMMY);
 
-	SwitchMode(ModeFunction, KeyboardControllerPtr, MouseControllerPtr, MouseMotionControllerPtr);
+	SwitchMode(ModeFunction);
 }
 
 std::string Framework::Mode() {
 	return RunningMode;
 }
 
-void Framework::SwitchMode(std::string ModeFunction(),
-	void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM),
-	void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM),
-	void MouseMotionControllerPtr(HWND)) {
+void Framework::SwitchMode(std::string ModeFunction()) {
 	ClearAll();
 	RunningMode = ModeFunction();
+}
+
+void Framework::SetKeyController(void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM)) {
 	KeyboardController = KeyboardControllerPtr;
-	MouseController = MouseControllerPtr;
+}
+
+void Framework::SetMouseController(void (*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM)) {
+	MouseController = MouseControllePtr;
+}
+
+void Framework::SetMouseMotionController(void (*MouseMotionControllerPtr)(HWND)) {
 	MouseMotionController = MouseMotionControllerPtr;
 }
 

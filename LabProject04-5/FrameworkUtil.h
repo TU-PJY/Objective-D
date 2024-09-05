@@ -28,15 +28,13 @@ public:
 	POINT PrevCursorPos{};
 	bool LB_DownState{}, RB_DownState{};
 
-	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction(),
-		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
-		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
-		void MouseMotionController(HWND) = nullptr);
+	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction());
 
-	void SwitchMode(std::string ModeFunction(),
-		void KeyboardControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
-		void MouseControllerPtr(HWND, UINT, WPARAM, LPARAM) = nullptr,
-		void MouseMotionControllerPtr(HWND) = nullptr);
+	void SwitchMode(std::string ModeFunction());
+
+	void SetKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
+	void SetMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
+	void SetMouseMotionController(void(*MouseMotionControllerPtr)(HWND));
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);

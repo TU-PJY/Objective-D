@@ -127,9 +127,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>[2]____________[ Object ]\[1] [ Base Object ]</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionUtil.h">
       <Filter>[3]____________[ Util ]\[ Collision Util ]</Filter>
     </ClInclude>
@@ -180,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="TerrainUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Terrain Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Mode1.cpp">
+      <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
