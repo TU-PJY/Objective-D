@@ -14,8 +14,8 @@ Camera::Camera() {
 	ViewMatrix = Mat4::Identity();
 	ProjectionMatrix = Mat4::Identity();
 
-	Viewport = { 0, 0, float(WIDTH), float(HEIGHT), 0.0f, 1.0f };
-	ScissorRect = { 0, 0, WIDTH , HEIGHT };
+	Viewport = { 0, 0, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.0f, 1.0f };
+	ScissorRect = { 0, 0, SCREEN_WIDTH , SCREEN_HEIGHT };
 
 	Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	Pitch = 0.0f;

@@ -1,5 +1,5 @@
 #include "Mode1.h"
-#include "Ufo.h"
+#include "Objects.h"
 
 std::string Mode_1::Mode1() {
 	// 모드에 필요한 객체 추가

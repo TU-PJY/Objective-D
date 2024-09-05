@@ -32,7 +32,8 @@
 #include <D3d12SDKLayers.h>
 
 // screen size
-extern int WIDTH, HEIGHT;
+extern int SCREEN_WIDTH, SCREEN_HEIGHT;
+#define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
 
 using namespace DirectX;
 using namespace DirectX::PackedVector;

@@ -10,8 +10,8 @@
 #include "MouseUtil.h"
 #include "TerrainUtil.h"
 
-int WIDTH = GetSystemMetrics(SM_CXSCREEN);
-int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
+int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 DirectX_3D_Main D3D_Main;
 
@@ -93,9 +93,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	DWORD WindowStyle{};
 	RECT Rect{};
 
-	Rect = { 0, 0, WIDTH, HEIGHT };
-	WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
-	D3D_Main.FullScreenState = true;
+	Rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 

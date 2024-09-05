@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "DirectX_3D.h"
 #include "GameObject.h"
-#define ASPECT_RATIO				(float(WIDTH) / float(HEIGHT))
 
 class Camera {
 protected:

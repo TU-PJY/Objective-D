@@ -30,8 +30,8 @@ bool PickingUtil::PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPt
 	if (!MeshPtr)
 		return false;
 
-	float xclient = (x + 1.0) / 2.0 * WIDTH;
-	float yclient = (1.0 - y) / 2.0 * HEIGHT;
+	float xclient = (x + 1.0) / 2.0 * SCREEN_WIDTH;
+	float yclient = (1.0 - y) / 2.0 * SCREEN_HEIGHT;
 
 	XMFLOAT3 xmf3pickposition;
 	xmf3pickposition.x = (((2.0f * xclient) / (float)camera.Viewport.Width) - 1) / camera.ProjectionMatrix._11;

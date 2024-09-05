@@ -14,5 +14,5 @@ enum class CamMode
 constexpr bool START_WITH_FULL_SCREEN = false;
 
 // window name configuration
-constexpr TCHAR WindowName[] = _T("Objective-D (");
-constexpr int WindowNameLength = sizeof(WindowName) / sizeof(TCHAR);
+constexpr TCHAR TitleName[] = _T("Objective-D(");
+constexpr int TitleNameLength = sizeof(TitleName) / sizeof(TCHAR);

@@ -14,8 +14,8 @@ void DirectX_3D_Main::Init() {
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-	camera.SetViewport(0, 0, WIDTH, HEIGHT, 0.0f, 1.0f);
-	camera.SetScissorRect(0, 0, WIDTH, HEIGHT);
+	camera.SetViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f);
+	camera.SetScissorRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	camera.SetTimeLag(0.1f);
 	camera.SetCameraMode(CamMode::MODE1);
 
@@ -127,28 +127,28 @@ void DirectX_3D_Main::Update() {
 
 	MoveToNextFrame();
 
-	Timer.GetFrameRate(FrameRate + (WindowNameLength - 1), 37);
+	Timer.GetFrameRate(FrameRate + (TitleNameLength - 1), 37);
 	::SetWindowText(hWnd, FrameRate);
 }
 
 void DirectX_3D_Main::SwitchToWindowMode(HWND hwnd) {
-	WIDTH /= 2;
-	HEIGHT /= 2 * ASPECT_RATIO;
+	SCREEN_WIDTH /= 2;
+	SCREEN_HEIGHT /= 2 * ASPECT_RATIO;
 
 	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 	ShowWindow(hwnd, SW_NORMAL);
-	SetWindowPos(hwnd, NULL, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
-	FullScreenState = FALSE;
+	SetWindowPos(hwnd, NULL, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	FullScreenState = false;
 }
 
 void DirectX_3D_Main::SwitchToFullscreenMode(HWND hwnd) {
-	WIDTH = GetSystemMetrics(SM_CXSCREEN);
-	HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+	SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
+	SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 	SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
 	ShowWindow(hwnd, SW_MAXIMIZE);
-	SetWindowPos(hwnd, HWND_TOP, 0, 0, WIDTH, HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
-	FullScreenState = TRUE;
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	FullScreenState = true;
 }
 
 DirectX_3D_Main::DirectX_3D_Main() {
@@ -177,11 +177,11 @@ DirectX_3D_Main::DirectX_3D_Main() {
 	for (int i = 0; i < SwapChainBuffers; i++)
 		FenceValues[i] = 0;
 
-	CLIENT_WIDTH = WIDTH;
-	CLIENT_HEIGHT = HEIGHT;
+	CLIENT_WIDTH = SCREEN_WIDTH;
+	CLIENT_HEIGHT = SCREEN_HEIGHT;
 
 	memset(WindowName, 0, sizeof(WindowName));
-	_tcscpy_s(WindowName, WindowNameLength, WindowName);
+	_tcscpy_s(WindowName, TitleNameLength, TitleName);
 	_tcscpy_s(FrameRate, WindowName);
 }
 
