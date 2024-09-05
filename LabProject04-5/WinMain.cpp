@@ -94,7 +94,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	RECT Rect{};
 
 	Rect = { 0, 0, WIDTH, HEIGHT };
-	WindowStyle = WS_POPUP;
+	WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
 	D3D_Main.FullScreenState = true;
 
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
