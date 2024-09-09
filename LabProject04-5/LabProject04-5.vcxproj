@@ -154,6 +154,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="DirectX_3D_Main.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mode1.h" />
     <ClInclude Include="MouseUtil.h" />
     <ClInclude Include="Objective-D.h" />
@@ -168,12 +169,14 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainUtil.h" />
     <ClInclude Include="TimerUtil.h" />
+    <ClInclude Include="TransformUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="MeshUtil.cpp" />
     <ClCompile Include="Mode1.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
@@ -181,6 +184,7 @@
     <ClCompile Include="ResourceList.cpp" />
     <ClCompile Include="TerrainUtil.cpp" />
     <ClCompile Include="TimerUtil.cpp" />
+    <ClCompile Include="TransformUtil.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="FrameworkUtil.cpp" />
     <ClCompile Include="DirectX_3D.cpp">

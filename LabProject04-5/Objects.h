@@ -75,9 +75,11 @@ public:
 
 	void Render(CommandList CmdList) {
 		BeginProcess();
-		Scale(1.0, 1.0, 1.0);
-		SetPosition(ObjPosition);
-		Rotate(Rotation.x, Rotation.y, Rotation.z);
+		Transform::Scale(ScaleMatrix, 1.0, 1.0, 1.0);
+		Transform::Move(TranslateMatrix, ObjPosition.x, ObjPosition.y, ObjPosition.z);
+		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, Rotation.z);
+		Math::CalculateVec(Up, Look, Right, Rotation.x, Rotation.y, Rotation.z);
+
 		RenderMesh(CmdList, Shader, ObjectMesh);
 	}
 
@@ -162,8 +164,8 @@ public:
 
 	void Render(CommandList CmdList) {
 		BeginProcess();
-		Scale(1.0, 1.0, 1.0);
-		SetPosition(-50.0, 50.0, -10.0);
+		Transform::Scale(ScaleMatrix, 1.0, 1.0, 1.0);
+		Transform::Move(TranslateMatrix, -50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);
 	}
 };

@@ -16,18 +16,6 @@ void GameObject::BeginProcess() {
 	ScaleMatrix = Mat4::Identity();
 }
 
-void GameObject::SetPosition(float x, float y, float z) {
-	TranslateMatrix._41 = x;
-	TranslateMatrix._42 = y;
-	TranslateMatrix._43 = z;
-}
-
-void GameObject::SetPosition(XMFLOAT3 Position) {
-	TranslateMatrix._41 = Position.x;
-	TranslateMatrix._42 = Position.y;
-	TranslateMatrix._43 = Position.z;
-}
-
 void GameObject::SetColor(XMFLOAT3 Color) {
 	ModelColor = Color;
 }
@@ -48,59 +36,6 @@ void GameObject::MoveForward(XMFLOAT3& Position, float Distance) {
 
 void GameObject::MoveUp(XMFLOAT3& Position, float Distance) {
 	Position = Vec3::Add(Position, Up, Distance);
-}
-
-void GameObject::Rotate(float Pitch, float Yaw, float Roll) {
-	XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-
-	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
-		XMConvertToRadians(Pitch),
-		XMConvertToRadians(Yaw),
-		XMConvertToRadians(Roll)
-	);
-
-	RotateMatrix = Mat4::Multiply(RotateMat, RotateMatrix);
-
-	Up = {
-		XMVectorGetX(XMVector3TransformNormal(UpVector, RotateMat)),
-		XMVectorGetY(XMVector3TransformNormal(UpVector, RotateMat)),
-		XMVectorGetZ(XMVector3TransformNormal(UpVector, RotateMat))
-	};
-
-	Look = {
-		XMVectorGetX(XMVector3TransformNormal(LookVector, RotateMat)),
-		XMVectorGetY(XMVector3TransformNormal(LookVector, RotateMat)),
-		XMVectorGetZ(XMVector3TransformNormal(LookVector, RotateMat))
-	};
-
-	Right = {
-		XMVectorGetX(XMVector3TransformNormal(RightVector, RotateMat)),
-		XMVectorGetY(XMVector3TransformNormal(RightVector, RotateMat)),
-		XMVectorGetZ(XMVector3TransformNormal(RightVector, RotateMat))
-	};
-}
-
-void GameObject::Rotate(XMFLOAT3* Axis, float Angle) {
-	XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(Axis), XMConvertToRadians(Angle));
-	RotateMatrix = Mat4::Multiply(mtxRotate, RotateMatrix);
-}
-
-void GameObject::LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
-	XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(Position, TargetPosition, UpVector);
-	RotateMatrix._11 = xmf4x4View._11; RotateMatrix._12 = xmf4x4View._21; RotateMatrix._13 = xmf4x4View._31;
-	RotateMatrix._21 = xmf4x4View._12; RotateMatrix._22 = xmf4x4View._22; RotateMatrix._23 = xmf4x4View._32;
-	RotateMatrix._31 = xmf4x4View._13; RotateMatrix._32 = xmf4x4View._23; RotateMatrix._33 = xmf4x4View._33;
-
-	Up = Vec3::Normalize(XMFLOAT3(RotateMatrix._21, RotateMatrix._22, RotateMatrix._23));
-	Right = Vec3::Normalize(XMFLOAT3(RotateMatrix._11, RotateMatrix._12, RotateMatrix._13));
-	Look = Vec3::Normalize(XMFLOAT3(RotateMatrix._31, RotateMatrix._32, RotateMatrix._33));
-}
-
-void GameObject::Scale(float ScaleX, float ScaleY, float ScaleZ) {
-	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
-	TranslateMatrix = Mat4::Multiply(ScaleMat, ScaleMatrix);
 }
 
 void GameObject::LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {

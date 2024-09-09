@@ -2,6 +2,8 @@
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
 #include "CollisionUtil.h"
+#include "TransformUtil.h"
+#include "MathUtil.h"
 
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
@@ -25,17 +27,12 @@ public:
 	void SetMesh(Mesh*& MeshPtr, std::string MeshName);
 	void SetShader(Shader*& ShaderPtr, Shader* ShaderData);
 	void BeginProcess();
-	void SetPosition(float x, float y, float z);
-	void SetPosition(XMFLOAT3 Position);
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, float Distance);
 	void MoveForward(XMFLOAT3& Position, float Distance);
 	void MoveUp(XMFLOAT3& Position, float Distance);
-	void Rotate(float Pitch, float Yaw, float Roll);
-	void Rotate(XMFLOAT3* Axis, float Angle);
-	void LookAt(XMFLOAT3& Position, XMFLOAT3& TargetPosition, XMFLOAT3& UpVector);
-	void Scale(float ScaleX, float ScaleY, float ScaleZ);
+	//void Rotate(XMFLOAT3* Axis, float Angle);
 	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);
 	void LinearDcc(float& CurrentSpeed, float DecelerationValue, float FT);
 	void LerpAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);

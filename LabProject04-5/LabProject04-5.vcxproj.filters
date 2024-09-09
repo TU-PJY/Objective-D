@@ -77,6 +77,12 @@
     <Filter Include="[3]____________[ Util ]\[ Terrain Util ]">
       <UniqueIdentifier>{19a62344-2409-47b7-bb75-4d6abbcb9220}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Transform Util ]">
+      <UniqueIdentifier>{95a833a1-63bf-42c2-92b4-9d023ee5eaa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Math Util ]">
+      <UniqueIdentifier>{0683a2e4-4519-4394-a267-133ac8565000}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -136,6 +142,12 @@
     <ClInclude Include="Objects.h">
       <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
     </ClInclude>
+    <ClInclude Include="TransformUtil.h">
+      <Filter>[3]____________[ Util ]\[ Transform Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtil.h">
+      <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -180,6 +192,12 @@
     </ClCompile>
     <ClCompile Include="Mode1.cpp">
       <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ Transform Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="MathUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
