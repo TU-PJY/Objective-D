@@ -8,6 +8,11 @@
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 
+typedef struct Vector {
+	XMFLOAT3 Up;
+	XMFLOAT3 Right;
+	XMFLOAT3 Look;
+}ObjectVector;
 
 class GameObject {
 public:
@@ -17,10 +22,6 @@ public:
 
 	XMFLOAT3 ModelColor{};
 
-	XMFLOAT3 Look{ 0.0, 0.0, 1.0 };
-	XMFLOAT3 Up{ 0.0, 1.0, 0.0 };
-	XMFLOAT3 Right{ 1.0, 0.0, 0.0 };
-
 	std::string ObjectTag{};
 	bool DeleteMark{};
 
@@ -29,9 +30,9 @@ public:
 	void BeginProcess();
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
-	void MoveStrafe(XMFLOAT3& Position, float Distance);
-	void MoveForward(XMFLOAT3& Position, float Distance);
-	void MoveUp(XMFLOAT3& Position, float Distance);
+	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
+	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
+	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	//void Rotate(XMFLOAT3* Axis, float Angle);
 	void LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT);
 	void LinearDcc(float& CurrentSpeed, float DecelerationValue, float FT);
@@ -51,12 +52,15 @@ public:
 	virtual void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {}
 	virtual void Update(float FT) {}
 	virtual void Render(CommandList CmdList) {}
-	virtual Mesh* GetTerrainMesh() { return {}; }
 	virtual Mesh* GetObjectMesh() { return {}; }
+	virtual Mesh* GetTerrainMesh() { return {}; }
 	virtual XMFLOAT4X4 GetTerrainMatrix() { return TranslateMatrix; }
 	virtual XMFLOAT3 GetPosition() { return {}; }
 	virtual void InputNewPosition(float X = 0.0, float Y = 0.0, float Z = 0.0) {}
 	virtual OOBB GetOOBB() { return {}; }
+	virtual XMFLOAT3 GetUp() { return {}; }
+	virtual XMFLOAT3 GetRight() { return {}; }
+	virtual XMFLOAT3 GetLook() { return {}; }
 };
 
 // dummy object for avoiding iterator error

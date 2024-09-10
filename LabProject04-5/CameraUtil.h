@@ -81,8 +81,8 @@ public:
 	D3D12_RECT GetScissorRect();
 
 	void Move(const XMFLOAT3& Shift);
-	void Track(XMFLOAT3& LookAt, GameObject* Object, float fTimeElapsed);
-	void SetLookAt(XMFLOAT3& LookAt, GameObject* Object);
+	void Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed);
+	void SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec);
 	void CalculateFrustumPlanes();
 	bool IsInFrustum(BoundingBox& BoundingBox);
 	bool IsInFrustum(BoundingOrientedBox& BoundingBox);

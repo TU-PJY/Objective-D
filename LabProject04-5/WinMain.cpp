@@ -149,7 +149,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	DisplayStateChanger(hWnd, nMessageID, wParam);
 
 	switch (nMessageID) {
-		//case WM_SIZE:
+	case WM_SIZE:
+		SCREEN_WIDTH = LOWORD(lParam);
+		SCREEN_HEIGHT = HIWORD(lParam);
+		D3D_Main.CLIENT_WIDTH = SCREEN_WIDTH;
+		D3D_Main.CLIENT_HEIGHT = SCREEN_HEIGHT;
+
+		camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+		//camera.SetViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f);
+		//camera.SetScissorRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		break;
+
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP:

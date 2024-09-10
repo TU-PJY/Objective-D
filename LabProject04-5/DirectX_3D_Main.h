@@ -39,13 +39,13 @@ public:
 	void SwitchToFullscreenMode(HWND hwnd);
 
 	bool FullScreenState{};
+	int							CLIENT_WIDTH;
+	int							CLIENT_HEIGHT;
 
 private:
 	HINSTANCE					hInstance;
 	HWND						hWnd;
 
-	int							CLIENT_WIDTH;
-	int							CLIENT_HEIGHT;
 
 	IDXGIFactory4* DxgiFactory;
 	IDXGISwapChain3* DxgiSwapChain;

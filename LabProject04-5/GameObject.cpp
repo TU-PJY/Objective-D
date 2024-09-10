@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "CameraUtil.h"
 
 void GameObject::SetMesh(Mesh*& MeshPtr, std::string MeshName) {
 	MeshPtr = meshUtil.GetMesh(MeshName);
@@ -26,15 +27,15 @@ void GameObject::SetColor(float R, float G, float B) {
 	ModelColor.z = B;
 }
 
-void GameObject::MoveStrafe(XMFLOAT3& Position, float Distance) {
+void GameObject::MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance) {
 	Position = Vec3::Add(Position, Right, Distance);
 }
 
-void GameObject::MoveForward(XMFLOAT3& Position, float Distance) {
+void GameObject::MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) {
 	Position = Vec3::Add(Position, Look, Distance);
 }
 
-void GameObject::MoveUp(XMFLOAT3& Position, float Distance) {
+void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 	Position = Vec3::Add(Position, Up, Distance);
 }
 

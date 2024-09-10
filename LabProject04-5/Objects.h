@@ -5,6 +5,7 @@
 #include "PickingUtil.h"
 #include "TerrainUtil.h"
 #include "CollisionUtil.h"
+#include <iostream>
 
 class Aircraft : public GameObject {
 private:
@@ -17,6 +18,7 @@ private:
 
 	XMFLOAT3 ObjPosition{};
 	XMFLOAT3 Rotation{};
+	ObjectVector v;
 
 	PickingUtil pu;
 	OOBB oobb;
@@ -26,6 +28,19 @@ public:
 		SetShader(Shader, pseudoShader);
 		SetMesh(ObjectMesh, "pFlyerMesh");
 		SetColor(XMFLOAT3(0.8, 0.8, 0.8));
+		Math::InitVector(v.Up, v.Right, v.Look);
+	}
+
+	XMFLOAT3 GetUp() {
+		return v.Up;
+	}
+
+	XMFLOAT3 GetRight() {
+		return v.Right;
+	}
+
+	XMFLOAT3 GetLook() {
+		return v.Look;
 	}
 
 	Mesh* GetObjectMesh() {
@@ -61,8 +76,8 @@ public:
 		if (!MoveRight && !MoveLeft)
 			LerpDcc(SpeedStrafe, 5, FT);
 
-		MoveForward(ObjPosition, SpeedForward);
-		MoveStrafe(ObjPosition, SpeedStrafe);
+		MoveForward(ObjPosition, v.Look, SpeedForward);
+		MoveStrafe(ObjPosition, v.Right, SpeedStrafe);
 	}
 
 	void Update(float FT) {
@@ -71,6 +86,10 @@ public:
 		oobb.Update(ObjPosition, XMFLOAT3(3.0, 1.0, 8.0), Rotation);
 		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
 			object->SetColor(1.0, 0.0, 0.0);
+
+
+		Math::UpdateVector(v.Up, v.Right, v.Look, Rotation.x, Rotation.y, Rotation.z);
+		std::cout << GetUp().x << " " << GetUp().y << " " << GetUp().z << std::endl;
 	}
 
 	void Render(CommandList CmdList) {
@@ -78,8 +97,6 @@ public:
 		Transform::Scale(ScaleMatrix, 1.0, 1.0, 1.0);
 		Transform::Move(TranslateMatrix, ObjPosition.x, ObjPosition.y, ObjPosition.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, Rotation.z);
-		Math::CalculateVec(Up, Look, Right, Rotation.x, Rotation.y, Rotation.z);
-
 		RenderMesh(CmdList, Shader, ObjectMesh);
 	}
 

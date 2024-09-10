@@ -1,6 +1,6 @@
 #include "MathUtil.h"
 
-void Math::CalculateVec(XMFLOAT3& Up, XMFLOAT3& Look, XMFLOAT3& Right, float Pitch, float Yaw, float Roll) {
+void Math::UpdateVector(XMFLOAT3& Up, XMFLOAT3& Right, XMFLOAT3& Look, float Pitch, float Yaw, float Roll) {
 	XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
@@ -26,8 +26,14 @@ void Math::CalculateVec(XMFLOAT3& Up, XMFLOAT3& Look, XMFLOAT3& Right, float Pit
 	};
 }
 
-void Math::LookAt(XMFLOAT4X4& Matrix, XMFLOAT3& Up, XMFLOAT3& Look, XMFLOAT3& Right, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition, XMFLOAT3& UpVector) {
-	XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(ThisPosition, TargetPosition, UpVector);
+void Math::InitVector(XMFLOAT3& Up, XMFLOAT3& Right, XMFLOAT3& Look) {
+	Up = XMFLOAT3(0.0, 1.0, 0.0);
+	Right = XMFLOAT3(1.0, 0.0, 0.0);
+	Look = XMFLOAT3(0.0, 0.0, 1.0);
+}
+
+void Math::LookAt(XMFLOAT4X4& Matrix, XMFLOAT3& Up, XMFLOAT3& Look, XMFLOAT3& Right, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition, XMFLOAT3& TargetUpVector) {
+	XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(ThisPosition, TargetPosition, TargetUpVector);
 	Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
 	Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
 	Matrix._31 = xmf4x4View._13; Matrix._32 = xmf4x4View._23; Matrix._33 = xmf4x4View._33;

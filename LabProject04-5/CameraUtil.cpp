@@ -5,7 +5,7 @@ void Camera::Update(float FT) {
 	switch (Mode) {
 	case CamMode::MODE1:
 		if(auto object = framework.Find("obj1"); object)
-			Track(object->GetPosition(), object, FT);
+			Track(object->GetPosition(), object->GetUp(), object->GetRight(), object->GetLook(), FT);
 		break;
 	}
 }
@@ -142,26 +142,26 @@ void Camera::Move(const XMFLOAT3& Shift) {
 	Position.z += Shift.z;
 }
 
-void Camera::Track(XMFLOAT3& LookAt, GameObject* Object, float fTimeElapsed) {
+void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed) {
 	XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
-	XMFLOAT3 xmf3Right = Object->Right;
-	XMFLOAT3 xmf3Up = Object->Up;
-	XMFLOAT3 xmf3Look = Object->Look;
-
-	xmf4x4Rotate._11 = xmf3Right.x;
-	xmf4x4Rotate._12 = xmf3Right.y;
-	xmf4x4Rotate._13 = xmf3Right.z;
+	XMFLOAT3 xmf3Up = UpVec;
+	XMFLOAT3 xmf3Right = RightVec;
+	XMFLOAT3 xmf3Look = LookVec;
 
 	xmf4x4Rotate._21 = xmf3Up.x;
 	xmf4x4Rotate._22 = xmf3Up.y;
 	xmf4x4Rotate._23 = xmf3Up.z;
+
+	xmf4x4Rotate._11 = xmf3Right.x;
+	xmf4x4Rotate._12 = xmf3Right.y;
+	xmf4x4Rotate._13 = xmf3Right.z;
 
 	xmf4x4Rotate._31 = xmf3Look.x;
 	xmf4x4Rotate._32 = xmf3Look.y;
 	xmf4x4Rotate._33 = xmf3Look.z;
 
 	XMFLOAT3 xmf3Offset = Vec3::TransformCoord(Offset, xmf4x4Rotate);
-	XMFLOAT3 xmf3Position = Vec3::Add(Object->GetPosition(), xmf3Offset);
+	XMFLOAT3 xmf3Position = Vec3::Add(ObjectPosition, xmf3Offset);
 	XMFLOAT3 xmf3Direction = Vec3::Subtract(xmf3Position, Position);
 
 	float fLength = Vec3::Length(xmf3Direction);
@@ -177,15 +177,17 @@ void Camera::Track(XMFLOAT3& LookAt, GameObject* Object, float fTimeElapsed) {
 		fDistance = fLength;
 
 	Position = Vec3::Add(Position, xmf3Direction, fDistance);
-	SetLookAt(LookAt, Object);
+	SetLookAt(ObjectPosition, UpVec);
 }
 
-void Camera::SetLookAt(XMFLOAT3& LookAt, GameObject* Object) {
-	XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(Position, LookAt, Object->Up);
+void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
+	XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(Position, ObjectPosition, UpVec);
 	Right = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
 	Up = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
 	Look = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
 }
+
+
 
 void Camera::CalculateFrustumPlanes() {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
