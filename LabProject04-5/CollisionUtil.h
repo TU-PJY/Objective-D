@@ -11,8 +11,8 @@ public:
 	void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
 	void Update(const XMFLOAT3& Center, const XMFLOAT3& Size, const XMFLOAT3& Rotation);
 	bool CheckCollision(const OOBB& Other);
-	//bool CheckCollision(const AABB& Other);
-	//bool CheckCollision(const Range& Other);
+	bool CheckCollision(const BoundingBox& Other);
+	bool CheckCollision(const BoundingSphere& Other);
 };
 
 
@@ -24,9 +24,10 @@ private:
 public:
 	void Update(const XMFLOAT3& Center, const XMFLOAT3& Size);
 	bool CheckCollision(const AABB& Other);
-	//bool CheckCollision(const OOBB& Other);
-	//bool CheckCollision(const Range& Other);
+	bool CheckCollision(const BoundingSphere& Other);
+	bool CheckCollision(const BoundingOrientedBox& Other);
 };
+
 
 class Range {
 private:
@@ -36,6 +37,5 @@ private:
 public:
 	void Update(const XMFLOAT3& Center, const float& Size);
 	bool CheckCollision(const Range& Other);
-	//bool CheckCollision(const OOBB& Other);
-	//bool CheckCollision(const AABB& Other);
+	bool CheckCollision(const BoundingBox& Other);
 };

@@ -26,6 +26,27 @@ bool OOBB::CheckCollision(const OOBB& Other) {
 	return false;
 }
 
+bool OOBB::CheckCollision(const BoundingBox& Other) {
+	if (oobb.Intersects(Other)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+bool OOBB::CheckCollision(const BoundingSphere& Other) {
+	if (oobb.Intersects(Other)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+
 
 
 void AABB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size) {
@@ -43,6 +64,28 @@ bool AABB::CheckCollision(const AABB& Other) {
 	return false;
 }
 
+bool AABB::CheckCollision(const BoundingOrientedBox& Other) {
+	if (aabb.Intersects(Other)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+
+bool AABB::CheckCollision(const BoundingSphere& Other) {
+	if (aabb.Intersects(Other)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+
 
 
 void Range::Update(const XMFLOAT3& Center, const float& Size) {
@@ -52,6 +95,26 @@ void Range::Update(const XMFLOAT3& Center, const float& Size) {
 
 bool Range::CheckCollision(const Range& Other) {
 	if (sphere.Intersects(Other.sphere)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+bool Range::CheckCollision(const BoundingBox& Other) {
+	if (sphere.Intersects(Other)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
+	return false;
+}
+
+bool Range::CheckCollision(const BoundingBox& Other) {
+	if (sphere.Intersects(Other)) {
 		Collide = true;
 		return true;
 	}
