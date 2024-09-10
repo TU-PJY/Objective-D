@@ -12,6 +12,8 @@ std::string Mode_1::Mode1() {
 	framework.SetMouseController(MouseButtonController);
 	framework.SetMouseMotionController(MouseMotionController);
 
+	SetBackgroundColorRGB(135, 206, 235);
+
 	return __func__;
 }
 

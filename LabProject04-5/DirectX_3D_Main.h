@@ -42,6 +42,8 @@ public:
 	int							CLIENT_WIDTH;
 	int							CLIENT_HEIGHT;
 
+	XMFLOAT3 BackgroundColor{};
+
 private:
 	HINSTANCE					hInstance;
 	HWND						hWnd;

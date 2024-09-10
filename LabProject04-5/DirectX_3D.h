@@ -48,6 +48,9 @@ using Microsoft::WRL::ComPtr;
 extern UINT	CbvSrvDescriptorIncrementSize;
 extern ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
 
+void SetBackgroundColorRGB(int R, int G, int B);
+void SetBackgroundColor(float R, float G, float B);
+
 namespace Vec3 {
 	inline XMFLOAT3 XMVectorToFloat3(XMVECTOR& xmvVector) {
 		XMFLOAT3 xmf3Result;

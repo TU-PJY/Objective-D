@@ -76,8 +76,8 @@ void DirectX_3D_Main::Update() {
 	D3D12_CPU_DESCRIPTOR_HANDLE RtvCPUDescriptorHandle = RtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	RtvCPUDescriptorHandle.ptr += (SwapChainBufferIndex * RtvDescriptorIncrementSize);
 
-	float BackGroundColor[4] = { 0.196078, 0.6, 0.8, 1.0f };
-	CmdList->ClearRenderTargetView(RtvCPUDescriptorHandle, BackGroundColor/*Colors::Azure*/, 0, NULL);
+	float ViewportColor[4] = { BackgroundColor.x, BackgroundColor.y, BackgroundColor.z, 1.0 };
+	CmdList->ClearRenderTargetView(RtvCPUDescriptorHandle, ViewportColor/*Colors::Azure*/, 0, NULL);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE DsvCPUDescriptorHandle = DsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);

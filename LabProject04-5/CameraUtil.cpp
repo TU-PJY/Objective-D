@@ -240,16 +240,14 @@ bool Camera::IsInFrustum(BoundingBox& BoundingBox) {
 		if (Normal.x >= 0.0f) {
 			if (Normal.y >= 0.0f) {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Min.x, Min.y, Min.z);
-
+					NearPoint = XMFLOAT3(Min.x, Min.y, Min.z); 
 				else
 					NearPoint = XMFLOAT3(Min.x, Min.y, Max.z);
 			}
 
 			else {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Min.x, Max.y, Min.z);
-
+					NearPoint = XMFLOAT3(Min.x, Max.y, Min.z); 
 				else
 					NearPoint = XMFLOAT3(Min.x, Max.y, Max.z);
 			}
@@ -258,16 +256,14 @@ bool Camera::IsInFrustum(BoundingBox& BoundingBox) {
 		else {
 			if (Normal.y >= 0.0f) {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Max.x, Min.y, Min.z);
-
+					NearPoint = XMFLOAT3(Max.x, Min.y, Min.z); 
 				else
 					NearPoint = XMFLOAT3(Max.x, Min.y, Max.z);
 			}
 
 			else {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Max.x, Max.y, Min.z);
-
+					NearPoint = XMFLOAT3(Max.x, Max.y, Min.z); 
 				else
 					NearPoint = XMFLOAT3(Max.x, Max.y, Max.z);
 			}

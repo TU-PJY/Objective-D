@@ -221,3 +221,15 @@ INT_PTR CALLBACK About(HWND hDlg, UINT nMessageID, WPARAM wParam, LPARAM lParam)
 
 	return((INT_PTR)FALSE);
 }
+
+void SetBackgroundColorRGB(int R, int G, int B) {
+	D3D_Main.BackgroundColor.x = 1.0 / 255.0 * float(R);
+	D3D_Main.BackgroundColor.y = 1.0 / 255.0 * float(G);
+	D3D_Main.BackgroundColor.z = 1.0 / 255.0 * float(B);
+}
+
+void SetBackgroundColor(float R, float G, float B) {
+	D3D_Main.BackgroundColor.x = float(R);
+	D3D_Main.BackgroundColor.y = float(G);
+	D3D_Main.BackgroundColor.z = float(B);
+}
