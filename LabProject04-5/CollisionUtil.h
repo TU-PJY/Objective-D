@@ -23,3 +23,13 @@ public:
 	void Update(const XMFLOAT3& Center, const XMFLOAT3& Size);
 	bool CheckCollision(const AABB& Other);
 };
+
+class Range {
+private:
+	BoundingSphere sphere = BoundingSphere();
+	bool Collide{};
+
+public:
+	void Update(const XMFLOAT3& Center, const float& Size);
+	bool CheckCollision(const Range& Other);
+};

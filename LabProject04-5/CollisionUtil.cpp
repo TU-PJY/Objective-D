@@ -17,11 +17,15 @@ void OOBB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size, const XMFLOAT3& 
 }
 
 bool OOBB::CheckCollision(const OOBB& Other) {
-	if (oobb.Intersects(Other.oobb))
+	if (oobb.Intersects(Other.oobb)) {
+		Collide = true;
 		return true;
+	}
 
+	Collide = false;
 	return false;
 }
+
 
 
 void AABB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size) {
@@ -30,8 +34,28 @@ void AABB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size) {
 }
 
 bool AABB::CheckCollision(const AABB& Other) {
-	if (aabb.Intersects(Other.aabb))
+	if (aabb.Intersects(Other.aabb)) {
+		Collide = true;
 		return true;
+	}
 
+	Collide = false;
+	return false;
+}
+
+
+
+void Range::Update(const XMFLOAT3& Center, const float& Size) {
+	sphere.Center = Center;
+	sphere.Radius = Size;
+}
+
+bool Range::CheckCollision(const Range& Other) {
+	if (sphere.Intersects(Other.sphere)) {
+		Collide = true;
+		return true;
+	}
+
+	Collide = false;
 	return false;
 }
