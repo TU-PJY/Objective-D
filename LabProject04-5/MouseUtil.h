@@ -13,48 +13,11 @@ public:
 	POINT PrevCursorPos{};
 	bool LBUTTONDOWN{}, RBUTTONDOWN{};
 
-	void HideCursor() {
-		::SetCursor(NULL);
-	}
-
-	void CaptureMotion(HWND hWnd) {
-		::SetCapture(hWnd);
-		::GetCursorPos(&PrevCursorPos);
-	}
-
-	void ReleaseMotion() {
-		::ReleaseCapture();
-	}
-
-	void SetPositionToPrev(POINT PrevPosition) {
-		::SetCursorPos(PrevPosition.x, PrevPosition.y);
-	}
-
-	POINT CurrentPosition() {
-		POINT CursorPos;
-		::GetCursorPos(&CursorPos);
-
-		return CursorPos;
-	}
-
-	void UpdateButtonState(UINT nMessageID) {
-		switch (nMessageID) {
-		case WM_LBUTTONDOWN:
-			LBUTTONDOWN = true;
-			break;
-
-		case WM_LBUTTONUP:
-			LBUTTONDOWN = false;
-			break;
-
-		case WM_RBUTTONDOWN:
-			RBUTTONDOWN = true;
-			break;
-
-		case WM_RBUTTONUP:
-			RBUTTONDOWN = false;
-			break;
-		}
-	}
+	void HideCursor();
+	void CaptureMotion(HWND hWnd);
+	void ReleaseMotion();
+	void SetPositionToPrev(POINT PrevPosition);
+	POINT CurrentPosition();
+	void UpdateButtonState(UINT nMessageID);
 };
 extern MouseUtil mouse;

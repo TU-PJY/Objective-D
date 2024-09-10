@@ -68,9 +68,6 @@
     <Filter Include="[8]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[2]____________[ Object ]\[1] [ Base Object ]">
-      <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[2]____________[ Object ]\[2] [ CustomObject ]">
       <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
@@ -82,6 +79,9 @@
     </Filter>
     <Filter Include="[3]____________[ Util ]\[ Math Util ]">
       <UniqueIdentifier>{0683a2e4-4519-4394-a267-133ac8565000}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]____________[ Object ]\[1] [ Object Template ]">
+      <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +128,7 @@
       <Filter>[3]____________[ Util ]\[ Picking Util ]</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>[2]____________[ Object ]\[1] [ Base Object ]</Filter>
+      <Filter>[2]____________[ Object ]\[1] [ Object Template ]</Filter>
     </ClInclude>
     <ClInclude Include="CollisionUtil.h">
       <Filter>[3]____________[ Util ]\[ Collision Util ]</Filter>
@@ -138,9 +138,6 @@
     </ClInclude>
     <ClInclude Include="TerrainUtil.h">
       <Filter>[3]____________[ Util ]\[ Terrain Util ]</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects.h">
-      <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
     </ClInclude>
     <ClInclude Include="TransformUtil.h">
       <Filter>[3]____________[ Util ]\[ Transform Util ]</Filter>
@@ -179,7 +176,7 @@
       <Filter>[3]____________[ Util ]\[ Shader Util ]</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>[2]____________[ Object ]\[1] [ Base Object ]</Filter>
+      <Filter>[2]____________[ Object ]\[1] [ Object Template ]</Filter>
     </ClCompile>
     <ClCompile Include="CollisionUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Collision Util ]</Filter>

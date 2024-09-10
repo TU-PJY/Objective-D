@@ -84,4 +84,5 @@ private:
 
 public:
 	TCHAR						WindowName[50]{};
+	int							TitleNameLength{};
 };

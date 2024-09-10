@@ -1,25 +1,32 @@
 #include "FrameworkUtil.h"
 
+// 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
+
+
+// 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction()) {
 	RootSignature = CreateGraphicsRootSignature(Device);
 	pseudoShader = framework.LoadShader(RootSignature, Device, CmdList);
 
-	// add dummy object
+	// 업데이트를 담당하는 컨테이너에는 추가되나, 객체 삭제, 객체 검색등을 담당하는 멀티맵에는 추가되지 않는다.
 	for (int i = 0; i < NUM_LAYER; ++i)
 		Container[i].push_back(new DUMMY);
 
 	SwitchMode(ModeFunction);
 }
 
+// 현재 실행 중인 모드 이름을 리턴한다
 std::string Framework::Mode() {
 	return RunningMode;
 }
 
+// 모드를 변경한다. 모드 변경 시 기존 모드에 있던 객체들은 모두 삭제된다.
 void Framework::SwitchMode(std::string ModeFunction()) {
 	ClearAll();
 	RunningMode = ModeFunction();
 }
 
+// 컨트롤러 설정 함수이다. 이 함수를 직접 쓸 일은 없다,
 void Framework::SetKeyController(void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM)) {
 	KeyboardController = KeyboardControllerPtr;
 }
@@ -32,6 +39,7 @@ void Framework::SetMouseMotionController(void (*MouseMotionControllerPtr)(HWND))
 	MouseMotionController = MouseMotionControllerPtr;
 }
 
+// 키모드, 마우스, 마우스 움직임을 객체 포인터에 전달한다. 이 함수들 역시 직접 쓸 일은 없다.
 void Framework::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	if (KeyboardController)
 		KeyboardController(hWnd, nMessageID, wParam, lParam);
@@ -47,10 +55,13 @@ void Framework::InputMouseMotion(HWND hWnd) {
 		MouseMotionController(hWnd);
 }
 
+// 프로그램을 종료한다.
 void Framework::Exit() {
 	PostQuitMessage(1);
 }
 
+// 현재 존재하는 모든 객체들을 업데이트한다
+// 삭제 마크가 표시된 객체를 업데이트되지 않는다
 void Framework::Update(float FT) {
 	for (int i = 0; i < NUM_LAYER; ++i) {
 		for (auto const& O : Container[i]) {
@@ -58,10 +69,13 @@ void Framework::Update(float FT) {
 				O->Update(FT);
 		}
 
+		// 업데이트를 모두 마친 후 업데이트 중이었던 레이어에서 삭제 마크가 표시된 객체를 찾아 삭제한다.
 		UpdateContainer(i);
 	}
 }
 
+// 현재 존재하는 모든 객체들을 렌더링한다
+// 삭제 마크가 표시된 객체들은 렌더링되지 않는다.
 void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 	for (int i = 0; i < NUM_LAYER; ++i) {
 		for (auto const& O : Container[i]) {
@@ -71,6 +85,7 @@ void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 	}
 }
 
+// 삭제 마크가 표시된 객체들을 삭제한다.
 void Framework::UpdateContainer(int Index) {
 	std::erase_if(ObjectList, [](const std::pair<std::string, GameObject*>& Object) {
 		return Object.second->DeleteMark;
@@ -88,6 +103,7 @@ void Framework::UpdateContainer(int Index) {
 	}
 }
 
+// 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
 void Framework::AddObject(GameObject*&& Object, std::string Tag, Layer Layer) {
 	int layer = static_cast<int>(Layer);
 
@@ -96,16 +112,21 @@ void Framework::AddObject(GameObject*&& Object, std::string Tag, Layer Layer) {
 	ObjectList.insert(std::pair(Tag, Container[layer].back()));
 }
 
+// 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
+// 이 코드가 실행되는 시점에 즉시 삭제되지 않음에 유의한다. 
+// 삭제 마크가 표시된 객체는 UpdateContainer()에서 실제로 삭제된다.
 void Framework::DeleteObject(GameObject* Object) {
 	Object->DeleteMark = true;
 }
 
+// 태그를 사용하여 객체를 삭제한다.
 void Framework::DeleteObject(std::string Tag) {
 	auto It = ObjectList.find(Tag);
 	if (It != std::end(ObjectList))
 		It->second->DeleteMark = true;
 }
 
+// 특정 레이어에서 특정 태그를 검색하여 해당되는 객체를 삭제한다.
 void Framework::DeleteObject(std::string Tag, Layer TargetLayer) {
 	int layer = static_cast<int>(TargetLayer);
 	size_t NumObject = Container[layer].size();
@@ -116,6 +137,8 @@ void Framework::DeleteObject(std::string Tag, Layer TargetLayer) {
 	}
 }
 
+// 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
+// 이진 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Framework::Find(std::string Tag) {
 	auto It = ObjectList.find(Tag);
 	if (It != std::end(ObjectList))
@@ -124,6 +147,8 @@ GameObject* Framework::Find(std::string Tag) {
 		return nullptr;
 }
 
+// 특정 레이어에 존재하는 다수의 객체들의 포인터를 얻어 접근하는데에 사용한다.
+// for문과 함께 사용하야 한다.
 GameObject* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
 	int layer = static_cast<int>(TargetLayer);
 
@@ -133,11 +158,13 @@ GameObject* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
 		return nullptr;
 }
 
+// 현재 존재하는 모든 객체들을 삭제한다. 더미 객체는 ObjectList에 있지 않으므로 삭제 마크가 표시되지 않늗다.
 void Framework::ClearAll() {
 	for (const auto& O : ObjectList)
 		O.second->DeleteMark = true;
 }
 
+// 쉐이더를 로드한다.
 PseudoLightingShader* Framework::LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	PseudoLightingShader* shader = new PseudoLightingShader();
 	shader->CreateShader(Device, RootSignature);
@@ -146,6 +173,7 @@ PseudoLightingShader* Framework::LoadShader(ID3D12RootSignature* RootSignature, 
 	return shader;
 }
 
+// 루트 시그니처를 생성한다
 ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device) {
 	ID3D12RootSignature* GraphicsRootSignature = NULL;
 
@@ -187,15 +215,18 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	return(GraphicsRootSignature);
 }
 
+// 루트 시그니처를 리턴한다
 ID3D12RootSignature* Framework::GetGraphicsRootSignature() {
 	return(RootSignature);
 }
 
+// 루트시그니처를 릴리즈한다
 void Framework::ReleaseObjects() {
 	if (RootSignature)
 		RootSignature->Release();
 }
 
+// 렌더링을 준비한다
 void Framework::PrepareRender(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->SetGraphicsRootSignature(RootSignature);
 }

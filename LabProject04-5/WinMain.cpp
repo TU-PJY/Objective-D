@@ -10,8 +10,8 @@
 #include "MouseUtil.h"
 #include "TerrainUtil.h"
 
-int SCREEN_WIDTH = 1500;
-int SCREEN_HEIGHT = 800;
+int SCREEN_WIDTH = START_UP_WIDTH;
+int SCREEN_HEIGHT = START_UP_HEIGHT;
 int PREV_WIDTH, PREV_HEIGHT;
 
 DirectX_3D_Main D3D_Main;

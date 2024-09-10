@@ -1,5 +1,9 @@
 #include "MeshUtil.h"
 
+// 매쉬를 담당하는 유틸이다.
+
+
+// 프로그램 시작 시 ResourceList.cpp에 작성했던 매쉬들을 모두 로드한다. 
 void MeshUtil::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	for (const auto& [MeshName, Directory] : MeshList)
 		LoadedMeshList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
@@ -8,6 +12,7 @@ void MeshUtil::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 		LoadedTerrainList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
 }
 
+// 매쉬 포인터를 얻는다. GameObject 클래스의 SetMesh()함수에서 실행되므로 직접 실행할 일은 없다.
 Mesh* MeshUtil::GetMesh(std::string MeshName) {
 	auto It = LoadedMeshList.find(MeshName);
 	if (It != std::end(LoadedMeshList))
@@ -16,6 +21,7 @@ Mesh* MeshUtil::GetMesh(std::string MeshName) {
 		return nullptr;
 }
 
+// 터레인 매쉬 포인터를 얻는다. 위의 함수와 같다.
 Mesh* MeshUtil::GetTerrain(std::string TerrainName) {
 	auto It = LoadedTerrainList.find(TerrainName);
 	if (It != std::end(LoadedTerrainList))

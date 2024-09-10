@@ -180,6 +180,7 @@ DirectX_3D_Main::DirectX_3D_Main() {
 	CLIENT_HEIGHT = SCREEN_HEIGHT;
 
 	memset(WindowName, 0, sizeof(WindowName));
+	TitleNameLength = sizeof(TitleName) / sizeof(TCHAR);
 	_tcscpy_s(WindowName, TitleNameLength, TitleName);
 	_tcscpy_s(FrameRate, WindowName);
 }

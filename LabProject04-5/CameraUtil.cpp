@@ -1,11 +1,12 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 
+// Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다. 
+// 예) 카메라 추적 대상 변경, 카메라 시점 변경 등
 void Camera::Update(float FT) {
 	switch (Mode) {
 	case CamMode::MODE1:
-		if(auto object = framework.Find("obj1"); object)
-			Track(object->GetPosition(), object->GetUp(), object->GetRight(), object->GetLook(), FT);
+
 		break;
 	}
 }
@@ -40,6 +41,7 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->SetGraphicsRoot32BitConstants(2, 3, &Position, 32);
 }
 
+// 아래 두 함수들은 굳이 쓸 일이 없다. 
 void Camera::GenerateViewMatrix() {
 	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
 }
@@ -52,6 +54,7 @@ void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, X
 	GenerateViewMatrix();
 }
 
+// 카메라 행렬을 초기화 한다. DirectX_3D_Main이 이 함수를 실행하고 있으므로 직접 사용할 일은 없다.
 void Camera::RegenerateViewMatrix() {
 	Look = Vec3::Normalize(Look);
 	Right = Vec3::CrossProduct(Up, Look, true);
@@ -73,6 +76,7 @@ void Camera::RegenerateViewMatrix() {
 	FrustumView.Transform(FrustumWorld, XMLoadFloat4x4(&InverseView));
 }
 
+// 원근 투영 행렬을 초기화한다. 윈도우 사이즈 변경 시 이 함수가 실행된다.
 void Camera::GenerateProjectionMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
 	//	Cam4x4Projection = Mat4::PerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
 	XMMATRIX Projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
@@ -83,6 +87,7 @@ void Camera::GenerateProjectionMatrix(float NearPlane, float FarPlane, float Asp
 #endif
 }
 
+// 뷰포트를 설정한다. 한 번 설정한 이후에는 건들 필요 없다.
 void Camera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin, float zMax) {
 	Viewport.TopLeftX = float(xTopLeft);
 	Viewport.TopLeftY = float(yTopLeft);
@@ -92,6 +97,7 @@ void Camera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, fl
 	Viewport.MaxDepth = zMax;
 }
 
+// 시저 렉트를 설정한다. 한 번 설정한 이우헤는 건들 필요 없다.
 void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 	ScissorRect.left = xLeft;
 	ScissorRect.top = yTop;
@@ -99,15 +105,18 @@ void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 	ScissorRect.bottom = yBottom;
 }
 
+// 
 void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->RSSetViewports(1, &Viewport);
 	CmdList->RSSetScissorRects(1, &ScissorRect);
 }
 
+// 카메라 모드를 변경한다. Config.h에 작성했던 모드 열겨형을 파라미터에 넣으면 된다.
 void Camera::SetCameraMode(CamMode ModeValue) {
 	Mode = ModeValue;
 }
 
+// 위치 이동, 시점 추적 위치 설정 등 회전각도, 위치, 벡터 관련 함수들이다.
 void Camera::SetPosition(XMFLOAT3 PositionValue) { Position = PositionValue; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
 
@@ -139,6 +148,7 @@ void Camera::Move(const XMFLOAT3& Shift) {
 	Position.z += Shift.z;
 }
 
+// 파라미터로 입력받은 위치, 업벡터, 라이트벡터, 룩벡터를 추적한다. 
 void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed) {
 	XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 	XMFLOAT3 xmf3Up = UpVec;
@@ -177,6 +187,7 @@ void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec
 	SetLookAt(ObjectPosition, UpVec);
 }
 
+// 카메라가 바라보는 방향을 설정한다. Track에서 실행되므로 보통의 경우 직접 쓸 일은 없다.
 void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
 	XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(Position, ObjectPosition, UpVec);
 	Right = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
@@ -185,7 +196,7 @@ void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
 }
 
 
-
+// 프러스텀 관련 함수들, 정확히는 잘 모르겠음
 void Camera::CalculateFrustumPlanes() {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	FrustumView.Transform(FrustumWorld, XMMatrixInverse(NULL, XMLoadFloat4x4(&ViewMatrix)));

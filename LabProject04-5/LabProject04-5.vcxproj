@@ -159,7 +159,6 @@
     <ClInclude Include="MouseUtil.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="MeshUtil.h" />
-    <ClInclude Include="Objects.h" />
     <ClInclude Include="PickingUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="FrameworkUtil.h" />
