@@ -8,8 +8,18 @@ private:
 	bool Collide{};
 
 public:
-	void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
+	//void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
 	void Update(const XMFLOAT3& Center, const XMFLOAT3& Size, const XMFLOAT3& Rotation);
 	bool CheckCollision(const OOBB& Other);
 };
 
+
+class AABB {
+private:
+	BoundingBox aabb = BoundingBox();
+	bool Collide{};
+
+public:
+	void Update(const XMFLOAT3& Center, const XMFLOAT3& Size);
+	bool CheckCollision(const AABB& Other);
+};
