@@ -1,4 +1,5 @@
 #include "PickingUtil.h"
+#include <iostream>
 
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
@@ -7,9 +8,11 @@ bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr)
 	float xclient = LOWORD(lparam);
 	float yclient = HIWORD(lparam);
 
+	std::cout << xclient << " " << yclient << std::endl;
+
 	XMFLOAT3 xmf3pickposition;
-	xmf3pickposition.x = (((2.0f * xclient) / (float)camera.Viewport.Width) - 1) / camera.ProjectionMatrix._11;
-	xmf3pickposition.y = -(((2.0f * yclient) / (float)camera.Viewport.Height) - 1) / camera.ProjectionMatrix._22;
+	xmf3pickposition.x = (((2.0f * xclient) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
+	xmf3pickposition.y = -(((2.0f * yclient) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
 	xmf3pickposition.z = 1.0f;
 
 	XMVECTOR xmvpickposition = XMLoadFloat3(&xmf3pickposition);
@@ -34,8 +37,8 @@ bool PickingUtil::PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPt
 	float yclient = (1.0 - y) / 2.0 * SCREEN_HEIGHT;
 
 	XMFLOAT3 xmf3pickposition;
-	xmf3pickposition.x = (((2.0f * xclient) / (float)camera.Viewport.Width) - 1) / camera.ProjectionMatrix._11;
-	xmf3pickposition.y = -(((2.0f * yclient) / (float)camera.Viewport.Height) - 1) / camera.ProjectionMatrix._22;
+	xmf3pickposition.x = (((2.0f * xclient) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
+	xmf3pickposition.y = -(((2.0f * yclient) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
 	xmf3pickposition.z = 1.0f;
 
 	XMVECTOR xmvpickposition = XMLoadFloat3(&xmf3pickposition);

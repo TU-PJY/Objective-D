@@ -145,7 +145,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>

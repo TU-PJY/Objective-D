@@ -134,12 +134,15 @@ void DirectX_3D_Main::Update() {
 void DirectX_3D_Main::SwitchToWindowMode(HWND hwnd) {
 	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 	ShowWindow(hwnd, SW_NORMAL);
-	SetWindowPos(hwnd, NULL, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	SetWindowPos(hwnd, NULL, 0, 0, PREV_WIDTH, PREV_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
 
 	FullScreenState = false;
 }
 
 void DirectX_3D_Main::SwitchToFullscreenMode(HWND hwnd) {
+	PREV_WIDTH = SCREEN_WIDTH;
+	PREV_HEIGHT = SCREEN_HEIGHT;
+
 	SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
 	ShowWindow(hwnd, SW_MAXIMIZE);
 	SetWindowPos(hwnd, HWND_TOP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);

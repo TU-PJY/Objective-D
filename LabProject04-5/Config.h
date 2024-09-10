@@ -18,4 +18,3 @@ constexpr TCHAR TitleName[] = _T("Objective-D(");
 
 ///////////////////////////////////////
 constexpr int TitleNameLength = sizeof(TitleName) / sizeof(TCHAR);
-extern int SCREEN_WIDTH, SCREEN_HEIGHT;

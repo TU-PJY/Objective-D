@@ -31,6 +31,9 @@
 #include <DirectXCollision.h>
 #include <D3d12SDKLayers.h>
 
+extern int SCREEN_WIDTH, SCREEN_HEIGHT;
+extern int PREV_WIDTH, PREV_HEIGHT;
+
 // screen size
 #define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
 

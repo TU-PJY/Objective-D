@@ -5,7 +5,6 @@
 #include "PickingUtil.h"
 #include "TerrainUtil.h"
 #include "CollisionUtil.h"
-#include <iostream>
 
 class Aircraft : public GameObject {
 private:
@@ -87,9 +86,7 @@ public:
 		if (auto object = framework.Find("obj2"); object && oobb.CheckCollision(object->GetOOBB()))
 			object->SetColor(1.0, 0.0, 0.0);
 
-
 		Math::UpdateVector(v.Up, v.Right, v.Look, Rotation.x, Rotation.y, Rotation.z);
-		std::cout << GetUp().x << " " << GetUp().y << " " << GetUp().z << std::endl;
 	}
 
 	void Render(CommandList CmdList) {
