@@ -113,7 +113,7 @@ bool Range::CheckCollision(const BoundingBox& Other) {
 	return false;
 }
 
-bool Range::CheckCollision(const BoundingBox& Other) {
+bool Range::CheckCollision(const BoundingOrientedBox& Other) {
 	if (sphere.Intersects(Other)) {
 		Collide = true;
 		return true;

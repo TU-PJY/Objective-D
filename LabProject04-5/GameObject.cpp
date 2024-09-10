@@ -11,7 +11,7 @@ void GameObject::SetShader(Shader*& ShaderPtr, Shader* ShaderData) {
 	ShaderPtr = ShaderData;
 }
 
-void GameObject::BeginProcess() {
+void GameObject::InitMatrix() {
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();

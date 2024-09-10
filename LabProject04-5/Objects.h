@@ -90,7 +90,7 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		BeginProcess();
+		InitMatrix();
 		Transform::Scale(ScaleMatrix, 1.0, 1.0, 1.0);
 		Transform::Move(TranslateMatrix, ObjPosition.x, ObjPosition.y, ObjPosition.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, Rotation.z);
@@ -100,6 +100,7 @@ public:
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
 		if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
 			mouse.HideCursor();
+			GetCapture();
 
 			float cxDelta = (float)(mouse.CurrentPosition().x - PrevCursorPos.x) / 5.0f;
 			float cyDelta = (float)(mouse.CurrentPosition().y - PrevCursorPos.y) / 5.0f;
@@ -177,7 +178,7 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		BeginProcess();
+		InitMatrix();
 		Transform::Scale(ScaleMatrix, 1.0, 1.0, 1.0);
 		Transform::Move(TranslateMatrix, -50.0, 50.0, -10.0);
 		RenderMesh(CmdList, ObjectShader, ObjectMesh);

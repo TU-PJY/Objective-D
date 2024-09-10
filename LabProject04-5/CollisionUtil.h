@@ -38,4 +38,5 @@ public:
 	void Update(const XMFLOAT3& Center, const float& Size);
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const BoundingBox& Other);
+	bool CheckCollision(const BoundingOrientedBox& Other);
 };

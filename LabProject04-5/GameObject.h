@@ -27,7 +27,7 @@ public:
 
 	void SetMesh(Mesh*& MeshPtr, std::string MeshName);
 	void SetShader(Shader*& ShaderPtr, Shader* ShaderData);
-	void BeginProcess();
+	void InitMatrix();
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
