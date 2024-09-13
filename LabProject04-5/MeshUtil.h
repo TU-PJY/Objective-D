@@ -97,16 +97,3 @@ public:
 	bool IsPointInTriangle(XMFLOAT2 pt, XMFLOAT2 v0, XMFLOAT2 v1, XMFLOAT2 v2);
 	float ComputeHeightOnTriangle(XMFLOAT3 pt, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
 };
-
-class MeshUtil {
-private:
-	std::map<std::string, Mesh*> LoadedMeshList;
-	std::map<std::string, Mesh*> LoadedTerrainList;
-
-public:
-	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
-	Mesh* GetMesh(std::string MeshName);
-	Mesh* GetTerrain(std::string TerrainName);
-};
-
-extern MeshUtil meshUtil;
