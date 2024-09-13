@@ -2,39 +2,12 @@
 
 // 매쉬를 담당하는 유틸이다.
 
-
-// 프로그램 시작 시 ResourceList.cpp에 작성했던 매쉬들을 모두 로드한다. 
-void MeshUtil::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	for (const auto& [MeshName, Directory] : MeshList)
-		LoadedMeshList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
-
-	for (const auto& [MeshName, Directory] : TerrainList)
-		LoadedTerrainList.insert(std::pair(MeshName, new Mesh(Device, CmdList, Directory)));
-}
-
-// 매쉬 포인터를 얻는다. GameObject 클래스의 SetMesh()함수에서 실행되므로 직접 실행할 일은 없다.
-Mesh* MeshUtil::GetMesh(std::string MeshName) {
-	auto It = LoadedMeshList.find(MeshName);
-	if (It != std::end(LoadedMeshList))
-		return It->second;
-	else
-		return nullptr;
-}
-
-// 터레인 매쉬 포인터를 얻는다. 위의 함수와 같다.
-Mesh* MeshUtil::GetTerrain(std::string TerrainName) {
-	auto It = LoadedTerrainList.find(TerrainName);
-	if (It != std::end(LoadedTerrainList))
-		return It->second;
-	else
-		return nullptr;
-}
-
 ////////////////////////////////////
 
+// ResourList에서 해당 함수를 사용하여 매쉬를 로드하도록 한다
 Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 	if (Directory)
-		LoadMeshFromFile(Device, CmdList, Directory, TextMode);
+		ImportMesh(Device, CmdList, Directory, TextMode);
 }
 
 Mesh::~Mesh() {
@@ -109,7 +82,7 @@ int Mesh::CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayD
 	return(nIntersections);
 }
 
-void Mesh::LoadMeshFromFile(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
+void Mesh::ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 	char Token[64] = { '\0' };
 
 	if (TextMode) {

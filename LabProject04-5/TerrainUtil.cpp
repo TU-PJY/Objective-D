@@ -1,7 +1,7 @@
 #include "TerrainUtil.h"
 
-void TerrainUtil::SetMesh(std::string TerrainMeshName) {
-	TerrainMesh = meshUtil.GetTerrain(TerrainMeshName);
+void TerrainUtil::SetMesh(Mesh* MeshPtr) {
+	TerrainMesh = MeshPtr;
 	if (TerrainMesh)
 		TerrainMesh->ReleaseUploadBuffers();
 }

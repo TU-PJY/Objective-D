@@ -1,7 +1,5 @@
 #pragma once
-#include <map>
-#include <vector>
-#include <string>
+#include "MeshUtil.h"
+#include "ShaderUtil.h"
 
-extern std::map<std::string, char*> MeshList;
-extern std::map<std::string, char*> TerrainList;
+void LoadMesh();

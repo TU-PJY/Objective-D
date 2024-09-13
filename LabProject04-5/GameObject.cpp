@@ -5,18 +5,6 @@
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
 // 일부 함수들은 별도의 파일로 분리 예정이니 코드에 변동이 있을 수 있다.
 
-// 객체가 가지는 매쉬를 설정한다. [ Resource List ] -> ResourceList.cpp에 작성한 이름을 파라미터에 넣으면 된다.
-void GameObject::SetMesh(Mesh*& MeshPtr, std::string MeshName) {
-	MeshPtr = meshUtil.GetMesh(MeshName);
-	if (MeshPtr)
-		MeshPtr->ReleaseUploadBuffers();
-}
-
-// 객체가 가지는 쉐이더를 설정한다. 아직 쉐이더가 해당 프로젝트에 하나 뿐이라 전역 쉐이더를 사용하고 있다. 
-void GameObject::SetShader(Shader*& ShaderPtr, Shader* ShaderData) {
-	ShaderPtr = ShaderData;
-}
-
 // 객체의 행렬을 초기화 한다. 모든 객체는 변환 작업 전 반드시 이 함수를 첫 번째로 실행해야 한다.
 void GameObject::InitMatrix() {
 	TranslateMatrix = Mat4::Identity();

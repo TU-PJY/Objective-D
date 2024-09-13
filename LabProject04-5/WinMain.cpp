@@ -16,8 +16,6 @@ int PREV_WIDTH, PREV_HEIGHT;
 
 DirectX_3D_Main D3D_Main;
 
-PseudoLightingShader* pseudoShader;
-
 Framework framework;
 Camera camera;
 MeshUtil meshUtil;

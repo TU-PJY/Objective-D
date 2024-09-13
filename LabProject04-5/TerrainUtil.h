@@ -11,7 +11,7 @@ private:
 	XMFLOAT3 TerrainColor{};
 
 public:
-	void SetMesh(std::string TerrainMeshName);
+	void SetMesh(Mesh* MeshPtr);
 	void SetShader(Shader* ShaderPtr);
 	void SetColor(XMFLOAT3 ColorValue);
 	bool CheckFloor(XMFLOAT3 Position);

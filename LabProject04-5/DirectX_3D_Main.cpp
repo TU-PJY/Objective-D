@@ -8,8 +8,8 @@
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
-	// mesh util init
-	meshUtil.Init(Device, CmdList);
+	// ResourceList.cpp에 작성한 매쉬들을 로드한다
+	LoadMesh();
 
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));

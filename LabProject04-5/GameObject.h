@@ -4,6 +4,7 @@
 #include "CollisionUtil.h"
 #include "TransformUtil.h"
 #include "MathUtil.h"
+#include "ResourceList.h"
 
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
@@ -29,8 +30,6 @@ public:
 	std::string ObjectTag{};
 	bool DeleteMark{};
 
-	void SetMesh(Mesh*& MeshPtr, std::string MeshName);
-	void SetShader(Shader*& ShaderPtr, Shader* ShaderData);
 	void InitMatrix();
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
