@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "CameraUtil.h"
 
 // GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다. 
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
@@ -38,43 +37,6 @@ void GameObject::MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) 
 void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 	Position = Vec3::Add(Position, Up, Distance);
 }
-
-// 아래 주석 처리된 함수들은 추후 분리 예정이다.
-//void GameObject::LinearAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
-//	if (SpeedLimit > 0.0) {
-//		CurrentSpeed += AccelerationValue * FT;
-//		if (CurrentSpeed >= SpeedLimit)
-//			CurrentSpeed = SpeedLimit;
-//	}
-//
-//	else if (SpeedLimit < 0.0) {
-//		CurrentSpeed -= AccelerationValue * FT;
-//		if (CurrentSpeed <= SpeedLimit)
-//			CurrentSpeed = SpeedLimit;
-//	}
-//}
-//
-//void GameObject::LinearDcc(float& CurrentSpeed, float DecelerationValue, float FT) {
-//	if (CurrentSpeed > 0.0) {
-//		CurrentSpeed -= DecelerationValue * FT;
-//		if (CurrentSpeed <= 0.0)
-//			CurrentSpeed = 0.0;
-//	}
-//
-//	else if (CurrentSpeed < 0.0) {
-//		CurrentSpeed += DecelerationValue * FT;
-//		if (CurrentSpeed >= 0.0)
-//			CurrentSpeed = 0.0;
-//	}
-//}
-//
-//void GameObject::LerpAcc(float& CurrentSpeed, float SpeedLimit, float AccelerationValue, float FT) {
-//	CurrentSpeed = std::lerp(CurrentSpeed, SpeedLimit, AccelerationValue * FT);
-//}
-//
-//void GameObject::LerpDcc(float& CurrentSpeed, float DecelerationValue, float FT) {
-//	CurrentSpeed = std::lerp(CurrentSpeed, 0.0, DecelerationValue * FT);
-//}
 
 ////////////////////////////////
 

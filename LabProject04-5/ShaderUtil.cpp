@@ -1,30 +1,5 @@
 #include "ShaderUtil.h"
 
-D3D12_INPUT_LAYOUT_DESC PseudoLightingShader::CreateInputLayout() {
-	UINT NumInputElementDescs = 3;
-	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];
-
-	InputElementDescs[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-	InputElementDescs[1] = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-	InputElementDescs[2] = { "TEXTURECOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-
-	D3D12_INPUT_LAYOUT_DESC InputLayoutDesc;
-	InputLayoutDesc.pInputElementDescs = InputElementDescs;
-	InputLayoutDesc.NumElements = NumInputElementDescs;
-
-	return(InputLayoutDesc);
-}
-
-D3D12_SHADER_BYTECODE PseudoLightingShader::CreateVertexShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "VSPseudoLighting", "vs_5_1", ShaderBlob));
-}
-
-D3D12_SHADER_BYTECODE PseudoLightingShader::CreatePixelShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "PSPseudoLighting", "ps_5_1", ShaderBlob));
-}
-
-//////////////////////////////////
-
 Shader::~Shader() {
 	if (PipelineState)
 		PipelineState->Release();
@@ -177,4 +152,34 @@ void Shader::OnPrepareRender(ID3D12GraphicsCommandList* CmdList) {
 
 void Shader::Render(ID3D12GraphicsCommandList* CmdList) {
 	OnPrepareRender(CmdList);
+}
+
+////////////////////////////////
+
+PseudoLightingShader::PseudoLightingShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	CreateShader(Device, RootSignature);
+	CreateShaderVariables(Device, CmdList);
+}
+
+D3D12_INPUT_LAYOUT_DESC PseudoLightingShader::CreateInputLayout() {
+	UINT NumInputElementDescs = 3;
+	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];
+
+	InputElementDescs[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+	InputElementDescs[1] = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+	InputElementDescs[2] = { "TEXTURECOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+
+	D3D12_INPUT_LAYOUT_DESC InputLayoutDesc;
+	InputLayoutDesc.pInputElementDescs = InputElementDescs;
+	InputLayoutDesc.NumElements = NumInputElementDescs;
+
+	return(InputLayoutDesc);
+}
+
+D3D12_SHADER_BYTECODE PseudoLightingShader::CreateVertexShader(ID3DBlob** ShaderBlob) {
+	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "VSPseudoLighting", "vs_5_1", ShaderBlob));
+}
+
+D3D12_SHADER_BYTECODE PseudoLightingShader::CreatePixelShader(ID3DBlob** ShaderBlob) {
+	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "PSPseudoLighting", "ps_5_1", ShaderBlob));
 }

@@ -111,7 +111,7 @@ void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->RSSetScissorRects(1, &ScissorRect);
 }
 
-// 카메라 모드를 변경한다. Config.h에 작성했던 모드 열겨형을 파라미터에 넣으면 된다.
+// 카메라 모드를 변경한다. Config.h에 작성했던 모드 열거형을 파라미터에 넣으면 된다.
 void Camera::SetCameraMode(CamMode ModeValue) {
 	Mode = ModeValue;
 }

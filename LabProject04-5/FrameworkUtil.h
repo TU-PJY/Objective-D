@@ -49,11 +49,9 @@ public:
 	GameObject* Find(std::string Tag);
 	GameObject* Find(std::string Tag, Layer TargetLayer, int Index);
 	void ClearAll();
-	PseudoLightingShader* LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();
 	void ReleaseObjects();
-	void ReleaseUploadBuffers();
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList);
 };
 

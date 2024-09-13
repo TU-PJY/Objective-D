@@ -36,12 +36,10 @@ protected:
 
 class PseudoLightingShader : public Shader {
 public:
-	PseudoLightingShader() {}
+	PseudoLightingShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	virtual ~PseudoLightingShader() {}
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();
 	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob** ShaderBlob);
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ShaderBlob);
 };
-
-extern PseudoLightingShader* pseudoShader;

@@ -1,5 +1,5 @@
 #include "FrameworkUtil.h"
-#include "ResourceList.h"
+#include "ResourceManager.h"
 
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
 
@@ -7,7 +7,7 @@
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction()) {
 	// 필요한 파일들을 모두 로드한다
 	RootSignature = CreateGraphicsRootSignature(Device);
-	pseudoShader = framework.LoadShader(RootSignature, Device, CmdList);
+	LoadShaderResource(RootSignature, Device, CmdList);
 	LoadMeshResource(Device, CmdList);
 
 	// 업데이트를 담당하는 컨테이너에는 추가되나, 객체 삭제, 객체 검색등을 담당하는 멀티맵에는 추가되지 않는다.
@@ -164,15 +164,6 @@ GameObject* Framework::Find(std::string Tag, Layer TargetLayer, int Index) {
 void Framework::ClearAll() {
 	for (const auto& O : ObjectList)
 		O.second->DeleteMark = true;
-}
-
-// 쉐이더를 로드한다.
-PseudoLightingShader* Framework::LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	PseudoLightingShader* shader = new PseudoLightingShader();
-	shader->CreateShader(Device, RootSignature);
-	shader->CreateShaderVariables(Device, CmdList);
-
-	return shader;
 }
 
 // 루트 시그니처를 생성한다

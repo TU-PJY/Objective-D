@@ -59,9 +59,6 @@
     <Filter Include="[6]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]____________[ Resource List ]">
-      <UniqueIdentifier>{517a4e13-9e31-4063-a3c0-0decb62883fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[8]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
@@ -82,6 +79,9 @@
     </Filter>
     <Filter Include="[0]____________[ Configuration ]">
       <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[7]____________[ Resource ]">
+      <UniqueIdentifier>{517a4e13-9e31-4063-a3c0-0decb62883fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,8 +142,8 @@
     <ClInclude Include="MathUtil.h">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceList.h">
-      <Filter>[7]____________[ Resource List ]</Filter>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,8 +193,8 @@
     <ClCompile Include="MathUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceList.cpp">
-      <Filter>[7]____________[ Resource List ]</Filter>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>[7]____________[ Resource ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
