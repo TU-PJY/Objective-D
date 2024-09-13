@@ -153,7 +153,6 @@
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="DirectX_3D_Main.h" />
-    <ClInclude Include="Example.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mode1.h" />
@@ -210,6 +209,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ModeCodeTemplate.txt" />
+    <Text Include="MotionCode.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

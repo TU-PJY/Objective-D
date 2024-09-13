@@ -1,5 +1,9 @@
 #include "PickingUtil.h"
 
+// 피킹을 담당하는 유틸이다
+
+// 커서를 사용하여 오브젝트를 피킹한다
+// 피킹할 대상의 클래스 포인터와 그 포인터가 가지는 매쉬가 필요하다
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
 		return false;
@@ -26,6 +30,7 @@ bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr)
 	return false;
 }
 
+// 원리는 위의 함수와 같으나 부포트 좌표를 사용하여 오브젝트를 피킹한다
 bool PickingUtil::PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
 		return false;

@@ -1,5 +1,7 @@
 #include "TimerUtil.h"
 
+// 타이머. 랩 프로젝트의 타이머와 동일하다
+
 Timer::Timer() {
 	::QueryPerformanceFrequency((LARGE_INTEGER*)&PerformanceFrequencyPerSec);
 	::QueryPerformanceCounter((LARGE_INTEGER*)&LastPerformanceCounter);

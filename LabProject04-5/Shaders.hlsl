@@ -137,9 +137,8 @@ float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET
     cColor.rgb += fSpecularFactor * gf3LightColor * FresnelTerm(gf3SpecularColor, lh);
     cColor.rgb += fSurfaceReduction * gf3AmbientSpecularColor * FresnelLerp(gf3SpecularColor, fGrazingTerm, nv);
 
-    // 림 라이팅 제거
-     //float fRim = saturate(dot(f3ToCamera, f3Normal));
-  //  cColor.rgb += float3(1.0f, 1.0f, 1.0f) * pow(fRim, 1.0f);
+    float fRim = saturate(dot(f3ToCamera, f3Normal));
+    cColor.rgb += float3(1.0f, 1.0f, 1.0f) * pow(fRim, 10.0f);
 
     return (cColor);
 }

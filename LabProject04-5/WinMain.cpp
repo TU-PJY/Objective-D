@@ -16,6 +16,7 @@ int PREV_WIDTH, PREV_HEIGHT;
 
 DirectX_3D_Main D3D_Main;
 
+// 프레임워크, 카메라, 마우스유틸, 터레인 유틸은 전역 객체이다. 즉, 해당되는 헤더파일만 포함하면 어디서든지 사용 가능하다
 Framework framework;
 Camera camera;
 MouseUtil mouse;
@@ -118,12 +119,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	::ShowWindow(MainWnd, nCmdShow);
 	::UpdateWindow(MainWnd);
 
+	// Config.h에서 전체화면 모드를 활성화 했을 경우 바로 전체화면으로 전환된다
 	if (START_WITH_FULL_SCREEN)
 		D3D_Main.SwitchToFullscreenMode(MainWnd);
 
 	return(TRUE);
 }
 
+// F11키를 누를 시 창모드<->전체화면 모드 전환이 가능하다. 조작키는 비활성화 하거나 바꿀 수 있다.
+// ChangeSwapChainState()를 사용하지 않는 이유는 해당 함수 사용 시 뷰포트의 선명도가 떨어지는 문제가 있기 때문이다.
+// 창 크기를 늘려 제목표시줄을 없애는 방식으로 전체화면을 구현한다.
 void DisplayStateChanger(HWND hWnd, UINT nMessageID, WPARAM wParam) {
 	switch (nMessageID) {
 	case WM_KEYDOWN:
@@ -139,6 +144,7 @@ void DisplayStateChanger(HWND hWnd, UINT nMessageID, WPARAM wParam) {
 	}
 }
 
+// 이 함수의 내용들은 수정할 필요 없다.
 LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	int wmId, wmEvent;
 	PAINTSTRUCT PaintStruct;
@@ -147,6 +153,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	DisplayStateChanger(hWnd, nMessageID, wParam);
 
 	switch (nMessageID) {
+
+		// 윈도우 사이즈 변경이 감지되면 뷰포트의 투영 행렬을 새로 업데이트한다. 
 	case WM_SIZE:
 		SCREEN_WIDTH = LOWORD(lParam);
 		SCREEN_HEIGHT = HIWORD(lParam);
@@ -219,6 +227,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT nMessageID, WPARAM wParam, LPARAM lParam)
 	return((INT_PTR)FALSE);
 }
 
+// 뷰포트 배경색을 변경한다. flaot 값 또는 rgb값을 사용할 수 있다.
 void SetBackgroundColorRGB(int R, int G, int B) {
 	D3D_Main.BackgroundColor.x = 1.0 / 255.0 * float(R);
 	D3D_Main.BackgroundColor.y = 1.0 / 255.0 * float(G);

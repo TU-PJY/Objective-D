@@ -1,0 +1,38 @@
+////cpp
+
+#include "Mode1.h"
+#include "MouseUtil.h"
+
+const char* Mode_1::Mode1() {
+	SetController();
+	return __func__;
+}
+
+void Mode_1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+}
+
+void Mode_1::MouseMotionController(HWND hWnd) {
+}
+
+void Mode_1::MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	mouse.UpdateButtonState(nMessageID);
+}
+
+void Mode_1::SetController() {
+	framework.SetKeyController(KeyboardController);
+	framework.SetMouseController(MouseButtonController);
+	framework.SetMouseMotionController(MouseMotionController);
+}
+
+
+//// header
+#pragma once
+#include "FrameworkUtil.h"
+
+namespace Mode_1 {
+	const char* Mode1();
+	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void MouseMotionController(HWND hWnd);
+	void MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void SetController();
+}

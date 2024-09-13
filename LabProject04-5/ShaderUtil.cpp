@@ -1,5 +1,7 @@
 #include "ShaderUtil.h"
 
+// 쉐이더
+
 Shader::~Shader() {
 	if (PipelineState)
 		PipelineState->Release();
@@ -155,7 +157,7 @@ void Shader::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 ////////////////////////////////
-
+// 이 프로젝트에서 현재 사용하는 쉐이더, 추후 변경될 수 있음
 D3D12_INPUT_LAYOUT_DESC PseudoLightingShader::CreateInputLayout() {
 	UINT NumInputElementDescs = 3;
 	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];

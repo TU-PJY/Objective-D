@@ -27,15 +27,13 @@ void Framework::SwitchMode(const char* ModeFunction()) {
 	RunningMode = ModeFunction();
 }
 
-// 컨트롤러 설정 함수이다. 이 함수를 직접 쓸 일은 없다,
+// 컨트롤러 설정 함수이다. 이 함수를 직접 작성할 일은 없다,
 void Framework::SetKeyController(void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM)) {
 	KeyboardController = KeyboardControllerPtr;
 }
-
 void Framework::SetMouseController(void (*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM)) {
 	MouseController = MouseControllePtr;
 }
-
 void Framework::SetMouseMotionController(void (*MouseMotionControllerPtr)(HWND)) {
 	MouseMotionController = MouseMotionControllerPtr;
 }
@@ -86,25 +84,8 @@ void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 	}
 }
 
-// 삭제 마크가 표시된 객체들을 삭제한다.
-void Framework::UpdateContainer(int Index) {
-	std::erase_if(ObjectList, [](const std::pair<const char*, GameObject*>& Object) {
-		return Object.second->DeleteMark;
-		});
-
-	for (auto It = std::begin(Container[Index]); It != std::end(Container[Index]);) {
-		if ((*It)->DeleteMark) {
-			delete* It;
-			*It = nullptr;
-			It = Container[Index].erase(It);
-			continue;
-		}
-
-		++It;
-	}
-}
-
 // 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
+// 이 함수에서 입력한 태그는 Find()함수에서 사용된다.
 void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer Layer) {
 	int layer = static_cast<int>(Layer);
 
@@ -115,34 +96,17 @@ void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer Layer) {
 
 // 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
 // 이 코드가 실행되는 시점에 즉시 삭제되지 않음에 유의한다. 
-// 삭제 마크가 표시된 객체는 UpdateContainer()에서 실제로 삭제된다.
+// 삭제 마크가 표시된 객체는 UpdateContainer()에서 최종적으로 삭제된다.
+// 클래스 내부에서 this 포인터로도 자신을 삭제할 수 있다.
 void Framework::DeleteObject(GameObject* Object) {
 	Object->DeleteMark = true;
-}
-
-// 태그를 사용하여 객체를 삭제한다.
-void Framework::DeleteObject(const char* Tag) {
-	auto It = ObjectList.find(Tag);
-	if (It != std::end(ObjectList))
-		It->second->DeleteMark = true;
-}
-
-// 특정 레이어에서 특정 태그를 검색하여 해당되는 객체를 삭제한다.
-void Framework::DeleteObject(const char* Tag, Layer TargetLayer) {
-	int layer = static_cast<int>(TargetLayer);
-	size_t NumObject = Container[layer].size();
-
-	for (int i = 0; i < NumObject; ++i) {
-		if (Container[layer][i]->ObjectTag == Tag)
-			Container[layer][i]->DeleteMark = true;
-	}
 }
 
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
 // 이진 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Framework::Find(const char* Tag) {
 	auto It = ObjectList.find(Tag);
-	if (It != std::end(ObjectList))
+	if (It != std::end(ObjectList) && !It->second->DeleteMark)
 		return It->second;
 	else
 		return nullptr;
@@ -164,6 +128,32 @@ void Framework::ClearAll() {
 	for (const auto& O : ObjectList)
 		O.second->DeleteMark = true;
 }
+
+// 특정 레이어의 오브젝트 개수를 리턴한다. 
+// GameObject* Framework::Find(const char* Tag, Layer TargetLayer, int Index) 함수를 사용하기 위해서는 이 함수가 필요하다.
+size_t Framework::ObjectCount(Layer TargetLayer) {
+	return Container[(int)TargetLayer].size();
+}
+
+// 삭제 마크가 표시된 객체들을 삭제한다.
+void Framework::UpdateContainer(int Index) {
+	std::erase_if(ObjectList, [](const std::pair<const char*, GameObject*>& Object) {
+		return Object.second->DeleteMark;
+		});
+
+	for (auto It = std::begin(Container[Index]); It != std::end(Container[Index]);) {
+		if ((*It)->DeleteMark) {
+			delete* It;
+			*It = nullptr;
+			It = Container[Index].erase(It);
+			continue;
+		}
+
+		++It;
+	}
+}
+
+/////////////////////
 
 // 루트 시그니처를 생성한다
 ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device) {

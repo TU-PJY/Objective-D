@@ -24,8 +24,6 @@ protected:
 
 public:
 	const char* Mode();
-	POINT PrevCursorPos{};
-	bool LB_DownState{}, RB_DownState{};
 
 	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, const char* ModeFunction());
 
@@ -49,6 +47,7 @@ public:
 	GameObject* Find(const char* Tag);
 	GameObject* Find(const char* Tag, Layer TargetLayer, int Index);
 	void ClearAll();
+	size_t ObjectCount(Layer TargetLayer);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();
 	void ReleaseObjects();

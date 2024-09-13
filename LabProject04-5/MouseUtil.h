@@ -1,6 +1,8 @@
 #pragma once
 #include "DirectX_3D.h"
 
+// 마우스를 담당하는 유틸이다. 
+
 enum class Type
 {LEFT_BUTTON, RIGHT_BUTTON};
 

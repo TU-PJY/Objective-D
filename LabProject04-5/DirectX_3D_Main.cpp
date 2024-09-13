@@ -8,14 +8,16 @@
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
+	// 전역 매쉬를 이 함수애서 로드한다.
 	LoadMeshResource(Device, CmdList);
 
+	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
-	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
+	camera.SetOffset(XMFLOAT3(0.0f, 0.0f, 0.0f));
 	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	camera.SetViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f);
 	camera.SetScissorRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	camera.SetTimeLag(0.1f);
+	camera.SetTimeLag(0.0f);
 	camera.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();
@@ -24,12 +26,15 @@ void DirectX_3D_Main::Init() {
 
 	WaitForGpuComplete();
 
-	// ModeStart
+	// 프레임워크 초기화
+	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
+	// 맨 오른쪽 파라미터를 변경하면 다른 모드로 시작할 수 있다.
 	framework.Init(Device, CmdList, Mode_1::Mode1);
 
 	Timer.Reset();
 }
 
+// 이 함수 내용은 전혀 건드릴 필요 없다.
 LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_ACTIVATE:
@@ -82,15 +87,24 @@ void DirectX_3D_Main::Update() {
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
 
+	// 카메라 행렬을 초기화 한다
 	camera.RegenerateViewMatrix();
+
+	// 카메라를 업데이트한다. 
 	camera.Update(Timer.GetTimeElapsed());
 
+	// 프레임워크를 업데이트한다.
+	// 모든 객체의 업데이트는 이 함수를 통해 이루어진다.
 	framework.Update(Timer.GetTimeElapsed());
 
+	// 객체의 변환 정보를 쉐이더로 전달한다
 	framework.PrepareRender(CmdList);
 	camera.SetViewportsAndScissorRects(CmdList);
+
+	// 카메라의 변환 정보를 쉐이더로 전달한다
 	camera.UpdateShaderVariables(CmdList);
 
+	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다
 	framework.Render(CmdList);
 
 #ifdef _WITH_PLAYER_TOP

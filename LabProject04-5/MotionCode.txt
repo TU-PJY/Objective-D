@@ -1,0 +1,8 @@
+if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
+	mouse.HideCursor();
+	GetCapture();
+
+	float cxDelta = (float)(mouse.CurrentPosition().x - PrevCursorPos.x) / 5.0f;
+	float cyDelta = (float)(mouse.CurrentPosition().y - PrevCursorPos.y) / 5.0f;
+	mouse.SetPositionToPrev(PrevCursorPos);
+}
