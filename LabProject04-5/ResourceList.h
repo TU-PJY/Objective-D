@@ -1,5 +1,6 @@
 #pragma once
 #include "MeshUtil.h"
-#include "ShaderUtil.h"
 
-void LoadMesh();
+//extern Mesh* MeshPlayer;
+
+void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);

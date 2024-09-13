@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "ShaderUtil.h"
-#include "ResourceList.h"
 #include <deque>
 #include <ranges>
 #include <map>

@@ -1,5 +1,4 @@
 #include "PickingUtil.h"
-#include <iostream>
 
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
@@ -7,8 +6,6 @@ bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr)
 
 	float xclient = LOWORD(lparam);
 	float yclient = HIWORD(lparam);
-
-	std::cout << xclient << " " << yclient << std::endl;
 
 	XMFLOAT3 xmf3pickposition;
 	xmf3pickposition.x = (((2.0f * xclient) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;

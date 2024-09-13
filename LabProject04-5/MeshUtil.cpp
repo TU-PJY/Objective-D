@@ -5,9 +5,13 @@
 ////////////////////////////////////
 
 // ResourList에서 해당 함수를 사용하여 매쉬를 로드하도록 한다
-Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
-	if (Directory)
-		ImportMesh(Device, CmdList, Directory, TextMode);
+Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, MeshType Type) {
+	if (Directory) {
+		if(Type == MeshType::Text)
+			ImportMesh(Device, CmdList, Directory, true);
+		else if(Type == MeshType::Binary)
+			ImportMesh(Device, CmdList, Directory, false);
+	}
 }
 
 Mesh::~Mesh() {

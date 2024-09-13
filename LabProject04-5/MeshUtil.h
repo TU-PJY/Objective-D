@@ -4,6 +4,9 @@
 #include <fstream>
 #include <map>
 
+enum class MeshType
+{ Text, Binary };
+
 class CVertex {
 protected:
 	XMFLOAT3 Position{};
@@ -83,7 +86,7 @@ protected:
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
-	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode = true);
+	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, MeshType Type);
 	~Mesh();
 	void ReleaseUploadBuffers();
 	void Render(ID3D12GraphicsCommandList* CmdList);

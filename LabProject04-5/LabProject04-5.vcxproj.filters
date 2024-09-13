@@ -121,9 +121,6 @@
     <ClInclude Include="Mode1.h">
       <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceList.h">
-      <Filter>[7]____________[ Resource List ]</Filter>
-    </ClInclude>
     <ClInclude Include="PickingUtil.h">
       <Filter>[3]____________[ Util ]\[ Picking Util ]</Filter>
     </ClInclude>
@@ -145,6 +142,9 @@
     <ClInclude Include="MathUtil.h">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceList.h">
+      <Filter>[7]____________[ Resource List ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -157,9 +157,6 @@
       <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="ResourceList.cpp">
-      <Filter>[7]____________[ Resource List ]</Filter>
-    </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClCompile>
@@ -195,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="MathUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceList.cpp">
+      <Filter>[7]____________[ Resource List ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
