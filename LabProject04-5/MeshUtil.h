@@ -1,6 +1,5 @@
 #pragma once
 #include "DirectX_3D.h"
-#include "ResourceList.h"
 #include <fstream>
 #include <map>
 

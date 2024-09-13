@@ -20,7 +20,6 @@ PseudoLightingShader* pseudoShader;
 
 Framework framework;
 Camera camera;
-MeshUtil meshUtil;
 MouseUtil mouse;
 TerrainUtil terrainUtil;
 
