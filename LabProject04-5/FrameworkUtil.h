@@ -11,9 +11,9 @@ constexpr int NUM_LAYER = static_cast<int>(Layer::END);
 
 class Framework {
 private:
-	std::multimap<std::string, GameObject*> ObjectList;
+	std::multimap<const char*, GameObject*> ObjectList;
 
-	std::string RunningMode{};
+	const char* RunningMode{};
 	void (*MouseController)(HWND, UINT, WPARAM, LPARAM);
 	void (*MouseMotionController)(HWND);
 	void (*KeyboardController)(HWND, UINT, WPARAM, LPARAM);
@@ -23,13 +23,13 @@ protected:
 	std::array<std::deque<GameObject*>, NUM_LAYER> Container;
 
 public:
-	std::string Mode();
+	const char* Mode();
 	POINT PrevCursorPos{};
 	bool LB_DownState{}, RB_DownState{};
 
-	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::string ModeFunction());
+	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, const char* ModeFunction());
 
-	void SwitchMode(std::string ModeFunction());
+	void SwitchMode(const char* ModeFunction());
 
 	void SetKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
 	void SetMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
@@ -42,12 +42,12 @@ public:
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	void UpdateContainer(int Index);
-	void AddObject(GameObject*&& Object, std::string Tag, Layer Layer);
+	void AddObject(GameObject*&& Object, const char* Tag, Layer Layer);
 	void DeleteObject(GameObject* Object);
-	void DeleteObject(std::string Tag);
-	void DeleteObject(std::string Tag, Layer TargetLayer);
-	GameObject* Find(std::string Tag);
-	GameObject* Find(std::string Tag, Layer TargetLayer, int Index);
+	void DeleteObject(const char* Tag);
+	void DeleteObject(const char* Tag, Layer TargetLayer);
+	GameObject* Find(const char* Tag);
+	GameObject* Find(const char* Tag, Layer TargetLayer, int Index);
 	void ClearAll();
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

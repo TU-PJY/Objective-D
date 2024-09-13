@@ -40,6 +40,18 @@ void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 
 ////////////////////////////////
 
+// 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
+void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr) {
+	if (ShaderPtr)
+		ShaderPtr->Render(CmdList);
+
+	UpdateShaderVariables(CmdList);
+
+	if (MeshPtr)
+		MeshPtr->Render(CmdList);
+}
+
+
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
 void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
@@ -63,18 +75,7 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX&
 	return(nIntersected);
 }
 
-// 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr) {
-	if (ShaderPtr)
-		ShaderPtr->Render(CmdList);
-
-	UpdateShaderVariables(CmdList);
-
-	if (MeshPtr)
-		MeshPtr->Render(CmdList);
-}
-
-// 행렬과 쉐이더 및 색상 관련 값들을 쉐이더레 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
+// 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));

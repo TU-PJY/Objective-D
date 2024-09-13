@@ -1,6 +1,8 @@
 #include "Mode1.h"
 #include "MouseUtil.h"
 
+#include "Example.h"
+
 // 해당 cpp파일과 h파일은 특정한 모드를 실행하고, 해당 모드에 존재하는 객체들을 컨트롤하기 위한 파일이다. 
 // 반드시 cpp, h파일로 분리되어있어야 하며, 각 모드에 따라 네임스페이스로 구분되어야한다.
 // 게임_모드::게임모드() 식으로 모드 함수 네임스페이스와 모드 이름을 작성하는 것을 권장한다
@@ -8,7 +10,7 @@
 // 프로그램 시작 시 아래의 함수들은 [ DirectX 3D ] -> [ Main ] -> DirectX_3D_Main.cpp에 있는 Init() 함수에서 실행된다. 
 // 관련 내용은 DirectX_3D_Main.cpp에서 설명하도록 한다.
 
-std::string Mode_1::Mode1() {
+const char* Mode_1::Mode1() {
 
 	// 모드 시작 시 배경색 변경
 	SetBackgroundColorRGB(135, 206, 235);
@@ -16,6 +18,8 @@ std::string Mode_1::Mode1() {
 	// 각각의 모드는 각각의 컨트롤러를 가짐
 	// 해당 함수는 모드 시작 시 반드시 실행되어야 정확한 동작을 보장할 수 있음
 	SetController();
+
+	framework.AddObject(new Object, "object", Layer::L1);
 
 	// 실행 함수 이름이 곧 실행하는 모드의 이름이 된다. 따라서 모드 시작 함수의 이름은 신중하게 정해야 한다.
 	// 현재 함수를 실행할 경우 문자열 "Mode1"을 리턴하여 프레임워크에 전달한다

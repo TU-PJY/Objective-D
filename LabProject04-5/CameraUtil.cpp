@@ -6,7 +6,6 @@
 void Camera::Update(float FT) {
 	switch (Mode) {
 	case CamMode::MODE1:
-
 		break;
 	}
 }

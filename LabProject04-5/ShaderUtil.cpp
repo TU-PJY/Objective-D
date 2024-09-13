@@ -156,11 +156,6 @@ void Shader::Render(ID3D12GraphicsCommandList* CmdList) {
 
 ////////////////////////////////
 
-PseudoLightingShader::PseudoLightingShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	CreateShader(Device, RootSignature);
-	CreateShaderVariables(Device, CmdList);
-}
-
 D3D12_INPUT_LAYOUT_DESC PseudoLightingShader::CreateInputLayout() {
 	UINT NumInputElementDescs = 3;
 	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];

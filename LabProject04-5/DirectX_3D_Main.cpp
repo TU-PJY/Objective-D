@@ -8,6 +8,8 @@
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
+	LoadMeshResource(Device, CmdList);
+
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
 	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);

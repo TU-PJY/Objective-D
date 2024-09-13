@@ -19,7 +19,6 @@
 
 #include <fstream>
 #include <vector>
-#include <string>
 #include <cmath>
 
 #include <d3d12.h>

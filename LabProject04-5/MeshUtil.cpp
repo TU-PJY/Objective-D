@@ -10,8 +10,6 @@ Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Direc
 		else if(Type == MeshType::Binary)
 			ImportMesh(Device, CmdList, Directory, false);
 	}
-
-	ReleaseUploadBuffers();
 }
 
 Mesh::~Mesh() {

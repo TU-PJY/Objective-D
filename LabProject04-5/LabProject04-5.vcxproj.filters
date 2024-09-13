@@ -145,6 +145,9 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
+    <ClInclude Include="Example.h">
+      <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">

@@ -36,7 +36,7 @@ protected:
 
 class PseudoLightingShader : public Shader {
 public:
-	PseudoLightingShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
+	PseudoLightingShader() {}
 	virtual ~PseudoLightingShader() {}
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();

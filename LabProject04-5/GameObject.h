@@ -25,7 +25,7 @@ public:
 
 	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.
-	std::string ObjectTag{};
+	const char* ObjectTag{};
 	bool DeleteMark{};
 
 	void InitMatrix();
