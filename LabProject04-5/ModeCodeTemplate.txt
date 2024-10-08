@@ -3,9 +3,9 @@
 #include "MouseUtil.h"
 
 void Mode1::Start() {
-	framework.SetKeyController(KeyboardController);
-	framework.SetMouseController(MouseButtonController);
-	framework.SetMouseMotionController(MouseMotionController);
+	framework.RegisterKeyController(KeyboardController);
+	framework.RegisterMouseController(MouseButtonController);
+	framework.RegisterMouseMotionController(MouseMotionController);
 	framework.RegisterDestructor(Destructor);
 
 	framework.RegisterModeName("Mode1");

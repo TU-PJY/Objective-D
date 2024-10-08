@@ -37,13 +37,13 @@ void Framework::RegisterModeName(const char* ModeName) {
 }
 
 // 컨트롤러 설정 함수이다. 이 함수를 직접 작성할 일은 없다,
-void Framework::SetKeyController(void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM)) {
+void Framework::RegisterKeyController(void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM)) {
 	KeyboardController = KeyboardControllerPtr;
 }
-void Framework::SetMouseController(void (*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM)) {
+void Framework::RegisterMouseController(void (*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM)) {
 	MouseController = MouseControllePtr;
 }
-void Framework::SetMouseMotionController(void (*MouseMotionControllerPtr)(HWND)) {
+void Framework::RegisterMouseMotionController(void (*MouseMotionControllerPtr)(HWND)) {
 	MouseMotionController = MouseMotionControllerPtr;
 }
 

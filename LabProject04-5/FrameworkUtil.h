@@ -33,9 +33,9 @@ public:
 	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction);
 	void SwitchMode(Function ModeFunction);
 	void RegisterModeName(const char* ModeName);
-	void SetKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
-	void SetMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
-	void SetMouseMotionController(void(*MouseMotionControllerPtr)(HWND));
+	void RegisterKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
+	void RegisterMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
+	void RegisterMouseMotionController(void(*MouseMotionControllerPtr)(HWND));
 
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);

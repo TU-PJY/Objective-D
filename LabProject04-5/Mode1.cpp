@@ -20,11 +20,11 @@ void Mode1::Start() {
 	// 여기에 모드 시작 시 필요한 작업 추가 (객체 추가 등)
 	
 	// 키보드 컨트롤러 함수 포인터를 프레임워크에 전달한다
-	framework.SetKeyController(KeyboardController);
+	framework.RegisterKeyController(KeyboardController);
 	// 마우스 컨트롤러 함수 포인터를 프레임워크에 전달한다
-	framework.SetMouseController(MouseButtonController);
+	framework.RegisterMouseController(MouseButtonController);
 	// 마우스 모션 컨트롤러 포인터를 프레임워크에 전달한다
-	framework.SetMouseMotionController(MouseMotionController);
+	framework.RegisterMouseMotionController(MouseMotionController);
 	// 모드 소멸자를 프레임워크에 등록
 	framework.RegisterDestructor(Destructor);
 
