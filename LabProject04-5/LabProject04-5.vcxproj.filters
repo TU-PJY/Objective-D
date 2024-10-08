@@ -148,7 +148,7 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
-    <ClInclude Include="StartModeHeader.h">
+    <ClInclude Include="StartMode.h">
       <Filter>[0]____________[ Configuration ]\Header</Filter>
     </ClInclude>
   </ItemGroup>

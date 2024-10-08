@@ -2,7 +2,7 @@
 #include "DirectX_3D_Main.h"
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
-#include "StartModeHeader.h"
+#include "StartMode.h"
 
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
