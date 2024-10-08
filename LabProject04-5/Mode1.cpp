@@ -1,6 +1,8 @@
 #include "Mode1.h"
 #include "MouseUtil.h"
 
+#include "TestObject.h"
+
 // 해당 cpp파일과 h파일은 특정한 모드를 실행하고, 해당 모드에 존재하는 객체들을 컨트롤하기 위한 파일이다. 
 // 반드시 cpp, h파일로 분리되어있어야 하며, 각 모드에 따라 네임스페이스로 구분되어야한다.
 // 게임_모드::게임모드() 식으로 모드 함수 네임스페이스와 모드 이름을 작성하는 것을 권장한다
@@ -16,6 +18,7 @@ void Mode1::Start() {
 
 	// 각각의 모드는 각각의 컨트롤러를 가짐
 	// 해당 함수는 모드 시작 시 반드시 실행되어야 정확한 동작을 보장할 수 있음
+	framework.AddObject(new TestObject, "test_object");
 
 	// 여기에 모드 시작 시 필요한 작업 추가 (객체 추가 등)
 	
@@ -46,11 +49,15 @@ void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM
 
 //  마우스 모션을 지정된 객체 포인터로 전달한다
 void Mode1::MouseMotionController(HWND hWnd) {
-
+	if (auto object = framework.Find("test_object"); object)
+		object->InputMouseMotion(hWnd, mouse.PrevCursorPos);
 }
 
 // 마우스 버튼 클릭 이벤트를 지정된 객체 포인터로 전달한다
 void Mode1::MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	// 좌클릭, 우클릭 눌림 상태를 업데이트 한다
 	mouse.UpdateButtonState(nMessageID);
+
+	if (auto object = framework.Find("test_object"); object)
+		object->InputMouseButton(hWnd, nMessageID, wParam, lParam);
 }

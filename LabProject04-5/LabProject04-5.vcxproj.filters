@@ -86,6 +86,9 @@
     <Filter Include="[4]____________[ DirectX 3D ]\[ Framework ]">
       <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Texture Util ]">
+      <UniqueIdentifier>{513de38b-3361-4d1f-bd1f-31498074ad0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -151,6 +154,15 @@
     <ClInclude Include="StartMode.h">
       <Filter>[0]____________[ Configuration ]\Header</Filter>
     </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
+    </ClInclude>
+    <ClInclude Include="WICTextureLoader12.h">
+      <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>[4]____________[ DirectX 3D ]\[ Header ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -204,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="StartMode.cpp">
       <Filter>[0]____________[ Configuration ]</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader12.cpp">
+      <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

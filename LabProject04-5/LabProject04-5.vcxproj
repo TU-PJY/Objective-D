@@ -152,6 +152,7 @@
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DirectX_3D_Main.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MathUtil.h" />
@@ -168,8 +169,10 @@
     <ClInclude Include="StartMode.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainUtil.h" />
+    <ClInclude Include="TestObject.h" />
     <ClInclude Include="TimerUtil.h" />
     <ClInclude Include="TransformUtil.h" />
+    <ClInclude Include="WICTextureLoader12.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="TerrainUtil.cpp" />
     <ClCompile Include="TimerUtil.cpp" />
     <ClCompile Include="TransformUtil.cpp" />
+    <ClCompile Include="WICTextureLoader12.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="FrameworkUtil.cpp" />
     <ClCompile Include="DirectX_3D.cpp">

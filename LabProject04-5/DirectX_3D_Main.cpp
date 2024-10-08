@@ -13,7 +13,7 @@ void DirectX_3D_Main::Init() {
 	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	camera.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+	camera.GenerateProjectionMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
 	camera.SetViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f);
 	camera.SetScissorRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	camera.SetTimeLag(0.0f);
@@ -136,15 +136,12 @@ void DirectX_3D_Main::Update() {
 void DirectX_3D_Main::SwitchToWindowMode(HWND hwnd) {
 	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 	ShowWindow(hwnd, SW_NORMAL);
-	SetWindowPos(hwnd, NULL, 0, 0, PREV_WIDTH, PREV_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
+	SetWindowPos(hwnd, NULL, 0, 0, START_UP_WIDTH, START_UP_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
 
 	FullScreenState = false;
 }
 
 void DirectX_3D_Main::SwitchToFullscreenMode(HWND hwnd) {
-	PREV_WIDTH = SCREEN_WIDTH;
-	PREV_HEIGHT = SCREEN_HEIGHT;
-
 	SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
 	ShowWindow(hwnd, SW_MAXIMIZE);
 	SetWindowPos(hwnd, HWND_TOP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_FRAMECHANGED | SWP_NOZORDER);
