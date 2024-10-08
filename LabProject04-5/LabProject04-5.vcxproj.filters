@@ -225,7 +225,11 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ModeCodeTemplate.txt" />
-    <Text Include="MotionCode.txt" />
+    <Text Include="ModeCodeTemplate.txt">
+      <Filter>[8]____________[ Template ]</Filter>
+    </Text>
+    <Text Include="MotionCode.txt">
+      <Filter>[8]____________[ Template ]</Filter>
+    </Text>
   </ItemGroup>
 </Project>
