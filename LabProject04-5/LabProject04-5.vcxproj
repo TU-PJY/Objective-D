@@ -170,6 +170,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainUtil.h" />
     <ClInclude Include="TestObject.h" />
+    <ClInclude Include="TextureUtil.h" />
     <ClInclude Include="TimerUtil.h" />
     <ClInclude Include="TransformUtil.h" />
     <ClInclude Include="WICTextureLoader12.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="StartMode.cpp" />
     <ClCompile Include="TerrainUtil.cpp" />
+    <ClCompile Include="TextureUtil.cpp" />
     <ClCompile Include="TimerUtil.cpp" />
     <ClCompile Include="TransformUtil.cpp" />
     <ClCompile Include="WICTextureLoader12.cpp" />

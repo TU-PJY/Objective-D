@@ -163,6 +163,9 @@
     <ClInclude Include="d3dx12.h">
       <Filter>[4]____________[ DirectX 3D ]\[ Header ]</Filter>
     </ClInclude>
+    <ClInclude Include="TextureUtil.h">
+      <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -218,6 +221,9 @@
       <Filter>[0]____________[ Configuration ]</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader12.cpp">
+      <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
     </ClCompile>
   </ItemGroup>
