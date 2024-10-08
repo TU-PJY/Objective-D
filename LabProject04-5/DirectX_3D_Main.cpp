@@ -42,21 +42,6 @@ LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID,
 		else
 			Timer.Start();
 		break;
-
-	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
-	case WM_LBUTTONUP: case WM_RBUTTONUP:
-	case WM_MBUTTONDOWN: case WM_MBUTTONUP:
-	case WM_MOUSEWHEEL:
-		framework.InputMouseButton(hWnd, nMessageID, wParam, lParam);
-		break;
-
-	case WM_KEYDOWN: case WM_KEYUP:
-		framework.InputKey(hWnd, nMessageID, wParam, lParam);
-		break;
-
-	case WM_MOUSEMOVE:
-		framework.InputMouseMotion(hWnd);
-		break;
 	}
 
 	return 0;

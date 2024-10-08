@@ -169,9 +169,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 		framework.InputMouseButton(hWnd, nMessageID, wParam, lParam);
 		break;
 
-	case WM_KEYDOWN:
-	case WM_KEYUP:
+	case WM_KEYDOWN: case WM_KEYUP:
+		framework.InputKey(hWnd, nMessageID, wParam, lParam);
+		break;
+
 	case WM_MOUSEMOVE:
+		framework.InputMouseMotion(hWnd);
+		break;
+
+	case WM_ACTIVATE:
 		D3D_Main.WindowsMessageFunc(hWnd, nMessageID, wParam, lParam);
 		break;
 
