@@ -5,10 +5,10 @@
 
 // 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction) {
-	// 필요한 파일들을 모두 로드한다
+	// 쉐이더를 로드하고 시작 모드를 실행한다
 	RootSignature = CreateGraphicsRootSignature(Device);
 	LoadShaderResource(RootSignature, Device, CmdList);
-	SwitchMode(ModeFunction);
+	ModeFunction();
 }
 
 // 현재 실행 중인 모드 이름을 리턴한다

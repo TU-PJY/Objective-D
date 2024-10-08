@@ -57,9 +57,3 @@ public:
 	virtual XMFLOAT3 GetRight() { return {}; }
 	virtual XMFLOAT3 GetLook() { return {}; }
 };
-
-
-// 반복자가 end를 가리켜 반복자 무효화가 발생하는 경우를 방지하기 위한 더미 오브젝트이다. 
-// 프레임워크 오브젝트 리스트에서 검색되지 않으며, 어떠한 업데이트도, 렌더링도 되지 않는다. 
-// 프레임워크 초기화 시 각 레이어의 가장 앞부분에 추가된다.
-class DUMMY : public GameObject {};
