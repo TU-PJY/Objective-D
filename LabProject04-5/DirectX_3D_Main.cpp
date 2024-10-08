@@ -2,8 +2,7 @@
 #include "DirectX_3D_Main.h"
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
-
-#include "Mode1.h"
+#include "StartModeHeader.h"
 
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
@@ -29,7 +28,7 @@ void DirectX_3D_Main::Init() {
 	// 프레임워크 초기화
 	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
 	// 맨 오른쪽 파라미터를 변경하면 다른 모드로 시작할 수 있다.
-	framework.Init(Device, CmdList, Mode_1::Mode1);
+	framework.Init(Device, CmdList, StartMode);
 
 	Timer.Reset();
 }
@@ -46,6 +45,8 @@ LRESULT CALLBACK DirectX_3D_Main::WindowsMessageFunc(HWND hWnd, UINT nMessageID,
 
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN:
 	case WM_LBUTTONUP: case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN: case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
 		framework.InputMouseButton(hWnd, nMessageID, wParam, lParam);
 		break;
 
@@ -106,6 +107,9 @@ void DirectX_3D_Main::Update() {
 
 	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다
 	framework.Render(CmdList);
+
+	// 삭제 마크가 표시된 객체를 최종삭제한다.
+	framework.UpdateContainer();
 
 #ifdef _WITH_PLAYER_TOP
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
@@ -476,45 +480,27 @@ void DirectX_3D_Main::ChangeSwapChainState() {
 
 void DirectX_3D_Main::Destroy() {
 	ReleaseObjects();
-
 	::CloseHandle(FenceEvent);
 
-	if (DepthStencilBuffer)
-		DepthStencilBuffer->Release();
-
-	if (DsvDescriptorHeap)
-		DsvDescriptorHeap->Release();
+	if (DepthStencilBuffer) DepthStencilBuffer->Release();
+	if (DsvDescriptorHeap) DsvDescriptorHeap->Release();
 
 	for (int i = 0; i < SwapChainBuffers; i++) {
-		if (SwapChainBackBuffers[i])
+		if (SwapChainBackBuffers[i]) 
 			SwapChainBackBuffers[i]->Release();
 	}
 
-	if (RtvDescriptorHeap)
-		RtvDescriptorHeap->Release();
-
-	if (CmdAllocator)
-		CmdAllocator->Release();
-
-	if (CmdQueue)
-		CmdQueue->Release();
-
-	if (CmdList)
-		CmdList->Release();
-
-	if (m_pd3dFence)
-		m_pd3dFence->Release();
+	if (RtvDescriptorHeap) RtvDescriptorHeap->Release();
+	if (CmdAllocator) CmdAllocator->Release();
+	if (CmdQueue) CmdQueue->Release();
+	if (CmdList) CmdList->Release();
+	if (m_pd3dFence) m_pd3dFence->Release();
 
 	DxgiSwapChain->SetFullscreenState(FALSE, NULL);
 
-	if (DxgiSwapChain)
-		DxgiSwapChain->Release();
-
-	if (Device)
-		Device->Release();
-
-	if (DxgiFactory)
-		DxgiFactory->Release();
+	if (DxgiSwapChain) DxgiSwapChain->Release();
+	if (Device) Device->Release();
+	if (DxgiFactory) DxgiFactory->Release();
 
 #if defined(_DEBUG)
 	if (DebugController) DebugController->Release();

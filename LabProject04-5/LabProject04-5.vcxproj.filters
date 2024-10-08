@@ -25,9 +25,6 @@
     <Filter Include="[3]____________[ Util ]\[ Shader Util ]">
       <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]____________[ Util ]\[ Framework Util ]">
-      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[3]____________[ Util ]\[ Picking Util ]">
       <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
     </Filter>
@@ -83,10 +80,16 @@
     <Filter Include="[7]____________[ Resource ]">
       <UniqueIdentifier>{517a4e13-9e31-4063-a3c0-0decb62883fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[0]____________[ Configuration ]\Header">
+      <UniqueIdentifier>{133f430c-e0e1-4661-ba68-048388321eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ DirectX 3D ]\[ Framework ]">
+      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
-      <Filter>[3]____________[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Framework ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
       <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
@@ -145,13 +148,13 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
-    <ClInclude Include="Example.h">
-      <Filter>[2]____________[ Object ]\[2] [ CustomObject ]</Filter>
+    <ClInclude Include="StartModeHeader.h">
+      <Filter>[0]____________[ Configuration ]\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
-      <Filter>[3]____________[ Util ]\[ Framework Util ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Framework ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
       <Filter>[4]____________[ DirectX 3D ]\[ Header ]</Filter>
@@ -199,6 +202,9 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>[7]____________[ Resource ]</Filter>
     </ClCompile>
+    <ClCompile Include="StartMode.cpp">
+      <Filter>[0]____________[ Configuration ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
@@ -217,5 +223,9 @@
     <FxCompile Include="Shaders.hlsl">
       <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ModeCodeTemplate.txt" />
+    <Text Include="MotionCode.txt" />
   </ItemGroup>
 </Project>

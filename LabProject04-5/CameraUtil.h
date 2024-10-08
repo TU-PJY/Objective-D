@@ -53,7 +53,7 @@ public:
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);
-	void SetCameraMode(CamMode Mode);
+	void SetCameraMode(CamMode GetMode);
 
 	void SetPosition(XMFLOAT3 PositionValue);
 	XMFLOAT3& GetPosition();

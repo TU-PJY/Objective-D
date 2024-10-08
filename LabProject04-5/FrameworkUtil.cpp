@@ -4,27 +4,36 @@
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
 
 // 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
-void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, const char* ModeFunction()) {
+void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction) {
 	// 필요한 파일들을 모두 로드한다
 	RootSignature = CreateGraphicsRootSignature(Device);
 	LoadShaderResource(RootSignature, Device, CmdList);
-
-	// 업데이트를 담당하는 컨테이너에는 추가되나, 객체 삭제, 객체 검색등을 담당하는 멀티맵에는 추가되지 않는다.
-	for (int i = 0; i < NUM_LAYER; ++i)
-		Container[i].push_back(new DUMMY);
-
 	SwitchMode(ModeFunction);
 }
 
 // 현재 실행 중인 모드 이름을 리턴한다
-const char* Framework::Mode() {
+const char* Framework::GetMode() {
 	return RunningMode;
 }
 
+void Framework::RegisterDestructor(Function Destructor) {
+	DestructorBuffer = Destructor;
+}
+
+void Framework::ReleaseDestructor() {
+	DestructorBuffer = nullptr;
+}
+
 // 모드를 변경한다. 모드 변경 시 기존 모드에 있던 객체들은 모두 삭제된다.
-void Framework::SwitchMode(const char* ModeFunction()) {
+void Framework::SwitchMode(Function ModeFunction) {
 	ClearAll();
-	RunningMode = ModeFunction();
+	if (DestructorBuffer)
+		DestructorBuffer();
+	ModeFunction();
+}
+
+void Framework::RegisterModeName(const char* ModeName) {
+	RunningMode = ModeName;
 }
 
 // 컨트롤러 설정 함수이다. 이 함수를 직접 작성할 일은 없다,
@@ -62,36 +71,38 @@ void Framework::Exit() {
 // 현재 존재하는 모든 객체들을 업데이트한다
 // 삭제 마크가 표시된 객체를 업데이트되지 않는다
 void Framework::Update(float FT) {
-	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto const& O : Container[i]) {
-			if (!O->DeleteMark)
-				O->Update(FT);
-		}
-
-		// 업데이트를 모두 마친 후 업데이트 중이었던 레이어에서 삭제 마크가 표시된 객체를 찾아 삭제한다.
-		UpdateContainer(i);
+	for (auto const& O : ObjectList) {
+		if (!O.second->DeleteMark)
+			O.second->Update(FT);
 	}
 }
 
 // 현재 존재하는 모든 객체들을 렌더링한다
 // 삭제 마크가 표시된 객체들은 렌더링되지 않는다.
 void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
-	for (int i = 0; i < NUM_LAYER; ++i) {
-		for (auto const& O : Container[i]) {
-			if (!O->DeleteMark)
-				O->Render(CmdList);
+	for (auto const& O : ObjectList) {
+		if (!O.second->DeleteMark)
+			O.second->Render(CmdList);
+	}
+}
+
+// 삭제 마크가 표시된 객체들을 삭제한다.
+void Framework::UpdateContainer() {
+	for (auto It = begin(ObjectList); It != end(ObjectList);) {
+		if (It->second->DeleteMark) {
+			delete It->second;
+			It->second = nullptr;
+			It = ObjectList.erase(It);
+			continue;
 		}
+		++It;
 	}
 }
 
 // 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
 // 이 함수에서 입력한 태그는 Find()함수에서 사용된다.
-void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer Layer) {
-	int layer = static_cast<int>(Layer);
-
-	Container[layer].push_back(Object);
-	Container[layer].back()->ObjectTag = Tag;
-	ObjectList.insert(std::pair(Tag, Container[layer].back()));
+void Framework::AddObject(GameObject*&& Object, const char* Tag) {
+	ObjectList.insert(std::pair(Tag, Object));
 }
 
 // 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
@@ -103,7 +114,7 @@ void Framework::DeleteObject(GameObject* Object) {
 }
 
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
-// 이진 탐색을 사용하여 검색하므로 매우 빠르다.
+// 해쉬 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Framework::Find(const char* Tag) {
 	auto It = ObjectList.find(Tag);
 	if (It != std::end(ObjectList) && !It->second->DeleteMark)
@@ -112,45 +123,22 @@ GameObject* Framework::Find(const char* Tag) {
 		return nullptr;
 }
 
-// 특정 레이어에 존재하는 다수의 객체들의 포인터를 얻어 접근하는데에 사용한다.
-// for문과 함께 사용하야 한다.
-GameObject* Framework::Find(const char* Tag, Layer TargetLayer, int Index) {
-	int layer = static_cast<int>(TargetLayer);
+// 특정 태그를 가진 오브젝트들의 포인터 범위를 리턴한다.
+// 해당 함수로 equal range를 얻어 for문으로 접근하면 된다.
+ObjectRange Framework::EqualRange(const char* Tag) {
+	ObjectRange Range{};
 
-	if (Container[layer][Index]->ObjectTag == Tag)
-		return Container[layer][Index];
-	else
-		return nullptr;
+	auto It = ObjectList.equal_range(Tag);
+	Range.First = It.first;
+	Range.End = It.second;
+
+	return Range;
 }
 
-// 현재 존재하는 모든 객체들을 삭제한다. 더미 객체는 ObjectList에 있지 않으므로 삭제 마크가 표시되지 않늗다.
+// 현재 존재하는 모든 객체들을 삭제한다.
 void Framework::ClearAll() {
 	for (const auto& O : ObjectList)
 		O.second->DeleteMark = true;
-}
-
-// 특정 레이어의 오브젝트 개수를 리턴한다. 
-// GameObject* Framework::Find(const char* Tag, Layer TargetLayer, int Index) 함수를 사용하기 위해서는 이 함수가 필요하다.
-size_t Framework::ObjectCount(Layer TargetLayer) {
-	return Container[(int)TargetLayer].size();
-}
-
-// 삭제 마크가 표시된 객체들을 삭제한다.
-void Framework::UpdateContainer(int Index) {
-	std::erase_if(ObjectList, [](const std::pair<const char*, GameObject*>& Object) {
-		return Object.second->DeleteMark;
-		});
-
-	for (auto It = std::begin(Container[Index]); It != std::end(Container[Index]);) {
-		if ((*It)->DeleteMark) {
-			delete* It;
-			*It = nullptr;
-			It = Container[Index].erase(It);
-			continue;
-		}
-
-		++It;
-	}
 }
 
 /////////////////////

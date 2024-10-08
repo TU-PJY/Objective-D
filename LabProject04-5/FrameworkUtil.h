@@ -4,31 +4,35 @@
 #include "ShaderUtil.h"
 #include <deque>
 #include <ranges>
-#include <map>
+#include <unordered_map>
 
-// global scope shader
-constexpr int NUM_LAYER = static_cast<int>(Layer::END);
+typedef void(*Function)(void);
+using LayerIter = std::unordered_multimap<const char*, GameObject*>::iterator;
+
+typedef struct {
+	LayerIter First, End;
+}ObjectRange;
 
 class Framework {
 private:
-	std::multimap<const char*, GameObject*> ObjectList;
+	std::unordered_multimap<const char*, GameObject*> ObjectList;
 
 	const char* RunningMode{};
 	void (*MouseController)(HWND, UINT, WPARAM, LPARAM);
 	void (*MouseMotionController)(HWND);
 	void (*KeyboardController)(HWND, UINT, WPARAM, LPARAM);
+	Function DestructorBuffer{};
 
 protected:
 	ID3D12RootSignature* RootSignature{};
-	std::array<std::deque<GameObject*>, NUM_LAYER> Container;
 
 public:
-	const char* Mode();
-
-	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, const char* ModeFunction());
-
-	void SwitchMode(const char* ModeFunction());
-
+	const char* GetMode();
+	void RegisterDestructor(Function Destructor);
+	void ReleaseDestructor();
+	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction);
+	void SwitchMode(Function ModeFunction);
+	void RegisterModeName(const char* ModeName);
 	void SetKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
 	void SetMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
 	void SetMouseMotionController(void(*MouseMotionControllerPtr)(HWND));
@@ -39,15 +43,12 @@ public:
 	void Exit();
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);
-	void UpdateContainer(int Index);
-	void AddObject(GameObject*&& Object, const char* Tag, Layer Layer);
+	void UpdateContainer();
+	void AddObject(GameObject*&& Object, const char* Tag);
 	void DeleteObject(GameObject* Object);
-	void DeleteObject(const char* Tag);
-	void DeleteObject(const char* Tag, Layer TargetLayer);
 	GameObject* Find(const char* Tag);
-	GameObject* Find(const char* Tag, Layer TargetLayer, int Index);
+	ObjectRange EqualRange(const char* Tag);
 	void ClearAll();
-	size_t ObjectCount(Layer TargetLayer);
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();
 	void ReleaseObjects();
