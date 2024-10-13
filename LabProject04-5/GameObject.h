@@ -40,8 +40,10 @@ public:
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr, bool FlipH, bool FlipV);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, float AlphaValue = 1.0f);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
+
+	void SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);

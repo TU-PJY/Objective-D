@@ -7,6 +7,7 @@ public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
 	bool FlipX{}, FlipY{};
+	float AlphaValue = 1.0;
 
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
 		if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
@@ -33,6 +34,16 @@ public:
 			case 'V':
 				if (!FlipY)  FlipY = true;
 				else  FlipY = false;  
+				break;
+
+			case VK_DOWN:
+				if(AlphaValue > 0.0)
+					AlphaValue -= 0.1;
+				break;
+
+			case VK_UP:
+				if(AlphaValue < 1.0)
+					AlphaValue += 0.1;
 				break;
 			}
 			break;
@@ -62,7 +73,8 @@ public:
 		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
 		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
 		BindTexture(CmdList, Tex, FlipX, FlipY);
+
 		UseShader(CmdList, BasicShader);
-		RenderMesh(CmdList, GunMesh);
+		RenderMesh(CmdList, GunMesh, AlphaValue);
 	}
 };

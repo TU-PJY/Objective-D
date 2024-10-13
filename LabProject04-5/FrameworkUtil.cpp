@@ -1,5 +1,6 @@
 #include "FrameworkUtil.h"
 #include "ResourceManager.h"
+#include <array>
 
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
 
@@ -155,7 +156,12 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	ID3D12RootSignature* GraphicsRootSignature = NULL;
 
 	// 32비트 상수들을 정의
-	D3D12_ROOT_PARAMETER RootParameters[6];
+	std::array<D3D12_ROOT_PARAMETER, 7> RootParameters;
+	int RootParameterNum = RootParameters.size();
+
+	// srv, sampler 인덱스는 항상 맨 끝에 위치하도록 한다
+	SRV_INDEX_NUMBER = RootParameterNum - 2;
+	SAMPLER_INDEX_NUMBER = RootParameterNum - 1;
 
 	// b0
 	RootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
@@ -191,6 +197,19 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	RootParameters[3].DescriptorTable.pDescriptorRanges = &cbvRange;
 	RootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
+	// b4
+	D3D12_DESCRIPTOR_RANGE cbvRange2;
+	cbvRange2.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	cbvRange2.NumDescriptors = 1;
+	cbvRange2.BaseShaderRegister = 4;
+	cbvRange2.RegisterSpace = 0;
+	cbvRange2.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[4].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[4].DescriptorTable.pDescriptorRanges = &cbvRange2;
+	RootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
 	// t0
 	D3D12_DESCRIPTOR_RANGE srvRange;
 	srvRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
@@ -199,10 +218,10 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	srvRange.RegisterSpace = 0;
 	srvRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	RootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[4].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[4].DescriptorTable.pDescriptorRanges = &srvRange;
-	RootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	RootParameters[SRV_INDEX_NUMBER].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[SRV_INDEX_NUMBER].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[SRV_INDEX_NUMBER].DescriptorTable.pDescriptorRanges = &srvRange;
+	RootParameters[SRV_INDEX_NUMBER].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
 	// s0
 	D3D12_DESCRIPTOR_RANGE samplerRange;
@@ -212,15 +231,15 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	samplerRange.RegisterSpace = 0;
 	samplerRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	RootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[5].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[5].DescriptorTable.pDescriptorRanges = &samplerRange;
-	RootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	RootParameters[SAMPLER_INDEX_NUMBER].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[SAMPLER_INDEX_NUMBER].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[SAMPLER_INDEX_NUMBER].DescriptorTable.pDescriptorRanges = &samplerRange;
+	RootParameters[SAMPLER_INDEX_NUMBER].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
 	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;
-	RootSignatureDesc.NumParameters = _countof(RootParameters);
-	RootSignatureDesc.pParameters = RootParameters;
+	RootSignatureDesc.NumParameters = RootParameters.size(); //_countof(RootParameters);
+	RootSignatureDesc.pParameters = RootParameters.data();
 	RootSignatureDesc.NumStaticSamplers = 0;
 	RootSignatureDesc.pStaticSamplers = NULL;
 	RootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;

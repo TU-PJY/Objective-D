@@ -67,7 +67,7 @@ float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET {
     texColor.rgb *= brightness; // RGB 값에 밝기 곱하기
     
     // 투명도 적용 (알파 값 설정)
-    texColor.a = 0.5;
+    texColor.a = AlphaValue;
     
     return texColor; // 텍스처 색상을 반환
 }

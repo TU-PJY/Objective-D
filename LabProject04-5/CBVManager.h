@@ -10,4 +10,7 @@ typedef struct {
 // flip CBV
 extern HeapAndBuffer FlipHB;
 
+// ahpha CBV
+extern HeapAndBuffer AlphaHB;
+
 void CreateCBVResource(ID3D12Device* Device);

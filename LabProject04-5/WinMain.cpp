@@ -22,7 +22,12 @@ Camera camera;
 MouseUtil mouse;
 TerrainUtil terrainUtil;
 
+// 이미지 출력을 위한 패널 매쉬
 Mesh* ImagePannel;
+
+// srv, sampler 루트 파라미터 인덱스 번호
+int SRV_INDEX_NUMBER;
+int SAMPLER_INDEX_NUMBER;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];

@@ -83,8 +83,7 @@ ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommand
 
 // 쉐이더에 사용되는 루트 상수를 생성한다
 void CBVUtil::CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct) {
-	// 데이터 크기를 올바르게 받아오기 위해 dataSize를 명시적으로 추가
-	UINT64 cbSize = (DataSize + 255) & ~255;  // 256바이트 단위로 정렬
+	UINT64 cbSize = (DataSize + 255) & ~255;
 
 	D3D12_HEAP_PROPERTIES heapProps = {};
 	heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;

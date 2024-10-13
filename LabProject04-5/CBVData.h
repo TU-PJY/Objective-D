@@ -6,3 +6,7 @@ struct FlipInfo {
 	int X_Flip;
 	int Y_Flip;
 };
+
+struct AlphaInfo {
+	float AlphaValue;
+};

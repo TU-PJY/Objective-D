@@ -54,6 +54,8 @@ namespace CBVUtil {
 	void UpdateCBV(void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
 }
 
+extern int SRV_INDEX_NUMBER;
+extern int SAMPLER_INDEX_NUMBER;
 
 void SetBackgroundColorRGB(int R, int G, int B);
 void SetBackgroundColor(float R, float G, float B);

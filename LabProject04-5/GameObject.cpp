@@ -69,7 +69,9 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 }
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
+void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, float AlphaValue) {
+	SetAlpha(CmdList, AlphaValue);
+
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
 		MeshPtr->Render(CmdList);
@@ -82,6 +84,15 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bo
 	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap };
 	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
 	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap->GetGPUDescriptorHandleForHeapStart());
+}
+
+void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
+	AlphaInfo Alphainfo{ AlphaValue };
+	CBVUtil::UpdateCBV(&Alphainfo, sizeof(Alphainfo), AlphaHB);
+
+	ID3D12DescriptorHeap* heaps[] = { AlphaHB.Heap };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(4, AlphaHB.Heap->GetGPUDescriptorHandleForHeapStart());
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
