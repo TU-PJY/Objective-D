@@ -90,8 +90,8 @@ int Mesh::CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayD
 	return(nIntersections);
 }
 
+// 이미지 출력을 위한 두께가 없는 정사각형 매쉬를 생성한다. 프로그램 실행 시 최초 1회 실행되고 그 이후에는 굳이 실행할 필요 없다.
 void Mesh::CreateImagePanelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	// ImagePannel 데이터를 이용하여 매쉬를 생성
 	float ImagePannel[][8] = {
 		// x, y, z, nx, ny, nz, u, v
 		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },

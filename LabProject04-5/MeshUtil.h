@@ -99,5 +99,5 @@ public:
 	float ComputeHeightOnTriangle(XMFLOAT3 pt, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
 };
 
-// 이미지 출력용 판떼기
+// 이미지 출력용 매쉬
 extern Mesh* ImagePannel;
