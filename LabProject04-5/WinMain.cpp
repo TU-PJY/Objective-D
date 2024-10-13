@@ -120,8 +120,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	::UpdateWindow(MainWnd);
 
 	// Config.h에서 전체화면 모드를 활성화 했을 경우 바로 전체화면으로 전환된다
-	if (START_WITH_FULL_SCREEN)
-		D3D_Main.SwitchToFullscreenMode(MainWnd);
+	if (!START_WITH_FULL_SCREEN)
+		D3D_Main.SwitchToWindowMode(MainWnd);
 
 	return(TRUE);
 }
