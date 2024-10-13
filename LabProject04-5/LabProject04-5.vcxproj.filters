@@ -53,9 +53,6 @@
     <Filter Include="[6]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[8]____________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[2]____________[ Object ]\[2] [ CustomObject ]">
       <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
@@ -92,11 +89,11 @@
     <Filter Include="[4]____________[ DirectX 3D ]\[ WICTextureLoader12 ]">
       <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]____________[ Resource ]\[ CBV ]">
-      <UniqueIdentifier>{2a77790b-e9bb-4570-95ef-ea265671f4c5}</UniqueIdentifier>
+    <Filter Include="[8]____________[ CBV ]">
+      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]____________[ Resource ]\[ Resource ]">
-      <UniqueIdentifier>{6fe906de-b8cb-4dc5-a19a-6f5fe6da1c33}</UniqueIdentifier>
+    <Filter Include="[9]____________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,14 +169,14 @@
     <ClInclude Include="TextureUtil.h">
       <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="CBVData.h">
+      <Filter>[8]____________[ CBV ]</Filter>
+    </ClInclude>
     <ClInclude Include="CBVManager.h">
-      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
+      <Filter>[8]____________[ CBV ]</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>[7]____________[ Resource ]\[ Resource ]</Filter>
-    </ClInclude>
-    <ClInclude Include="CBVData.h">
-      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
+      <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -238,11 +235,11 @@
     <ClCompile Include="TextureUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>[7]____________[ Resource ]\[ Resource ]</Filter>
-    </ClCompile>
     <ClCompile Include="CBVManager.cpp">
-      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
+      <Filter>[8]____________[ CBV ]</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>[7]____________[ Resource ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,10 +262,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
-      <Filter>[8]____________[ Template ]</Filter>
+      <Filter>[9]____________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
-      <Filter>[8]____________[ Template ]</Filter>
+      <Filter>[9]____________[ Template ]</Filter>
     </Text>
   </ItemGroup>
 </Project>
