@@ -7,8 +7,10 @@
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
 
-	// 전역 매쉬를 이 함수애서 로드한다.
-	LoadMeshResource(Device, CmdList);
+	// 프레임워크 초기화
+	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
+	// 맨 오른쪽 파라미터를 변경하면 다른 모드로 시작할 수 있다.
+	framework.Init(Device, CmdList, StartMode);
 
 	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
@@ -24,11 +26,6 @@ void DirectX_3D_Main::Init() {
 	CmdQueue->ExecuteCommandLists(1, CmdLists);
 
 	WaitForGpuComplete();
-
-	// 프레임워크 초기화
-	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
-	// 맨 오른쪽 파라미터를 변경하면 다른 모드로 시작할 수 있다.
-	framework.Init(Device, CmdList, StartMode);
 
 	Timer.Reset();
 }

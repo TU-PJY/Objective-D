@@ -1,13 +1,17 @@
 #include "MeshUtil.h"
+#include <vector>
+#include <string>
+#include <sstream>
+#include <iostream>
 
 // 매쉬를 담당하는 유틸이다.
 
 // ResourList에서 해당 함수를 사용하여 매쉬를 로드하도록 한다
 Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, MeshType Type) {
 	if (Directory) {
-		if(Type == MeshType::Text)
+		if (Type == MeshType::Text)
 			ImportMesh(Device, CmdList, Directory, true);
-		else if(Type == MeshType::Binary)
+		else if (Type == MeshType::Binary)
 			ImportMesh(Device, CmdList, Directory, false);
 	}
 }

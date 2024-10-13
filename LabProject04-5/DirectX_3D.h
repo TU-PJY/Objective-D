@@ -21,6 +21,9 @@
 #include <vector>
 #include <cmath>
 
+#include "d3dx12.h"
+#include "WICTextureLoader12.h"
+
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
@@ -30,14 +33,14 @@
 #include <DirectXCollision.h>
 #include <D3d12SDKLayers.h>
 
-#include "d3dx12.h"
-#include "WICTextureLoader12.h"
 
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;
 extern int PREV_WIDTH, PREV_HEIGHT;
 
 // screen size
 #define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
+
+using Texture = ID3D12Resource*;
 
 enum class RenderType
 { Pers, Ortho };
@@ -49,7 +52,7 @@ using Microsoft::WRL::ComPtr;
 
 extern UINT	CbvSrvDescriptorIncrementSize;
 extern ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
-extern ID3D12Resource* CreateTextureResourceFromWICFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, ID3D12Resource** ppd3dUploadBuffer, D3D12_RESOURCE_STATES d3dResourceStates = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
 void SetBackgroundColorRGB(int R, int G, int B);
 void SetBackgroundColor(float R, float G, float B);
 

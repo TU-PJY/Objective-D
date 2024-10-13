@@ -6,6 +6,8 @@
 
 Mesh* GunMesh;
 PseudoLightingShader* LightingShader;
+ID3D12DescriptorHeap* srvHeap, *sampleHeap;
+Texture Tex;
 
 void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	LightingShader = new PseudoLightingShader();
@@ -14,5 +16,5 @@ void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device
 }
 
 void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	GunMesh = new Mesh(Device, CmdList, "Models//revolver.bin", MeshType::Binary);
+	GunMesh = new Mesh(Device, CmdList, "Models//model.bin", MeshType::Binary);
 }

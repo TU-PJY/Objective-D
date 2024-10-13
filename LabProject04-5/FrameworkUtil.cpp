@@ -8,6 +8,12 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, F
 	// 쉐이더를 로드하고 시작 모드를 실행한다
 	RootSignature = CreateGraphicsRootSignature(Device);
 	LoadShaderResource(RootSignature, Device, CmdList);
+
+	// 전역 매쉬를 이 함수애서 로드한다.
+	LoadMeshResource(Device, CmdList);
+
+	CreateTextureAndSRV(Device, CmdList, L"Image//Gun.jpg", &Tex, &srvHeap, &sampleHeap);
+
 	ModeFunction();
 }
 
@@ -147,42 +153,71 @@ void Framework::ClearAll() {
 ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device) {
 	ID3D12RootSignature* GraphicsRootSignature = NULL;
 
-	D3D12_ROOT_PARAMETER RootParameters[3];
+	// 32비트 상수들을 정의
+	D3D12_ROOT_PARAMETER RootParameters[5];
+
+	// 기존 상수들 (시간, 커서 위치, 월드 및 카메라 매트릭스)
 	RootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[0].Constants.Num32BitValues = 4; //Time, ElapsedTime, xCursor, yCursor
-	RootParameters[0].Constants.ShaderRegister = 0; //Time
+	RootParameters[0].Constants.Num32BitValues = 4;
+	RootParameters[0].Constants.ShaderRegister = 0;
 	RootParameters[0].Constants.RegisterSpace = 0;
 	RootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	RootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[1].Constants.Num32BitValues = 19; //16 + 3
-	RootParameters[1].Constants.ShaderRegister = 1; //World
+	RootParameters[1].Constants.Num32BitValues = 19;
+	RootParameters[1].Constants.ShaderRegister = 1;
 	RootParameters[1].Constants.RegisterSpace = 0;
 	RootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	RootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[2].Constants.Num32BitValues = 35; //16 + 16 + 3
-	RootParameters[2].Constants.ShaderRegister = 2; //Camera
+	RootParameters[2].Constants.Num32BitValues = 35;
+	RootParameters[2].Constants.ShaderRegister = 2;
 	RootParameters[2].Constants.RegisterSpace = 0;
 	RootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
-	D3D12_ROOT_SIGNATURE_FLAGS RootSignatureFlags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	// RootParameter 3: Texture2D myTexture (디스크립터 테이블, t0)
+	D3D12_DESCRIPTOR_RANGE srvRange;
+	srvRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	srvRange.NumDescriptors = 1;
+	srvRange.BaseShaderRegister = 0; // t0
+	srvRange.RegisterSpace = 0;
+	srvRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[3].DescriptorTable.pDescriptorRanges = &srvRange;
+	RootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+	// RootParameter 4: SamplerState mySampler (디스크립터 테이블, s0)
+	D3D12_DESCRIPTOR_RANGE samplerRange;
+	samplerRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
+	samplerRange.NumDescriptors = 1;
+	samplerRange.BaseShaderRegister = 0; // s0
+	samplerRange.RegisterSpace = 0;
+	samplerRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[4].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[4].DescriptorTable.pDescriptorRanges = &samplerRange;
+	RootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;
-	::ZeroMemory(&RootSignatureDesc, sizeof(D3D12_ROOT_SIGNATURE_DESC));
 	RootSignatureDesc.NumParameters = _countof(RootParameters);
 	RootSignatureDesc.pParameters = RootParameters;
 	RootSignatureDesc.NumStaticSamplers = 0;
 	RootSignatureDesc.pStaticSamplers = NULL;
-	RootSignatureDesc.Flags = RootSignatureFlags;
+	RootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 	ID3DBlob* SignatureBlob = NULL;
 	ID3DBlob* ErrorBlob = NULL;
 	D3D12SerializeRootSignature(&RootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &SignatureBlob, &ErrorBlob);
 	Device->CreateRootSignature(0, SignatureBlob->GetBufferPointer(), SignatureBlob->GetBufferSize(), __uuidof(ID3D12RootSignature), (void**)&GraphicsRootSignature);
+
 	if (SignatureBlob) SignatureBlob->Release();
 	if (ErrorBlob) ErrorBlob->Release();
 
-	return(GraphicsRootSignature);
+	return GraphicsRootSignature;
 }
 
 // 루트 시그니처를 리턴한다

@@ -83,4 +83,14 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 	CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
 	CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
+
+	// 디스크립터 힙을 설정합니다.
+	ID3D12DescriptorHeap* descriptorHeaps[] = { srvHeap, sampleHeap };
+	CmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	// SRV를 루트 파라미터 3에 바인딩
+	CmdList->SetGraphicsRootDescriptorTable(3, srvHeap->GetGPUDescriptorHandleForHeapStart());
+
+	// 샘플러를 루트 파라미터 4에 바인딩
+	CmdList->SetGraphicsRootDescriptorTable(4, sampleHeap->GetGPUDescriptorHandleForHeapStart());
 }

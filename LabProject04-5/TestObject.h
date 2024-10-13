@@ -8,7 +8,7 @@ public:
 	XMFLOAT3 Rotation{};
 
 	TestObject() {
-		SetColor(0.2, 0.2, 0.2);
+		SetColor(0.5, 0.5, 0.5);
 	}
 
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
@@ -39,6 +39,7 @@ public:
 
 	void Render(CommandList CmdList) {
 		InitMatrix();
+		Transform::Scale(ScaleMatrix, 0.2, 0.2, 0.2);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 2.0);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, Rotation.z);
 		RenderMesh(CmdList, LightingShader, GunMesh);

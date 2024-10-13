@@ -1,10 +1,10 @@
 #pragma once
 #include "DirectX_3D.h"
 #include <fstream>
-#include <map>
 
 enum class MeshType
 { Text, Binary };
+
 
 class CVertex {
 protected:
