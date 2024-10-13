@@ -61,7 +61,7 @@ public:
 
 		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
 		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
-		BindTexture(CmdList, Tex, false, true);
+		BindTexture(CmdList, Tex, FlipX, FlipY);
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
 	}

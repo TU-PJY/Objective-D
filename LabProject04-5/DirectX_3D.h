@@ -23,6 +23,7 @@
 
 #include "d3dx12.h"
 #include "WICTextureLoader12.h"
+#include "CBVManager.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -32,6 +33,7 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 #include <D3d12SDKLayers.h>
+
 
 
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;
@@ -45,7 +47,13 @@ using namespace DirectX::PackedVector;
 using Microsoft::WRL::ComPtr;
 
 extern UINT	CbvSrvDescriptorIncrementSize;
-extern ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
+ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
+
+namespace CBVUtil {
+	void CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
+	void UpdateCBV(void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
+}
+
 
 void SetBackgroundColorRGB(int R, int G, int B);
 void SetBackgroundColor(float R, float G, float B);

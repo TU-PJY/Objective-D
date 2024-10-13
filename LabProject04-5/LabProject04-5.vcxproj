@@ -150,6 +150,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraUtil.h" />
+    <ClInclude Include="CBVData.h" />
+    <ClInclude Include="CBVManager.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="d3dx12.h" />
@@ -177,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraUtil.cpp" />
+    <ClCompile Include="CBVManager.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DirectX_3D_Main.cpp" />
     <ClCompile Include="GameObject.cpp" />

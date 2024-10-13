@@ -92,6 +92,12 @@
     <Filter Include="[4]____________[ DirectX 3D ]\[ WICTextureLoader12 ]">
       <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[7]____________[ Resource ]\[ CBV ]">
+      <UniqueIdentifier>{2a77790b-e9bb-4570-95ef-ea265671f4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[7]____________[ Resource ]\[ Resource ]">
+      <UniqueIdentifier>{6fe906de-b8cb-4dc5-a19a-6f5fe6da1c33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -151,9 +157,6 @@
     <ClInclude Include="MathUtil.h">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>[7]____________[ Resource ]</Filter>
-    </ClInclude>
     <ClInclude Include="StartMode.h">
       <Filter>[0]____________[ Configuration ]\Header</Filter>
     </ClInclude>
@@ -168,6 +171,15 @@
     </ClInclude>
     <ClInclude Include="TextureUtil.h">
       <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CBVManager.h">
+      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>[7]____________[ Resource ]\[ Resource ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CBVData.h">
+      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -217,9 +229,6 @@
     <ClCompile Include="MathUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Math Util ]</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>[7]____________[ Resource ]</Filter>
-    </ClCompile>
     <ClCompile Include="StartMode.cpp">
       <Filter>[0]____________[ Configuration ]</Filter>
     </ClCompile>
@@ -228,6 +237,12 @@
     </ClCompile>
     <ClCompile Include="TextureUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Texture Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>[7]____________[ Resource ]\[ Resource ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CBVManager.cpp">
+      <Filter>[7]____________[ Resource ]\[ CBV ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

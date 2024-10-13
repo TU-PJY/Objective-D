@@ -179,10 +179,16 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	RootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	// b3
-	RootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[3].Constants.Num32BitValues = 2;
-	RootParameters[3].Constants.ShaderRegister = 3;
-	RootParameters[3].Constants.RegisterSpace = 0;
+	D3D12_DESCRIPTOR_RANGE cbvRange;
+	cbvRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	cbvRange.NumDescriptors = 1;
+	cbvRange.BaseShaderRegister = 3;
+	cbvRange.RegisterSpace = 0;
+	cbvRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
+	RootParameters[3].DescriptorTable.pDescriptorRanges = &cbvRange;
 	RootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	// t0

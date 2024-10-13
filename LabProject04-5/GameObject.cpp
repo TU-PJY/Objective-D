@@ -76,8 +76,12 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 }
 
 void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
-	int Value[2] = { (int)H_Flip, (int)V_Flip };
-	CmdList->SetGraphicsRoot32BitConstants(3, 4, Value, 0);
+	FlipInfo Flip{(int)H_Flip, (int)V_Flip};
+	CBVUtil::UpdateCBV(&Flip, sizeof(Flip), FlipHB);
+
+	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap->GetGPUDescriptorHandleForHeapStart());
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

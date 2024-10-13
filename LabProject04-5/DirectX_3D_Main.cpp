@@ -3,6 +3,7 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 #include "StartMode.h"
+#include "CBVManager.h"
 
 void DirectX_3D_Main::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
@@ -15,6 +16,9 @@ void DirectX_3D_Main::Init() {
 	// 이미지 출력용 패널 생성
 	ImagePannel = new Mesh;
 	ImagePannel->CreateImagePanelMesh(Device, CmdList);
+
+	// 루트상수 버퍼 및 힙을 생성한다.
+	CreateCBVResource(Device);
 
 	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
