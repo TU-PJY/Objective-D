@@ -59,12 +59,9 @@ public:
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 10.0);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
 
-		// 텍스처를 필요에 따라 반전시킨다.
-		// 이미지 출력 시 true, true로 설정 후 렌더링
-		FlipTexture(CmdList, FlipX, FlipY);
-
 		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
-		BindTexture(CmdList, Tex);
+		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
+		BindTexture(CmdList, Tex, false, true);
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
 	}

@@ -53,7 +53,10 @@ void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 ////////////////////////////////
 
 // 텍스처를 바인딩한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 매핑할 텍스처를 파라미터로 전달하면 된다.
-void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr) {
+// 좌우 또는 상하 또는 좌우상하 반전이 가능하다.
+void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr, bool FlipH, bool FlipV) {
+	FlipTexture(CmdList, FlipH, FlipV);
+
 	if (TexturePtr)
 		TexturePtr->Render(CmdList);
 }
