@@ -180,7 +180,7 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 
 	// b3
 	RootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[3].Constants.Num32BitValues = 4;
+	RootParameters[3].Constants.Num32BitValues = 2;
 	RootParameters[3].Constants.ShaderRegister = 3;
 	RootParameters[3].Constants.RegisterSpace = 0;
 	RootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
