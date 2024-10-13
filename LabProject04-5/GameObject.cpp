@@ -79,20 +79,12 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, f
 
 void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
 	FlipInfo Flip{(int)H_Flip, (int)V_Flip};
-	CBVUtil::UpdateCBV(&Flip, sizeof(Flip), FlipHB);
-
-	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), FlipHB, 3);
 }
 
 void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CBVUtil::UpdateCBV(&Alphainfo, sizeof(Alphainfo), AlphaHB);
-
-	ID3D12DescriptorHeap* heaps[] = { AlphaHB.Heap };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(4, AlphaHB.Heap->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), AlphaHB, 4);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

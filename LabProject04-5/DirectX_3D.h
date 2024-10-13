@@ -51,7 +51,7 @@ ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommand
 
 namespace CBVUtil {
 	void CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
-	void UpdateCBV(void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
+	void UpdateCBV(ID3D12GraphicsCommandList* CmdList, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct, int SignatureIndex);
 }
 
 extern int SRV_INDEX_NUMBER;

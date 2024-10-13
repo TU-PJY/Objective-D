@@ -142,7 +142,7 @@ void CBVUtil::CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapA
 }
 
 // 루트 상수를 업데이트 한다
-void CBVUtil::UpdateCBV(void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct) {
+void CBVUtil::UpdateCBV(ID3D12GraphicsCommandList* CmdList, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct, int SignatureIndex) {
 	// 상수 버퍼를 다시 매핑하여 값을 업데이트
 	void* pCbData = nullptr;  // 매핑을 위한 void* 타입
 	D3D12_RANGE readRange = { 0, 0 };  // 읽기 범위가 없으므로 0으로 설정
@@ -153,4 +153,9 @@ void CBVUtil::UpdateCBV(void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct) 
 
 	// 매핑 해제
 	HAB_Struct.Buffer->Unmap(0, nullptr);
+
+	// 디스크립터 테이블 재설정
+	ID3D12DescriptorHeap* heaps[] = { HAB_Struct.Heap };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(SignatureIndex, HAB_Struct.Heap->GetGPUDescriptorHandleForHeapStart());
 }
