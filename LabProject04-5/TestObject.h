@@ -8,8 +8,6 @@ public:
 	XMFLOAT3 Rotation{};
 	bool FlipX{}, FlipY{};
 
-	int FlipValue[2]{};
-
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
 		if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
 			mouse.HideCursor();
@@ -28,25 +26,13 @@ public:
 		case WM_KEYDOWN:
 			switch (wParam) {
 			case 'H':
-				if (!FlipX) {
-					FlipValue[0] = 1;
-					FlipX = true;
-				}
-				else {
-					FlipValue[0] = 0;
-					FlipX = false;
-				}
+				if (!FlipX)  FlipX = true;
+				else  FlipX = false; 
 				break;
 
 			case 'V':
-				if (!FlipY) {
-					FlipValue[1] = 1;
-					FlipY = true;
-				}
-				else {
-					FlipValue[1] = 0;
-					FlipY = false;
-				}
+				if (!FlipY)  FlipY = true;
+				else  FlipY = false;  
 				break;
 			}
 			break;
@@ -73,6 +59,8 @@ public:
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 10.0);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
 
+		// 텍스처를 필요에 따라 반전시킨다.
+		// 이미지 출력 시 true, true로 설정 후 렌더링
 		FlipTexture(CmdList, FlipX, FlipY);
 
 		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
