@@ -18,13 +18,19 @@ cbuffer cbCameraInfo : register(b2)
     float3 gf3CameraPosition : packoffset(c8);
 };
 
-cbuffer cdFlipInfo : register(b3)
+cbuffer cdTexInfo : register(b3)
 {
     // 텍스처 좌우반전 여부
     int X_Flip;
     
     // 텍스처 상하반전 여부
     int Y_Flip;
+}
+
+// 텍스처 투명도
+cbuffer cdAlphaInfo : register(b4)
+{
+    float AlphaValue;
 }
 
 Texture2D gTexture : register(t0); // 텍스처 샘플링을 위한 텍스처 리소스
@@ -70,6 +76,9 @@ float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET
     float4 texColor = gTexture.Sample(gSampler, input.uv);
     float brightness = 3.0f; // 밝기 값을 1.5로 설정 (더 높게 설정 가능)
     texColor.rgb *= brightness; // RGB 값에 밝기 곱하기
+    
+    // 투명도 적용 (알파 값 설정)
+    texColor.a = 0.5;
     
     return texColor; // 텍스처 색상을 반환
 }
