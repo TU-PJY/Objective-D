@@ -40,17 +40,31 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->SetGraphicsRoot32BitConstants(2, 3, &Position, 32);
 }
 
+void Camera::Init(float screenWidth, float screenHeight) {
+	// 카메라의 위치와 방향 설정
+	XMFLOAT3 cameraPosition = XMFLOAT3(0.0f, 0.0f, -10.0f);
+	XMFLOAT3 targetPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	XMFLOAT3 upDirection = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	GenerateViewMatrix(cameraPosition, targetPosition, upDirection);
+
+	camera.GeneratePerspectiveMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
+	// 직각 투영 행렬 생성
+	//GenerateOrthoMatrix(screenWidth, screenHeight, ASPECT_RATIO, 1.0f, 1000.0f);
+}
+
 // 아래 두 함수들은 굳이 쓸 일이 없다. 
 void Camera::GenerateViewMatrix() {
 	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
 }
 
 void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, XMFLOAT3 UpVector) {
-	Position = PositionValue;
+	/*Position = PositionValue;
 	LookAt = LookAtVector;
 	Up = UpVector;
 
-	GenerateViewMatrix();
+	GenerateViewMatrix();*/
+	XMMATRIX viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&PositionValue), XMLoadFloat3(&LookAtVector), XMLoadFloat3(&UpVector));
+	XMStoreFloat4x4(&ViewMatrix, viewMatrix);
 }
 
 // 카메라 행렬을 초기화 한다. DirectX_3D_Main이 이 함수를 실행하고 있으므로 직접 사용할 일은 없다.
@@ -76,9 +90,21 @@ void Camera::RegenerateViewMatrix() {
 }
 
 // 원근 투영 행렬을 초기화한다. 윈도우 사이즈 변경 시 이 함수가 실행된다.
-void Camera::GenerateProjectionMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
+void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
 	//	Cam4x4Projection = Mat4::PerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
+	ProjectionMatrix = Mat4::Identity();
 	XMMATRIX Projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
+	XMStoreFloat4x4(&ProjectionMatrix, Projection);
+
+#ifdef _WITH_DIERECTX_MATH_FRUSTUM
+	BoundingFrustum::CreateFromMatrix(FrustumView, Projection);
+#endif
+}
+
+// 직각 투영 행렬을 초기화 한다
+void Camera::GenerateOrthoMatrix(int Width, int Height, float AspRatio, float Near, float Far) {
+	ProjectionMatrix = Mat4::Identity();
+	XMMATRIX Projection = XMMatrixOrthographicLH((float)Width * AspRatio, (float)Height, Near, Far);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);
 
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
@@ -96,7 +122,7 @@ void Camera::SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, fl
 	Viewport.MaxDepth = zMax;
 }
 
-// 시저 렉트를 설정한다. 한 번 설정한 이우헤는 건들 필요 없다.
+// 시저 렉트를 설정한다. 한 번 설정한 이후에는 건들 필요 없다.
 void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 	ScissorRect.left = xLeft;
 	ScissorRect.top = yTop;

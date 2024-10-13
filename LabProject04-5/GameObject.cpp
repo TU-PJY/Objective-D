@@ -1,14 +1,26 @@
 #include "GameObject.h"
+#include "CameraUtil.h"
 
 // GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다. 
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
 // 일부 함수들은 별도의 파일로 분리 예정이니 코드에 변동이 있을 수 있다.
 
 // 객체의 행렬을 초기화 한다. 모든 객체는 변환 작업 전 반드시 이 함수를 첫 번째로 실행해야 한다.
-void GameObject::InitMatrix() {
+void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type) {
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
+
+	// 카메라 행렬을 초기화 한다
+	camera.RegenerateViewMatrix();
+
+	if(Type == RenderType::Pers)
+		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+
+	else if(Type == RenderType::Ortho)
+		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.01f, 5.0f);
+
+	camera.SetViewportsAndScissorRects(CmdList);
 }
 
 // 객체 메쉬의 색상을 설정한다. 
@@ -60,6 +72,10 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 		MeshPtr->Render(CmdList);
 }
 
+void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
+	int Value[2] = { (int)H_Flip, (int)V_Flip };
+	CmdList->SetGraphicsRoot32BitConstants(3, 4, Value, 0);
+}
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
 void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {

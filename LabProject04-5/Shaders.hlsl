@@ -18,6 +18,15 @@ cbuffer cbCameraInfo : register(b2)
     float3 gf3CameraPosition : packoffset(c8);
 };
 
+cbuffer cdFlipInfo : register(b3)
+{
+    // 텍스처 좌우반전 여부
+    int X_Flip;
+    
+    // 텍스처 상하반전 여부
+    int Y_Flip;
+}
+
 Texture2D gTexture : register(t0); // 텍스처 샘플링을 위한 텍스처 리소스
 SamplerState gSampler : register(s0); // 텍스처 샘플러 상태
 
@@ -46,7 +55,12 @@ VS_OUTPUT VSPseudoLighting(VS_INPUT input)
     output.normalW = mul(float4(input.normal, 0.0f), gmtxWorld).xyz;
     output.normal = input.normal;
     output.uv = input.uv;
-    output.uv = float2(input.uv.x, 1.0f - input.uv.y);
+    
+    if(X_Flip == 1)
+        output.uv.x = 1.0f - output.uv.x;
+    
+    if(Y_Flip == 1)
+        output.uv.y = 1.0f - output.uv.y;
 
     return (output);
 }

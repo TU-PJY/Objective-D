@@ -22,6 +22,8 @@ Camera camera;
 MouseUtil mouse;
 TerrainUtil terrainUtil;
 
+Mesh* ImagePannel;
+
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];
@@ -158,8 +160,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lPara
 	case WM_SIZE:
 		SCREEN_WIDTH = LOWORD(lParam);
 		SCREEN_HEIGHT = HIWORD(lParam);
-
-		camera.GenerateProjectionMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
 		break;
 
 	case WM_LBUTTONDOWN:

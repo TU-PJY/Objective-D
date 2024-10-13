@@ -46,10 +46,13 @@ public:
 	virtual void ReleaseShaderVariables() {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
+	void Init(float screenWidth, float screenHeight);
+
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
 	void RegenerateViewMatrix();
-	void GenerateProjectionMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
+	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
+	void GenerateOrthoMatrix(int Width, int Height, float AspRatio, float Near, float Far);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);

@@ -16,6 +16,8 @@ Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Direc
 	}
 }
 
+Mesh::Mesh(){}
+
 Mesh::~Mesh() {
 	if (Position) delete[] Position;
 	if (Normal) delete[] Normal;
@@ -86,6 +88,71 @@ int Mesh::CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayD
 	}
 
 	return(nIntersections);
+}
+
+void Mesh::CreateImagePanelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	// ImagePannel 데이터를 이용하여 매쉬를 생성
+	float ImagePannel[][8] = {
+		// x, y, z, nx, ny, nz, u, v
+		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+{  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f },
+{  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
+{ -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f }
+	};
+
+	// 인덱스 배열
+	UINT indices[] = { 0, 1, 2, 0, 2, 3 };
+
+	// 정점 개수와 인덱스 개수
+	Vertices = 4;
+	Indices = 6;
+
+	// 정점 및 관련 데이터 할당
+	Position = new XMFLOAT3[Vertices];
+	Normal = new XMFLOAT3[Vertices];
+	TextureCoords = new XMFLOAT2[Vertices];
+	PnIndices = new UINT[Indices];
+
+	// ImagePannel 데이터를 이용하여 각 정점의 포지션, 노말, 텍스처 좌표를 설정
+	for (UINT i = 0; i < Vertices; i++) {
+		Position[i] = XMFLOAT3(ImagePannel[i][0], ImagePannel[i][1], ImagePannel[i][2]);
+		Normal[i] = XMFLOAT3(ImagePannel[i][3], ImagePannel[i][4], ImagePannel[i][5]);
+		TextureCoords[i] = XMFLOAT2(ImagePannel[i][6], ImagePannel[i][7]);
+	}
+
+	// 인덱스 데이터 복사
+	for (UINT i = 0; i < Indices; i++) {
+		PnIndices[i] = indices[i];
+	}
+
+	// DirectX 버퍼 생성 (위 코드의 ImportMesh 함수와 유사)
+	PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
+	NormalBuffer = ::CreateBufferResource(Device, CmdList, Normal, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &NormalUploadBuffer);
+	TextureCoordBuffer = ::CreateBufferResource(Device, CmdList, TextureCoords, sizeof(XMFLOAT2) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &TextureCoordUploadBuffer);
+
+	// 버퍼 뷰 설정
+	NumVertexBufferViews = 3;
+	VertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[NumVertexBufferViews];
+
+	VertexBufferViews[0].BufferLocation = PositionBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[1].BufferLocation = NormalBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[2].BufferLocation = TextureCoordBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
+	VertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * Vertices;
+
+	// 인덱스 버퍼 생성
+	IndexBuffer = ::CreateBufferResource(Device, CmdList, PnIndices, sizeof(UINT) * Indices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &IndexUploadBuffer);
+
+	// 인덱스 버퍼 뷰 설정
+	IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
+	IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
+	IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
 }
 
 void Mesh::ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {

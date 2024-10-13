@@ -7,6 +7,9 @@
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 
+enum class RenderType
+{ Pers, Ortho };
+
 // 각 객체에 선언 가능한 벡터 삼형제 구조체
 typedef struct Vector {
 	XMFLOAT3 Up;
@@ -28,7 +31,7 @@ public:
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitMatrix();
+	void InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type);
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
@@ -37,6 +40,7 @@ public:
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
+	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);

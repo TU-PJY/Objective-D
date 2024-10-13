@@ -8,8 +8,8 @@ Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar
 void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
 	ID3D12DescriptorHeap* DescriptorHeap[] = { SRV, Sampler };
 	CmdList->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
-	CmdList->SetGraphicsRootDescriptorTable(3, SRV->GetGPUDescriptorHandleForHeapStart());
-	CmdList->SetGraphicsRootDescriptorTable(4, Sampler->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootDescriptorTable(4, SRV->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootDescriptorTable(5, Sampler->GetGPUDescriptorHandleForHeapStart());
 }
 
 void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap) {

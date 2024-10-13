@@ -40,10 +40,6 @@ extern int PREV_WIDTH, PREV_HEIGHT;
 // screen size
 #define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
 
-enum class RenderType
-{ Pers, Ortho };
-
-
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 using Microsoft::WRL::ComPtr;

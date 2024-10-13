@@ -45,6 +45,8 @@ void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM
 		// 프로그램을 종료하는 프레임워크 멤버 함수
 		framework.Exit();
 
+	if (auto object = framework.Find("test_object"); object)
+		object->InputKey(hWnd, nMessageID, wParam, lParam);
 }
 
 //  마우스 모션을 지정된 객체 포인터로 전달한다
