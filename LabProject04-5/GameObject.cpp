@@ -40,11 +40,21 @@ void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 
 ////////////////////////////////
 
-// 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr) {
+// 텍스처를 바인딩한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 매핑할 텍스처를 파라미터로 전달하면 된다.
+void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr) {
+	if (TexturePtr)
+		TexturePtr->Render(CmdList);
+}
+
+// 쉐이더를 적용한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 적용할 쉐이더를 파라미터로 전달하면 된다.
+// 필요에 따라 여러 종류의 쉐이더에 대해 여러번 사용할 수 있다.
+void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr) {
 	if (ShaderPtr)
 		ShaderPtr->Render(CmdList);
+}
 
+// 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
+void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	UpdateShaderVariables(CmdList);
 
 	if (MeshPtr)
@@ -83,14 +93,4 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 	CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
 	CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
-
-	// 디스크립터 힙을 설정합니다.
-	ID3D12DescriptorHeap* descriptorHeaps[] = { srvHeap, sampleHeap };
-	CmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
-	// SRV를 루트 파라미터 3에 바인딩
-	CmdList->SetGraphicsRootDescriptorTable(3, srvHeap->GetGPUDescriptorHandleForHeapStart());
-
-	// 샘플러를 루트 파라미터 4에 바인딩
-	CmdList->SetGraphicsRootDescriptorTable(4, sampleHeap->GetGPUDescriptorHandleForHeapStart());
 }

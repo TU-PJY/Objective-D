@@ -7,10 +7,6 @@ public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
 
-	TestObject() {
-		SetColor(0.5, 0.5, 0.5);
-	}
-
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
 		if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
 			mouse.HideCursor();
@@ -42,6 +38,10 @@ public:
 		Transform::Scale(ScaleMatrix, 0.2, 0.2, 0.2);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 2.0);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, Rotation.z);
-		RenderMesh(CmdList, LightingShader, GunMesh);
+
+		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
+		BindTexture(CmdList, Tex);
+		UseShader(CmdList, BasicShader);
+		RenderMesh(CmdList, GunMesh);
 	}
 };

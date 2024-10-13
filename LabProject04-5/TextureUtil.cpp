@@ -1,7 +1,18 @@
 #include "TextureUtil.h"
 #include <iostream>
 
-void CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap) {
+Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar_t* FileName) {
+	CreateTextureAndSRV(Device, CmdList, FileName, &Tex, &SRV, &Sampler);
+}
+
+void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* DescriptorHeap[] = { SRV, Sampler };
+	CmdList->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
+	CmdList->SetGraphicsRootDescriptorTable(3, SRV->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootDescriptorTable(4, Sampler->GetGPUDescriptorHandleForHeapStart());
+}
+
+void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap) {
 	ID3D12Resource* pd3dUploadBuffer = nullptr;
 
 	// 텍스처 로드
@@ -40,7 +51,7 @@ void CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd
 	pd3dDevice->CreateSampler(&samplerDesc, (*ppd3dSamplerDescriptorHeap)->GetCPUDescriptorHandleForHeapStart());
 }
 
-ID3D12Resource* CreateTextureResourceFromWICFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, ID3D12Resource** ppd3dUploadBuffer, D3D12_RESOURCE_STATES d3dResourceStates) {
+ID3D12Resource* Texture::CreateTextureResourceFromWICFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszFileName, ID3D12Resource** ppd3dUploadBuffer, D3D12_RESOURCE_STATES d3dResourceStates) {
 	ID3D12Resource* pd3dTexture = NULL;
 	std::unique_ptr<uint8_t[]> decodedData;
 	D3D12_SUBRESOURCE_DATA d3dSubresource;

@@ -34,10 +34,10 @@ protected:
 	ID3D12PipelineState* PipelineState = NULL;
 };
 
-class PseudoLightingShader : public Shader {
+class BasicObjectShader : public Shader {
 public:
-	PseudoLightingShader() {}
-	virtual ~PseudoLightingShader() {}
+	BasicObjectShader() {}
+	virtual ~BasicObjectShader() {}
 
 	virtual D3D12_INPUT_LAYOUT_DESC CreateInputLayout();
 	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob** ShaderBlob);

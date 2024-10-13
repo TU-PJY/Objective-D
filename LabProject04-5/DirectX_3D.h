@@ -40,8 +40,6 @@ extern int PREV_WIDTH, PREV_HEIGHT;
 // screen size
 #define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
 
-using Texture = ID3D12Resource*;
-
 enum class RenderType
 { Pers, Ortho };
 

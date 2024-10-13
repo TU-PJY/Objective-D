@@ -12,7 +12,8 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, F
 	// 전역 매쉬를 이 함수애서 로드한다.
 	LoadMeshResource(Device, CmdList);
 
-	CreateTextureAndSRV(Device, CmdList, L"Image//Gun.jpg", &Tex, &srvHeap, &sampleHeap);
+	// 전역 텍스처를 이 함수에서 로드한다.
+	LoadTextureResource(Device, CmdList);
 
 	ModeFunction();
 }

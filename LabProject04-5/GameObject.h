@@ -34,7 +34,9 @@ public:
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
 	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, Mesh* MeshPtr);
+	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
+	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);

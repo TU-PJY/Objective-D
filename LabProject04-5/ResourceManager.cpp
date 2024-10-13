@@ -2,19 +2,22 @@
 
 // 이 파일은 리소스를 관리한다.
 // 기본적으로 전역 리소스이며, ResourceManager.h에 먼저 extern 선언한 뒤, 이 파일에 아래와 같이 정의하면 된다.
-// DirectX_3D_Main::Init()에서 실행된다.
+// Framework::Init()에서 실행된다.
 
+BasicObjectShader* BasicShader;
 Mesh* GunMesh;
-PseudoLightingShader* LightingShader;
-ID3D12DescriptorHeap* srvHeap, *sampleHeap;
-Texture Tex;
+Texture* Tex;
 
 void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	LightingShader = new PseudoLightingShader();
-	LightingShader->CreateShader(Device, RootSignature);
-	LightingShader->CreateShaderVariables(Device, CmdList);
+	BasicShader = new BasicObjectShader();
+	BasicShader->CreateShader(Device, RootSignature);
+	BasicShader->CreateShaderVariables(Device, CmdList);
 }
 
 void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	GunMesh = new Mesh(Device, CmdList, "Models//model.bin", MeshType::Binary);
+}
+
+void LoadTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	Tex = new Texture(Device, CmdList, L"Image//Gun.jpg");
 }

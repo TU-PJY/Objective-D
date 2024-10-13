@@ -3,10 +3,10 @@
 #include "ShaderUtil.h"
 #include "TextureUtil.h"
 
-extern PseudoLightingShader* LightingShader;
+extern BasicObjectShader* BasicShader;
 extern Mesh* GunMesh;
-extern Texture Tex;
-extern ID3D12DescriptorHeap* srvHeap, *sampleHeap;
+extern Texture* Tex;
 
 void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
+void LoadTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
