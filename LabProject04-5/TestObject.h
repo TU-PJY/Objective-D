@@ -6,7 +6,6 @@ class TestObject : public GameObject {
 public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
-	bool FlipX{}, FlipY{};
 	float AlphaValue = 1.0;
 
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
@@ -26,16 +25,6 @@ public:
 		switch (nMessageID) {
 		case WM_KEYDOWN:
 			switch (wParam) {
-			case 'H':
-				if (!FlipX)  FlipX = true;
-				else  FlipX = false; 
-				break;
-
-			case 'V':
-				if (!FlipY)  FlipY = true;
-				else  FlipY = false;  
-				break;
-
 			case VK_DOWN:
 				if(AlphaValue > 0.0)
 					AlphaValue -= 0.1;
