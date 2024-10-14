@@ -183,9 +183,9 @@ D3D12_INPUT_LAYOUT_DESC BasicObjectShader::CreateInputLayout() {
 }
 
 D3D12_SHADER_BYTECODE BasicObjectShader::CreateVertexShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "VSPseudoLighting", "vs_5_1", ShaderBlob));
+	return(Shader::CompileShaderFromFile(L"Resources//Shader//Shaders.hlsl", "VSPseudoLighting", "vs_5_1", ShaderBlob));
 }
 
 D3D12_SHADER_BYTECODE BasicObjectShader::CreatePixelShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Shaders.hlsl", "PSPseudoLighting", "ps_5_1", ShaderBlob));
+	return(Shader::CompileShaderFromFile(L"Resources//Shader//Shaders.hlsl", "PSPseudoLighting", "ps_5_1", ShaderBlob));
 }
