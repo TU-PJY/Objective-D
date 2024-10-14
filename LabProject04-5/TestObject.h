@@ -67,13 +67,12 @@ public:
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
 
-
 		// 이미지 출력 예시
-		InitMatrix(CmdList, RenderType::Ortho);
+		InitMatrix(CmdList, RenderType::Pers);
 		SetToImageMode(CmdList);
 
 		// 이미지 출력 시 z값은 IMAGE_Z를 사용하는 것을 권장함
-		Transform::Move(TranslateMatrix, 0.0, 0.0, IMAGE_Z);
+		Transform::Move(TranslateMatrix, 0.0, 0.0, 1.0);
 		SetAlpha(CmdList, AlphaHB[1], 0.5);
 		BindTexture(CmdList, WoodTex);
 		UseShader(CmdList, BasicShader);

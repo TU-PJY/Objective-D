@@ -31,7 +31,7 @@ D3D12_RASTERIZER_DESC Shader::CreateRasterizerState() {
 	D3D12_RASTERIZER_DESC RasterizerDesc;
 	::ZeroMemory(&RasterizerDesc, sizeof(D3D12_RASTERIZER_DESC));
 	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	RasterizerDesc.FrontCounterClockwise = FALSE;
 	RasterizerDesc.DepthBias = 0;
 	RasterizerDesc.DepthBiasClamp = 0.0f;
