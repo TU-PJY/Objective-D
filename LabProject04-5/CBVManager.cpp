@@ -2,30 +2,24 @@
 #include "DirectX_3D.h"
 
 FlipInfo Flipinfo;
-// texture flip
-std::vector<HeapAndBuffer> FlipHB;
-// image flip
-HeapAndBuffer ImageFlipHB;
-
+HeapAndBuffer FlipHB; // texture flip
+HeapAndBuffer ImageFlipHB; // image flip
 
 AlphaInfo Alphainfo;
-// texture alpha
-std::vector<HeapAndBuffer> AlphaHB;
+HeapAndBuffer AlphaHB; // texture alpha
 
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 // 필요에 따라 여러개 만들어 각 객체에 사용할 수도 있다.
 void CreateCBVResource(ID3D12Device* Device) {
 	// texture flip
-	FlipHB.reserve(2);
-	for(int i = 0; i < 2; ++i)
-		CBVUtil::CreateCBV(Device, &Flipinfo, sizeof(Flipinfo), FlipHB[i]);
+	ReserveHB(FlipHB, 2);
+	CBVUtil::CreateCBV(Device, &Flipinfo, sizeof(Flipinfo), FlipHB, 2);
 
 	// image flip
-	// 이미지 출력의 경우 공통적으로 상하좌우 반전해야 하므로 하나의 CBV로 충분하다.
-	CBVUtil::CreateCBV(Device, &Flipinfo, sizeof(Flipinfo), ImageFlipHB);
+	ReserveHB(ImageFlipHB, 1);
+	CBVUtil::CreateCBV(Device, &Flipinfo, sizeof(Flipinfo), ImageFlipHB, 1);
 
 	// texture alpha
-	AlphaHB.reserve(2);
-	for(int i = 0; i < 2; ++i)
-		CBVUtil::CreateCBV(Device, &Alphainfo, sizeof(Alphainfo), AlphaHB[i]);
+	ReserveHB(AlphaHB, 2);
+	CBVUtil::CreateCBV(Device, &Alphainfo, sizeof(Alphainfo), AlphaHB, 2);
 }

@@ -50,8 +50,8 @@ extern UINT	CbvSrvDescriptorIncrementSize;
 ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
 
 namespace CBVUtil {
-	void CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct);
-	void UpdateCBV(ID3D12GraphicsCommandList* CmdList, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct, int SignatureIndex);
+	void CreateCBV(ID3D12Device* Device, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct, int HB_Size);
+	void UpdateCBV(ID3D12GraphicsCommandList* CmdList, void* Data, size_t DataSize, HeapAndBuffer& HAB_Struct, int SignatureIndex, int CBVIndex);
 }
 
 extern int SRV_INDEX_NUMBER;

@@ -4,15 +4,20 @@
 #include "CBVData.h"
 
 typedef struct {
-	ID3D12DescriptorHeap* Heap;
-	ID3D12Resource* Buffer;
+	std::vector<ID3D12DescriptorHeap*> Heap;
+	std::vector<ID3D12Resource*> Buffer;
 }HeapAndBuffer;
 
 // flip CBV
-extern std::vector<HeapAndBuffer> FlipHB;
+extern HeapAndBuffer FlipHB;
 extern HeapAndBuffer ImageFlipHB;
 
 // ahpha CBV
-extern std::vector<HeapAndBuffer> AlphaHB;
+extern HeapAndBuffer AlphaHB;
+
 
 void CreateCBVResource(ID3D12Device* Device);
+inline void ReserveHB(HeapAndBuffer& HB_Struct, int ReserveSize) {
+	HB_Struct.Buffer.reserve(ReserveSize);
+	HB_Struct.Heap.reserve(ReserveSize);
+}

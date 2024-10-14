@@ -74,22 +74,22 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 }
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
-void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip) {
+void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
 	FlipInfo Flip{(int)H_Flip, (int)V_Flip};
-	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3);
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3, BufferIndex);
 }
 
 // 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 	FlipInfo Flip{ 1, 1 };
-	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), ImageFlipHB, 3);
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), ImageFlipHB, 3, 0);
 	Transform::Rotate(RotateMatrix, 0.0, 180.0, 0.0);
 }
 
 // 텍스처 투명도를 설정한다.
-void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue) {
+void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4);
+	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

@@ -43,9 +43,9 @@ public:
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
-	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip);
+	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
-	void SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue);
+	void SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
