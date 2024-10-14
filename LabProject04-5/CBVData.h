@@ -7,6 +7,7 @@ struct FlipInfo {
 	int Y_Flip;
 };
 
+// texture alpha
 struct AlphaInfo {
 	float AlphaValue;
 };
