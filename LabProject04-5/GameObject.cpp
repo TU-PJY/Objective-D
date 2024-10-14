@@ -83,6 +83,7 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& 
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 	FlipInfo Flip{ 1, 1 };
 	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), ImageFlipHB, 3, 0);
+	Transform::Move(TranslateMatrix, 0.0, 0.0, 1.0);
 	Transform::Rotate(RotateMatrix, 0.0, 180.0, 0.0);
 }
 

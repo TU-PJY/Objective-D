@@ -6,9 +6,8 @@
 
 // 평행이동 변환
 void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
-	Matrix._41 = X;
-	Matrix._42 = Y;
-	Matrix._43 = Z;
+	XMMATRIX TranslateMat = XMMatrixTranslation(X, Y, Z);
+	Matrix = Mat4::Multiply(TranslateMat, Matrix);
 }
 
 // 회전 변환
