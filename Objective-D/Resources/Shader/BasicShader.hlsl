@@ -43,7 +43,7 @@ struct VS_OUTPUT {
     float2 uv : TEXTURECOORD;
 };
 
-VS_OUTPUT VSPseudoLighting(VS_INPUT input) {
+VS_OUTPUT VSTexColor(VS_INPUT input) {
     VS_OUTPUT output;
 
     output.positionW = mul(float4(input.position, 1.0f), gmtxWorld).xyz;
@@ -61,15 +61,11 @@ VS_OUTPUT VSPseudoLighting(VS_INPUT input) {
     return (output);
 }
 
-float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET {
-    // 텍스처에서 샘플링한 색상
+float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
+{
     float4 texColor = gTexture.Sample(gSampler, input.uv);
-
-    // 매쉬의 기본 색상과 텍스처 색상을 곱함
     float4 finalColor = float4(gf3ObjectColor, 1.0f) + texColor;
-
-    // AlphaValue를 사용하여 투명도를 조정 (텍스처의 알파와 함께 사용)
     finalColor.a = texColor.a * AlphaValue;
 
-    return finalColor; // 최종 색상을 반환
+    return finalColor;
 }

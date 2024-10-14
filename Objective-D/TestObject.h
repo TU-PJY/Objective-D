@@ -72,7 +72,7 @@ public:
 		//SetToImageMode(CmdList);
 
 		//SetAlpha(CmdList, AlphaHB, 1.0, 1);
-		//BindTexture(CmdList, WoodTex);
+		//BindTexture(CmdList, Tex);
 		//UseShader(CmdList, BasicShader);
 
 		//// 이미지 출력 전용 매쉬를 사용한다.

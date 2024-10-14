@@ -22,7 +22,6 @@ void DirectX_3D_Main::Init() {
 	// 루트상수 버퍼 및 힙을 생성한다.
 	CreateCBVResource(Device);
 
-
 	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 0.0f, 0.0f));
@@ -34,6 +33,11 @@ void DirectX_3D_Main::Init() {
 	CmdList->Close();
 	ID3D12CommandList* CmdLists[] = { CmdList };
 	CmdQueue->ExecuteCommandLists(1, CmdLists);
+
+
+	// 이미지 플립에 사용할 CBV를 설정한다.
+	FlipInfo flip{ 0, 1 };
+	CBVUtil::UpdateCBV(CmdList, &flip, sizeof(flip), ImageFlipHB, 3, 0);
 
 	WaitForGpuComplete();
 

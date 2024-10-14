@@ -17,7 +17,7 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	if(Type == RenderType::Pers)
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	else if(Type == RenderType::Ortho)
-		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.01f, 10.0f);
+		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
 
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
@@ -81,9 +81,9 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& 
 
 // 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	FlipInfo Flip{ 1, 1 };
-	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), ImageFlipHB, 3, 0);
-	Transform::Move(TranslateMatrix, 0.0, 0.0, 1.0);
+	ID3D12DescriptorHeap* heaps[] = { ImageFlipHB.Heap[0] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(3, ImageFlipHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
 }
 
 // 텍스처 투명도를 설정한다.

@@ -256,16 +256,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders.hlsl">
-      <Filter>[6]____________[ HLSL ]</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
       <Filter>[9]____________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
       <Filter>[9]____________[ Template ]</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shader\BasicShader.hlsl">
+      <Filter>[6]____________[ HLSL ]</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
