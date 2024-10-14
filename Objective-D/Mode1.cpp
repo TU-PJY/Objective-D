@@ -13,9 +13,6 @@
 // 간편한 모드 코드 작성을 위해 [ Template ] 필터에 템플릿을 만들어 두었으니 복붙한 후 함수 이름과 네임스페이스 이름을 바꾸면 된다.
 
 void Mode1::Start() {
-	// 모드 시작 시 배경색 변경
-	SetBackgroundColor(0.4, 0.4, 0.4);
-
 	// 각각의 모드는 각각의 컨트롤러를 가짐
 	// 해당 함수는 모드 시작 시 반드시 실행되어야 정확한 동작을 보장할 수 있음
 	framework.AddObject(new TestObject, "test_object");

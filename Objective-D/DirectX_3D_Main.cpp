@@ -6,6 +6,8 @@
 #include "CBVManager.h"
 
 void DirectX_3D_Main::Init() {
+	SetBackgroundColor(0.4, 0.4, 0.4);
+
 	CmdList->Reset(CmdAllocator, NULL);
 
 	// 프레임워크 초기화
