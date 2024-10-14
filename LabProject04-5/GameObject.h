@@ -38,12 +38,12 @@ public:
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
 	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
-	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr, bool FlipH, bool FlipV);
+	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, float AlphaValue = 1.0f);
-	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
-
-	void SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue);
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
+	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip);
+	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
+	void SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);

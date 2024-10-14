@@ -12,13 +12,14 @@ void DirectX_3D_Main::Init() {
 	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
 	// StartMode.cpp의 StartMode 변경 시 시작 모드 변경이 가능하다.
 	framework.Init(Device, CmdList, StartMode);
-	
+
 	// 이미지 출력용 패널 생성
 	ImagePannel = new Mesh;
 	ImagePannel->CreateImagePanelMesh(Device, CmdList);
 
 	// 루트상수 버퍼 및 힙을 생성한다.
 	CreateCBVResource(Device);
+
 
 	// 카메라 초기 설정(완전 초기값)
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));

@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d12.h>
+#include <vector>
 #include "CBVData.h"
 
 typedef struct {
@@ -8,9 +9,10 @@ typedef struct {
 }HeapAndBuffer;
 
 // flip CBV
-extern HeapAndBuffer FlipHB;
+extern std::vector<HeapAndBuffer> FlipHB;
+extern HeapAndBuffer ImageFlipHB;
 
 // ahpha CBV
-extern HeapAndBuffer AlphaHB;
+extern std::vector<HeapAndBuffer> AlphaHB;
 
 void CreateCBVResource(ID3D12Device* Device);

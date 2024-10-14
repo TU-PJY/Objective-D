@@ -18,7 +18,7 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 
 	else if(Type == RenderType::Ortho)
-		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.01f, 5.0f);
+		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.01f, 10.0f);
 
 	camera.SetViewportsAndScissorRects(CmdList);
 }
@@ -54,9 +54,7 @@ void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 
 // 텍스처를 바인딩한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 매핑할 텍스처를 파라미터로 전달하면 된다.
 // 좌우 또는 상하 또는 좌우상하 반전이 가능하다.
-void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr, bool FlipH, bool FlipV) {
-	FlipTexture(CmdList, FlipH, FlipV);
-
+void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr) {
 	if (TexturePtr)
 		TexturePtr->Render(CmdList);
 }
@@ -69,22 +67,29 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 }
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, float AlphaValue) {
-	SetAlpha(CmdList, AlphaValue);
-
+void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
 		MeshPtr->Render(CmdList);
 }
 
-void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
+// 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
+void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip) {
 	FlipInfo Flip{(int)H_Flip, (int)V_Flip};
-	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), FlipHB, 3);
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3);
 }
 
-void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
+// 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
+void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
+	FlipInfo Flip{ 1, 1 };
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), ImageFlipHB, 3);
+	Transform::Rotate(RotateMatrix, 0.0, 180.0, 0.0);
+}
+
+// 텍스처 투명도를 설정한다.
+void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), AlphaHB, 4);
+	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

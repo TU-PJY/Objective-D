@@ -63,18 +63,30 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		// 원근투영, 직각투영 중 하나를 선택하여 렌더링한다.
-		//InitMatrix(CmdList, RenderType::Ortho);
-		InitMatrix(CmdList, RenderType::Pers);
+		// 모델 출력 예시
+		//InitMatrix(CmdList, RenderType::Pers);
+		//Transform::Move(TranslateMatrix, Position.x, Position.y, 1.0);
+		//Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
 
-		Transform::Move(TranslateMatrix, Position.x, Position.y, 10.0);
-		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
+		//// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
+		//// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
+		//SetAlpha(CmdList, AlphaHB[0], AlphaValue);
+		//FlipTexture(CmdList, FlipHB[0], false, true);
+		//BindTexture(CmdList, Tex);
+		//UseShader(CmdList, BasicShader);
+		//RenderMesh(CmdList, GunMesh);
 
-		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
-		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
-		BindTexture(CmdList, Tex, FlipX, FlipY);
+		// 이미지 출력 예시
+		InitMatrix(CmdList, RenderType::Ortho);
+		SetToImageMode(CmdList);
 
+		// 이미지 출력 시 z값은 1.0을 권장
+		Transform::Move(TranslateMatrix, 0.0, 0.0, 1.0);
+		SetAlpha(CmdList, AlphaHB[1], 1.0);
+		BindTexture(CmdList, Tex);
 		UseShader(CmdList, BasicShader);
-		RenderMesh(CmdList, GunMesh, AlphaValue);
+
+		// 이미지 출력 전용 매쉬를 사용한다.
+		RenderMesh(CmdList, ImagePannel);
 	}
 };
