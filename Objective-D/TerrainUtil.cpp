@@ -1,4 +1,5 @@
 #include "TerrainUtil.h"
+#include "CBVManager.h"
 
 // 터레인을 담당하는 유틸이다.
 // 터레인 유틸은 한 번에 한 개의 매쉬만 가질 수 있다.
@@ -13,6 +14,11 @@ void TerrainUtil::SetMesh(Mesh* MeshPtr) {
 // 터레인을 렌더링할 쉐이더를 설정한다
 void TerrainUtil::SetShader(Shader* ShaderPtr) {
 	TerrainShader = ShaderPtr;
+}
+
+// 터레인에 매핑할 텍스처를 설정한다
+void TerrainUtil::SetTexture(Texture* TexturePtr) {
+	TerrainTexture = TexturePtr;
 }
 
 // 특정 오브젝트가 터레인의 바닥에 닿았는지 검사한다. 
@@ -56,6 +62,9 @@ void TerrainUtil::Scale(XMFLOAT3 SizeValue) {
 
 // 터레인을 렌더링한다
 void TerrainUtil::Render(ID3D12GraphicsCommandList* CmdList) {
+	if (TerrainTexture)
+		TerrainTexture->Render(CmdList);
+
 	if (TerrainShader)
 		TerrainShader->Render(CmdList);
 
@@ -63,6 +72,34 @@ void TerrainUtil::Render(ID3D12GraphicsCommandList* CmdList) {
 
 	if (TerrainMesh)
 		TerrainMesh->Render(CmdList);
+}
+
+void TerrainUtil::EnableLight(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[1] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[1]->GetGPUDescriptorHandleForHeapStart());
+}
+
+void TerrainUtil::DisableLight(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[0] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+}
+
+void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { LightHB.Heap[0] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(5, LightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+}
+
+void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
+	FlipInfo Flip{ (int)H_Flip, (int)V_Flip };
+	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3, BufferIndex);
+}
+
+void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex) {
+	AlphaInfo Alphainfo{ AlphaValue };
+	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
 }
 
 // 쉐이더로 터레인 변환 값을 전달한다
