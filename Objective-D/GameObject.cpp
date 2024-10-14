@@ -21,6 +21,9 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
+
+	// 행렬 및 카메라 초기화 시 조명을 사용하는 것으로 간주
+	EnableLight(CmdList);
 }
 
 // 객체 메쉬의 색상을 설정한다. 
@@ -68,16 +71,9 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
 void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
-	LightInfo light{
-		{0.0f, -1.0f, -0.5f },
-		0.0,
-		{1.0f, 1.0f, 1.0f },
-		0.0,
-		{1.0f, 1.0f, 1.0f },
-		5.0,
-	};
-	CBVUtil::UpdateCBV(CmdList, &light, sizeof(light), LightHB, 5, 0);
-
+	// 조명 정보를 렌더징 전에 쉐이더로 전달한다.
+	// 이미지 모드의 경우 조명이 비활성화 된다.
+	SendLightInfo(CmdList);
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
 		MeshPtr->Render(CmdList);
@@ -94,12 +90,34 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 	ID3D12DescriptorHeap* heaps[] = { ImageFlipHB.Heap[0] };
 	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
 	CmdList->SetGraphicsRootDescriptorTable(3, ImageFlipHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+
+	DisableLight(CmdList);
 }
 
 // 텍스처 투명도를 설정한다.
 void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex) {
 	AlphaInfo Alphainfo{ AlphaValue };
 	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
+}
+
+// 조명 사용 비활성화
+void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[0] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+}
+
+// 조명 사용 활성화
+void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[1] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[1]->GetGPUDescriptorHandleForHeapStart());
+}
+
+void GameObject::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
+	ID3D12DescriptorHeap* heaps[] = { LightHB.Heap[0] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(5, LightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

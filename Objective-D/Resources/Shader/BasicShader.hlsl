@@ -40,11 +40,10 @@ cbuffer cbLightInfo : register(b5)
     float gShadowStrength;
 };
 
-//// 조명 사용 여부
-//cbuffer cbUseLightInfo : register(b6) 
-//{
-//    int UseLight;
-//}
+cbuffer cbLightUseInfo : register(b6)
+{
+    int UseLight;
+}
 
 Texture2D gTexture : register(t0); // 텍스처 샘플링을 위한 텍스처 리소스
 SamplerState gSampler : register(s0); // 텍스처 샘플러 상태
@@ -84,38 +83,21 @@ VS_OUTPUT VSTexColor(VS_INPUT input)
     return (output);
 }
 
-float4 PSTexColor(VS_OUTPUT input) : SV_TARGET 
+float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
 {
-    float4 outputColor;
-    //if (UseLight == 1) 
-   //  {
-    // 텍스처 색상 샘플링
-        float4 texColor = gTexture.Sample(gSampler, input.uv);
+    float4 texColor = gTexture.Sample(gSampler, input.uv);
 
-    // 앰비언트 조명
-        float3 ambient = gAmbientColor * texColor.rgb;
+    float3 ambient = gAmbientColor * texColor.rgb;
+    float3 lightDir = normalize(-gLightDirection); // 광원의 방향
+    float3 normal = normalize(input.normalW); // 법선 벡터 정규화
+    float NdotL = max(dot(normal, lightDir), 0.0); // 법선 벡터와 광원 벡터의 내적 (0보다 작으면 0 처리)
+    float3 diffuse = gLightColor * NdotL * texColor.rgb; // 디퓨즈 색상
+    diffuse *= gShadowStrength;
 
-    // 디퓨즈 조명 (Lambertian 반사 모델)
-        float3 lightDir = normalize(-gLightDirection); // 광원의 방향
-        float3 normal = normalize(input.normalW); // 법선 벡터 정규화
-        float NdotL = max(dot(normal, lightDir), 0.0); // 법선 벡터와 광원 벡터의 내적 (0보다 작으면 0 처리)
-        float3 diffuse = gLightColor * NdotL * texColor.rgb; // 디퓨즈 색상
-    
-        diffuse *= 10.0;
-
-    // 최종 색상 계산 (앰비언트 + 디퓨즈)
-        float3 finalColor = ambient + diffuse;
-
-    // 투명도 처리
-        outputColor = float4(finalColor, texColor.a * AlphaValue);
-  //  }
-    
-    //if (UseLight == 0)
-    //{
-    //    float4 texColor = gTexture.Sample(gSampler, input.uv);
-    //    outputColor = texColor.rgb;
-    //    outputColor *= AlphaValue;
-    //}
-    
+    float3 finalColorWithLight = ambient + diffuse;
+    float3 finalColorWithoutLight = texColor.rgb;
+    float3 finalColor = lerp(finalColorWithoutLight, finalColorWithLight, UseLight);
+  
+    float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;
 }

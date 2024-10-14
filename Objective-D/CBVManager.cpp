@@ -9,7 +9,10 @@ AlphaInfo Alphainfo;
 HeapAndBuffer AlphaHB; // texture alpha
 
 LightInfo Lightinfo;
-HeapAndBuffer LightHB;
+HeapAndBuffer LightHB;  // light
+
+UseLightInfo Uselightinfo;
+HeapAndBuffer BoolLightHB;  // light bool info
 
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 void CreateCBVResource(ID3D12Device* Device) {
@@ -28,4 +31,9 @@ void CreateCBVResource(ID3D12Device* Device) {
 	// light data
 	ReserveHB(LightHB, 1);
 	CBVUtil::CreateCBV(Device, &Lightinfo, sizeof(Lightinfo), LightHB, 1);
+
+	// light bool info
+	// 1 : true, 0: false
+	ReserveHB(BoolLightHB, 2);
+	CBVUtil::CreateCBV(Device, &Uselightinfo, sizeof(Uselightinfo), BoolLightHB, 2);
 }

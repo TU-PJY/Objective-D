@@ -18,6 +18,9 @@ extern HeapAndBuffer AlphaHB;
 // light CBV
 extern HeapAndBuffer LightHB;
 
+// light bool info CBV
+extern HeapAndBuffer BoolLightHB;
+
 
 void CreateCBVResource(ID3D12Device* Device);
 inline void ReserveHB(HeapAndBuffer& HB_Struct, int ReserveSize) {

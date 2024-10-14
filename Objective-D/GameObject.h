@@ -40,6 +40,9 @@ public:
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest=true);
+	void DisableLight(ID3D12GraphicsCommandList* CmdList);
+	void EnableLight(ID3D12GraphicsCommandList* CmdList);
+	void SendLightInfo(ID3D12GraphicsCommandList* CmdList);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);

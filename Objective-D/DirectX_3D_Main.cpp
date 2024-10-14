@@ -39,6 +39,25 @@ void DirectX_3D_Main::Init() {
 	FlipInfo flip{ 0, 1 };
 	CBVUtil::UpdateCBV(CmdList, &flip, sizeof(flip), ImageFlipHB, 3, 0);
 
+	// 조명 기본값 CBV를 설정한다.
+	LightInfo light{
+		{1.0f, -1.0f, 0.0f },  // Light Position
+		0.0,
+		{0.7f, 0.7f, 0.7f },  // Light Color
+		0.0,
+		{0.4f, 0.4f, 0.4f },  // Ambient Light Color
+		5.0,  // Shadow Strength
+	};
+	CBVUtil::UpdateCBV(CmdList, &light, sizeof(light), LightHB, 5, 0);
+
+	// 조명 사용 여부 CBV 값을 설정한다.
+	// 1번 인덱스: true, 0번 인덱스, false
+	UseLightInfo Uselightinfo{ 1 };
+	CBVUtil::UpdateCBV(CmdList, &Uselightinfo, sizeof(Uselightinfo), BoolLightHB, 6, 1);
+
+	Uselightinfo.UseLight = 0;
+	CBVUtil::UpdateCBV(CmdList, &Uselightinfo, sizeof(Uselightinfo), BoolLightHB, 6, 0);
+
 	WaitForGpuComplete();
 
 	Timer.Reset();

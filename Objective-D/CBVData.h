@@ -24,3 +24,7 @@ struct LightInfo {
     DirectX::XMFLOAT3 gAmbientColor;    // 12 bytes
     float gShadowStrength;              // 4 bytes (이로 인해 16바이트 정렬 완료)
 };
+
+struct UseLightInfo {
+    int UseLight;
+};
