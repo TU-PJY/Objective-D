@@ -11,7 +11,7 @@ Texture* Tex, *WoodTex;
 void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	BasicShader = new BasicObjectShader();
 	BasicShader->CreateShader(Device, RootSignature);
-	BasicShader->CreateShaderVariables(Device, CmdList);
+	BasicShader->CreateShaderDepthNone(Device, RootSignature);
 }
 
 void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {

@@ -39,7 +39,7 @@ public:
 	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
-	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr);
+	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest=true);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);

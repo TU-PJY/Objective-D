@@ -67,15 +67,15 @@ public:
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
 
-		// 이미지 출력 예시
-		InitMatrix(CmdList, RenderType::Ortho);
-		SetToImageMode(CmdList);
+		//// 이미지 출력 예시
+		//InitMatrix(CmdList, RenderType::Ortho);
+		//SetToImageMode(CmdList);
 
-		SetAlpha(CmdList, AlphaHB, 0.8, 1);
-		BindTexture(CmdList, WoodTex);
-		UseShader(CmdList, BasicShader);
+		//SetAlpha(CmdList, AlphaHB, 0.7, 1);
+		//BindTexture(CmdList, WoodTex);
+		//UseShader(CmdList, BasicShader);
 
-		// 이미지 출력 전용 매쉬를 사용한다.
-		RenderMesh(CmdList, ImagePannel);
+		//// 이미지 출력 전용 매쉬를 사용한다.
+		//RenderMesh(CmdList, ImagePannel);
 	}
 };

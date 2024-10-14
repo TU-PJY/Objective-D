@@ -14,7 +14,7 @@
 
 void Mode1::Start() {
 	// 모드 시작 시 배경색 변경
-	SetBackgroundColorRGB(135, 206, 235);
+	SetBackgroundColor(0.4, 0.4, 0.4);
 
 	// 각각의 모드는 각각의 컨트롤러를 가짐
 	// 해당 함수는 모드 시작 시 반드시 실행되어야 정확한 동작을 보장할 수 있음

@@ -61,9 +61,9 @@ void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* Textur
 
 // 쉐이더를 적용한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 적용할 쉐이더를 파라미터로 전달하면 된다.
 // 필요에 따라 여러 종류의 쉐이더에 대해 여러번 사용할 수 있다.
-void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr) {
+void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest) {
 	if (ShaderPtr)
-		ShaderPtr->Render(CmdList);
+		ShaderPtr->Render(CmdList, DepthTest);
 }
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
