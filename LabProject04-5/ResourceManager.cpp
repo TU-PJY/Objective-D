@@ -15,10 +15,10 @@ void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device
 }
 
 void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	GunMesh = new Mesh(Device, CmdList, "Models//model.bin", MeshType::Binary);
+	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MeshType::Binary);
 }
 
 void LoadTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	Tex = new Texture(Device, CmdList, L"Image//Gun.jpg");
-	WoodTex = new Texture(Device, CmdList, L"Image//Wood.jpg");
+	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg");
+	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg");
 }
