@@ -95,13 +95,13 @@ void Mesh::CreateImagePanelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList*
 	float ImagePannel[][8] = {
 		// x, y, z, nx, ny, nz, u, v
 		{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-{  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f },
-{  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
-{ -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f }
+		{  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f },
+		{  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f }
 	};
 
 	// 인덱스 배열
-	UINT indices[] = { 0, 1, 2, 0, 2, 3 };
+	UINT indices[] = { 0, 2, 1, 0, 3, 2 };
 
 	// 정점 개수와 인덱스 개수
 	Vertices = 4;

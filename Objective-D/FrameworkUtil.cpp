@@ -55,7 +55,7 @@ void Framework::RegisterMouseMotionController(void (*MouseMotionControllerPtr)(H
 	MouseMotionController = MouseMotionControllerPtr;
 }
 
-// 키모드, 마우스, 마우스 움직임을 객체 포인터에 전달한다. 이 함수들 역시 직접 쓸 일은 없다.
+// 키보드, 마우스, 마우스 움직임을 객체 포인터에 전달한다. 이 함수들 역시 직접 쓸 일은 없다.
 void Framework::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	if (KeyboardController)
 		KeyboardController(hWnd, nMessageID, wParam, lParam);
@@ -79,28 +79,44 @@ void Framework::Exit() {
 // 현재 존재하는 모든 객체들을 업데이트한다
 // 삭제 마크가 표시된 객체를 업데이트되지 않는다
 void Framework::Update(float FT) {
-	for (auto const& O : ObjectList) {
-		if (!O.second->DeleteMark)
-			O.second->Update(FT);
+	for (int i = 0; i < Layers; ++i) {
+		for (auto const& O : ObjectList[i]) {
+			if (!O->DeleteMark)
+				O->Update(FT);
+		}
+		UpdateObjectList(i);
 	}
 }
 
 // 현재 존재하는 모든 객체들을 렌더링한다
 // 삭제 마크가 표시된 객체들은 렌더링되지 않는다.
 void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
-	for (auto const& O : ObjectList) {
-		if (!O.second->DeleteMark)
-			O.second->Render(CmdList);
+	for (int i = 0; i < Layers; ++i) {
+		for (auto const& O : ObjectList[i]) {
+			if (!O->DeleteMark)
+				O->Render(CmdList);
+		}
 	}
 }
 
-// 삭제 마크가 표시된 객체들을 삭제한다.
-void Framework::UpdateContainer() {
-	for (auto It = begin(ObjectList); It != end(ObjectList);) {
+// 삭제 마크가 표시된 객체들을 컨테이너에서 삭제한다.
+// 실제 객체 삭제가 아님에 유의
+void Framework::UpdateObjectList(int Index) {
+	for (auto It = begin(ObjectList[Index]); It != end(ObjectList[Index]);) {
+		if ((*It)->DeleteMark) {
+			It = ObjectList[Index].erase(It);
+			continue;
+		}
+		++It;
+	}
+}
+
+void Framework::UpdateObjectIndex() {
+	for (auto It = begin(ObjectIndex); It != end(ObjectIndex);) {
 		if (It->second->DeleteMark) {
 			delete It->second;
 			It->second = nullptr;
-			It = ObjectList.erase(It);
+			It = ObjectIndex.erase(It);
 			continue;
 		}
 		++It;
@@ -109,8 +125,11 @@ void Framework::UpdateContainer() {
 
 // 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
 // 이 함수에서 입력한 태그는 Find()함수에서 사용된다.
-void Framework::AddObject(GameObject*&& Object, const char* Tag) {
-	ObjectList.insert(std::pair(Tag, Object));
+void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer InputLayer) {
+	int TargetLayer = (int)InputLayer;
+	ObjectList[TargetLayer].emplace_back(Object);
+	ObjectIndex.insert(std::make_pair(Tag, Object));
+	Object->ObjectTag = Tag;
 }
 
 // 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
@@ -124,8 +143,8 @@ void Framework::DeleteObject(GameObject* Object) {
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
 // 해쉬 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Framework::Find(const char* Tag) {
-	auto It = ObjectList.find(Tag);
-	if (It != std::end(ObjectList) && !It->second->DeleteMark)
+	auto It = ObjectIndex.find(Tag);
+	if (It != std::end(ObjectIndex) && !It->second->DeleteMark)
 		return It->second;
 	else
 		return nullptr;
@@ -136,7 +155,7 @@ GameObject* Framework::Find(const char* Tag) {
 ObjectRange Framework::EqualRange(const char* Tag) {
 	ObjectRange Range{};
 
-	auto It = ObjectList.equal_range(Tag);
+	auto It = ObjectIndex.equal_range(Tag);
 	Range.First = It.first;
 	Range.End = It.second;
 
@@ -145,7 +164,7 @@ ObjectRange Framework::EqualRange(const char* Tag) {
 
 // 현재 존재하는 모든 객체들을 삭제한다.
 void Framework::ClearAll() {
-	for (const auto& O : ObjectList)
+	for (const auto& O : ObjectIndex)
 		O.second->DeleteMark = true;
 }
 

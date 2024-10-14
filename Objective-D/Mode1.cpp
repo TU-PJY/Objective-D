@@ -15,7 +15,7 @@
 void Mode1::Start() {
 	// 각각의 모드는 각각의 컨트롤러를 가짐
 	// 해당 함수는 모드 시작 시 반드시 실행되어야 정확한 동작을 보장할 수 있음
-	framework.AddObject(new TestObject, "test_object");
+	framework.AddObject(new TestObject, "test_object", Layer::L1);
 
 	// 여기에 모드 시작 시 필요한 작업 추가 (객체 추가 등)
 	

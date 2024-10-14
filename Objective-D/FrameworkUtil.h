@@ -2,12 +2,13 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "ShaderUtil.h"
-#include <deque>
-#include <ranges>
-#include <unordered_map>
+#include <vector>
+#include <array>
+#include <map>
 
 typedef void(*Function)(void);
-using LayerIter = std::unordered_multimap<const char*, GameObject*>::iterator;
+using LayerIter = std::map<const char*, GameObject*>::iterator;
+constexpr int Layers = static_cast<int>(Layer::END);
 
 typedef struct {
 	LayerIter First, End;
@@ -15,7 +16,9 @@ typedef struct {
 
 class Framework {
 private:
-	std::unordered_multimap<const char*, GameObject*> ObjectList;
+	//std::unordered_multimap<const char*, GameObject*> ObjectList;
+	std::array<std::vector<GameObject*>, Layers> ObjectList;
+	std::map<const char*, GameObject*> ObjectIndex;
 
 	const char* RunningMode{};
 	void (*MouseController)(HWND, UINT, WPARAM, LPARAM);
@@ -43,8 +46,9 @@ public:
 	void Exit();
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);
-	void UpdateContainer();
-	void AddObject(GameObject*&& Object, const char* Tag);
+	void UpdateObjectList(int Index);
+	void UpdateObjectIndex();
+	void AddObject(GameObject*&& Object, const char* Tag, Layer InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);
 	ObjectRange EqualRange(const char* Tag);

@@ -71,7 +71,7 @@ public:
 		//InitMatrix(CmdList, RenderType::Ortho);
 		//SetToImageMode(CmdList);
 
-		//SetAlpha(CmdList, AlphaHB, 0.7, 1);
+		//SetAlpha(CmdList, AlphaHB, 1.0, 1);
 		//BindTexture(CmdList, WoodTex);
 		//UseShader(CmdList, BasicShader);
 

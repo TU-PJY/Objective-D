@@ -94,7 +94,7 @@ void DirectX_3D_Main::Update() {
 	framework.Render(CmdList);
 
 	// 삭제 마크가 표시된 객체를 최종삭제한다.
-	framework.UpdateContainer();
+	framework.UpdateObjectIndex();
 
 #ifdef _WITH_PLAYER_TOP
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
