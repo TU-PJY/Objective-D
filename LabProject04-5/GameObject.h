@@ -5,6 +5,8 @@
 #include "CollisionUtil.h"
 #include "MathUtil.h"
 
+#define IMAGE_Z 1.0f
+
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 

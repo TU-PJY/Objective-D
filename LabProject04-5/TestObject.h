@@ -80,8 +80,8 @@ public:
 		InitMatrix(CmdList, RenderType::Ortho);
 		SetToImageMode(CmdList);
 
-		// 이미지 출력 시 z값은 1.0을 권장
-		Transform::Move(TranslateMatrix, 0.0, 0.0, 1.0);
+		// 이미지 출력 시 z값은 IMAGE_Z를 사용하는 것을 권장함
+		Transform::Move(TranslateMatrix, 0.0, 0.0, IMAGE_Z);
 		SetAlpha(CmdList, AlphaHB[1], 1.0);
 		BindTexture(CmdList, Tex);
 		UseShader(CmdList, BasicShader);
