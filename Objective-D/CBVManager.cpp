@@ -5,9 +5,6 @@ FlipInfo Flipinfo;
 HeapAndBuffer FlipHB; // texture flip
 HeapAndBuffer ImageFlipHB; // image flip
 
-AlphaInfo Alphainfo;
-HeapAndBuffer AlphaHB; // texture alpha
-
 LightInfo Lightinfo;
 HeapAndBuffer LightHB;  // light
 
@@ -23,10 +20,6 @@ void CreateCBVResource(ID3D12Device* Device) {
 	// image flip
 	ReserveHB(ImageFlipHB, 1);
 	CBVUtil::CreateCBV(Device, &Flipinfo, sizeof(Flipinfo), ImageFlipHB, 1);
-
-	// texture alpha
-	ReserveHB(AlphaHB, 2);
-	CBVUtil::CreateCBV(Device, &Alphainfo, sizeof(Alphainfo), AlphaHB, 2);
 
 	// light data
 	ReserveHB(LightHB, 1);

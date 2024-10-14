@@ -12,9 +12,6 @@ typedef struct {
 extern HeapAndBuffer FlipHB;
 extern HeapAndBuffer ImageFlipHB;
 
-// ahpha CBV
-extern HeapAndBuffer AlphaHB;
-
 // light CBV
 extern HeapAndBuffer LightHB;
 

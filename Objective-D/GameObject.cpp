@@ -24,6 +24,7 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 
 	// 행렬 및 카메라 초기화 시 조명을 사용하는 것으로 간주
 	EnableLight(CmdList);
+	SetAlpha(CmdList, 1.0);
 }
 
 // 객체 메쉬의 색상을 설정한다. 
@@ -95,9 +96,10 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 }
 
 // 텍스처 투명도를 설정한다.
-void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex) {
+void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
+	CmdList->SetGraphicsRoot32BitConstants(4, 1, &Alphainfo, 0);
+	//CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
 }
 
 // 조명 사용 비활성화

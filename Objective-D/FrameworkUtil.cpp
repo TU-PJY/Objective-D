@@ -241,7 +241,7 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	SetRoot(RootParameters, 19, 1, 1);  // b1
 	SetRoot(RootParameters, 35, 2, 2);  // b2
 	SetCBV(Range, RootParameters, 3, 3); // b3
-	SetCBV(Range, RootParameters, 4, 4); // b4
+	SetRoot(RootParameters, 1, 4, 4); // b4
 	SetCBV(Range, RootParameters, 5, 5); // b5
 	SetCBV(Range, RootParameters, 6, 6); // b6
 	SetSRV(Range, RootParameters, 0, SRV_INDEX_NUMBER);  // t0
