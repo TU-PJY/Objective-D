@@ -21,3 +21,27 @@ void Transform::Scale(XMFLOAT4X4& Matrix, float ScaleX, float ScaleY, float Scal
 	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
 	Matrix = Mat4::Multiply(ScaleMat, Matrix);
 }
+
+// 이미지 출력 시 매쉬의 종횡비와 이미지 종횡비를 동일하게 맞춘다.
+// 변환할 행렬과 이미지의 크기를 파라미터에 전달하면 된다.
+void Transform::ImageAspect(XMFLOAT4X4& Matrix, int Width, int Height) {
+	float ScaleX{}, ScaleY{};
+
+	if (Width > Height) {
+		ScaleX = 1.0;
+		ScaleY = (float)Height / (float)Width;
+	}
+
+	else if (Width < Height) {
+		ScaleX = (float)Width / (float)Height;
+		ScaleY = 1.0;
+	}
+
+	else {
+		ScaleX = 1.0;
+		ScaleY = 1.0;
+	}
+
+	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, 1.0);
+	Matrix = Mat4::Multiply(ScaleMat, Matrix);
+}
