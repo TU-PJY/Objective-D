@@ -168,6 +168,12 @@ void Framework::ClearAll() {
 		O.second->DeleteMark = true;
 }
 
+
+
+
+
+
+
 /////////////////////
 
 void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex) {
@@ -216,7 +222,6 @@ void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>&
 	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 }
-
 
 
 // 루트 시그니처를 생성한다
