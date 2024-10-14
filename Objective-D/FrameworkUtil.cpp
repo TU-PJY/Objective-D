@@ -170,120 +170,77 @@ void Framework::ClearAll() {
 
 /////////////////////
 
+void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex) {
+	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	RootParam[RootIndex].Constants.Num32BitValues = NumValue;
+	RootParam[RootIndex].Constants.ShaderRegister = RegisterNum;
+	RootParam[RootIndex].Constants.RegisterSpace = 0;
+	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+}
+
+void SetCBV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	Range.NumDescriptors = 1;
+	Range.BaseShaderRegister = RegisterNum;
+	Range.RegisterSpace = 0;
+	Range.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
+	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
+	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+}
+
+void SetSRV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	Range.NumDescriptors = 1;
+	Range.BaseShaderRegister = RegisterNum;
+	Range.RegisterSpace = 0;
+	Range.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
+	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
+	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+}
+
+void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
+	Range.NumDescriptors = 1;
+	Range.BaseShaderRegister = RegisterNum;
+	Range.RegisterSpace = 0;
+	Range.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
+	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
+	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+}
+
+
+
 // 루트 시그니처를 생성한다
 ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device) {
 	ID3D12RootSignature* GraphicsRootSignature = NULL;
 
 	// 32비트 상수들을 정의
-	std::array<D3D12_ROOT_PARAMETER, 9> RootParameters;
+	D3D12_DESCRIPTOR_RANGE Range{};
+	std::vector<D3D12_ROOT_PARAMETER> RootParameters(9, {});
 	int RootParameterNum = RootParameters.size();
 
 	// srv, sampler 인덱스는 항상 맨 끝에 위치하도록 한다
 	SRV_INDEX_NUMBER = RootParameterNum - 2;
 	SAMPLER_INDEX_NUMBER = RootParameterNum - 1;
 
-	// b0
-	RootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[0].Constants.Num32BitValues = 3;
-	RootParameters[0].Constants.ShaderRegister = 0;
-	RootParameters[0].Constants.RegisterSpace = 0;
-	RootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b1
-	RootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[1].Constants.Num32BitValues = 19;
-	RootParameters[1].Constants.ShaderRegister = 1;
-	RootParameters[1].Constants.RegisterSpace = 0;
-	RootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b2
-	RootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	RootParameters[2].Constants.Num32BitValues = 35;
-	RootParameters[2].Constants.ShaderRegister = 2;
-	RootParameters[2].Constants.RegisterSpace = 0;
-	RootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b3
-	D3D12_DESCRIPTOR_RANGE CBV_Range_b3;
-	CBV_Range_b3.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-	CBV_Range_b3.NumDescriptors = 1;
-	CBV_Range_b3.BaseShaderRegister = 3;
-	CBV_Range_b3.RegisterSpace = 0;
-	CBV_Range_b3.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[3].DescriptorTable.pDescriptorRanges = &CBV_Range_b3;
-	RootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b4
-	D3D12_DESCRIPTOR_RANGE CBV_Range_b4;
-	CBV_Range_b4.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-	CBV_Range_b4.NumDescriptors = 1;
-	CBV_Range_b4.BaseShaderRegister = 4;
-	CBV_Range_b4.RegisterSpace = 0;
-	CBV_Range_b4.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[4].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[4].DescriptorTable.pDescriptorRanges = &CBV_Range_b4;
-	RootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b5
-	D3D12_DESCRIPTOR_RANGE CBV_Range_b5;
-	CBV_Range_b5.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-	CBV_Range_b5.NumDescriptors = 1;
-	CBV_Range_b5.BaseShaderRegister = 5;
-	CBV_Range_b5.RegisterSpace = 0;
-	CBV_Range_b5.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[5].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[5].DescriptorTable.pDescriptorRanges = &CBV_Range_b5;
-	RootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-	// b6
-	D3D12_DESCRIPTOR_RANGE CBV_Range_b6;
-	CBV_Range_b6.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-	CBV_Range_b6.NumDescriptors = 1;
-	CBV_Range_b6.BaseShaderRegister = 6;
-	CBV_Range_b6.RegisterSpace = 0;
-	CBV_Range_b6.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[6].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[6].DescriptorTable.pDescriptorRanges = &CBV_Range_b6;
-	RootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
-
-
-	// t0
-	D3D12_DESCRIPTOR_RANGE srvRange;
-	srvRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	srvRange.NumDescriptors = 1;
-	srvRange.BaseShaderRegister = 0; // t0
-	srvRange.RegisterSpace = 0;
-	srvRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[SRV_INDEX_NUMBER].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[SRV_INDEX_NUMBER].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[SRV_INDEX_NUMBER].DescriptorTable.pDescriptorRanges = &srvRange;
-	RootParameters[SRV_INDEX_NUMBER].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-
-	// s0
-	D3D12_DESCRIPTOR_RANGE samplerRange;
-	samplerRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
-	samplerRange.NumDescriptors = 1;
-	samplerRange.BaseShaderRegister = 0; // s0
-	samplerRange.RegisterSpace = 0;
-	samplerRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	RootParameters[SAMPLER_INDEX_NUMBER].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	RootParameters[SAMPLER_INDEX_NUMBER].DescriptorTable.NumDescriptorRanges = 1;
-	RootParameters[SAMPLER_INDEX_NUMBER].DescriptorTable.pDescriptorRanges = &samplerRange;
-	RootParameters[SAMPLER_INDEX_NUMBER].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-
-
+	SetRoot(RootParameters, 3, 0, 0);  // b0
+	SetRoot(RootParameters, 19, 1, 1);  // b1
+	SetRoot(RootParameters, 35, 2, 2);  // b2
+	SetCBV(Range, RootParameters, 3, 3); // b3
+	SetCBV(Range, RootParameters, 4, 4); // b4
+	SetCBV(Range, RootParameters, 5, 5); // b5
+	SetCBV(Range, RootParameters, 6, 6); // b6
+	SetSRV(Range, RootParameters, 0, SRV_INDEX_NUMBER);  // t0
+	SetSampler(Range, RootParameters, 0, SAMPLER_INDEX_NUMBER); // s0
 
 	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;
