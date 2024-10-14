@@ -99,7 +99,6 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
 	CmdList->SetGraphicsRoot32BitConstants(4, 1, &Alphainfo, 0);
-	//CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
 }
 
 // 조명 사용 비활성화

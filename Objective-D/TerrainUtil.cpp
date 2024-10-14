@@ -97,9 +97,9 @@ void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer&
 	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3, BufferIndex);
 }
 
-void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, float AlphaValue, int BufferIndex) {
+void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CBVUtil::UpdateCBV(CmdList, &Alphainfo, sizeof(Alphainfo), HAB_Struct, 4, BufferIndex);
+	CmdList->SetGraphicsRoot32BitConstants(4, 1, &Alphainfo, 0);
 }
 
 // 쉐이더로 터레인 변환 값을 전달한다
