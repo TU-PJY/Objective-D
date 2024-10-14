@@ -15,6 +15,9 @@ extern HeapAndBuffer ImageFlipHB;
 // ahpha CBV
 extern HeapAndBuffer AlphaHB;
 
+// light CBV
+extern HeapAndBuffer LightHB;
+
 
 void CreateCBVResource(ID3D12Device* Device);
 inline void ReserveHB(HeapAndBuffer& HB_Struct, int ReserveSize) {

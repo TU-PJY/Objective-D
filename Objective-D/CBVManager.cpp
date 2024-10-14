@@ -8,6 +8,9 @@ HeapAndBuffer ImageFlipHB; // image flip
 AlphaInfo Alphainfo;
 HeapAndBuffer AlphaHB; // texture alpha
 
+LightInfo Lightinfo;
+HeapAndBuffer LightHB;
+
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 void CreateCBVResource(ID3D12Device* Device) {
 	// texture flip
@@ -21,4 +24,8 @@ void CreateCBVResource(ID3D12Device* Device) {
 	// texture alpha
 	ReserveHB(AlphaHB, 2);
 	CBVUtil::CreateCBV(Device, &Alphainfo, sizeof(Alphainfo), AlphaHB, 2);
+
+	// light data
+	ReserveHB(LightHB, 1);
+	CBVUtil::CreateCBV(Device, &Lightinfo, sizeof(Lightinfo), LightHB, 1);
 }

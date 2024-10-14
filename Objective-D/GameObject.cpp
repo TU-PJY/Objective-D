@@ -68,6 +68,16 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
 void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
+	LightInfo light{
+		{0.0f, -1.0f, -0.5f },
+		0.0,
+		{1.0f, 1.0f, 1.0f },
+		0.0,
+		{1.0f, 1.0f, 1.0f },
+		5.0,
+	};
+	CBVUtil::UpdateCBV(CmdList, &light, sizeof(light), LightHB, 5, 0);
+
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
 		MeshPtr->Render(CmdList);

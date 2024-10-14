@@ -176,7 +176,7 @@
       <Filter>[7]____________[ Resource ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D_Main.h">
-      <Filter>[4]____________[ DirectX 3D ]\[ WICTextureLoader12 ]</Filter>
+      <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
