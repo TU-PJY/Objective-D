@@ -12,7 +12,7 @@ AlphaInfo Alphainfo;
 // texture alpha
 std::vector<HeapAndBuffer> AlphaHB;
 
-// 루트상수로 사용할 버퍼 및 힙을 설정한다.
+// 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 // 필요에 따라 여러개 만들어 각 객체에 사용할 수도 있다.
 void CreateCBVResource(ID3D12Device* Device) {
 	// texture flip

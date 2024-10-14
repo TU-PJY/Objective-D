@@ -17,13 +17,13 @@ cbuffer cbCameraInfo : register(b2) {
 
 // 텍스처 반전
 cbuffer cdFlipInfo : register(b3) {
-    int X_Flip = 0; // 텍스처 좌우반전 여부
-    int Y_Flip = 0; // 텍스처 상하반전 여부
+    int X_Flip; // 텍스처 좌우반전 여부
+    int Y_Flip; // 텍스처 상하반전 여부
 }
 
 // 텍스처 투명도
 cbuffer cdAlphaInfo : register(b4) {
-    float AlphaValue = 0.0f;
+    float AlphaValue;
 }
 
 Texture2D gTexture : register(t0); // 텍스처 샘플링을 위한 텍스처 리소스
@@ -62,8 +62,14 @@ VS_OUTPUT VSPseudoLighting(VS_INPUT input) {
 }
 
 float4 PSPseudoLighting(VS_OUTPUT input) : SV_TARGET {
+    // 텍스처에서 샘플링한 색상
     float4 texColor = gTexture.Sample(gSampler, input.uv);
-    texColor.a = AlphaValue;
-    
-    return texColor; // 텍스처 색상을 반환
+
+    // 매쉬의 기본 색상과 텍스처 색상을 곱함
+    float4 finalColor = float4(gf3ObjectColor, 1.0f) + texColor;
+
+    // AlphaValue를 사용하여 투명도를 조정 (텍스처의 알파와 함께 사용)
+    finalColor.a = texColor.a * AlphaValue;
+
+    return finalColor; // 최종 색상을 반환
 }

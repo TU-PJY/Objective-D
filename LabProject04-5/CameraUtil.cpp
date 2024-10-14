@@ -48,8 +48,6 @@ void Camera::Init(float screenWidth, float screenHeight) {
 	GenerateViewMatrix(cameraPosition, targetPosition, upDirection);
 
 	camera.GeneratePerspectiveMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
-	// 직각 투영 행렬 생성
-	//GenerateOrthoMatrix(screenWidth, screenHeight, ASPECT_RATIO, 1.0f, 1000.0f);
 }
 
 // 아래 두 함수들은 굳이 쓸 일이 없다. 
@@ -58,11 +56,6 @@ void Camera::GenerateViewMatrix() {
 }
 
 void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, XMFLOAT3 UpVector) {
-	/*Position = PositionValue;
-	LookAt = LookAtVector;
-	Up = UpVector;
-
-	GenerateViewMatrix();*/
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&PositionValue), XMLoadFloat3(&LookAtVector), XMLoadFloat3(&UpVector));
 	XMStoreFloat4x4(&ViewMatrix, viewMatrix);
 }
@@ -91,7 +84,6 @@ void Camera::RegenerateViewMatrix() {
 
 // 원근 투영 행렬을 초기화한다. 윈도우 사이즈 변경 시 이 함수가 실행된다.
 void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
-	//	Cam4x4Projection = Mat4::PerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
 	ProjectionMatrix = Mat4::Identity();
 	XMMATRIX Projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);

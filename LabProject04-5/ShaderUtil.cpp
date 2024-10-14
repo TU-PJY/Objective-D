@@ -31,7 +31,7 @@ D3D12_RASTERIZER_DESC Shader::CreateRasterizerState() {
 	D3D12_RASTERIZER_DESC RasterizerDesc;
 	::ZeroMemory(&RasterizerDesc, sizeof(D3D12_RASTERIZER_DESC));
 	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	RasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
+	RasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
 	RasterizerDesc.FrontCounterClockwise = FALSE;
 	RasterizerDesc.DepthBias = 0;
 	RasterizerDesc.DepthBiasClamp = 0.0f;
@@ -46,22 +46,6 @@ D3D12_RASTERIZER_DESC Shader::CreateRasterizerState() {
 }
 
 D3D12_BLEND_DESC Shader::CreateBlendState() {
-	/*D3D12_BLEND_DESC BlendDesc;
-	::ZeroMemory(&BlendDesc, sizeof(D3D12_BLEND_DESC));
-	BlendDesc.AlphaToCoverageEnable = FALSE;
-	BlendDesc.IndependentBlendEnable = FALSE;
-	BlendDesc.RenderTarget[0].BlendEnable = TRUE;
-	BlendDesc.RenderTarget[0].LogicOpEnable = FALSE;
-	BlendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ONE;
-	BlendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ZERO;
-	BlendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].LogicOp = D3D12_LOGIC_OP_NOOP;
-	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-
-	return(BlendDesc);*/
 	D3D12_BLEND_DESC BlendDesc;
 	::ZeroMemory(&BlendDesc, sizeof(D3D12_BLEND_DESC));
 	BlendDesc.AlphaToCoverageEnable = FALSE;
@@ -84,7 +68,7 @@ D3D12_BLEND_DESC Shader::CreateBlendState() {
 	// 쓰기 마스크 설정 (모든 채널 쓰기)
 	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-	BlendDesc.RenderTarget[0].LogicOp = D3D12_LOGIC_OP_NOOP;
+	//BlendDesc.RenderTarget[0].LogicOp = D3D12_LOGIC_OP_NOOP;
 
 	return(BlendDesc);
 }

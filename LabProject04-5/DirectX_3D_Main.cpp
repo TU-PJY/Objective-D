@@ -88,9 +88,6 @@ void DirectX_3D_Main::Update() {
 	// 객체의 변환 정보를 쉐이더로 전달한다
 	framework.PrepareRender(CmdList);
 
-	// 카메라 변환 정보를 쉐이더로 전달한다
-	camera.UpdateShaderVariables(CmdList);
-
 	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다
 	framework.Render(CmdList);
 

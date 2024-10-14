@@ -16,11 +16,11 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 
 	if(Type == RenderType::Pers)
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-
 	else if(Type == RenderType::Ortho)
 		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.01f, 10.0f);
 
 	camera.SetViewportsAndScissorRects(CmdList);
+	camera.UpdateShaderVariables(CmdList);
 }
 
 // 객체 메쉬의 색상을 설정한다. 

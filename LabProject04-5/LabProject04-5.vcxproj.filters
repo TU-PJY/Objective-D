@@ -109,9 +109,6 @@
     <ClInclude Include="Config.h">
       <Filter>[0]____________[ Configuration ]</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX_3D_Main.h">
-      <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
-    </ClInclude>
     <ClInclude Include="MeshUtil.h">
       <Filter>[3]____________[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
@@ -177,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>[7]____________[ Resource ]</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX_3D_Main.h">
+      <Filter>[4]____________[ DirectX 3D ]\[ WICTextureLoader12 ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
