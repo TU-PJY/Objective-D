@@ -7,8 +7,6 @@
 // 터레인으로 사용할 매쉬를 설정한다
 void TerrainUtil::SetMesh(Mesh* MeshPtr) {
 	TerrainMesh = MeshPtr;
-	if (TerrainMesh)
-		TerrainMesh->ReleaseUploadBuffers();
 }
 
 // 터레인을 렌더링할 쉐이더를 설정한다
