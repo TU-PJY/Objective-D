@@ -92,7 +92,7 @@ void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->SetGraphicsRootDescriptorTable(5, LightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
 }
 
-void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
+void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
 	int Index{};
 
 	if (!H_Flip && !V_Flip)     Index = 0;

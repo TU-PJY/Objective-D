@@ -26,7 +26,7 @@ public:
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void SendLightInfo(ID3D12GraphicsCommandList* CmdList);
-	void FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex);
+	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
 	void SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue);
 	void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 };

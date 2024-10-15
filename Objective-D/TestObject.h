@@ -62,22 +62,35 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		//모델 출력 예시
+		// 스카이박스 출력 예시
 		InitMatrix(CmdList, RenderType::Pers);
-		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
-		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
+		Transform::Scale(ScaleMatrix, 5.0, 5.0, 5.0);
+		Transform::RotateYX(TranslateMatrix, Rotation.x, Rotation.y);
 
-		if(!UseLight)
-			DisableLight(CmdList);
+		// 스카이박스 출력 시 조명을 비활성화 해야한다.
+		DisableLight(CmdList);
 
-		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
-		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델의 경우 (false, true), 이미지의 경우 (true, true)
-		// 이미지의 경우 SetToImageMode()함수를 실행하면 자동으로 알맞게 반전된다.
-		SetAlpha(CmdList, AlphaValue);
-		FlipTexture(CmdList, FlipHB, false, true, 0);
-		BindTexture(CmdList, Tex);
+		// 스카이박스 전용 매쉬와 텍스처를 사용해야 한다.
+		BindTexture(CmdList, SkyboxTex);
 		UseShader(CmdList, BasicShader);
-		RenderMesh(CmdList, GunMesh);
+		RenderMesh(CmdList, SkyboxMesh);
+
+		////모델 출력 예시
+		//InitMatrix(CmdList, RenderType::Pers);
+		//Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
+		//Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
+		//Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y + 180.0, Rotation.z);
+
+		//if(!UseLight)
+		//	DisableLight(CmdList);
+
+		//// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
+		//// 필요에 따라 텍스처 이미지를 반전시킨다. 모델에 따라 케바케
+		//// 이미지의 경우 SetToImageMode()함수를 실행하면 자동으로 알맞게 반전된다.
+		//SetAlpha(CmdList, AlphaValue);
+		//FlipTexture(CmdList, FlipHB, false, true, 0);
+		//BindTexture(CmdList, Tex);
+		//UseShader(CmdList, BasicShader);
+		//RenderMesh(CmdList, GunMesh);
 	}
 };

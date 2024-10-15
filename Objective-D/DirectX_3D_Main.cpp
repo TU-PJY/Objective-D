@@ -19,6 +19,9 @@ void DirectX_3D_Main::Init() {
 	ImagePannel = new Mesh;
 	ImagePannel->CreateImagePanelMesh(Device, CmdList);
 
+	SkyboxMesh = new Mesh;
+	SkyboxMesh->CreateSkyboxMesh(Device, CmdList);
+
 	// 루트상수 버퍼 및 힙을 생성한다.
 	CreateCBVResource(Device);
 

@@ -25,6 +25,7 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	// 행렬 및 카메라 초기화 시 조명을 사용하는 것으로 간주
 	EnableLight(CmdList);
 	SetAlpha(CmdList, 1.0);
+	FlipTexture(CmdList, false, false);
 }
 
 // 객체 메쉬의 색상을 설정한다. 
@@ -81,7 +82,7 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 }
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
-void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
+void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
 	int Index{};
 	
 	if (!H_Flip && !V_Flip)     Index = 0;

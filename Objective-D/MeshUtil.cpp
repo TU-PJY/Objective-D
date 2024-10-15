@@ -90,6 +90,115 @@ int Mesh::CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayD
 	return(nIntersections);
 }
 
+// 스카이박스 매쉬를 생성한다. 프로그램 실행 시 최초 1회 실행되고 그 이후에는 굳이 실행할 필요 없다.
+void Mesh::CreateSkyboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	float SkyboxVertices[][8] = {
+		// x, y, z, nx, ny, nz, u, v
+	   // Front face (중앙)
+	   { -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.2509f, 0.3339f },  // Top-left
+	   {  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.4991f, 0.3339f },  // Top-right
+	   {  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.4991f, 0.6661f },  // Bottom-right
+	   { -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.2509f, 0.6661f },  // Bottom-left
+
+	   // Back face (오른쪽)
+	   {  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.7491f, 0.3339f },  // Top-left
+	   { -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.9991f, 0.3339f },  // Top-right
+	   { -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.9991f, 0.6661f },  // Bottom-right
+	   {  1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.7491f, 0.6661f },  // Bottom-left
+
+	   // Left face (왼쪽)
+	   { -1.0f,  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0009f, 0.3339f },   // Top-left
+	   { -1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.2491f, 0.3339f },   // Top-right
+	   { -1.0f, -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.2491f, 0.6661f },   // Bottom-right
+	   { -1.0f, -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0009f, 0.6661f },   // Bottom-left
+
+	   // Right face (오른쪽 중앙)
+	   {  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.5009f, 0.3339f },    // Top-left
+	   {  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.7491f, 0.3339f },    // Top-right
+	   {  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.7491f, 0.6661f },    // Bottom-right
+	   {  1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.5009f, 0.6661f },    // Bottom-left
+
+	   // Top face (중앙 아래)
+	   { -1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.2509f, 0.0009f },    // Top-left
+	   {  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.4991f, 0.0009f },    // Top-right
+	   {  1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.4991f, 0.3339f },    // Bottom-right
+	   { -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.2509f, 0.3339f },    // Bottom-left
+
+	   // Bottom face (중앙 위)
+	   { -1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.2509f, 0.6661f },   // Top-left
+	   {  1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.4991f, 0.6661f },   // Top-right
+	   {  1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.4991f, 0.9991f },   // Bottom-right
+	   { -1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.2509f, 0.9991f }    // Bottom-left
+	};
+
+	// 인덱스 배열 (각 면을 두 개의 삼각형으로 구성)
+	UINT indices[] = {
+		// Front face (시계 방향)
+		0, 2, 1, 0, 3, 2,
+		// Back face (시계 방향)
+		4, 6, 5, 4, 7, 6,
+		// Left face (시계 방향)
+		8, 10, 9, 8, 11, 10,
+		// Right face (시계 방향)
+		12, 14, 13, 12, 15, 14,
+		// Top face (시계 방향)
+		16, 18, 17, 16, 19, 18,
+		// Bottom face (시계 방향)
+		20, 22, 21, 20, 23, 22
+	};
+
+	// 정점 개수와 인덱스 개수 설정
+	Vertices = 24;
+	Indices = 36;
+
+	// 정점 및 관련 데이터 할당
+	Position = new XMFLOAT3[Vertices];
+	Normal = new XMFLOAT3[Vertices];
+	TextureCoords = new XMFLOAT2[Vertices];
+	PnIndices = new UINT[Indices];
+
+	// SkyboxVertices 데이터를 이용하여 각 정점의 포지션, 노말, 텍스처 좌표를 설정
+	for (UINT i = 0; i < Vertices; i++) {
+		Position[i] = XMFLOAT3(SkyboxVertices[i][0], SkyboxVertices[i][1], SkyboxVertices[i][2]);
+		Normal[i] = XMFLOAT3(SkyboxVertices[i][3], SkyboxVertices[i][4], SkyboxVertices[i][5]);
+		TextureCoords[i] = XMFLOAT2(SkyboxVertices[i][6], SkyboxVertices[i][7]);
+	}
+
+	// 인덱스 데이터 복사
+	for (UINT i = 0; i < Indices; i++) {
+		PnIndices[i] = indices[i];
+	}
+
+	// DirectX 버퍼 생성 및 뷰 설정 (원래 코드와 동일)
+	PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
+	NormalBuffer = ::CreateBufferResource(Device, CmdList, Normal, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &NormalUploadBuffer);
+	TextureCoordBuffer = ::CreateBufferResource(Device, CmdList, TextureCoords, sizeof(XMFLOAT2) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &TextureCoordUploadBuffer);
+
+	// 버퍼 뷰 설정
+	NumVertexBufferViews = 3;
+	VertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[NumVertexBufferViews];
+
+	VertexBufferViews[0].BufferLocation = PositionBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[1].BufferLocation = NormalBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[2].BufferLocation = TextureCoordBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
+	VertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * Vertices;
+
+	// 인덱스 버퍼 생성
+	IndexBuffer = ::CreateBufferResource(Device, CmdList, PnIndices, sizeof(UINT) * Indices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &IndexUploadBuffer);
+
+	// 인덱스 버퍼 뷰 설정
+	IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
+	IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
+	IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
+}
+
 // 이미지 출력을 위한 두께가 없는 정사각형 매쉬를 생성한다. 프로그램 실행 시 최초 1회 실행되고 그 이후에는 굳이 실행할 필요 없다.
 void Mesh::CreateImagePanelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	float ImagePannel[][8] = {

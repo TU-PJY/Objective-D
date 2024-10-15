@@ -42,7 +42,7 @@ void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsComman
 
 	// 샘플러 생성
 	D3D12_SAMPLER_DESC samplerDesc = {};
-	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;  // 선형 필터링
+	samplerDesc.Filter = D3D12_FILTER_ANISOTROPIC;  // 비등방 필터링
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // U 방향 랩 모드
 	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // V 방향 랩 모드
 	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // W 방향 랩 모드

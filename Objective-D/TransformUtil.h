@@ -4,6 +4,7 @@
 namespace Transform {
 	void Move(XMFLOAT4X4& Matrix, float X, float Y, float Z);
 	void Rotate(XMFLOAT4X4& Matrix, float Pitch, float Yaw, float Roll);
+	void RotateYX(XMFLOAT4X4& Matrix, float Pitch, float Yaw);
 	void Scale(XMFLOAT4X4& Matrix, float X, float Y, float Z);
 	void ImageAspect(XMFLOAT4X4& Matrix, int Width, int Height);
 }

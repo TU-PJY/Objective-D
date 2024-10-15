@@ -10,10 +10,23 @@ void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
 	Matrix = Mat4::Multiply(TranslateMat, Matrix);
 }
 
-// 회전 변환
 void Transform::Rotate(XMFLOAT4X4& Matrix, float Pitch, float Yaw, float Roll) {
 	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw( XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
 	Matrix = Mat4::Multiply(RotateMat, Matrix);
+}
+
+// Y툭 회전 후 X축 회전 변환
+void Transform::RotateYX(XMFLOAT4X4& Matrix, float Pitch, float Yaw) {
+	XMMATRIX rotationY = XMMatrixRotationY(XMConvertToRadians(-Yaw));
+	XMMATRIX rotationX = XMMatrixRotationX(XMConvertToRadians(-Pitch));
+
+	XMMATRIX rotationMat = rotationY * rotationX;
+
+	XMMATRIX currentMat = XMLoadFloat4x4(&Matrix);
+	XMMATRIX finalMat = rotationMat * currentMat;
+
+	// 결과를 XMFLOAT4X4로 다시 저장
+	XMStoreFloat4x4(&Matrix, finalMat);
 }
 
 // 스케일 변환

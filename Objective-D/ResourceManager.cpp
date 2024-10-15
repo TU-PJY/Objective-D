@@ -6,7 +6,7 @@
 
 BasicObjectShader* BasicShader;
 Mesh* GunMesh;
-Texture* Tex, *WoodTex;
+Texture* Tex, *WoodTex, * SkyboxTex;
 
 void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	BasicShader = new BasicObjectShader();
@@ -21,4 +21,5 @@ void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) 
 void LoadTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg");
 	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg");
+	SkyboxTex = new Texture(Device, CmdList, L"Resources//Image//skytex.png");
 }

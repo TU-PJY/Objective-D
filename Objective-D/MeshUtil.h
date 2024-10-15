@@ -92,6 +92,7 @@ public:
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	BOOL RayIntersectionByTriangle(XMVECTOR& xmRayOrigin, XMVECTOR& xmRayDirection, XMVECTOR v0, XMVECTOR v1, XMVECTOR v2, float* pfNearHitDistance);
 	int CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection, float* pfNearHitDistance);
+	void CreateSkyboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void CreateImagePanelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode);
 	float GetHeightAtPosition(Mesh* terrainMesh, float x, float z, const XMFLOAT4X4& worldMatrix);
@@ -101,3 +102,6 @@ public:
 
 // 이미지 출력용 매쉬
 extern Mesh* ImagePannel;
+
+// 스카이박스 출력용 매쉬
+extern Mesh* SkyboxMesh;
