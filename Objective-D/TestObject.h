@@ -1,11 +1,13 @@
 #pragma once
 #include "GameObject.h"
 #include "MouseUtil.h"
+#include <cmath>
 
 class TestObject : public GameObject {
 public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
+	XMFLOAT3 RotationDest{};
 	float AlphaValue = 1.0;
 
 	bool UseLight{};
@@ -19,8 +21,8 @@ public:
 			float cyDelta = (float)(mouse.CurrentPosition().y - PrevCursorPos.y) / 5.0f;
 			mouse.SetPositionToPrev(PrevCursorPos);
 
-			Rotation.x += cyDelta;
-			Rotation.y += cxDelta;
+			RotationDest.x += cyDelta;
+			RotationDest.y += cxDelta;
 		}
 	}
 
@@ -59,6 +61,11 @@ public:
 			mouse.ReleaseMotion();
 			break;
 		}
+	}
+
+	void Update(float FT) {
+		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
+		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
 	}
 
 	void Render(CommandList CmdList) {
