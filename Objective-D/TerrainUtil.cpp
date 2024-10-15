@@ -93,8 +93,16 @@ void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
-	FlipInfo Flip{ (int)H_Flip, (int)V_Flip };
-	CBVUtil::UpdateCBV(CmdList, &Flip, sizeof(Flip), HAB_Struct, 3, BufferIndex);
+	int Index{};
+
+	if (!H_Flip && !V_Flip)     Index = 0;
+	else if (H_Flip && !V_Flip) Index = 1;
+	else if (!H_Flip && V_Flip) Index = 2;
+	else if (H_Flip && V_Flip)  Index = 3;
+
+	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[Index] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[Index]->GetGPUDescriptorHandleForHeapStart());
 }
 
 void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {

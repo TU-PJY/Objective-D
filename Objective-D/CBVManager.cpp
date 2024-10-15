@@ -39,12 +39,6 @@ void SetCBVValue(ID3D12GraphicsCommandList* CmdList) {
 	// 이미지 플립에 사용할 CBV를 설정한다.
 	CBVUtil::UpdateCBV(CmdList, &texFlip[2], sizeof(texFlip)[2], ImageFlipHB, 3, 0);
 
-	// 조명 사용 여부 CBV 값을 설정한다.
-	// 1번 인덱스: true, 0번 인덱스, false
-	UseLightInfo Uselightinfo[2] { {0}, {1} };
-	for(int i = 0; i < 2; ++i)
-		CBVUtil::UpdateCBV(CmdList, &Uselightinfo[i], sizeof(Uselightinfo[i]), BoolLightHB, 6, i);
-
 	// 조명 기본값 CBV를 설정한다.
 	LightInfo light{
 		{1.0f, -1.0f, 0.0f },  // Light Position
@@ -55,4 +49,10 @@ void SetCBVValue(ID3D12GraphicsCommandList* CmdList) {
 		5.0,  // Shadow Strength
 	};
 	CBVUtil::UpdateCBV(CmdList, &light, sizeof(light), LightHB, 5, 0);
+
+	// 조명 사용 여부 CBV 값을 설정한다.
+	// 1번 인덱스: true, 0번 인덱스, false
+	UseLightInfo Uselightinfo[2]{ {0}, {1} };
+	for (int i = 0; i < 2; ++i)
+		CBVUtil::UpdateCBV(CmdList, &Uselightinfo[i], sizeof(Uselightinfo[i]), BoolLightHB, 6, i);
 }

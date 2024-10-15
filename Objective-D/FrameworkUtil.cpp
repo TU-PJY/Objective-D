@@ -237,7 +237,7 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	SRV_INDEX_NUMBER = RootParameterNum - 2;
 	SAMPLER_INDEX_NUMBER = RootParameterNum - 1;
 
-	SetRoot(RootParameters, 3, 0, 0);  // b0
+	SetRoot(RootParameters, 0, 0, 0);  // b0, 미사용이라서 루트상수 미할당
 	SetRoot(RootParameters, 19, 1, 1);  // b1
 	SetRoot(RootParameters, 35, 2, 2);  // b2
 	SetCBV(Range, RootParameters, 3, 3); // b3
