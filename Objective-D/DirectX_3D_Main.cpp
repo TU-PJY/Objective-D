@@ -499,7 +499,7 @@ void DirectX_3D_Main::CreateShaderVariables() {}
 void DirectX_3D_Main::ReleaseShaderVariables() {}
 
 void DirectX_3D_Main::UpdateShaderVariables() {
-	float CurrentTime = Timer.GetTotalTime();
+	/*float CurrentTime = Timer.GetTotalTime();
 	float ElapsedTime = Timer.GetTimeElapsed();
 
 	CmdList->SetGraphicsRoot32BitConstants(0, 1, &CurrentTime, 0);
@@ -512,7 +512,7 @@ void DirectX_3D_Main::UpdateShaderVariables() {
 	float yCursorPos = (CursorPos.y < 0) ? 0.0f : float(CursorPos.y);
 
 	CmdList->SetGraphicsRoot32BitConstants(0, 1, &xCursorPos, 2);
-	CmdList->SetGraphicsRoot32BitConstants(0, 1, &yCursorPos, 3);
+	CmdList->SetGraphicsRoot32BitConstants(0, 1, &yCursorPos, 3);*/
 }
 
 void DirectX_3D_Main::WaitForGpuComplete() {
