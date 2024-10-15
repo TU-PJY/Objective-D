@@ -82,29 +82,16 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
 void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, HeapAndBuffer& HAB_Struct, bool H_Flip, bool V_Flip, int BufferIndex) {
-	if (!H_Flip && !V_Flip) {
-		ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[0] };
-		CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-		CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
-	}
+	int Index{};
+	
+	if (!H_Flip && !V_Flip)     Index = 0;
+	else if (H_Flip && !V_Flip) Index = 1;
+	else if (!H_Flip && V_Flip) Index = 2;
+	else if (H_Flip &&  V_Flip) Index = 3;
 
-	else if (H_Flip && !V_Flip) {
-		ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[1] };
-		CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-		CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[1]->GetGPUDescriptorHandleForHeapStart());
-	}
-
-	else if (!H_Flip && V_Flip) {
-		ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[2] };
-		CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-		CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[2]->GetGPUDescriptorHandleForHeapStart());
-	}
-
-	else if (H_Flip && V_Flip) {
-		ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[3] };
-		CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-		CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[3]->GetGPUDescriptorHandleForHeapStart());
-	}
+	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[Index] };
+	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
+	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[Index]->GetGPUDescriptorHandleForHeapStart());
 }
 
 // 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
