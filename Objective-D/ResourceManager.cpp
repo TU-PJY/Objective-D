@@ -17,7 +17,7 @@ void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Devi
 void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	// 이미지 출력용 패널 생성
 	ImagePannel = new Mesh;
-	ImagePannel->CreateImagePanelMesh(Device, CmdList);
+	ImagePannel->CreateImagePannelMesh(Device, CmdList);
 
 	// 스카이박스 출력용 매쉬 생성
 	SkyboxMesh = new Mesh;
