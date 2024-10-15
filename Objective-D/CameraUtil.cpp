@@ -60,7 +60,15 @@ void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, X
 	XMStoreFloat4x4(&ViewMatrix, viewMatrix);
 }
 
-// 카메라 행렬을 초기화 한다. DirectX_3D_Main이 이 함수를 실행하고 있으므로 직접 사용할 일은 없다.
+void Camera::SetStaticFlag(Static StaticFlag) {
+	if (StaticFlag == Static::False)
+		StaticMode = false;
+
+	else if (StaticFlag == Static::True)
+		StaticMode = true;
+}
+
+// 카메라 행렬을 초기화 한다.
 void Camera::RegenerateViewMatrix() {
 	Look = Vec3::Normalize(Look);
 	Right = Vec3::CrossProduct(Up, Look, true);
@@ -136,6 +144,32 @@ void Camera::SetCameraMode(CamMode ModeValue) {
 // 위치 이동, 시점 추적 위치 설정 등 회전각도, 위치, 벡터 관련 함수들이다.
 void Camera::SetPosition(XMFLOAT3 PositionValue) { Position = PositionValue; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
+
+void Camera::Rotate(float X, float Y, float Z) {
+	Look = XMFLOAT3(0.0, 0.0, 1.0);
+	Right = XMFLOAT3(1.0, 0.0, 0.0);
+	Up = XMFLOAT3(0.0, 1.0, 0.0);
+
+	Pitch = X;
+	Yaw = Y;
+	Roll = Z;
+
+	// 회전 행렬 생성
+	XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(Pitch, Yaw, Roll);
+
+	// 기존 Look, Right, Up 벡터를 회전 행렬에 곱하여 새로운 방향을 계산
+	XMVECTOR lookVector = XMLoadFloat3(&Look);
+	lookVector = XMVector3TransformNormal(lookVector, rotationMatrix);
+	XMStoreFloat3(&Look, lookVector);
+
+	XMVECTOR rightVector = XMLoadFloat3(&Right);
+	rightVector = XMVector3TransformNormal(rightVector, rotationMatrix);
+	XMStoreFloat3(&Right, rightVector);
+
+	XMVECTOR upVector = XMLoadFloat3(&Up);
+	upVector = XMVector3TransformNormal(upVector, rotationMatrix);
+	XMStoreFloat3(&Up, upVector);
+}
 
 void Camera::SetLookAtPosition(XMFLOAT3 LookAtValue) { LookAt = LookAtValue; }
 XMFLOAT3& Camera::GetLookAtPosition() { return(LookAt); }
@@ -213,7 +247,7 @@ void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
 }
 
 
-// 프러스텀 관련 함수들, 정확히는 잘 모르겠음
+// 프러스텀 관련 함수들
 void Camera::CalculateFrustumPlanes() {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 	FrustumView.Transform(FrustumWorld, XMMatrixInverse(NULL, XMLoadFloat4x4(&ViewMatrix)));

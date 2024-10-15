@@ -8,9 +8,6 @@
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 
-enum class RenderType
-{ Pers, Ortho };
-
 // 각 객체에 선언 가능한 벡터 삼형제 구조체
 typedef struct Vector {
 	XMFLOAT3 Up;

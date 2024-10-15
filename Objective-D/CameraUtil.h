@@ -7,9 +7,9 @@ class Camera {
 protected:
 	XMFLOAT3						Position{};
 
-	XMFLOAT3						Right{};
-	XMFLOAT3						Up{};
-	XMFLOAT3						Look{};
+	XMFLOAT3						Right{1.0, 0.0, 0.0};
+	XMFLOAT3						Up{0.0, 1.0, 0.0};
+	XMFLOAT3						Look{0.0, 0.0, 1.0};
 
 	float           				Pitch{};
 	float           				Roll{};
@@ -32,6 +32,9 @@ protected:
 private:
 	CamMode Mode{};
 
+	// 활성화 시 초기 행렬이 쉐이더에 전송된다.
+	bool StaticMode{};
+
 public:
 	D3D12_VIEWPORT					Viewport{};
 	XMFLOAT4X4						ViewMatrix{};
@@ -50,6 +53,7 @@ public:
 
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
+	void SetStaticFlag(Static StaticFlag);
 	void RegenerateViewMatrix();
 	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
 	void GenerateOrthoMatrix(int Width, int Height, float AspRatio, float Near, float Far);
@@ -60,6 +64,8 @@ public:
 
 	void SetPosition(XMFLOAT3 PositionValue);
 	XMFLOAT3& GetPosition();
+
+	void Rotate(float X, float Y, float Z);
 
 	void SetLookAtPosition(XMFLOAT3 LookAtValue);
 	XMFLOAT3& GetLookAtPosition();
