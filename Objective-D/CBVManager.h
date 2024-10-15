@@ -20,6 +20,7 @@ extern HeapAndBuffer BoolLightHB;
 
 
 void CreateCBVResource(ID3D12Device* Device);
+void SetCBVValue(ID3D12GraphicsCommandList* CmdList);
 inline void ReserveHB(HeapAndBuffer& HB_Struct, int ReserveSize) {
 	HB_Struct.Buffer.reserve(ReserveSize);
 	HB_Struct.Heap.reserve(ReserveSize);
