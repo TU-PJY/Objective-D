@@ -15,14 +15,7 @@ void DirectX_3D_Main::Init() {
 	// StartMode.cpp의 StartMode 변경 시 시작 모드 변경이 가능하다.
 	framework.Init(Device, CmdList, StartMode);
 
-	// 이미지 출력용 패널 생성
-	ImagePannel = new Mesh;
-	ImagePannel->CreateImagePanelMesh(Device, CmdList);
-
-	SkyboxMesh = new Mesh;
-	SkyboxMesh->CreateSkyboxMesh(Device, CmdList);
-
-	// 루트상수 버퍼 및 힙을 생성한다.
+	// CBV를 생성한다.
 	CreateCBVResource(Device);
 
 	// 카메라 초기 설정(완전 초기값)
@@ -36,8 +29,6 @@ void DirectX_3D_Main::Init() {
 	CmdList->Close();
 	ID3D12CommandList* CmdLists[] = { CmdList };
 	CmdQueue->ExecuteCommandLists(1, CmdLists);
-
-	SetCBVValue(CmdList);
 
 	WaitForGpuComplete();
 

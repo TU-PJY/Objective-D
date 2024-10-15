@@ -99,9 +99,3 @@ public:
 	bool IsPointInTriangle(XMFLOAT2 pt, XMFLOAT2 v0, XMFLOAT2 v1, XMFLOAT2 v2);
 	float ComputeHeightOnTriangle(XMFLOAT3 pt, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
 };
-
-// 이미지 출력용 매쉬
-extern Mesh* ImagePannel;
-
-// 스카이박스 출력용 매쉬
-extern Mesh* SkyboxMesh;

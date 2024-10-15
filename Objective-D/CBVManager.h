@@ -6,22 +6,21 @@
 typedef struct {
 	std::vector<ID3D12DescriptorHeap*> Heap;
 	std::vector<ID3D12Resource*> Buffer;
-}HeapAndBuffer;
+}CBV;
 
 // flip CBV
-extern HeapAndBuffer FlipHB;
-extern HeapAndBuffer ImageFlipHB;
+extern CBV FlipCBV;
+extern CBV ImageFlipCBV;
 
 // light CBV
-extern HeapAndBuffer LightHB;
+extern CBV LightCBV;
 
 // light bool info CBV
-extern HeapAndBuffer BoolLightHB;
+extern CBV BoolLightCBV;
 
 
 void CreateCBVResource(ID3D12Device* Device);
-void SetCBVValue(ID3D12GraphicsCommandList* CmdList);
-inline void ReserveHB(HeapAndBuffer& HB_Struct, int ReserveSize) {
-	HB_Struct.Buffer.reserve(ReserveSize);
-	HB_Struct.Heap.reserve(ReserveSize);
+inline void ReserveCBV(CBV& CBV_Struct, int ReserveSize) {
+	CBV_Struct.Buffer.reserve(ReserveSize);
+	CBV_Struct.Heap.reserve(ReserveSize);
 }

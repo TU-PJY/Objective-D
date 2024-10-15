@@ -6,19 +6,27 @@
 
 BasicObjectShader* BasicShader;
 Mesh* GunMesh;
-Texture* Tex, *WoodTex, * SkyboxTex;
+Texture* Tex, *WoodTex, *SkyboxTex;
 
-void LoadShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	BasicShader = new BasicObjectShader();
 	BasicShader->CreateShader(Device, RootSignature);
 	BasicShader->CreateShaderDepthNone(Device, RootSignature);
 }
 
-void LoadMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	// 이미지 출력용 패널 생성
+	ImagePannel = new Mesh;
+	ImagePannel->CreateImagePanelMesh(Device, CmdList);
+
+	// 스카이박스 출력용 매쉬 생성
+	SkyboxMesh = new Mesh;
+	SkyboxMesh->CreateSkyboxMesh(Device, CmdList);
+
 	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MeshType::Binary);
 }
 
-void LoadTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg");
 	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg");
 	SkyboxTex = new Texture(Device, CmdList, L"Resources//Image//skytex.png");

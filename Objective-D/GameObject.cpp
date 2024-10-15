@@ -90,17 +90,12 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bo
 	else if (!H_Flip && V_Flip) Index = 2;
 	else if (H_Flip &&  V_Flip) Index = 3;
 
-	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[Index] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[Index]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, FlipCBV, Index, 3);
 }
 
 // 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { ImageFlipHB.Heap[0] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(3, ImageFlipHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
-
+	CBVUtil::InputCBV(CmdList, ImageFlipCBV, 0, 3);
 	DisableLight(CmdList);
 }
 
@@ -112,22 +107,17 @@ void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) 
 
 // 조명 사용 비활성화
 void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[0] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0, 6);
 }
 
 // 조명 사용 활성화
 void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[1] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[1]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1, 6);
 }
 
+// 쉐이더에 조명 데이터 전송
 void GameObject::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { LightHB.Heap[0] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(5, LightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, LightCBV, 0, 5);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

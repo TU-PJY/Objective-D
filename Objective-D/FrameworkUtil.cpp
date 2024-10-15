@@ -6,15 +6,17 @@
 
 // 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
 void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction) {
-	// 쉐이더를 로드하고 시작 모드를 실행한다
+	// 루트 시그니처를 생성한다.
 	RootSignature = CreateGraphicsRootSignature(Device);
-	LoadShaderResource(RootSignature, Device, CmdList);
 
-	// 전역 매쉬를 이 함수애서 로드한다.
-	LoadMeshResource(Device, CmdList);
+	// 전역 쉐이더를 생성한다.
+	CreateShaderResource(RootSignature, Device, CmdList);
 
-	// 전역 텍스처를 이 함수에서 로드한다.
-	LoadTextureResource(Device, CmdList);
+	// 전역 매쉬를 생성한다.
+	CreateMeshResource(Device, CmdList);
+
+	// 전역 텍스처를 생성한다
+	CreateTextureResource(Device, CmdList);
 
 	ModeFunction();
 }
@@ -167,10 +169,6 @@ void Framework::ClearAll() {
 	for (const auto& O : ObjectIndex)
 		O.second->DeleteMark = true;
 }
-
-
-
-
 
 
 

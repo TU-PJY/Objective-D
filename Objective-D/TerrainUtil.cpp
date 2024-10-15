@@ -75,21 +75,15 @@ void TerrainUtil::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void TerrainUtil::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[1] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[1]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1, 6);
 }
 
 void TerrainUtil::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { BoolLightHB.Heap[0] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(6, BoolLightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0, 6);
 }
 
 void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	ID3D12DescriptorHeap* heaps[] = { LightHB.Heap[0] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(5, LightHB.Heap[0]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, LightCBV, 0, 5);
 }
 
 void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
@@ -98,11 +92,9 @@ void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, b
 	if (!H_Flip && !V_Flip)     Index = 0;
 	else if (H_Flip && !V_Flip) Index = 1;
 	else if (!H_Flip && V_Flip) Index = 2;
-	else if (H_Flip && V_Flip)  Index = 3;
+	else if (H_Flip && V_Flip) Index = 3;
 
-	ID3D12DescriptorHeap* heaps[] = { FlipHB.Heap[Index] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(3, FlipHB.Heap[Index]->GetGPUDescriptorHandleForHeapStart());
+	CBVUtil::InputCBV(CmdList, FlipCBV, Index, 3);
 }
 
 void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
