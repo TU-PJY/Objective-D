@@ -89,7 +89,7 @@ public:
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
 		Transform::Rotate(RotateMatrix, 0.0, 90.0, 0.0);
 
-		if(!UseLight)
+		if (!UseLight)
 			DisableLight(CmdList);
 
 		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.

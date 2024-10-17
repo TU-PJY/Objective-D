@@ -17,7 +17,7 @@ typedef struct Vector {
 
 class GameObject {
 public:
-	// 각 객체는 각자의 행렬을 가진다. 
+	// 각 객체는 각자의 행렬을 가진다.
 	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 	XMFLOAT4X4 ScaleMatrix = Mat4::Identity();
@@ -36,7 +36,7 @@ public:
 	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
-	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest=true);
+	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest = true);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
 	void SendLightInfo(ID3D12GraphicsCommandList* CmdList);

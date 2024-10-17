@@ -1,7 +1,7 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 
-// Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다. 
+// Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다.
 // 예) 카메라 추적 대상 변경, 카메라 시점 변경 등
 void Camera::Update(float FT) {
 	switch (Mode) {
@@ -50,7 +50,7 @@ void Camera::Init(float screenWidth, float screenHeight) {
 	camera.GeneratePerspectiveMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
 }
 
-// 아래 두 함수들은 굳이 쓸 일이 없다. 
+// 아래 두 함수들은 굳이 쓸 일이 없다.
 void Camera::GenerateViewMatrix() {
 	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
 }
@@ -130,7 +130,7 @@ void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 	ScissorRect.bottom = yBottom;
 }
 
-// 
+//
 void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->RSSetViewports(1, &Viewport);
 	CmdList->RSSetScissorRects(1, &ScissorRect);
@@ -199,7 +199,7 @@ void Camera::Move(const XMFLOAT3& Shift) {
 	Position.z += Shift.z;
 }
 
-// 파라미터로 입력받은 위치, 업벡터, 라이트벡터, 룩벡터를 추적한다. 
+// 파라미터로 입력받은 위치, 업벡터, 라이트벡터, 룩벡터를 추적한다.
 void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed) {
 	XMFLOAT4X4 xmf4x4Rotate = Mat4::Identity();
 	XMFLOAT3 xmf3Up = UpVec;
@@ -245,7 +245,6 @@ void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
 	Up = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
 	Look = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
 }
-
 
 // 프러스텀 관련 함수들
 void Camera::CalculateFrustumPlanes() {
@@ -302,14 +301,14 @@ bool Camera::IsInFrustum(BoundingBox& BoundingBox) {
 		if (Normal.x >= 0.0f) {
 			if (Normal.y >= 0.0f) {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Min.x, Min.y, Min.z); 
+					NearPoint = XMFLOAT3(Min.x, Min.y, Min.z);
 				else
 					NearPoint = XMFLOAT3(Min.x, Min.y, Max.z);
 			}
 
 			else {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Min.x, Max.y, Min.z); 
+					NearPoint = XMFLOAT3(Min.x, Max.y, Min.z);
 				else
 					NearPoint = XMFLOAT3(Min.x, Max.y, Max.z);
 			}
@@ -318,14 +317,14 @@ bool Camera::IsInFrustum(BoundingBox& BoundingBox) {
 		else {
 			if (Normal.y >= 0.0f) {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Max.x, Min.y, Min.z); 
+					NearPoint = XMFLOAT3(Max.x, Min.y, Min.z);
 				else
 					NearPoint = XMFLOAT3(Max.x, Min.y, Max.z);
 			}
 
 			else {
 				if (Normal.z >= 0.0f)
-					NearPoint = XMFLOAT3(Max.x, Max.y, Min.z); 
+					NearPoint = XMFLOAT3(Max.x, Max.y, Min.z);
 				else
 					NearPoint = XMFLOAT3(Max.x, Max.y, Max.z);
 			}

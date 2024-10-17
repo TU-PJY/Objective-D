@@ -3,8 +3,9 @@
 #include <fstream>
 
 enum class MeshType
-{ Text, Binary };
-
+{
+	Text, Binary
+};
 
 class CVertex {
 protected:

@@ -48,7 +48,6 @@ private:
 	HINSTANCE					hInstance;
 	HWND						hWnd;
 
-
 	IDXGIFactory4* DxgiFactory;
 	IDXGISwapChain3* DxgiSwapChain;
 	ID3D12Device* Device;

@@ -27,7 +27,7 @@ public:
 	virtual void CreateShader(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void CreateShaderDepthNone(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS);
-	void Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest=true);
+	void Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest = true);
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {}
 	virtual void ReleaseShaderVariables() {}

@@ -75,7 +75,7 @@ void DirectX_3D_Main::Update() {
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
 
-	// 카메라를 업데이트한다. 
+	// 카메라를 업데이트한다.
 	camera.Update(Timer.GetTimeElapsed());
 
 	// 프레임워크를 업데이트한다.
@@ -463,7 +463,7 @@ void DirectX_3D_Main::Destroy() {
 	if (DsvDescriptorHeap) DsvDescriptorHeap->Release();
 
 	for (int i = 0; i < SwapChainBuffers; i++) {
-		if (SwapChainBackBuffers[i]) 
+		if (SwapChainBackBuffers[i])
 			SwapChainBackBuffers[i]->Release();
 	}
 

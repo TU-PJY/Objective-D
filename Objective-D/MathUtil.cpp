@@ -29,7 +29,7 @@ void Math::UpdateVector(XMFLOAT3& Up, XMFLOAT3& Right, XMFLOAT3& Look, float Pit
 	};
 }
 
-// 벡터를 초기화 한다. 벡터를 사용해야하는 객체의 경우 반드시 이 함수를 최소 한 번 실행해야한다. 
+// 벡터를 초기화 한다. 벡터를 사용해야하는 객체의 경우 반드시 이 함수를 최소 한 번 실행해야한다.
 void Math::InitVector(XMFLOAT3& Up, XMFLOAT3& Right, XMFLOAT3& Look) {
 	Up = XMFLOAT3(0.0, 1.0, 0.0);
 	Right = XMFLOAT3(1.0, 0.0, 0.0);

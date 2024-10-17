@@ -16,7 +16,7 @@ Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Direc
 	}
 }
 
-Mesh::Mesh(){}
+Mesh::Mesh() {}
 
 Mesh::~Mesh() {
 	if (Position) delete[] Position;

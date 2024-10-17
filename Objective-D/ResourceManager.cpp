@@ -6,7 +6,7 @@
 
 BasicObjectShader* BasicShader;
 Mesh* GunMesh;
-Texture* Tex, *WoodTex, *SkyboxTex;
+Texture* Tex, * WoodTex, * SkyboxTex;
 
 void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	BasicShader = new BasicObjectShader();

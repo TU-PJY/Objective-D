@@ -3,11 +3,11 @@
 
 #include "TestObject.h"
 
-// 해당 cpp파일과 h파일은 특정한 모드를 실행하고, 해당 모드에 존재하는 객체들을 컨트롤하기 위한 파일이다. 
+// 해당 cpp파일과 h파일은 특정한 모드를 실행하고, 해당 모드에 존재하는 객체들을 컨트롤하기 위한 파일이다.
 // 반드시 cpp, h파일로 분리되어있어야 하며, 각 모드에 따라 네임스페이스로 구분되어야한다.
 // 게임_모드::게임모드() 식으로 모드 함수 네임스페이스와 모드 이름을 작성하는 것을 권장한다
 // 아래와 같은 형태의 모드 실행 함수 및 컨트롤러 함수를 작성해주기만 하면 프레임워크가 알아서 해준다.
-// 프로그램 시작 시 아래의 함수들은 [ DirectX 3D ] -> [ Main ] -> DirectX_3D_Main.cpp에 있는 Init() 함수에서 실행된다. 
+// 프로그램 시작 시 아래의 함수들은 [ DirectX 3D ] -> [ Main ] -> DirectX_3D_Main.cpp에 있는 Init() 함수에서 실행된다.
 // 관련 내용은 DirectX_3D_Main.cpp에서 설명하도록 한다.
 
 // 간편한 모드 코드 작성을 위해 [ Template ] 필터에 템플릿을 만들어 두었으니 복붙한 후 함수 이름과 네임스페이스 이름을 바꾸면 된다.
@@ -18,7 +18,7 @@ void Mode1::Start() {
 	framework.AddObject(new TestObject, "test_object", Layer::L1);
 
 	// 여기에 모드 시작 시 필요한 작업 추가 (객체 추가 등)
-	
+
 	// 키보드 컨트롤러 함수 포인터를 프레임워크에 등록
 	framework.RegisterKeyController(KeyboardController);
 	// 마우스 컨트롤러 함수 포인터를 프레임워크에 등록

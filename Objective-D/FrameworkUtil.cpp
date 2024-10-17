@@ -1,5 +1,6 @@
 #include "FrameworkUtil.h"
 #include "ResourceManager.h"
+#include "CBVUtil.h"
 #include <array>
 
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
@@ -110,8 +111,8 @@ void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer InputLaye
 	Object->ObjectTag = Tag;
 }
 
-// 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
-// 이 코드가 실행되는 시점에 즉시 삭제되지 않음에 유의한다. 
+// 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다.
+// 이 코드가 실행되는 시점에 즉시 삭제되지 않음에 유의한다.
 // 삭제 마크가 표시된 객체는 UpdateObjectIndex()에서 최종적으로 삭제된다.
 // 클래스 내부에서 this 포인터로도 자신을 삭제할 수 있다.
 void Framework::DeleteObject(GameObject* Object) {
@@ -171,7 +172,6 @@ void Framework::UpdateObjectIndex() {
 	}
 }
 
-
 /////////////////////
 
 void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex) {
@@ -220,7 +220,6 @@ void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>&
 	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 }
-
 
 // 루트 시그니처를 생성한다
 ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device) {

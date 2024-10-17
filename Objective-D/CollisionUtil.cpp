@@ -1,6 +1,6 @@
 #include "CollisionUtil.h"
 
-// 충돌 처리를 담당하는 유틸이다. 
+// 충돌 처리를 담당하는 유틸이다.
 // 서로 다른 종류의 바운딩 객체와도 비교 가능하며, 객체가 가지는 위치, 회전, 크기를 파라미터에 넣어주면 된다.
 
 void OOBB::Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix) {
@@ -49,9 +49,6 @@ bool OOBB::CheckCollision(const BoundingSphere& Other) {
 	return false;
 }
 
-
-
-
 void AABB::Update(const XMFLOAT3& Center, const XMFLOAT3& Size) {
 	aabb.Center = Center;
 	aabb.Extents = Size;
@@ -77,7 +74,6 @@ bool AABB::CheckCollision(const BoundingOrientedBox& Other) {
 	return false;
 }
 
-
 bool AABB::CheckCollision(const BoundingSphere& Other) {
 	if (aabb.Intersects(Other)) {
 		Collide = true;
@@ -87,9 +83,6 @@ bool AABB::CheckCollision(const BoundingSphere& Other) {
 	Collide = false;
 	return false;
 }
-
-
-
 
 void Range::Update(const XMFLOAT3& Center, const float& Size) {
 	sphere.Center = Center;

@@ -5,7 +5,7 @@
 
 extern BasicObjectShader* BasicShader;
 extern Mesh* GunMesh;
-extern Texture* Tex, *WoodTex, *SkyboxTex;
+extern Texture* Tex, * WoodTex, * SkyboxTex;
 
 // 이미지 출력용 매쉬
 extern Mesh* ImagePannel;

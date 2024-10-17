@@ -1,5 +1,5 @@
 #include "TerrainUtil.h"
-#include "CBVManager.h"
+#include "CBVUtil.h"
 
 // 터레인을 담당하는 유틸이다.
 // 터레인 유틸은 한 번에 한 개의 매쉬만 가질 수 있다.
@@ -19,7 +19,7 @@ void TerrainUtil::SetTexture(Texture* TexturePtr) {
 	TerrainTexture = TexturePtr;
 }
 
-// 특정 오브젝트가 터레인의 바닥에 닿았는지 검사한다. 
+// 특정 오브젝트가 터레인의 바닥에 닿았는지 검사한다.
 // 닿았을 경우 true를 리턴한다.
 bool TerrainUtil::CheckFloor(XMFLOAT3 Position) {
 	if (TerrainMesh) {
@@ -30,10 +30,10 @@ bool TerrainUtil::CheckFloor(XMFLOAT3 Position) {
 	return false;
 }
 
-// 특정 오브젝트릐 위치를 터레인 바닥의 위치로 이동시킨다. 
+// 특정 오브젝트릐 위치를 터레인 바닥의 위치로 이동시킨다.
 // 이 함수를 업데이트 루프에서 사용할 경우 오브젝트가 터레인 바닥에서 떨어지지 않게 된다.
 void TerrainUtil::ClampToFloor(XMFLOAT3& Position) {
-	if(TerrainMesh)
+	if (TerrainMesh)
 		Position.y = TerrainMesh->GetHeightAtPosition(TerrainMesh, Position.x, Position.z, TranslateMatrix);
 }
 

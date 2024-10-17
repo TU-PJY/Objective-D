@@ -95,6 +95,9 @@
     <Filter Include="[9]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ CBV Util ]">
+      <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -178,6 +181,9 @@
     <ClInclude Include="DirectX_3D_Main.h">
       <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClInclude>
+    <ClInclude Include="CBVUtil.h">
+      <Filter>[3]____________[ Util ]\[ CBV Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -240,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>[7]____________[ Resource ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CBVUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ CBV Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

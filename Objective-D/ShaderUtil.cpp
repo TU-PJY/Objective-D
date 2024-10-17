@@ -220,7 +220,7 @@ void Shader::OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineS
 
 // DepthTest가 true일 때만 깊이 검사 실행
 void Shader::Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest) {
-	if(DepthTest)
+	if (DepthTest)
 		OnPrepareRender(CmdList, PipelineState);
 	else
 		OnPrepareRender(CmdList, PSDepthNone);

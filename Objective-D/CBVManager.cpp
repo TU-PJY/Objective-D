@@ -1,8 +1,7 @@
 #include "CBVManager.h"
-#include "DirectX_3D.h"
+#include "CBVUtil.h"
 
 CBV FlipCBV; // texture flip
-CBV ImageFlipCBV; // image flip
 CBV LightCBV;  // light
 CBV BoolLightCBV;  // light bool info
 
@@ -13,10 +12,6 @@ void CreateCBVResource(ID3D12Device* Device) {
 	ReserveCBV(FlipCBV, 4);
 	for (int i = 0; i < 4; ++i)
 		CBVUtil::CreateCBV(Device, &TexFlip[i], sizeof(TexFlip[i]), FlipCBV, i);
-
-	// image flip
-	ReserveCBV(ImageFlipCBV, 1);
-	CBVUtil::CreateCBV(Device, &TexFlip[2], sizeof(TexFlip)[2], ImageFlipCBV, 0);
 
 	// light data
 	LightInfo Light{

@@ -11,14 +11,12 @@ typedef struct {
 
 // flip CBV
 extern CBV FlipCBV;
-extern CBV ImageFlipCBV;
 
 // light CBV
 extern CBV LightCBV;
 
 // light bool info CBV
 extern CBV BoolLightCBV;
-
 
 void CreateCBVResource(ID3D12Device* Device);
 inline void ReserveCBV(CBV& CBV_Struct, int ReserveSize) {

@@ -1,7 +1,8 @@
 #include "GameObject.h"
 #include "CameraUtil.h"
+#include "CBVUtil.h"
 
-// GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다. 
+// GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다.
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
 // 일부 함수들은 별도의 파일로 분리 예정이니 코드에 변동이 있을 수 있다.
 
@@ -14,9 +15,9 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	// 카메라 행렬을 초기화 한다
 	camera.RegenerateViewMatrix();
 
-	if(Type == RenderType::Pers)
+	if (Type == RenderType::Pers)
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-	else if(Type == RenderType::Ortho)
+	else if (Type == RenderType::Ortho)
 		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
 
 	camera.SetViewportsAndScissorRects(CmdList);
@@ -28,7 +29,7 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	FlipTexture(CmdList, false, false);
 }
 
-// 객체 메쉬의 색상을 설정한다. 
+// 객체 메쉬의 색상을 설정한다.
 void GameObject::SetColor(XMFLOAT3 Color) {
 	ModelColor = Color;
 }
@@ -84,18 +85,18 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
 void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
 	int Index{};
-	
+
 	if (!H_Flip && !V_Flip)     Index = 0;
 	else if (H_Flip && !V_Flip) Index = 1;
 	else if (!H_Flip && V_Flip) Index = 2;
-	else if (H_Flip &&  V_Flip) Index = 3;
+	else if (H_Flip && V_Flip) Index = 3;
 
 	CBVUtil::InputCBV(CmdList, FlipCBV, Index);
 }
 
-// 이미지 모드로 전환한다. 이미지 전용 반전 CBV를 사용한다.
+// 이미지 출력 모드로 전환한다. 수평 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, ImageFlipCBV, 0);
+	CBVUtil::InputCBV(CmdList, FlipCBV, 1);
 	DisableLight(CmdList);
 }
 

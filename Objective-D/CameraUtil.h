@@ -7,9 +7,9 @@ class Camera {
 protected:
 	XMFLOAT3						Position{};
 
-	XMFLOAT3						Right{1.0, 0.0, 0.0};
-	XMFLOAT3						Up{0.0, 1.0, 0.0};
-	XMFLOAT3						Look{0.0, 0.0, 1.0};
+	XMFLOAT3						Right{ 1.0, 0.0, 0.0 };
+	XMFLOAT3						Up{ 0.0, 1.0, 0.0 };
+	XMFLOAT3						Look{ 0.0, 0.0, 1.0 };
 
 	float           				Pitch{};
 	float           				Roll{};
