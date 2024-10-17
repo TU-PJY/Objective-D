@@ -237,7 +237,7 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	D3D12_DESCRIPTOR_RANGE Range{};
 
 	// 루트 파라미터
-	std::vector<D3D12_ROOT_PARAMETER> RootParameters(9, {});
+	std::vector<D3D12_ROOT_PARAMETER> RootParameters(9);
 
 	int Dummy{};
 	SetRoot(RootParameters, 0, 0, 0, Dummy);                // b0, cbFrameworkInfo | 미사용이라서 루트상수 미할당
