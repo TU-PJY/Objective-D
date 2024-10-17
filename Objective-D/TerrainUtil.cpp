@@ -80,7 +80,7 @@ void TerrainUtil::DisableLight(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
 }
 
-void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
+void TerrainUtil::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::InputCBV(CmdList, LightCBV, 0);
 }
 

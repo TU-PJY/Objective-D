@@ -58,8 +58,9 @@ public:
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
 	void SetToStaticMode();
-	void RegenerateViewMatrix();
-	void GernerateStaticMatrix();
+	void InitMatrix();
+	void InitStaticMatrix();
+	void UpdateStaticMatrix();
 	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
 	void GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
@@ -94,7 +95,8 @@ public:
 	D3D12_VIEWPORT GetViewport();
 	D3D12_RECT GetScissorRect();
 
-	void Move(const XMFLOAT3& Shift);
+	void SetPosition(float X, float Y, float Z);
+	void MoveForward(float MoveDistance);
 	void Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed);
 	void SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec);
 	void CalculateFrustumPlanes();

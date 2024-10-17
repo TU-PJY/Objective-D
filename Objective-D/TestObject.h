@@ -13,6 +13,20 @@ public:
 
 	bool UseLight{};
 
+	Vector Vec{};
+
+	TestObject() {
+		Math::InitVector(Vec.Up, Vec.Right, Vec.Look);
+	}
+
+	XMFLOAT3 GetUp() {
+		return Vec.Up;
+	}
+
+	XMFLOAT3 GetPosition() {
+		return Position;
+	}
+
 	void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {
 		if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
 			mouse.HideCursor();
@@ -67,6 +81,7 @@ public:
 	void Update(float FT) {
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
+
 	}
 
 	void Render(CommandList CmdList) {
@@ -86,7 +101,7 @@ public:
 		//모델 출력 예시
 		InitMatrix(CmdList, RenderType::Pers);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
+		Transform::SetPosition(TranslateMatrix, Position.x, Position.y, 3.0);
 		Transform::Rotate(RotateMatrix, 0.0, 90.0, 0.0);
 
 		if (!UseLight)

@@ -73,7 +73,7 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	// 이미지 모드의 경우 조명이 비활성화 된다.
 	// 
 	// 카메라 행렬을 초기화 한다
-	camera.RegenerateViewMatrix();
+	camera.InitMatrix();
 
 	if (renderType == RenderType::Pers)
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
@@ -84,7 +84,7 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	camera.UpdateShaderVariables(CmdList);
 
 
-	SendLightInfo(CmdList);
+	InputLightInfo(CmdList);
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
 		MeshPtr->Render(CmdList);
@@ -126,7 +126,7 @@ void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
 }
 
 // 쉐이더에 조명 데이터 전송
-void GameObject::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
+void GameObject::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::InputCBV(CmdList, LightCBV, 0);
 }
 

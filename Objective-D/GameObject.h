@@ -43,7 +43,7 @@ public:
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest = true);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
-	void SendLightInfo(ID3D12GraphicsCommandList* CmdList);
+	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
