@@ -34,15 +34,10 @@
 #include <DirectXCollision.h>
 #include <D3d12SDKLayers.h>
 
-enum class RenderType
-{
-	Pers, Ortho
-};
+#include <iostream>
 
-enum class Static
-{
-	False, True
-};
+enum class RenderType
+{ Pers, Ortho };
 
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;
 extern int PREV_WIDTH, PREV_HEIGHT;

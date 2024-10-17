@@ -22,7 +22,11 @@ public:
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 	XMFLOAT4X4 ScaleMatrix = Mat4::Identity();
 
+	// 매쉬 색상
 	XMFLOAT3 ModelColor{};
+
+	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
+	RenderType renderType = RenderType::Pers;
 
 	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.

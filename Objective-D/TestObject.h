@@ -100,5 +100,17 @@ public:
 		BindTexture(CmdList, Tex);
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
+
+
+		// 이미지 출력, 깊이검사를 하지 않기 때문에 되도록 최상위 레이어에서 출력되도록 하는것을 권장한다.
+		InitMatrix(CmdList, RenderType::Ortho);
+
+		// 이미지 출력 시 반드시 이미지 모드로 전환해야한다.
+		SetToImageMode(CmdList);
+		
+		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
+		BindTexture(CmdList, WoodTex);
+		UseShader(CmdList, BasicShader, false);
+		RenderMesh(CmdList, ImagePannel);
 	}
 };

@@ -13,18 +13,13 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
 
-	// 카메라 행렬을 초기화 한다
-	camera.RegenerateViewMatrix();
+	// 카메라는 일반 출력 모드로 사용한다는 것을 전제로 한다.
+	camera.SetToDefaultMode();
 
-	if (Type == RenderType::Pers)
-		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
-	else if (Type == RenderType::Ortho)
-		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
+	// 출력 모드 지정
+	renderType = Type;
 
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
-
-	// 행렬 및 카메라 초기화 시 조명을 사용하는 것으로 간주
+	// 조명을 사용하는 것으로 간주
 	EnableLight(CmdList);
 	SetAlpha(CmdList, 1.0);
 	FlipTexture(CmdList, false, false);
@@ -76,6 +71,19 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	// 조명 정보를 렌더징 전에 쉐이더로 전달한다.
 	// 이미지 모드의 경우 조명이 비활성화 된다.
+	// 
+	// 카메라 행렬을 초기화 한다
+	camera.RegenerateViewMatrix();
+
+	if (renderType == RenderType::Pers)
+		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+	else if (renderType == RenderType::Ortho)
+		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
+
+	camera.SetViewportsAndScissorRects(CmdList);
+	camera.UpdateShaderVariables(CmdList);
+
+
 	SendLightInfo(CmdList);
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)
@@ -97,6 +105,7 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bo
 // 이미지 출력 모드로 전환한다. 수평 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::InputCBV(CmdList, FlipCBV, 1);
+	camera.SetToStaticMode();
 	DisableLight(CmdList);
 }
 

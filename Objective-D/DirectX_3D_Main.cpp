@@ -19,6 +19,7 @@ void DirectX_3D_Main::Init() {
 	CreateCBVResource(Device);
 
 	// 카메라 초기 설정(완전 초기값)
+	camera.Init();
 	camera.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	camera.SetOffset(XMFLOAT3(0.0f, 0.0f, 0.0f));
 	camera.SetViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f);

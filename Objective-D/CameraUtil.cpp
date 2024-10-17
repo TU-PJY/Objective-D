@@ -29,29 +29,45 @@ Camera::Camera() {
 	MovingDelay = 0.0f;
 }
 
+
+void Camera::Init() {
+	GernerateStaticMatrix();
+}
+
+// 정적 출력 모드로 전환한다.
+void Camera::SetToStaticMode() {
+	StaticMode = true;
+}
+
+// 일반 출력 모드로 전환한다.
+void Camera::SetToDefaultMode() {
+	StaticMode = false;
+}
+
 void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4View;
-	XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
-	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4View, 0);
-
 	XMFLOAT4X4 xmf4x4Projection;
-	XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
+
+	std::cout << StaticMode << std::endl;
+
+	// 스테틱 모드 실행 시 스테틱 행렬을 쉐이더로 전달한다.
+	if (StaticMode) {
+		XMFLOAT3 StaticPosition{ 0.0, 0.0, 0.0 };
+		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&StaticViewMatrix)));
+		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&StaticProjectionMatrix)));
+		CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &StaticPosition, 32);
+	}
+
+	else {
+		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
+		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
+		CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &Position, 32);
+	}
+
+	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4View, 0);
 	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4Projection, 16);
-
-	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &Position, 32);
 }
 
-void Camera::Init(float screenWidth, float screenHeight) {
-	// 카메라의 위치와 방향 설정
-	XMFLOAT3 cameraPosition = XMFLOAT3(0.0f, 0.0f, -10.0f);
-	XMFLOAT3 targetPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	XMFLOAT3 upDirection = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	GenerateViewMatrix(cameraPosition, targetPosition, upDirection);
-
-	camera.GeneratePerspectiveMatrix(1.0f, 5000.0f, ASPECT_RATIO, 45.0f);
-}
-
-// 아래 두 함수들은 굳이 쓸 일이 없다.
 void Camera::GenerateViewMatrix() {
 	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
 }
@@ -59,14 +75,6 @@ void Camera::GenerateViewMatrix() {
 void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, XMFLOAT3 UpVector) {
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&PositionValue), XMLoadFloat3(&LookAtVector), XMLoadFloat3(&UpVector));
 	XMStoreFloat4x4(&ViewMatrix, viewMatrix);
-}
-
-void Camera::SetStaticFlag(Static StaticFlag) {
-	if (StaticFlag == Static::False)
-		StaticMode = false;
-
-	else if (StaticFlag == Static::True)
-		StaticMode = true;
 }
 
 // 카메라 행렬을 초기화 한다.
@@ -91,6 +99,17 @@ void Camera::RegenerateViewMatrix() {
 	FrustumView.Transform(FrustumWorld, XMLoadFloat4x4(&InverseView));
 }
 
+// 정적 출력을 위한 스테틱 행렬을 생성한다. UI, 이미지 등의 출력을 목적으로 하는 행렬이므로 
+// 프로그램 실행 시 최초 1회만 실행한다.
+void Camera::GernerateStaticMatrix() {
+	StaticViewMatrix = Mat4::Identity();
+
+	// 직각투영이 디폴트이다.
+	StaticProjectionMatrix = Mat4::Identity();
+	XMMATRIX Projection = XMMatrixOrthographicLH(1.0 * ASPECT_RATIO, 1.0, 0.0, 10.0);
+	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
+}
+
 // 원근 투영 행렬을 초기화한다. 윈도우 사이즈 변경 시 이 함수가 실행된다.
 void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
 	ProjectionMatrix = Mat4::Identity();
@@ -103,9 +122,9 @@ void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float As
 }
 
 // 직각 투영 행렬을 초기화 한다
-void Camera::GenerateOrthoMatrix(int Width, int Height, float AspRatio, float Near, float Far) {
+void Camera::GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far) {
 	ProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH((float)Width * AspRatio, (float)Height, Near, Far);
+	XMMATRIX Projection = XMMatrixOrthographicLH(Width * AspRatio, Height, Near, Far);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);
 
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM

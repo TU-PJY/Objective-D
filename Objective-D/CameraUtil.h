@@ -40,23 +40,28 @@ public:
 	XMFLOAT4X4						ViewMatrix{};
 	XMFLOAT4X4						ProjectionMatrix{};
 
+	// 정적 출력을 위한 스테틱 행렬 (예: UI, 이미지 등
+	XMFLOAT4X4 StaticViewMatrix{};
+	XMFLOAT4X4 StaticProjectionMatrix{};
+
 	Camera();
 	virtual ~Camera() {}
-
 	void Update(float FT);
 
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 	virtual void ReleaseShaderVariables() {}
+	void SetToDefaultMode();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
-	void Init(float screenWidth, float screenHeight);
+	void Init();
 
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
-	void SetStaticFlag(Static StaticFlag);
+	void SetToStaticMode();
 	void RegenerateViewMatrix();
+	void GernerateStaticMatrix();
 	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
-	void GenerateOrthoMatrix(int Width, int Height, float AspRatio, float Near, float Far);
+	void GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);

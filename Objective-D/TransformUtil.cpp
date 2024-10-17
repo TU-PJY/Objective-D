@@ -10,15 +10,22 @@ void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
 	Matrix = Mat4::Multiply(TranslateMat, Matrix);
 }
 
-void Transform::Rotate(XMFLOAT4X4& Matrix, float Pitch, float Yaw, float Roll) {
-	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(Pitch), XMConvertToRadians(Yaw), XMConvertToRadians(Roll));
+// 축을 지정하여 특정 각도만큼 회전 변환 시킨다.
+void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationValue, float X, float Y, float Z) {
+	XMStoreFloat4x4(&Matrix, XMMatrixRotationAxis(XMVectorSet(X, Y, Z, 0.0f), RotationValue));
+}
+
+// 각 축에 회전 각도를 부여하여 회전 변환 시킨다.
+void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationX, float RotationY, float RotationZ) {
+	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
+		XMConvertToRadians(RotationX), XMConvertToRadians(RotationY), XMConvertToRadians(RotationZ));
 	Matrix = Mat4::Multiply(RotateMat, Matrix);
 }
 
-// Y툭 회전 후 X축 회전 변환
-void Transform::RotateYX(XMFLOAT4X4& Matrix, float Pitch, float Yaw) {
-	XMMATRIX rotationY = XMMatrixRotationY(XMConvertToRadians(-Yaw));
-	XMMATRIX rotationX = XMMatrixRotationX(XMConvertToRadians(-Pitch));
+// Y축 회전 후 X축 회전 변환
+void Transform::RotateYX(XMFLOAT4X4& Matrix, float RotationX, float RotationY) {
+	XMMATRIX rotationY = XMMatrixRotationY(XMConvertToRadians(-RotationY));
+	XMMATRIX rotationX = XMMatrixRotationX(XMConvertToRadians(-RotationX));
 
 	XMMATRIX rotationMat = rotationY * rotationX;
 
