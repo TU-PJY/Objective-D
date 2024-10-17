@@ -43,8 +43,6 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4View;
 	XMFLOAT4X4 xmf4x4Projection;
 
-	std::cout << StaticMode << std::endl;
-
 	// 스테틱 모드 실행 시 스테틱 행렬을 쉐이더로 전달한다.
 	if (StaticMode) {
 		XMFLOAT3 StaticPosition{ 0.0, 0.0, 0.0 };
@@ -99,7 +97,7 @@ void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float As
 // 직각 투영 행렬을 초기화 한다
 void Camera::GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far) {
 	ProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(Width * AspRatio, Height, Near, Far);
+	XMMATRIX Projection = XMMatrixOrthographicLH(Width * AspRatio * 2.0, Height * 2.0, Near, Far);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);
 
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
@@ -114,14 +112,14 @@ void Camera::InitStaticMatrix() {
 
 	// 직각투영이 디폴트이다.
 	StaticProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(1.0 * ASPECT_RATIO, 1.0, 0.0, 10.0);
+	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT_RATIO, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }
 
 // 윈도우 사이즈 변경 시 실행된다.
 void Camera::UpdateStaticMatrix() {
 	StaticProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(1.0 * ASPECT_RATIO, 1.0, 0.0, 10.0);
+	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT_RATIO, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }
 
@@ -165,7 +163,7 @@ void Camera::SetCameraMode(CamMode ModeValue) {
 }
 
 // 위치 이동, 시점 추적 위치 설정 등 회전각도, 위치, 벡터 관련 함수들이다.
-void Camera::SetPosition(XMFLOAT3 PositionValue) { Position = PositionValue; }
+void Camera::Move(XMFLOAT3 PositionValue) { Position = PositionValue; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
 void Camera::SetLookAtPosition(XMFLOAT3 LookAtValue) { LookAt = LookAtValue; }
 XMFLOAT3& Camera::GetLookAtPosition() { return(LookAt); }
@@ -190,7 +188,7 @@ D3D12_VIEWPORT Camera::GetViewport() { return(Viewport); }
 D3D12_RECT Camera::GetScissorRect() { return(ScissorRect); }
 
 // 카메라의 위치를 변경한다.
-void Camera::SetPosition(float X, float Y, float Z) {
+void Camera::Move(float X, float Y, float Z) {
 	Position.x = X;
 	Position.y = Y;
 	Position.z = Z;

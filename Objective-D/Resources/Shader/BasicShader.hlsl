@@ -86,6 +86,7 @@ VS_OUTPUT VSTexColor(VS_INPUT input)
 float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
 {
     float4 texColor = gTexture.Sample(gSampler, input.uv);
+    float3 meshColor = gf3ObjectColor;
 
     float3 ambient = gAmbientColor * texColor.rgb;
     float3 lightDir = normalize(-gLightDirection); // 광원의 방향
@@ -96,7 +97,11 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
 
     float3 finalColorWithLight = ambient + diffuse;
     float3 finalColorWithoutLight = texColor.rgb;
+    
+    // UseLight가 0이면 조명 사용 안 함, 1이면 조명 사용함
     float3 finalColor = lerp(finalColorWithoutLight, finalColorWithLight, UseLight);
+    
+    finalColor += meshColor;
   
     float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;

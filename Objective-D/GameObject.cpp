@@ -23,6 +23,9 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	EnableLight(CmdList);
 	SetAlpha(CmdList, 1.0);
 	FlipTexture(CmdList, false, false);
+
+	// 매쉬 색상 초기화
+	SetColor(0.0, 0.0, 0.0);
 }
 
 // 객체 메쉬의 색상을 설정한다.
@@ -69,9 +72,6 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다. 커맨드 리스트, 쉐이더, 그리고 렌더링할 매쉬를 파리미터에 넣어주면 된다.
 void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
-	// 조명 정보를 렌더징 전에 쉐이더로 전달한다.
-	// 이미지 모드의 경우 조명이 비활성화 된다.
-	// 
 	// 카메라 행렬을 초기화 한다
 	camera.InitMatrix();
 
@@ -83,7 +83,8 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr) {
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
 
-
+	// 조명 정보를 렌더징 전에 쉐이더로 전달한다.
+	// 이미지 모드의 경우 조명이 비활성화 된다.
 	InputLightInfo(CmdList);
 	UpdateShaderVariables(CmdList);
 	if (MeshPtr)

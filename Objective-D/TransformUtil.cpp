@@ -5,14 +5,15 @@
 // 변환을 직접 커스텀 할 수 있도록 행렬을 레퍼런스로 전달하도록 했다
 
 // 평행이동 변환
-void Transform::SetPosition(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
+void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
 	XMMATRIX TranslateMat = XMMatrixTranslation(X, Y, Z);
 	Matrix = Mat4::Multiply(TranslateMat, Matrix);
 }
 
 // 축을 지정하여 특정 각도만큼 회전 변환 시킨다.
 void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationValue, float X, float Y, float Z) {
-	XMStoreFloat4x4(&Matrix, XMMatrixRotationAxis(XMVectorSet(X, Y, Z, 0.0f), RotationValue));
+	XMMATRIX RotateMat = XMMatrixRotationAxis(XMVectorSet(X, Y, Z, 0.0f), XMConvertToRadians(RotationValue));
+	Matrix = Mat4::Multiply(RotateMat, Matrix);
 }
 
 // 각 축에 회전 각도를 부여하여 회전 변환 시킨다.

@@ -4,6 +4,8 @@
 #include "CameraUtil.h"
 #include <cmath>
 
+#include "LineBrush.h"
+
 class TestObject : public GameObject {
 public:
 	XMFLOAT3 Position{};
@@ -13,10 +15,13 @@ public:
 
 	bool UseLight{};
 
+	LineBrush line;
+
 	Vector Vec{};
 
 	TestObject() {
 		Math::InitVector(Vec.Up, Vec.Right, Vec.Look);
+		line.SetColor(0.0, 1.0, 0.0);
 	}
 
 	XMFLOAT3 GetUp() {
@@ -101,7 +106,7 @@ public:
 		//모델 출력 예시
 		InitMatrix(CmdList, RenderType::Pers);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		Transform::SetPosition(TranslateMatrix, Position.x, Position.y, 3.0);
+		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
 		Transform::Rotate(RotateMatrix, 0.0, 90.0, 0.0);
 
 		if (!UseLight)
@@ -124,8 +129,14 @@ public:
 		SetToImageMode(CmdList);
 		
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
+		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
 		BindTexture(CmdList, WoodTex);
+
+		// 깊이 검사를 비활성화 해야한다.
 		UseShader(CmdList, BasicShader, false);
 		RenderMesh(CmdList, ImagePannel);
+
+		// 선을 그린다.
+		line.Draw(CmdList, -0.55, -0.12, mouse.x, mouse.y, 0.02, 1.0);
 	}
 };

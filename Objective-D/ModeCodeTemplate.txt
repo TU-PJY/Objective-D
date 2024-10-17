@@ -20,7 +20,7 @@ void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM
 }
 
 void Mode1::MouseMotionController(HWND hWnd) {
-
+	mouse.UpdateMousePosition(hWnd);
 }
 
 void Mode1::MouseButtonController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {

@@ -1,4 +1,5 @@
 #include "PickingUtil.h"
+#include "MouseUtil.h"
 
 // 피킹을 담당하는 유틸이다
 
@@ -12,8 +13,8 @@ bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr)
 	float yclient = HIWORD(lparam);
 
 	XMFLOAT3 xmf3pickposition;
-	xmf3pickposition.x = (((2.0f * xclient) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
-	xmf3pickposition.y = -(((2.0f * yclient) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
+	xmf3pickposition.x = mouse.x;
+	xmf3pickposition.y = mouse.y;
 	xmf3pickposition.z = 1.0f;
 
 	XMVECTOR xmvpickposition = XMLoadFloat3(&xmf3pickposition);

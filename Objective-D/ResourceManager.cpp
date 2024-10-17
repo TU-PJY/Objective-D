@@ -5,6 +5,8 @@
 // Framework::Init()에서 실행된다.
 
 BasicObjectShader* BasicShader;
+Texture* LineTex;
+
 Mesh* GunMesh;
 Texture* Tex, * WoodTex, * SkyboxTex;
 
@@ -27,6 +29,9 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 }
 
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+	// 선 그리기용 텍스처 생성
+	LineTex = new Texture(Device, CmdList, L"Resources//Image//line_tex.png");
+
 	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg");
 	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg");
 	SkyboxTex = new Texture(Device, CmdList, L"Resources//Image//skytex.png");

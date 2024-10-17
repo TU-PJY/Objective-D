@@ -1,4 +1,5 @@
 #include "MathUtil.h"
+#include <cmath>
 
 // 벡터 연산을 위한 함수들이다. 객체가 가지는 벡터 삼형제와 회전값을 파라미터에 넣어주면 된다.
 
@@ -46,4 +47,16 @@ void Math::LookAt(XMFLOAT4X4& Matrix, XMFLOAT3& Up, XMFLOAT3& Look, XMFLOAT3& Ri
 	Up = Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23));
 	Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
 	Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
+}
+
+float Math::CalcDistance2D(float FromX, float FromY, float ToX, float ToY) {
+	return  std::sqrt(std::pow(FromX - ToX, 2) + std::pow(FromY - ToY, 2));
+}
+
+float Math::CalcDegree2D(float FromX, float FromY, float ToX, float ToY) {
+	return XMConvertToDegrees(atan2(ToY - FromY, ToX - FromX));
+}
+
+float Math::CalcRadians2D(float FromX, float FromY, float ToX, float ToY) {
+	return atan2(ToY - FromY, ToX - FromX);
 }

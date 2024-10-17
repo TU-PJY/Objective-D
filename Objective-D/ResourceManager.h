@@ -4,6 +4,10 @@
 #include "TextureUtil.h"
 
 extern BasicObjectShader* BasicShader;
+
+// 선 출력용 텍스처
+extern Texture* LineTex;
+
 extern Mesh* GunMesh;
 extern Texture* Tex, * WoodTex, * SkyboxTex;
 

@@ -13,6 +13,7 @@ class MouseUtil {
 public:
 	float x{}, y{};
 	POINT PrevCursorPos{};
+	POINT ClientPosition{};
 	bool LBUTTONDOWN{}, RBUTTONDOWN{};
 
 	void HideCursor();
@@ -20,6 +21,7 @@ public:
 	void ReleaseMotion();
 	void SetPositionToPrev(POINT PrevPosition);
 	POINT CurrentPosition();
+	void UpdateMousePosition(HWND hWnd);
 	void UpdateButtonState(UINT nMessageID);
 };
 extern MouseUtil mouse;

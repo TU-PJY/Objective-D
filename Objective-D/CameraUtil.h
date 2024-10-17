@@ -68,7 +68,7 @@ public:
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);
 	void SetCameraMode(CamMode GetMode);
 
-	void SetPosition(XMFLOAT3 PositionValue);
+	void Move(XMFLOAT3 PositionValue);
 	XMFLOAT3& GetPosition();
 
 	void Rotate(float X, float Y, float Z);
@@ -95,7 +95,7 @@ public:
 	D3D12_VIEWPORT GetViewport();
 	D3D12_RECT GetScissorRect();
 
-	void SetPosition(float X, float Y, float Z);
+	void Move(float X, float Y, float Z);
 	void MoveForward(float MoveDistance);
 	void Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed);
 	void SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec);

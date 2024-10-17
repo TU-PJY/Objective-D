@@ -48,6 +48,9 @@ void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM
 
 //  마우스 모션을 지정된 객체 포인터로 전달한다
 void Mode1::MouseMotionController(HWND hWnd) {
+	// 마우스 좌표를 뷰포트 좌표로 변환한다.
+	mouse.UpdateMousePosition(hWnd);
+
 	if (auto object = framework.Find("test_object"); object)
 		object->InputMouseMotion(hWnd, mouse.PrevCursorPos);
 }

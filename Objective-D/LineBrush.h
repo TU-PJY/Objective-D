@@ -1,0 +1,28 @@
+#pragma once
+#include "DirectX_3D.h"
+#include "TextureUtil.h"
+#include "ShaderUtil.h"
+#include "MeshUtil.h"
+#include "ResourceManager.h"
+#include "CBVManager.h"
+#include "CBVUtil.h"
+#include "TransformUtil.h"
+#include "CameraUtil.h"
+#include "RootConstants.h"
+#include "MathUtil.h"
+
+class LineBrush {
+public:
+	XMFLOAT4X4 TranslateMatrix{};
+	XMFLOAT4X4 RotateMatrix{};
+	XMFLOAT4X4 ScaleMatrix{};
+	XMFLOAT3 LineColor{};
+	float TransparencyValue{ 1.0f };
+
+	float Length{}, Rotation{};
+
+	// 선의 색상을 지정한다.
+	void SetColor(float R, float G, float B);
+	void Init(ID3D12GraphicsCommandList* CmdList);
+	void Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, float X2, float Y2, float Width, float Alpha);
+};

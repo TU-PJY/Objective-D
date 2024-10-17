@@ -101,6 +101,9 @@
     <Filter Include="[9]____________[ Root Constant ]">
       <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Brush Util ]">
+      <UniqueIdentifier>{12f8bb1d-4b55-4e19-981f-78f7dc7fda6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -190,6 +193,9 @@
     <ClInclude Include="RootConstants.h">
       <Filter>[9]____________[ Root Constant ]</Filter>
     </ClInclude>
+    <ClInclude Include="LineBrush.h">
+      <Filter>[3]____________[ Util ]\[ Brush Util ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -258,6 +264,9 @@
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
       <Filter>[9]____________[ Root Constant ]</Filter>
+    </ClCompile>
+    <ClCompile Include="LineBrush.cpp">
+      <Filter>[3]____________[ Util ]\[ Brush Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
