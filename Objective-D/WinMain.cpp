@@ -28,10 +28,6 @@ Mesh* ImagePannel;
 // 스카이박스
 Mesh* SkyboxMesh;
 
-// srv, sampler 루트 파라미터 인덱스 번호
-int SRV_INDEX_NUMBER;
-int SAMPLER_INDEX_NUMBER;
-
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];

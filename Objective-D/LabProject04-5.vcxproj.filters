@@ -92,11 +92,14 @@
     <Filter Include="[8]____________[ CBV ]">
       <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[9]____________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[3]____________[ Util ]\[ CBV Util ]">
       <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[10]____________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]____________[ Root Constant ]">
+      <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +187,9 @@
     <ClInclude Include="CBVUtil.h">
       <Filter>[3]____________[ Util ]\[ CBV Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="RootConstants.h">
+      <Filter>[9]____________[ Root Constant ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -250,6 +256,9 @@
     <ClCompile Include="CBVUtil.cpp">
       <Filter>[3]____________[ Util ]\[ CBV Util ]</Filter>
     </ClCompile>
+    <ClCompile Include="RootConstants.cpp">
+      <Filter>[9]____________[ Root Constant ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
@@ -266,10 +275,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
-      <Filter>[9]____________[ Template ]</Filter>
+      <Filter>[10]____________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
-      <Filter>[9]____________[ Template ]</Filter>
+      <Filter>[10]____________[ Template ]</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

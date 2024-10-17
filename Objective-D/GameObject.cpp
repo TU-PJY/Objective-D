@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "CameraUtil.h"
 #include "CBVUtil.h"
+#include "RootConstants.h"
 
 // GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다.
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
@@ -66,7 +67,6 @@ void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* Textur
 }
 
 // 쉐이더를 적용한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 적용할 쉐이더를 파라미터로 전달하면 된다.
-// 필요에 따라 여러 종류의 쉐이더에 대해 여러번 사용할 수 있다.
 void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest) {
 	if (ShaderPtr)
 		ShaderPtr->Render(CmdList, DepthTest);
@@ -103,7 +103,7 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 // 텍스처 투명도를 설정한다.
 void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
 	AlphaInfo Alphainfo{ AlphaValue };
-	CmdList->SetGraphicsRoot32BitConstants(4, 1, &Alphainfo, 0);
+	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &Alphainfo, 0);
 }
 
 // 조명 사용 비활성화
@@ -150,6 +150,6 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
-	CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(1, 3, &ModelColor, 16);
+	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
+	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &ModelColor, 16);
 }

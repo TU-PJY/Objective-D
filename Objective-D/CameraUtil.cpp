@@ -1,5 +1,6 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
+#include "RootConstants.h"
 
 // Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다.
 // 예) 카메라 추적 대상 변경, 카메라 시점 변경 등
@@ -31,13 +32,13 @@ Camera::Camera() {
 void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4View;
 	XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
-	CmdList->SetGraphicsRoot32BitConstants(2, 16, &xmf4x4View, 0);
+	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4View, 0);
 
 	XMFLOAT4X4 xmf4x4Projection;
 	XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
-	CmdList->SetGraphicsRoot32BitConstants(2, 16, &xmf4x4Projection, 16);
+	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4Projection, 16);
 
-	CmdList->SetGraphicsRoot32BitConstants(2, 3, &Position, 32);
+	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &Position, 32);
 }
 
 void Camera::Init(float screenWidth, float screenHeight) {

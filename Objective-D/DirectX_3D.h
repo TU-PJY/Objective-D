@@ -57,9 +57,6 @@ using Microsoft::WRL::ComPtr;
 extern UINT	CbvSrvDescriptorIncrementSize;
 ID3D12Resource* CreateBufferResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, void* Data, UINT Byte, D3D12_HEAP_TYPE HeadType = D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATES ResourceState = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, ID3D12Resource** UploadBuffer = NULL);
 
-extern int SRV_INDEX_NUMBER;
-extern int SAMPLER_INDEX_NUMBER;
-
 void SetBackgroundColorRGB(int R, int G, int B);
 void SetBackgroundColor(float R, float G, float B);
 

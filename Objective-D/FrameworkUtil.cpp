@@ -1,7 +1,7 @@
 #include "FrameworkUtil.h"
 #include "ResourceManager.h"
 #include "CBVUtil.h"
-#include <array>
+#include "RootConstants.h"
 
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
 
@@ -174,15 +174,17 @@ void Framework::UpdateObjectIndex() {
 
 /////////////////////
 
-void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex) {
+void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex, int& IndexValue) {
 	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
 	RootParam[RootIndex].Constants.Num32BitValues = NumValue;
 	RootParam[RootIndex].Constants.ShaderRegister = RegisterNum;
 	RootParam[RootIndex].Constants.RegisterSpace = 0;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	IndexValue = RootIndex;
 }
 
-void SetCBV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+void SetCBV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex, CBV& CBV_Struct) {
 	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
 	Range.NumDescriptors = 1;
 	Range.BaseShaderRegister = RegisterNum;
@@ -193,9 +195,11 @@ void SetCBV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& Roo
 	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
 	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	CBVUtil::SetSignatureIndex(CBV_Struct, RootIndex);
 }
 
-void SetSRV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+void SetSRV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex, int& IndexValue) {
 	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	Range.NumDescriptors = 1;
 	Range.BaseShaderRegister = RegisterNum;
@@ -206,9 +210,11 @@ void SetSRV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& Roo
 	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
 	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+	IndexValue = RootIndex;
 }
 
-void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex) {
+void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex, int& IndexValue) {
 	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
 	Range.NumDescriptors = 1;
 	Range.BaseShaderRegister = RegisterNum;
@@ -219,6 +225,8 @@ void SetSampler(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>&
 	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
 	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+	IndexValue = RootIndex;
 }
 
 // 루트 시그니처를 생성한다
@@ -227,30 +235,28 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 
 	// 32비트 상수들을 정의
 	D3D12_DESCRIPTOR_RANGE Range{};
+
+	// 루트 파라미터
 	std::vector<D3D12_ROOT_PARAMETER> RootParameters(9, {});
-	int RootParameterNum = RootParameters.size();
 
-	// srv, sampler 인덱스는 항상 맨 끝에 위치하도록 한다
-	SRV_INDEX_NUMBER = RootParameterNum - 2;
-	SAMPLER_INDEX_NUMBER = RootParameterNum - 1;
+	int Dummy{};
+	SetRoot(RootParameters, 0, 0, 0, Dummy);                // b0, cbFrameworkInfo | 미사용이라서 루트상수 미할당
 
-	SetRoot(RootParameters, 0, 0, 0);  // b0, 미사용이라서 루트상수 미할당
-	SetRoot(RootParameters, 19, 1, 1);  // b1
-	SetRoot(RootParameters, 35, 2, 2);  // b2
+	SetRoot(RootParameters, 19, 1, 1, GAME_OBJECT_INDEX);   // b1, cbGameObjectInfo
 
-	SetCBV(Range, RootParameters, 3, 3); // b3, cbFlipInfo
-	CBVUtil::SetSignatureIndex(FlipCBV, 3);
+	SetRoot(RootParameters, 35, 2, 2, CAMERA_INDEX);        // b2, cbCameraInfo
 
-	SetRoot(RootParameters, 1, 4, 4); // b4
+	SetCBV(Range, RootParameters, 3, 3, FlipCBV);           // b3, cbFlipInfo
 
-	SetCBV(Range, RootParameters, 5, 5); // b5, cbLightInfo
-	CBVUtil::SetSignatureIndex(LightCBV, 5);
+	SetRoot(RootParameters, 1, 4, 4, ALPHA_INDEX);          // b4, cbAlphaInfo
 
-	SetCBV(Range, RootParameters, 6, 6); // b6,  cbLightUseInfo
-	CBVUtil::SetSignatureIndex(BoolLightCBV, 6);
+	SetCBV(Range, RootParameters, 5, 5, LightCBV);          // b5, cbLightInfo
 
-	SetSRV(Range, RootParameters, 0, SRV_INDEX_NUMBER);  // t0
-	SetSampler(Range, RootParameters, 0, SAMPLER_INDEX_NUMBER); // s0
+	SetCBV(Range, RootParameters, 6, 6, BoolLightCBV);      // b6, cbLightUseInfo
+
+	SetSRV(Range, RootParameters, 0, 7, SRV_INDEX);         // t0, SRV
+
+	SetSampler(Range, RootParameters, 0, 8, SAMPLER_INDEX); // s0, Sampler
 
 	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;

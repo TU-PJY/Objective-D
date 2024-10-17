@@ -1,4 +1,5 @@
 #include "TextureUtil.h"
+#include "RootConstants.h"
 #include <iostream>
 
 Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar_t* FileName) {
@@ -8,8 +9,8 @@ Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar
 void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
 	ID3D12DescriptorHeap* DescriptorHeap[] = { SRV, Sampler };
 	CmdList->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
-	CmdList->SetGraphicsRootDescriptorTable(SRV_INDEX_NUMBER, SRV->GetGPUDescriptorHandleForHeapStart());
-	CmdList->SetGraphicsRootDescriptorTable(SAMPLER_INDEX_NUMBER, Sampler->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootDescriptorTable(SRV_INDEX, SRV->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootDescriptorTable(SAMPLER_INDEX, Sampler->GetGPUDescriptorHandleForHeapStart());
 }
 
 void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap) {
