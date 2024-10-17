@@ -6,6 +6,7 @@
 typedef struct {
 	std::vector<ID3D12DescriptorHeap*> Heap;
 	std::vector<ID3D12Resource*> Buffer;
+	int SignatureIndex;
 }CBV;
 
 // flip CBV

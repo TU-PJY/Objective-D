@@ -73,15 +73,15 @@ void TerrainUtil::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void TerrainUtil::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1, 6);
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1);
 }
 
 void TerrainUtil::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0, 6);
+	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
 }
 
 void TerrainUtil::SendLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, LightCBV, 0, 5);
+	CBVUtil::InputCBV(CmdList, LightCBV, 0);
 }
 
 void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
@@ -90,9 +90,9 @@ void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, b
 	if (!H_Flip && !V_Flip)     Index = 0;
 	else if (H_Flip && !V_Flip) Index = 1;
 	else if (!H_Flip && V_Flip) Index = 2;
-	else if (H_Flip && V_Flip) Index = 3;
+	else if (H_Flip && V_Flip)  Index = 3;
 
-	CBVUtil::InputCBV(CmdList, FlipCBV, Index, 3);
+	CBVUtil::InputCBV(CmdList, FlipCBV, Index);
 }
 
 void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {

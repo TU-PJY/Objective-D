@@ -101,30 +101,6 @@ void Framework::Render(ID3D12GraphicsCommandList* CmdList) {
 	}
 }
 
-// 삭제 마크가 표시된 객체들을 컨테이너에서 삭제한다.
-// 실제 객체 삭제가 아님에 유의
-void Framework::UpdateObjectList(int Index) {
-	for (auto It = begin(ObjectList[Index]); It != end(ObjectList[Index]);) {
-		if ((*It)->DeleteMark) {
-			It = ObjectList[Index].erase(It);
-			continue;
-		}
-		++It;
-	}
-}
-
-void Framework::UpdateObjectIndex() {
-	for (auto It = begin(ObjectIndex); It != end(ObjectIndex);) {
-		if (It->second->DeleteMark) {
-			delete It->second;
-			It->second = nullptr;
-			It = ObjectIndex.erase(It);
-			continue;
-		}
-		++It;
-	}
-}
-
 // 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
 // 이 함수에서 입력한 태그는 Find()함수에서 사용된다.
 void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer InputLayer) {
@@ -136,14 +112,14 @@ void Framework::AddObject(GameObject*&& Object, const char* Tag, Layer InputLaye
 
 // 포인터를 사용하여 객체를 삭제한다. 객체에 삭제 마크를 표시한다. 
 // 이 코드가 실행되는 시점에 즉시 삭제되지 않음에 유의한다. 
-// 삭제 마크가 표시된 객체는 UpdateContainer()에서 최종적으로 삭제된다.
+// 삭제 마크가 표시된 객체는 UpdateObjectIndex()에서 최종적으로 삭제된다.
 // 클래스 내부에서 this 포인터로도 자신을 삭제할 수 있다.
 void Framework::DeleteObject(GameObject* Object) {
 	Object->DeleteMark = true;
 }
 
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
-// 해쉬 탐색을 사용하여 검색하므로 매우 빠르다.
+// 이진 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Framework::Find(const char* Tag) {
 	auto It = ObjectIndex.find(Tag);
 	if (It != std::end(ObjectIndex) && !It->second->DeleteMark)
@@ -170,6 +146,30 @@ void Framework::ClearAll() {
 		O.second->DeleteMark = true;
 }
 
+// 삭제 마크가 표시된 객체들을 컨테이너에서 삭제한다.
+// 실제 객체 삭제가 아님에 유의
+void Framework::UpdateObjectList(int Index) {
+	for (auto It = begin(ObjectList[Index]); It != end(ObjectList[Index]);) {
+		if ((*It)->DeleteMark) {
+			It = ObjectList[Index].erase(It);
+			continue;
+		}
+		++It;
+	}
+}
+
+// 삭제 마크가 표시된 객체들을 실제로 삭제한다.
+void Framework::UpdateObjectIndex() {
+	for (auto It = begin(ObjectIndex); It != end(ObjectIndex);) {
+		if (It->second->DeleteMark) {
+			delete It->second;
+			It->second = nullptr;
+			It = ObjectIndex.erase(It);
+			continue;
+		}
+		++It;
+	}
+}
 
 
 /////////////////////
@@ -238,10 +238,18 @@ ID3D12RootSignature* Framework::CreateGraphicsRootSignature(ID3D12Device* Device
 	SetRoot(RootParameters, 0, 0, 0);  // b0, 미사용이라서 루트상수 미할당
 	SetRoot(RootParameters, 19, 1, 1);  // b1
 	SetRoot(RootParameters, 35, 2, 2);  // b2
-	SetCBV(Range, RootParameters, 3, 3); // b3
+
+	SetCBV(Range, RootParameters, 3, 3); // b3, cbFlipInfo
+	CBVUtil::SetSignatureIndex(FlipCBV, 3);
+
 	SetRoot(RootParameters, 1, 4, 4); // b4
-	SetCBV(Range, RootParameters, 5, 5); // b5
-	SetCBV(Range, RootParameters, 6, 6); // b6
+
+	SetCBV(Range, RootParameters, 5, 5); // b5, cbLightInfo
+	CBVUtil::SetSignatureIndex(LightCBV, 5);
+
+	SetCBV(Range, RootParameters, 6, 6); // b6,  cbLightUseInfo
+	CBVUtil::SetSignatureIndex(BoolLightCBV, 6);
+
 	SetSRV(Range, RootParameters, 0, SRV_INDEX_NUMBER);  // t0
 	SetSampler(Range, RootParameters, 0, SAMPLER_INDEX_NUMBER); // s0
 
