@@ -50,16 +50,12 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&StaticViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&StaticProjectionMatrix)));
 		RCUtil::Input(CmdList, &StaticPosition, CAMERA_INDEX, 3, 32);
-		RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
-		RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 	}
 
 	else {
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
 		RCUtil::Input(CmdList, &Position, CAMERA_INDEX, 3, 32);
-		RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
-		RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 	}
 
 	RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);

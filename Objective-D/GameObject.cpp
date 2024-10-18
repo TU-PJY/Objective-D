@@ -20,8 +20,12 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	// 조명을 사용하는 것으로 간주
 	EnableLight(CmdList);
 
+	// 텍스처 상태 초기화
 	AlphaValue = 1.0f;
 	FlipTexture(CmdList, false, false);
+
+	// 카메라 모드 초기화
+	camera.SetToDefaultMode();
 
 	// 매쉬 색상 초기화
 	SetColor(0.0, 0.0, 0.0);
