@@ -1,6 +1,7 @@
 #include "CameraUtil.h"
 #include "FrameworkUtil.h"
 #include "RootConstants.h"
+#include "RootConstantUtil.h"
 
 // Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다.
 // 예) 카메라 추적 대상 변경, 카메라 시점 변경 등
@@ -48,17 +49,21 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 		XMFLOAT3 StaticPosition{ 0.0, 0.0, 0.0 };
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&StaticViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&StaticProjectionMatrix)));
-		CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &StaticPosition, 32);
+		RCUtil::Input(CmdList, &StaticPosition, CAMERA_INDEX, 3, 32);
+		RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
+		RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 	}
 
 	else {
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
-		CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 3, &Position, 32);
+		RCUtil::Input(CmdList, &Position, CAMERA_INDEX, 3, 32);
+		RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
+		RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 	}
 
-	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4View, 0);
-	CmdList->SetGraphicsRoot32BitConstants(CAMERA_INDEX, 16, &xmf4x4Projection, 16);
+	RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 }
 
 // 카메라 행렬을 초기화 한다.

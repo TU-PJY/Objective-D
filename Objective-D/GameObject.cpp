@@ -2,6 +2,7 @@
 #include "CameraUtil.h"
 #include "CBVUtil.h"
 #include "RootConstants.h"
+#include "RootConstantUtil.h"
 
 // GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다.
 // 모든 객체는 반드시 이 클래스로부터 상복받아야 프레임워크가 객체를 업데이트하고 렌더링한다.
@@ -12,9 +13,6 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
-
-	// 카메라는 일반 출력 모드로 사용한다는 것을 전제로 한다.
-	camera.SetToDefaultMode();
 
 	// 출력 모드 지정
 	renderType = Type;
@@ -101,13 +99,12 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bo
 	else if (!H_Flip && V_Flip) Index = 2;
 	else if (H_Flip && V_Flip) Index = 3;
 
-	CBVUtil::InputCBV(CmdList, FlipCBV, Index);
+	CBVUtil::Input(CmdList, FlipCBV, Index);
 }
 
 // 이미지 출력 모드로 전환한다. 수평 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, FlipCBV, 1);
-	camera.SetToStaticMode();
+	CBVUtil::Input(CmdList, FlipCBV, 1);
 	DisableLight(CmdList);
 }
 
@@ -115,19 +112,20 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float Alpha) {
 	AlphaValue = Alpha;
 }
+
 // 조명 사용 비활성화
 void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
 }
 
 // 조명 사용 활성화
 void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1);
+	CBVUtil::Input(CmdList, BoolLightCBV, 1);
 }
 
 // 쉐이더에 조명 데이터 전송
 void GameObject::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, LightCBV, 0);
+	CBVUtil::Input(CmdList, LightCBV, 0);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
@@ -161,7 +159,7 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &ModelColor, 16);
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 }

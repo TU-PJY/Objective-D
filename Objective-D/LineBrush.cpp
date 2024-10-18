@@ -9,6 +9,7 @@
 #include "CameraUtil.h"
 #include "RootConstants.h"
 #include "MathUtil.h"
+#include "RootConstantUtil.h"
 
 // 선의 색상을 지정한다.
 void LineBrush::SetColor(float R, float G, float B) {
@@ -19,12 +20,15 @@ void LineBrush::SetColor(float R, float G, float B) {
 
 void LineBrush::Init(ID3D12GraphicsCommandList* CmdList) {
 	TranslateMatrix = Mat4::Identity();
-	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
 	TransparencyValue = 1.0f;
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
 
 	camera.SetToStaticMode();
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
+	camera.InitMatrix();
+	camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0, 10.0);
+	camera.SetViewportsAndScissorRects(CmdList);
+	camera.UpdateShaderVariables(CmdList);
 }
 
 // 선을 그린다.
@@ -41,23 +45,16 @@ void LineBrush::Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, flo
 	Transform::Move(TranslateMatrix, Length / 2.0, 0.0, 0.0);
 	Transform::Scale(ScaleMatrix, Width + Length, Width, 1.0);
 
-	AlphaInfo Alphainfo{ TransparencyValue };
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &Alphainfo, 0);
-
 	LineTex->Render(CmdList);
-	BasicShader->Render(CmdList, true);
+	BasicShader->Render(CmdList, false);
 
-	camera.InitMatrix();
-	camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
-
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
-	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &LineColor, 16);
+
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &LineColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &TransparencyValue, ALPHA_INDEX, 1, 0);
 
 	ImagePannel->Render(CmdList);
 }

@@ -53,7 +53,7 @@ public:
 	void SetToDefaultMode();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
-	void Init();
+
 
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);

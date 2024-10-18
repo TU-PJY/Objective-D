@@ -24,7 +24,7 @@ public:
 
 	TestObject() {
 		Math::InitVector(Vec.Up, Vec.Right, Vec.Look);
-		line.SetColor(0.0, 1.0, 0.0);
+		line.SetColor(1.0, 1.0, 1.0);
 		Position.z = 3.0;
 	}
 
@@ -90,6 +90,7 @@ public:
 	void Update(float FT) {
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
+		//camera.Rotate(Rotation.x * 0.01, Rotation.y * 0.01, 0.0);
 	}
 
 	void Render(CommandList CmdList) {
@@ -112,5 +113,15 @@ public:
 		// AABB, Range는 순서 무관
 		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
 		oobb.Render(CmdList);
+
+		InitMatrix(CmdList, RenderType::Ortho);
+		SetToImageMode(CmdList);
+		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
+		Transform::Move(TranslateMatrix, mouse.x, mouse.y, 0.0);
+		BindTexture(CmdList, WoodTex);
+		UseShader(CmdList, BasicShader, false);
+		RenderMesh(CmdList, ImagePannel);
+
+		line.Draw(CmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);
 	}
 };

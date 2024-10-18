@@ -3,6 +3,7 @@
 #include "CBVUtil.h"
 #include "RootConstants.h"
 #include "TransformUtil.h"
+#include "RootConstantUtil.h"
 #include "Config.h"
 
 // 충돌 처리를 담당하는 유틸이다.
@@ -29,9 +30,8 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(QuaternionForMatrix);
 	XMStoreFloat4x4(&RotateMatrix, rotationMatrix);
 
-	camera.SetToDefaultMode();
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
-	CBVUtil::InputCBV(CmdList, FlipCBV, 0);
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
+	CBVUtil::Input(CmdList, FlipCBV, 0);
 
 	LineTex->Render(CmdList);
 	BoundboxShader->Render(CmdList);
@@ -47,9 +47,9 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &BoundboxColor, 16);
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 
 	BoundMesh->Render(CmdList);
 #endif
@@ -100,9 +100,8 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	Transform::Move(TranslateMatrix, aabb.Center.x, aabb.Center.y, aabb.Center.z);
 	Transform::Scale(ScaleMatrix, aabb.Extents.x, aabb.Extents.y, aabb.Extents.z);
 
-	camera.SetToDefaultMode();
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
-	CBVUtil::InputCBV(CmdList, FlipCBV, 0);
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
+	CBVUtil::Input(CmdList, FlipCBV, 0);
 
 	LineTex->Render(CmdList);
 	BoundboxShader->Render(CmdList);
@@ -117,9 +116,9 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &BoundboxColor, 16);
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 
 	BoundMesh->Render(CmdList);
 #endif

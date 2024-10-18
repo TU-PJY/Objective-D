@@ -1,6 +1,7 @@
 #include "TerrainUtil.h"
 #include "CBVUtil.h"
 #include "RootConstants.h"
+#include "RootConstantUtil.h"
 
 // 터레인을 담당하는 유틸이다.
 // 터레인 유틸은 한 번에 한 개의 매쉬만 가질 수 있다.
@@ -74,15 +75,15 @@ void TerrainUtil::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void TerrainUtil::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 1);
+	CBVUtil::Input(CmdList, BoolLightCBV, 1);
 }
 
 void TerrainUtil::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
 }
 
 void TerrainUtil::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::InputCBV(CmdList, LightCBV, 0);
+	CBVUtil::Input(CmdList, LightCBV, 0);
 }
 
 void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip) {
@@ -93,7 +94,7 @@ void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, b
 	else if (!H_Flip && V_Flip) Index = 2;
 	else if (H_Flip && V_Flip)  Index = 3;
 
-	CBVUtil::InputCBV(CmdList, FlipCBV, Index);
+	CBVUtil::Input(CmdList, FlipCBV, Index);
 }
 
 void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float Alpha) {
@@ -105,7 +106,8 @@ void TerrainUtil::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX ResultMatrix = XMLoadFloat4x4(&TranslateMatrix);
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &TerrainColor, 16);
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
+
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &TerrainColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 }

@@ -11,7 +11,7 @@ void CreateCBVResource(ID3D12Device* Device) {
 	FlipInfo TexFlip[4]{ {0, 0}, {1, 0}, {0, 1}, {1, 1} };
 	ReserveCBV(FlipCBV, 4);
 	for (int i = 0; i < 4; ++i)
-		CBVUtil::CreateCBV(Device, &TexFlip[i], sizeof(TexFlip[i]), FlipCBV, i);
+		CBVUtil::Create(Device, &TexFlip[i], sizeof(TexFlip[i]), FlipCBV, i);
 
 	// light data
 	LightInfo Light{
@@ -23,11 +23,11 @@ void CreateCBVResource(ID3D12Device* Device) {
 		5.0,  // Shadow Strength
 	};
 	ReserveCBV(LightCBV, 1);
-	CBVUtil::CreateCBV(Device, &Light, sizeof(Light), LightCBV, 0);
+	CBVUtil::Create(Device, &Light, sizeof(Light), LightCBV, 0);
 
 	// light bool info
 	UseLightInfo Uselightinfo[2]{ {0}, {1} };
 	ReserveCBV(BoolLightCBV, 2);
 	for (int i = 0; i < 2; ++i)
-		CBVUtil::CreateCBV(Device, &Uselightinfo[i], sizeof(Uselightinfo[i]), BoolLightCBV, i);
+		CBVUtil::Create(Device, &Uselightinfo[i], sizeof(Uselightinfo[i]), BoolLightCBV, i);
 }

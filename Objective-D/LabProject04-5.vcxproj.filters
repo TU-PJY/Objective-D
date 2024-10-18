@@ -110,13 +110,16 @@
     <Filter Include="[3]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]">
       <UniqueIdentifier>{f550e7bc-0bb1-4940-a2cf-ef5a66d383c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Root Constant Util ]">
+      <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Camera Util ]\[ Default ]">
+      <UniqueIdentifier>{d0964e9e-e939-4a02-8b3c-93120157fca6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
       <Filter>[4]____________[ DirectX 3D ]\[ Framework ]</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraUtil.h">
-      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
       <Filter>[4]____________[ DirectX 3D ]\[ D3D ]</Filter>
@@ -202,6 +205,12 @@
     <ClInclude Include="LineBrush.h">
       <Filter>[3]____________[ Util ]\[ Brush Util ]</Filter>
     </ClInclude>
+    <ClInclude Include="RootConstantUtil.h">
+      <Filter>[3]____________[ Util ]\[ Root Constant Util ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraUtil.h">
+      <Filter>[3]____________[ Util ]\[ Camera Util ]\[ Default ]</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkUtil.cpp">
@@ -214,9 +223,6 @@
       <Filter>[4]____________[ DirectX 3D ]\[ Main ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="CameraUtil.cpp">
-      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
-    </ClCompile>
     <ClCompile Include="TimerUtil.cpp">
       <Filter>[3]____________[ Util ]\[ Timer Util ]</Filter>
     </ClCompile>
@@ -288,6 +294,12 @@
     </ClCompile>
     <ClCompile Include="Meshes.cpp">
       <Filter>[3]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]</Filter>
+    </ClCompile>
+    <ClCompile Include="RootConstantUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ Root Constant Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraUtil.cpp">
+      <Filter>[3]____________[ Util ]\[ Camera Util ]\[ Default ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

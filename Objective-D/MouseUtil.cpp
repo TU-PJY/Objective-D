@@ -30,6 +30,7 @@ POINT MouseUtil::CurrentPosition() {
 	return CursorPos;
 }
 
+// 마우스 커서 위치를 뷰포트 위치로 변환한다.
 void MouseUtil::UpdateMousePosition(HWND hWnd) {
 	::GetCursorPos(&ClientPosition);
 	::ScreenToClient(hWnd, &ClientPosition); // 클라이언트 좌표로 변환
