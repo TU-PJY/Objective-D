@@ -181,6 +181,7 @@
     <ClInclude Include="WICTextureLoader12.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Blends.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="CBVManager.cpp" />
     <ClCompile Include="CBVUtil.cpp" />
@@ -189,13 +190,17 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LineBrush.cpp" />
     <ClCompile Include="MathUtil.cpp" />
+    <ClCompile Include="Meshes.cpp" />
     <ClCompile Include="MeshUtil.cpp" />
     <ClCompile Include="Mode1.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Resterizers.cpp" />
     <ClCompile Include="RootConstants.cpp" />
+    <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="StartMode.cpp" />
+    <ClCompile Include="Stencils.cpp" />
     <ClCompile Include="TerrainUtil.cpp" />
     <ClCompile Include="TextureUtil.cpp" />
     <ClCompile Include="TimerUtil.cpp" />

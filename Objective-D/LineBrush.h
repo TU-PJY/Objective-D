@@ -1,15 +1,5 @@
 #pragma once
 #include "DirectX_3D.h"
-#include "TextureUtil.h"
-#include "ShaderUtil.h"
-#include "MeshUtil.h"
-#include "ResourceManager.h"
-#include "CBVManager.h"
-#include "CBVUtil.h"
-#include "TransformUtil.h"
-#include "CameraUtil.h"
-#include "RootConstants.h"
-#include "MathUtil.h"
 
 class LineBrush {
 public:

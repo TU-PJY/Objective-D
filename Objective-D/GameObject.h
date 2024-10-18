@@ -36,7 +36,7 @@ public:
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type);
+	void InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type=RenderType::Pers);
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);

@@ -11,17 +11,21 @@ public:
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
 	XMFLOAT3 RotationDest{};
+	XMFLOAT3 Size{ 0.5, 0.5, 0.5 };
 	float AlphaValue = 1.0;
 
 	bool UseLight{};
 
 	LineBrush line;
 
+	OOBB oobb;
+
 	Vector Vec{};
 
 	TestObject() {
 		Math::InitVector(Vec.Up, Vec.Right, Vec.Look);
 		line.SetColor(0.0, 1.0, 0.0);
+		Position.z = 3.0;
 	}
 
 	XMFLOAT3 GetUp() {
@@ -86,57 +90,27 @@ public:
 	void Update(float FT) {
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
-
 	}
 
 	void Render(CommandList CmdList) {
-		// 스카이박스 출력 예시
-		InitMatrix(CmdList, RenderType::Pers);
-		Transform::Scale(ScaleMatrix, 5.0, 5.0, 5.0);
-		camera.Rotate(Rotation.x * 0.01, Rotation.y * 0.01, 0.0);
-
-		// 스카이박스 출력 시 조명을 비활성화 해야한다.
-		DisableLight(CmdList);
-
-		// 스카이박스 전용 매쉬와 텍스처를 사용해야 한다.
-		BindTexture(CmdList, SkyboxTex);
-		UseShader(CmdList, BasicShader);
-		RenderMesh(CmdList, SkyboxMesh);
-
-		//모델 출력 예시
 		InitMatrix(CmdList, RenderType::Pers);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
-		Transform::Rotate(RotateMatrix, 0.0, 90.0, 0.0);
+		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
 
 		if (!UseLight)
 			DisableLight(CmdList);
 
-		// 텍스처 바인드 후 쉐이더를 적용한 후 매쉬를 렌더링한다.
-		// 필요에 따라 텍스처 이미지를 반전시킨다. 모델에 따라 케바케
-		// 이미지의 경우 SetToImageMode()함수를 실행하면 자동으로 알맞게 반전된다.
 		SetAlpha(CmdList, AlphaValue);
 		FlipTexture(CmdList, false, true);
 		BindTexture(CmdList, Tex);
 		UseShader(CmdList, BasicShader);
 		RenderMesh(CmdList, GunMesh);
 
-
-		// 이미지 출력, 깊이검사를 하지 않기 때문에 되도록 최상위 레이어에서 출력되도록 하는것을 권장한다.
-		InitMatrix(CmdList, RenderType::Ortho);
-
-		// 이미지 출력 시 반드시 이미지 모드로 전환해야한다.
-		SetToImageMode(CmdList);
-		
-		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
-		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
-		BindTexture(CmdList, WoodTex);
-
-		// 깊이 검사를 비활성화 해야한다.
-		UseShader(CmdList, BasicShader, false);
-		RenderMesh(CmdList, ImagePannel);
-
-		// 선을 그린다.
-		line.Draw(CmdList, -0.55, -0.12, mouse.x, mouse.y, 0.02, 1.0);
+		// 바운드 박스 출력
+		// OOBB의 경우 대상 모델을 렌더링한 직후 해야한다.
+		// AABB, Range는 순서 무관
+		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
+		oobb.Render(CmdList);
 	}
 };

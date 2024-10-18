@@ -1,4 +1,14 @@
 #include "LineBrush.h"
+#include "TextureUtil.h"
+#include "ShaderUtil.h"
+#include "MeshUtil.h"
+#include "ResourceManager.h"
+#include "CBVManager.h"
+#include "CBVUtil.h"
+#include "TransformUtil.h"
+#include "CameraUtil.h"
+#include "RootConstants.h"
+#include "MathUtil.h"
 
 // 선의 색상을 지정한다.
 void LineBrush::SetColor(float R, float G, float B) {

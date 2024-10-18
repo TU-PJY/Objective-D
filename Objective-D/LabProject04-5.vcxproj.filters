@@ -104,6 +104,12 @@
     <Filter Include="[3]____________[ Util ]\[ Brush Util ]">
       <UniqueIdentifier>{12f8bb1d-4b55-4e19-981f-78f7dc7fda6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Shader Util ]\[1][ Set Up ]">
+      <UniqueIdentifier>{37c1029a-4cd8-4b6e-83e0-7d1bdfce11fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]">
+      <UniqueIdentifier>{f550e7bc-0bb1-4940-a2cf-ef5a66d383c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -267,6 +273,21 @@
     </ClCompile>
     <ClCompile Include="LineBrush.cpp">
       <Filter>[3]____________[ Util ]\[ Brush Util ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Resterizers.cpp">
+      <Filter>[3]____________[ Util ]\[ Shader Util ]\[1][ Set Up ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipelines.cpp">
+      <Filter>[3]____________[ Util ]\[ Shader Util ]\[1][ Set Up ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Stencils.cpp">
+      <Filter>[3]____________[ Util ]\[ Shader Util ]\[1][ Set Up ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Blends.cpp">
+      <Filter>[3]____________[ Util ]\[ Shader Util ]\[1][ Set Up ]</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes.cpp">
+      <Filter>[3]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

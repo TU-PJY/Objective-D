@@ -27,96 +27,6 @@ D3D12_INPUT_LAYOUT_DESC Shader::CreateInputLayout() {
 	return(InputLayoutDesc);
 }
 
-D3D12_RASTERIZER_DESC Shader::CreateRasterizerState() {
-	D3D12_RASTERIZER_DESC RasterizerDesc;
-	::ZeroMemory(&RasterizerDesc, sizeof(D3D12_RASTERIZER_DESC));
-	RasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	RasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
-	RasterizerDesc.FrontCounterClockwise = FALSE;
-	RasterizerDesc.DepthBias = 0;
-	RasterizerDesc.DepthBiasClamp = 0.0f;
-	RasterizerDesc.SlopeScaledDepthBias = 0.0f;
-	RasterizerDesc.DepthClipEnable = TRUE;
-	RasterizerDesc.MultisampleEnable = TRUE;
-	RasterizerDesc.AntialiasedLineEnable = TRUE;
-	RasterizerDesc.ForcedSampleCount = 0;
-	RasterizerDesc.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
-
-	return(RasterizerDesc);
-}
-
-D3D12_BLEND_DESC Shader::CreateBlendState() {
-	D3D12_BLEND_DESC BlendDesc;
-	::ZeroMemory(&BlendDesc, sizeof(D3D12_BLEND_DESC));
-	BlendDesc.AlphaToCoverageEnable = FALSE;
-	BlendDesc.IndependentBlendEnable = FALSE;
-
-	// 0번 렌더 타겟의 블렌드 설정
-	BlendDesc.RenderTarget[0].BlendEnable = TRUE; // 블렌드 활성화
-	BlendDesc.RenderTarget[0].LogicOpEnable = FALSE;
-
-	// 색상 블렌딩 설정 (SRC_ALPHA * Src + (1 - SRC_ALPHA) * Dest)
-	BlendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA; // 소스 알파
-	BlendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 반대 알파
-	BlendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD; // 더하기 연산
-
-	// 알파 블렌딩 설정
-	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-
-	// 쓰기 마스크 설정 (모든 채널 쓰기)
-	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-
-	//BlendDesc.RenderTarget[0].LogicOp = D3D12_LOGIC_OP_NOOP;
-
-	return(BlendDesc);
-}
-
-// 일반 스텐실을 리턴한다.
-D3D12_DEPTH_STENCIL_DESC Shader::CreateDepthStencilState() {
-	D3D12_DEPTH_STENCIL_DESC DepthStencilDesc;
-	::ZeroMemory(&DepthStencilDesc, sizeof(D3D12_DEPTH_STENCIL_DESC));
-	DepthStencilDesc.DepthEnable = TRUE;
-	DepthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-	DepthStencilDesc.StencilEnable = FALSE;
-	DepthStencilDesc.StencilReadMask = 0x00;
-	DepthStencilDesc.StencilWriteMask = 0x00;
-	DepthStencilDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_NEVER;
-	DepthStencilDesc.BackFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilFunc = D3D12_COMPARISON_FUNC_NEVER;
-
-	return(DepthStencilDesc);
-}
-
-// 깊이 검사를 비활성화한 스텐실을 리턴한다. 이미지 렌더링용으로 사용된다.
-D3D12_DEPTH_STENCIL_DESC Shader::CreateDepthStencilStateDepthNone() {
-	D3D12_DEPTH_STENCIL_DESC DepthStencilDesc;
-	::ZeroMemory(&DepthStencilDesc, sizeof(D3D12_DEPTH_STENCIL_DESC));
-	DepthStencilDesc.DepthEnable = FALSE;
-	DepthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-	DepthStencilDesc.StencilEnable = FALSE;
-	DepthStencilDesc.StencilReadMask = 0x00;
-	DepthStencilDesc.StencilWriteMask = 0x00;
-	DepthStencilDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_NEVER;
-	DepthStencilDesc.BackFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
-	DepthStencilDesc.BackFace.StencilFunc = D3D12_COMPARISON_FUNC_NEVER;
-
-	return(DepthStencilDesc);
-}
-
 D3D12_SHADER_BYTECODE Shader::CreateVertexShader(ID3DBlob** ShaderBlob) {
 	D3D12_SHADER_BYTECODE ShaderByteCode;
 	ShaderByteCode.BytecodeLength = 0;
@@ -148,71 +58,6 @@ D3D12_SHADER_BYTECODE Shader::CompileShaderFromFile(WCHAR* FileName, LPCSTR Shad
 	return(ShaderByteCode);
 }
 
-void Shader::CreateShader(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
-	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
-
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;
-	::ZeroMemory(&PipelineStateDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-	PipelineStateDesc.pRootSignature = RootSignature;
-	PipelineStateDesc.VS = CreateVertexShader(&VertexShaderBlob);
-	PipelineStateDesc.PS = CreatePixelShader(&PixelShaderBlob);
-	PipelineStateDesc.RasterizerState = CreateRasterizerState();
-	PipelineStateDesc.BlendState = CreateBlendState();
-	PipelineStateDesc.DepthStencilState = CreateDepthStencilState();
-	PipelineStateDesc.InputLayout = CreateInputLayout();
-	PipelineStateDesc.SampleMask = UINT_MAX;
-	PipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	PipelineStateDesc.NumRenderTargets = 1;
-	PipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	PipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	PipelineStateDesc.SampleDesc.Count = 1;
-	PipelineStateDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
-	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PipelineState);
-
-	if (VertexShaderBlob)
-		VertexShaderBlob->Release();
-
-	if (PixelShaderBlob)
-		PixelShaderBlob->Release();
-
-	if (PipelineStateDesc.InputLayout.pInputElementDescs)
-		delete[] PipelineStateDesc.InputLayout.pInputElementDescs;
-}
-
-void Shader::CreateShaderDepthNone(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
-	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
-
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;
-	::ZeroMemory(&PipelineStateDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-	PipelineStateDesc.pRootSignature = RootSignature;
-	PipelineStateDesc.VS = CreateVertexShader(&VertexShaderBlob);
-	PipelineStateDesc.PS = CreatePixelShader(&PixelShaderBlob);
-	PipelineStateDesc.RasterizerState = CreateRasterizerState();
-	PipelineStateDesc.BlendState = CreateBlendState();
-
-	// 깊이 검사를 비활성화한 스텐실을 생성한다.
-	PipelineStateDesc.DepthStencilState = CreateDepthStencilStateDepthNone();
-
-	PipelineStateDesc.InputLayout = CreateInputLayout();
-	PipelineStateDesc.SampleMask = UINT_MAX;
-	PipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	PipelineStateDesc.NumRenderTargets = 1;
-	PipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	PipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	PipelineStateDesc.SampleDesc.Count = 1;
-	PipelineStateDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
-	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PSDepthNone);
-
-	if (VertexShaderBlob)
-		VertexShaderBlob->Release();
-
-	if (PixelShaderBlob)
-		PixelShaderBlob->Release();
-
-	if (PipelineStateDesc.InputLayout.pInputElementDescs)
-		delete[] PipelineStateDesc.InputLayout.pInputElementDescs;
-}
-
 void Shader::OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS) {
 	if (PS)
 		CmdList->SetPipelineState(PS);
@@ -225,6 +70,7 @@ void Shader::Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest) {
 	else
 		OnPrepareRender(CmdList, PSDepthNone);
 }
+
 
 ////////////////////////////////
 // 이 프로젝트에서 현재 사용하는 쉐이더, 추후 변경될 수 있음
