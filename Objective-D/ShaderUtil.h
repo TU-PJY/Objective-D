@@ -25,9 +25,9 @@ public:
 	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob** ShaderBlob);
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ShaderBlob);
 	D3D12_SHADER_BYTECODE Shader::CompileShaderFromFile(WCHAR* FileName, LPCSTR Shadername, LPCSTR ShaderProfile, ID3DBlob** ShaderBlob);
-	virtual void CreateShader(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
-	void CreateBoundboxShader(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
-	void CreateNoneDepthPipelineState(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
+	virtual void CreateDefaultPipeline(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
+	void CreateBoundboxPipeline(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
+	void CreateImageDepthPipelineState(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS);
 	void Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest = true);
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}

@@ -16,16 +16,17 @@ Texture* Tex, * WoodTex, * SkyboxTex;
 
 void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	////////////////////////////////
+	// 파이프라인 생성이 곧 쉐이더 설정의 마무리이다.
 	// 일반 렌더링 쉐이더 생성
 	BasicShader = new BasicObjectShader();
-	BasicShader->CreateShader(Device, RootSignature);
+	BasicShader->CreateDefaultPipeline(Device, RootSignature);
 
 	// 깊이 검사 미포함 파이프라인 생성
-	BasicShader->CreateNoneDepthPipelineState(Device, RootSignature);
+	BasicShader->CreateImageDepthPipelineState(Device, RootSignature);
 
 	// 바운드박스 쉐이더 생성
 	BoundboxShader = new BasicObjectShader();
-	BoundboxShader->CreateBoundboxShader(Device, RootSignature);
+	BoundboxShader->CreateBoundboxPipeline(Device, RootSignature);
 	////////////////////////////////
 }
 
