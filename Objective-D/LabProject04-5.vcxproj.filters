@@ -113,9 +113,6 @@
     <Filter Include="[3]____________[ Util ]\[ Root Constant Util ]">
       <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[3]____________[ Util ]\[ Camera Util ]\[ Default ]">
-      <UniqueIdentifier>{d0964e9e-e939-4a02-8b3c-93120157fca6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkUtil.h">
@@ -209,7 +206,7 @@
       <Filter>[3]____________[ Util ]\[ Root Constant Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
-      <Filter>[3]____________[ Util ]\[ Camera Util ]\[ Default ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,7 +296,7 @@
       <Filter>[3]____________[ Util ]\[ Root Constant Util ]</Filter>
     </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
-      <Filter>[3]____________[ Util ]\[ Camera Util ]\[ Default ]</Filter>
+      <Filter>[3]____________[ Util ]\[ Camera Util ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
