@@ -1,5 +1,6 @@
 #include "TerrainUtil.h"
 #include "CBVUtil.h"
+#include "RootConstants.h"
 
 // 터레인을 담당하는 유틸이다.
 // 터레인 유틸은 한 번에 한 개의 매쉬만 가질 수 있다.
@@ -30,7 +31,7 @@ bool TerrainUtil::CheckFloor(XMFLOAT3 Position) {
 	return false;
 }
 
-// 특정 오브젝트릐 위치를 터레인 바닥의 위치로 이동시킨다.
+// 특정 오브젝트의 위치를 터레인 바닥의 위치로 이동시킨다.
 // 이 함수를 업데이트 루프에서 사용할 경우 오브젝트가 터레인 바닥에서 떨어지지 않게 된다.
 void TerrainUtil::ClampToFloor(XMFLOAT3& Position) {
 	if (TerrainMesh)
@@ -46,10 +47,10 @@ void TerrainUtil::CheckCollision(XMFLOAT3& Position) {
 }
 
 // 터레인의 색상을 변경한다
-void TerrainUtil::SetColor(XMFLOAT3 ColorValue) {
-	TerrainColor.x = ColorValue.x;
-	TerrainColor.y = ColorValue.y;
-	TerrainColor.z = ColorValue.z;
+void TerrainUtil::SetColor(float R, float G, float B) {
+	TerrainColor.x = R;
+	TerrainColor.y = G;
+	TerrainColor.z = B;
 }
 
 // 터레인의 크기를 설정한다
@@ -95,9 +96,8 @@ void TerrainUtil::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, b
 	CBVUtil::InputCBV(CmdList, FlipCBV, Index);
 }
 
-void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
-	AlphaInfo Alphainfo{ AlphaValue };
-	CmdList->SetGraphicsRoot32BitConstants(4, 1, &Alphainfo, 0);
+void TerrainUtil::SetAlpha(ID3D12GraphicsCommandList* CmdList, float Alpha) {
+	AlphaValue = Alpha;
 }
 
 // 쉐이더로 터레인 변환 값을 전달한다
@@ -105,6 +105,7 @@ void TerrainUtil::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX ResultMatrix = XMLoadFloat4x4(&TranslateMatrix);
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
-	CmdList->SetGraphicsRoot32BitConstants(1, 16, &xmf4x4World, 0);
-	CmdList->SetGraphicsRoot32BitConstants(1, 3, &TerrainColor, 16);
+	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
+	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &TerrainColor, 16);
+	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
 }

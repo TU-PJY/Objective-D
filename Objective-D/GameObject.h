@@ -25,6 +25,9 @@ public:
 	// 매쉬 색상
 	XMFLOAT3 ModelColor{};
 
+	// 텍스처 투명도
+	float AlphaValue{ 1.0f };
+
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
 	RenderType renderType = RenderType::Pers;
 

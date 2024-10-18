@@ -21,7 +21,8 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type)
 
 	// 조명을 사용하는 것으로 간주
 	EnableLight(CmdList);
-	SetAlpha(CmdList, 1.0);
+
+	AlphaValue = 1.0f;
 	FlipTexture(CmdList, false, false);
 
 	// 매쉬 색상 초기화
@@ -111,11 +112,9 @@ void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
 }
 
 // 텍스처 투명도를 설정한다.
-void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue) {
-	AlphaInfo Alphainfo{ AlphaValue };
-	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &Alphainfo, 0);
+void GameObject::SetAlpha(ID3D12GraphicsCommandList* CmdList, float Alpha) {
+	AlphaValue = Alpha;
 }
-
 // 조명 사용 비활성화
 void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::InputCBV(CmdList, BoolLightCBV, 0);
@@ -158,8 +157,11 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX&
 void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
+
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
+
 	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 16, &xmf4x4World, 0);
 	CmdList->SetGraphicsRoot32BitConstants(GAME_OBJECT_INDEX, 3, &ModelColor, 16);
+	CmdList->SetGraphicsRoot32BitConstants(ALPHA_INDEX, 1, &AlphaValue, 0);
 }
