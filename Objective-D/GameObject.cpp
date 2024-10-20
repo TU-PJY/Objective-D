@@ -106,9 +106,9 @@ void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bo
 	CBVUtil::Input(CmdList, FlipCBV, Index);
 }
 
-// 이미지 출력 모드로 전환한다. 수평 반전 후 조명 사용을 비활성화 한다.
+// 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, FlipCBV, 1);
+	CBVUtil::Input(CmdList, FlipCBV, 2);
 	DisableLight(CmdList);
 }
 
