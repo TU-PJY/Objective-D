@@ -52,7 +52,7 @@ void Mode1::MouseMotionController(HWND hWnd) {
 	mouse.UpdateMousePosition(hWnd);
 
 	if (auto object = framework.Find("test_object"); object)
-		object->InputMouseMotion(hWnd, mouse.PrevCursorPos);
+		object->InputMouseMotion(hWnd, mouse.MotionPosition);
 }
 
 // 마우스 버튼 클릭 이벤트를 지정된 객체 포인터로 전달한다

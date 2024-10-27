@@ -36,8 +36,28 @@
 
 #include <iostream>
 
-enum class RenderType
-{ Pers, Ortho };
+// 렌더링 타입 열거형
+enum RenderTypeEnum {
+	RENDER_TYPE_PERS, 
+	RENDER_TYPE_ORTHO, 
+	RENDER_TYPE_IMAGE 
+};
+
+// 텍스처 반전 타입 열거형
+enum FlipTypeEnum {
+	FLIP_TYPE_NONE,
+	FLIP_TYPE_H,
+	FLIP_TYPE_V,
+	FLIP_TYPE_HV,
+};
+
+// 오브젝트 벡터 구조체
+typedef struct Vector {
+	DirectX::XMFLOAT3 Look;
+	DirectX::XMFLOAT3 Right;
+	DirectX::XMFLOAT3 Up;
+}ObjectVector;
+
 
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;
 extern int PREV_WIDTH, PREV_HEIGHT;
@@ -81,6 +101,10 @@ namespace Vec3 {
 		XMFLOAT3 xmf3Result;
 		XMStoreFloat3(&xmf3Result, XMLoadFloat3(&xmf3Vector1) + (XMLoadFloat3(&xmf3Vector2) * fScalar));
 		return(xmf3Result);
+	}
+
+	inline XMFLOAT3 Scale(const XMFLOAT3& vector, float scalar) {
+		return XMFLOAT3(vector.x * scalar, vector.y * scalar, vector.z * scalar);
 	}
 
 	inline XMFLOAT3 Subtract(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2) {

@@ -9,7 +9,7 @@ void MouseUtil::HideCursor() {
 // 마우스 모션 캡쳐를 시작한다
 void MouseUtil::CaptureMotion(HWND hWnd) {
 	::SetCapture(hWnd);
-	::GetCursorPos(&PrevCursorPos);
+	::GetCursorPos(&MotionPosition);
 }
 
 // 마우스 모셥 캡쳐를 중단한다
@@ -18,7 +18,7 @@ void MouseUtil::ReleaseMotion() {
 }
 
 // 마우스 커서 위치를 이전 위치로 이동시킨다
-void MouseUtil::SetPositionToPrev(POINT PrevPosition) {
+void MouseUtil::UpdateMotionPosition(POINT PrevPosition) {
 	::SetCursorPos(PrevPosition.x, PrevPosition.y);
 }
 

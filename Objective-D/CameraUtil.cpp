@@ -204,6 +204,32 @@ void Camera::MoveForward(float MoveDistance) {
 	Position.z += NormlaizedLook.z * MoveDistance;
 }
 
+// 현재 시점에서 높이 변화 없이 앞으로 움직인다.
+void Camera::MoveForwardWithoutHeight(float MoveDistance) {
+	Position.x += sin(Yaw) * MoveDistance;
+	Position.z += cos(Yaw) * MoveDistance;
+}
+
+// 현재 시점에서 옆으로 움직인다.
+void Camera::MoveStrafe(float MoveDistance) {
+	XMFLOAT3 NormlaizedRight = Vec3::Normalize(Right);
+
+	Position.x += NormlaizedRight.x * MoveDistance;
+	Position.y += NormlaizedRight.y * MoveDistance;
+	Position.z += NormlaizedRight.z * MoveDistance;
+}
+
+// 현재 시점에서 높이 변화 없이 옆으로 움직인다.
+void Camera::MoveStrafeWithoutHeight(float MoveDistance) {
+	Position.x += cos(Yaw) * MoveDistance;
+	Position.z -= sin(Yaw) * MoveDistance;
+}
+
+// 수직으로 움직인다.
+void Camera::MoveVertical(float MoveDistance) {
+	Position.y += MoveDistance;
+}
+
 // 카메라 회전, 벡터 초기화 후 새로운 벡터를 지정한다.
 void Camera::Rotate(float X, float Y, float Z) {
 	Look = XMFLOAT3(0.0, 0.0, 1.0);
@@ -258,6 +284,58 @@ void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec
 
 	Position = Vec3::Add(Position, Direction, MoveDistance);
 	SetLookAt(ObjectPosition, UpVec);
+}
+
+// 동작은 Track과 동일하나, 시점 Offset을 설정할 수 있다.
+void Camera::TrackWithOffset(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, XMFLOAT3& Offset, float fTimeElapsed) {
+	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
+
+	XMFLOAT3 UpVector = UpVec;
+	XMFLOAT3 RightVector = RightVec;
+	XMFLOAT3 LookVector = LookVec;
+
+	RotateMatrix._21 = UpVector.x;
+	RotateMatrix._22 = UpVector.y;
+	RotateMatrix._23 = UpVector.z;
+
+	RotateMatrix._11 = RightVector.x;
+	RotateMatrix._12 = RightVector.y;
+	RotateMatrix._13 = RightVector.z;
+
+	RotateMatrix._31 = LookVector.x;
+	RotateMatrix._32 = LookVector.y;
+	RotateMatrix._33 = LookVector.z;
+
+	XMFLOAT3 Direction = Vec3::Subtract(Vec3::Add(ObjectPosition, Vec3::TransformCoord(Offset, RotateMatrix)), Position);
+
+	float Length = Vec3::Length(Direction);
+	Direction = Vec3::Normalize(Direction);
+
+	float TimeLagScale = (MovingDelay) ? fTimeElapsed * (1.0f / MovingDelay) : 1.0f;
+	float MoveDistance = Length * TimeLagScale;
+
+	if (MoveDistance > Length)
+		MoveDistance = Length;
+
+	if (Length < 0.01f)
+		MoveDistance = Length;
+
+	Position = Vec3::Add(Position, Direction, MoveDistance);
+
+	// 로컬 좌표계에서 LookAtPosition 조정
+	XMFLOAT3 LookAtPosition = ObjectPosition;
+
+	// 로컬 좌표계를 기준으로 x축(오른쪽), y축(위쪽), z축(앞쪽)으로 오프셋 적용
+	float OffsetX = Offset.x;  // 오른쪽으로 이동
+	float OffsetY = Offset.y;   // 위쪽으로 이동
+	float OffsetZ = Offset.z;   // 앞뒤로 이동
+
+	// 로컬 좌표계를 기준으로 오프셋 적용
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(RightVec, OffsetX));
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(UpVec, OffsetY));
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(LookVec, OffsetZ));
+
+	SetLookAt(LookAtPosition, UpVec);
 }
 
 // 카메라가 바라보는 방향을 설정한다. Track에서 실행되므로 보통의 경우 직접 쓸 일은 없다.

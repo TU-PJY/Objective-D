@@ -8,12 +8,6 @@
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 
-// 각 객체에 선언 가능한 벡터 삼형제 구조체
-typedef struct Vector {
-	XMFLOAT3 Up;
-	XMFLOAT3 Right;
-	XMFLOAT3 Look;
-}ObjectVector;
 
 class GameObject {
 public:
@@ -26,17 +20,20 @@ public:
 	XMFLOAT3 ModelColor{};
 
 	// 텍스처 투명도
-	float AlphaValue{ 1.0f };
+	float ObjectAlpha{ 1.0f };
 
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
-	RenderType renderType = RenderType::Pers;
+	int renderType = RENDER_TYPE_PERS;
+
+	// 깊이 검사 유무
+	bool DepthTest{ true };
 
 	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitMatrix(ID3D12GraphicsCommandList* CmdList, RenderType Type=RenderType::Pers);
+	void InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderType=RENDER_TYPE_PERS);
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
@@ -44,13 +41,12 @@ public:
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
 	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest = true);
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0);
+	void FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
 	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr);
-	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
-	void SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
@@ -63,7 +59,7 @@ public:
 	virtual void ReleaseShaderVariables() {}
 	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
 	virtual void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
-	virtual void InputMouseMotion(HWND hWnd, POINT PrevCursorPos) {}
+	virtual void InputMouseMotion(HWND hWnd, POINT MotionPosition) {}
 	virtual void Update(float FT) {}
 	virtual void Render(CommandList CmdList) {}
 	virtual Mesh* GetObjectMesh() { return {}; }

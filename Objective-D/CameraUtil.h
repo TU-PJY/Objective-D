@@ -97,7 +97,12 @@ public:
 
 	void Move(float X, float Y, float Z);
 	void MoveForward(float MoveDistance);
+	void MoveForwardWithoutHeight(float MoveDistance);
+	void MoveStrafe(float MoveDistance);
+	void MoveStrafeWithoutHeight(float MoveDistance);
+	void MoveVertical(float MoveDistance);
 	void Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed);
+	void TrackWithOffset(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, XMFLOAT3& Offset, float fTimeElapsed);
 	void SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec);
 	void CalculateFrustumPlanes();
 	bool IsInFrustum(BoundingBox& BoundingBox);

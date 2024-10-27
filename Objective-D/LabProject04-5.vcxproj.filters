@@ -95,9 +95,6 @@
     <Filter Include="[3]____________[ Util ]\[ CBV Util ]">
       <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[10]____________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[9]____________[ Root Constant ]">
       <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
     </Filter>
@@ -112,6 +109,9 @@
     </Filter>
     <Filter Include="[3]____________[ Util ]\[ Root Constant Util ]">
       <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[10]___________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -314,10 +314,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
-      <Filter>[10]____________[ Template ]</Filter>
+      <Filter>[10]___________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
-      <Filter>[10]____________[ Template ]</Filter>
+      <Filter>[10]___________[ Template ]</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
