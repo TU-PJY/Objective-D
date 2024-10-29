@@ -168,7 +168,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="DirectX_3D.h" />
-    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="GameResource.h" />
     <ClInclude Include="RootConstants.h" />
     <ClInclude Include="RootConstantUtil.h" />
     <ClInclude Include="ShaderUtil.h" />
@@ -196,7 +196,7 @@
     <ClCompile Include="Mode1.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="GameResource.cpp" />
     <ClCompile Include="Resterizers.cpp" />
     <ClCompile Include="RootConstants.cpp" />
     <ClCompile Include="Pipelines.cpp" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "ResourceManager.h"
+#include "GameResource.h"
 #include "CBVManager.h"
 #include "TransformUtil.h"
 #include "CollisionUtil.h"

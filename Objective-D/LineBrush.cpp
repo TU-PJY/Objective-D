@@ -2,7 +2,7 @@
 #include "TextureUtil.h"
 #include "ShaderUtil.h"
 #include "MeshUtil.h"
-#include "ResourceManager.h"
+#include "GameResource.h"
 #include "CBVManager.h"
 #include "CBVUtil.h"
 #include "TransformUtil.h"

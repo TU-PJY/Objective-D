@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "ResourceManager.h"
+#include "GameResource.h"
 #include "CBVUtil.h"
 #include "RootConstants.h"
 #include "MouseUtil.h"

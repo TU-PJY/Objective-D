@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="[9]____________[ CBV ]">
-      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[11]___________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[0]____________[ Config ]">
       <UniqueIdentifier>{5586bdf3-62bc-416a-8746-a2eb0688771f}</UniqueIdentifier>
     </Filter>
@@ -97,21 +91,27 @@
     <Filter Include="[6]____________[ DirectX 3D ]\[ WICTextureLoader12 ]">
       <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]____________[ WinAPI ]">
+    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[7]____________[ WinAPI ]\[ Res ]">
+    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="[7]____________[ WinAPI ]\[ Header ]">
+    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]">
       <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[8]___________[ Root Constant ]">
+    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]">
+      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]">
       <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[10]____________[ HLSL ]">
+    <Filter Include="[7]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]____________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -134,13 +134,13 @@
       <Filter>[5]____________[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>[7]____________[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>[7]____________[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>[7]____________[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Mode1.h">
       <Filter>[2]____________[ Game Mode ]\[ Mode1 ]</Filter>
@@ -182,13 +182,10 @@
       <Filter>[5]____________[ Util ]\[ Texture Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CBVData.h">
-      <Filter>[9]____________[ CBV ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
     </ClInclude>
     <ClInclude Include="CBVManager.h">
-      <Filter>[9]____________[ CBV ]</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>[1]____________[ Game Resource ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
       <Filter>[6]____________[ DirectX 3D ]\[ Framework ]</Filter>
@@ -197,7 +194,7 @@
       <Filter>[5]____________[ Util ]\[ CBV Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstants.h">
-      <Filter>[8]___________[ Root Constant ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
     </ClInclude>
     <ClInclude Include="LineBrush.h">
       <Filter>[5]____________[ Util ]\[ Brush Util ]</Filter>
@@ -207,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
       <Filter>[4]____________[ Camera ]</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResource.h">
+      <Filter>[1]____________[ Game Resource ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,16 +263,13 @@
       <Filter>[5]____________[ Util ]\[ Texture Util ]</Filter>
     </ClCompile>
     <ClCompile Include="CBVManager.cpp">
-      <Filter>[9]____________[ CBV ]</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>[1]____________[ Game Resource ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
     </ClCompile>
     <ClCompile Include="CBVUtil.cpp">
       <Filter>[5]____________[ Util ]\[ CBV Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
-      <Filter>[8]___________[ Root Constant ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="LineBrush.cpp">
       <Filter>[5]____________[ Util ]\[ Brush Util ]</Filter>
@@ -298,31 +295,34 @@
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[4]____________[ Camera ]</Filter>
     </ClCompile>
+    <ClCompile Include="GameResource.cpp">
+      <Filter>[1]____________[ Game Resource ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>[7]____________[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>[7]____________[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>[7]____________[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
-      <Filter>[11]___________[ Template ]</Filter>
+      <Filter>[8]____________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
-      <Filter>[11]___________[ Template ]</Filter>
+      <Filter>[8]____________[ Template ]</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\BasicShader.hlsl">
-      <Filter>[10]____________[ HLSL ]</Filter>
+      <Filter>[7]____________[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

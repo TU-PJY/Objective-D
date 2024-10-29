@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+#include "GameResource.h"
 
 // 이 파일은 리소스를 관리한다.
 // 기본적으로 전역 리소스이며, ResourceManager.h에 먼저 extern 선언한 뒤, 이 파일에 아래와 같이 정의하면 된다.

@@ -4,7 +4,7 @@
 #include "RootConstants.h"
 #include "TransformUtil.h"
 #include "RootConstantUtil.h"
-#include "ResourceManager.h"
+#include "GameResource.h"
 #include "Config.h"
 
 // 충돌 처리를 담당하는 유틸이다.
