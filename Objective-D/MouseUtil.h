@@ -17,11 +17,10 @@ public:
 	bool LBUTTONDOWN{}, RBUTTONDOWN{};
 
 	void HideCursor();
-	void CaptureMotion(HWND hWnd);
-	void ReleaseMotion();
+	void StartMotionCapture(HWND hWnd);
+	void EndMotionCapture();
 	void UpdateMotionPosition(POINT PrevPosition);
 	POINT CurrentPosition();
 	void UpdateMousePosition(HWND hWnd);
-	void UpdateButtonState(UINT nMessageID);
 };
 extern MouseUtil mouse;

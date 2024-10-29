@@ -75,14 +75,14 @@ public:
 		}
 	}
 
-	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		switch (nMessageID) {
 		case WM_LBUTTONDOWN:
-			mouse.CaptureMotion(hWnd);
+			mouse.StartMotionCapture(hWnd);
 			break;
 
 		case WM_LBUTTONUP:
-			mouse.ReleaseMotion();
+			mouse.EndMotionCapture();
 			break;
 		}
 	}
@@ -110,9 +110,10 @@ public:
 		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
 		oobb.Render(CmdList);
 
+		// 이미지 출력
 		InitMatrix(CmdList, RENDER_TYPE_IMAGE);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
-		Transform::Move(TranslateMatrix, mouse.x, mouse.y, 0.0);
+		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
 		RenderMesh(CmdList, ImagePannel, WoodTex, BasicShader);
 
 		line.Draw(CmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);

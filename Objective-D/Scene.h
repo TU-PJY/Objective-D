@@ -7,23 +7,23 @@
 #include <map>
 
 typedef void(*Function)(void);
-using LayerIter = std::map<const char*, GameObject*>::iterator;
-constexpr int Layers = static_cast<int>(Layer::END);
+using LayerIter = std::multimap<const char*, GameObject*>::iterator;
+constexpr int Layers = static_cast<int>(END);
 
 typedef struct {
 	LayerIter First, End;
 }ObjectRange;
 
-class Framework {
+class Scene {
 private:
-	//std::unordered_multimap<const char*, GameObject*> ObjectList;
 	std::array<std::vector<GameObject*>, Layers> ObjectList;
-	std::map<const char*, GameObject*> ObjectIndex;
+	std::multimap<const char*, GameObject*> ObjectIndex;
 
 	const char* RunningMode{};
-	void (*MouseController)(HWND, UINT, WPARAM, LPARAM);
-	void (*MouseMotionController)(HWND);
-	void (*KeyboardController)(HWND, UINT, WPARAM, LPARAM);
+	void (*MouseControllerPtr)(HWND, UINT, WPARAM, LPARAM);
+	void (*MouseMotionControllerPtr)(HWND);
+	void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM);
+
 	Function DestructorBuffer{};
 
 protected:
@@ -36,19 +36,22 @@ public:
 	void Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction);
 	void SwitchMode(Function ModeFunction);
 	void RegisterModeName(const char* ModeName);
-	void RegisterKeyController(void(*KeyboardController)(HWND, UINT, WPARAM, LPARAM));
-	void RegisterMouseController(void(*MouseControllePtr)(HWND, UINT, WPARAM, LPARAM));
-	void RegisterMouseMotionController(void(*MouseMotionControllerPtr)(HWND));
+	void RegisterKeyController(void(*FunctionPtr)(HWND, UINT, WPARAM, LPARAM));
+	void RegisterMouseController(void(*FunctionPtr)(HWND, UINT, WPARAM, LPARAM));
+	void RegisterMouseMotionController(void(*FunctionPtr)(HWND));
 
-	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-	void InputMouseMotion(HWND hWnd);
+	void InputKeyMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void InputMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	void InputMouseMotionMessage(HWND hWnd);
+	void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag);
+	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag);
+	void InputMouseMotion(HWND hWnd, const char* ObjectTag);
 	void Exit();
 	void Update(float FT);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	void UpdateObjectList(int Index);
 	void UpdateObjectIndex();
-	void AddObject(GameObject*&& Object, const char* Tag, Layer InputLayer);
+	void AddObject(GameObject*&& Object, const char* Tag, int InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);
 	ObjectRange EqualRange(const char* Tag);
@@ -59,5 +62,5 @@ public:
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList);
 };
 
-// global scope framework
-extern Framework framework;
+// global scope scene
+extern Scene scene;

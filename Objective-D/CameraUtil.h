@@ -1,7 +1,6 @@
 #pragma once
 #include "Config.h"
 #include "DirectX_3D.h"
-#include "GameObject.h"
 
 class Camera {
 protected:
@@ -52,8 +51,6 @@ public:
 	virtual void ReleaseShaderVariables() {}
 	void SetToDefaultMode();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
-
-
 
 	void GenerateViewMatrix();
 	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);

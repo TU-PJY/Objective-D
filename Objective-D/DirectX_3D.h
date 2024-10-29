@@ -59,11 +59,9 @@ typedef struct Vector {
 }ObjectVector;
 
 
-extern int SCREEN_WIDTH, SCREEN_HEIGHT;
-extern int PREV_WIDTH, PREV_HEIGHT;
-
 // screen size
-#define ASPECT_RATIO (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
+extern int SCREEN_WIDTH, SCREEN_HEIGHT;
+#define ASPECT (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))
 
 using namespace DirectX;
 using namespace DirectX::PackedVector;

@@ -3,10 +3,7 @@
 
 // 카메라 모드 설정
 // 카메라 클래스 멤버 함수 Update(float FT)에서 실행할 때 사용하는 열거형 클래스이다. 카메라 클래스에서 자세히 설명하도록 한다.
-enum class CamMode
-{
-	MODE1
-};
+enum class CamMode{ MODE1 };
 
 // 프로그램 시작 시 사용할 윈도우 사이즈를 설정한다.
 constexpr int START_UP_WIDTH = 1500;
@@ -23,8 +20,11 @@ constexpr float FRAME_LIMITS = 0;
 
 // 게임 월드에 사용할 레이어를 설정한다. 끝 부분에는 반드시 END표기를 해야한다.
 // UI의 경우 가장 최상단 레이어에 추가하는 것을 권장한다.
-enum class Layer
-{ L1, L2, L3, END };
+enum LayerEnum
+{ LAYER_1, LAYER_2, LAYER_3, END };
+
+// Scene 컨테이너 리저브 사이즈 지정
+constexpr int OBJECT_LIST_RESERVE = 500;
 
 // 제목표시줄 문자열을 설정한다. 반드시 아래와 같은 형식으로 저정해야 한다.
 constexpr TCHAR TitleName[] = _T("Objective-D(");

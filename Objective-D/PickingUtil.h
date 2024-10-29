@@ -1,5 +1,6 @@
 #pragma once
 #include "CameraUtil.h"
+#include "GameObject.h"
 
 class PickingUtil {
 public:

@@ -9,13 +9,13 @@
 // 일부 함수들은 별도의 파일로 분리 예정이니 코드에 변동이 있을 수 있다.
 
 // 객체의 행렬을 초기화 한다. 모든 객체는 변환 작업 전 반드시 이 함수를 첫 번째로 실행해야 한다.
-void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderType) {
+void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderTypeFlag) {
 	TranslateMatrix = Mat4::Identity();
 	RotateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
 
 	// 출력 모드 지정
-	renderType = RenderType;
+	RenderType = RenderTypeFlag;
 
 	// 텍스처 상태 초기화
 	ObjectAlpha = 1.0f;
@@ -25,18 +25,11 @@ void GameObject::InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderType) 
 	SetColor(0.0, 0.0, 0.0);
 
 	// 이미지 타입 렌더링일 경우 이미지 모드로 변경
-	if (RenderType == RENDER_TYPE_IMAGE) {
+	if (RenderTypeFlag == RENDER_TYPE_IMAGE)
 		SetToImageMode(CmdList);
-		camera.SetToStaticMode();
-		DepthTest = false;
-	}
 
-	// 나머지 타입일 경우 기본 모드로 변경
-	else {
-		EnableLight(CmdList);
-		camera.SetToDefaultMode();
-		DepthTest = true;
-	}
+	else // 나머지 타입일 경우 기본 모드로 변경
+		SetToDefaultMode(CmdList);
 }
 
 // 객체 메쉬의 색상을 설정한다.
@@ -51,14 +44,14 @@ void GameObject::SetColor(float R, float G, float B) {
 	ModelColor.z = B;
 }
 
-//  객체를 옆으로 움직인다. 현재 자신의 위치값과 자신의 right벡터, 속도값을 넣어주면 된다.
-void GameObject::MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance) {
-	Position = Vec3::Add(Position, Right, Distance);
-}
-
 //  객체를 앞으로 움직인다. 현재 자신의 위치값과 자신의 look벡터, 속도값을 넣어주면 된다.
 void GameObject::MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) {
 	Position = Vec3::Add(Position, Look, Distance);
+}
+
+//  객체를 옆으로 움직인다. 현재 자신의 위치값과 자신의 right벡터, 속도값을 넣어주면 된다.
+void GameObject::MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance) {
+	Position = Vec3::Add(Position, Right, Distance);
 }
 
 // 객체를 위로 움직인다. 현재 자신의 위치값과 자신의 up벡터, 속도값을 넣어주면 된다.
@@ -82,19 +75,24 @@ void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr
 }
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha) {
-	// 텍스처 바인딩 후 쉐이더 사용 지정
+void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha, bool DepthTestFlag) {
+	// 텍스처 바인딩
 	BindTexture(CmdList, TexturePtr);
-	UseShader(CmdList, ShaderPtr, DepthTest);
+
+	// 이미지 랜더 타입이 아니라면 깊이 검사 플래그를 따르도록 한다.
+	if(RenderType != RENDER_TYPE_IMAGE)
+		UseShader(CmdList, ShaderPtr, DepthTestFlag);
+	else 
+		UseShader(CmdList, ShaderPtr, false);
 
 	// 카메라 행렬을 초기화 한다
 	camera.InitMatrix();
 
-	if (renderType == RENDER_TYPE_PERS)
-		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+	if (RenderType == RENDER_TYPE_PERS)
+		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 
-	else if (renderType == RENDER_TYPE_ORTHO || renderType == RENDER_TYPE_IMAGE)
-		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT_RATIO, 0.0f, 10.0f);
+	else if (RenderType == RENDER_TYPE_ORTHO || RenderType == RENDER_TYPE_IMAGE)
+		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0f, 10.0f);
 
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
@@ -112,12 +110,6 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, T
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
 void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType) {
 	CBVUtil::Input(CmdList, FlipCBV, FlipType);
-}
-
-// 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
-void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	FlipTexture(CmdList, FLIP_TYPE_V);
-	DisableLight(CmdList);
 }
 
 // 조명 사용 비활성화
@@ -169,4 +161,18 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(CmdList, &ObjectAlpha, ALPHA_INDEX, 1, 0);
+}
+
+// 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
+void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
+	FlipTexture(CmdList, FLIP_TYPE_V);
+	DisableLight(CmdList);
+	camera.SetToStaticMode();
+}
+
+// 기본 출력 모드로 전환한다. 텍스처 반전 해제 후 조명 사용을 활성화 한다.
+void GameObject::SetToDefaultMode(ID3D12GraphicsCommandList* CmdList) {
+	FlipTexture(CmdList, FLIP_TYPE_NONE);
+	EnableLight(CmdList);
+	camera.SetToDefaultMode();
 }

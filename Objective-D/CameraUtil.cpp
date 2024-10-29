@@ -1,5 +1,4 @@
 #include "CameraUtil.h"
-#include "FrameworkUtil.h"
 #include "RootConstants.h"
 #include "RootConstantUtil.h"
 
@@ -113,14 +112,14 @@ void Camera::InitStaticMatrix() {
 
 	// 직각투영이 디폴트이다.
 	StaticProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT_RATIO, 2.0, 0.0, 10.0);
+	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }
 
 // 윈도우 사이즈 변경 시 실행된다.
 void Camera::UpdateStaticMatrix() {
 	StaticProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT_RATIO, 2.0, 0.0, 10.0);
+	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }
 

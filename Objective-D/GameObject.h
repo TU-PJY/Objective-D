@@ -23,30 +23,29 @@ public:
 	float ObjectAlpha{ 1.0f };
 
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
-	int renderType = RENDER_TYPE_PERS;
-
-	// 깊이 검사 유무
-	bool DepthTest{ true };
+	int RenderType = RENDER_TYPE_PERS;
 
 	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderType=RENDER_TYPE_PERS);
+	void InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderTypeFlag=RENDER_TYPE_PERS);
 	void SetColor(XMFLOAT3 Color);
 	void SetColor(float R, float G, float B);
 	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
 	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
-	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest = true);
-	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0);
+	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest);
+	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0, bool DepthTestFlag=true);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
 	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
+
+	void SetToDefaultMode(ID3D12GraphicsCommandList* CmdList);
 
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
@@ -58,7 +57,7 @@ public:
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 	virtual void ReleaseShaderVariables() {}
 	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
-	virtual void InputMouseButton(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+	virtual void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
 	virtual void InputMouseMotion(HWND hWnd, POINT MotionPosition) {}
 	virtual void Update(float FT) {}
 	virtual void Render(CommandList CmdList) {}

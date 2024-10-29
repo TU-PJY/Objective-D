@@ -2,9 +2,9 @@
 #include "DirectX_3D.h"
 #include "TimerUtil.h"
 
-class DirectX_3D_Main {
+class Framework {
 public:
-	DirectX_3D_Main();
+	Framework();
 
 	bool Create(HINSTANCE hInstance, HWND hMainWnd);
 	void Destroy();
