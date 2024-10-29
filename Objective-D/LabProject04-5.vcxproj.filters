@@ -67,14 +67,8 @@
     <Filter Include="[5]____________[ Util ]\[ Texture Util ]">
       <UniqueIdentifier>{513de38b-3361-4d1f-bd1f-31498074ad0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Util ]\[ CBV Util ]">
-      <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Util ]\[ Brush Util ]">
       <UniqueIdentifier>{12f8bb1d-4b55-4e19-981f-78f7dc7fda6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Util ]\[ Root Constant Util ]">
-      <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
     </Filter>
     <Filter Include="[6]____________[ DirectX 3D ]">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
@@ -112,6 +106,12 @@
     </Filter>
     <Filter Include="[8]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]">
+      <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]">
+      <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,7 +191,7 @@
       <Filter>[6]____________[ DirectX 3D ]\[ Framework ]</Filter>
     </ClInclude>
     <ClInclude Include="CBVUtil.h">
-      <Filter>[5]____________[ Util ]\[ CBV Util ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstants.h">
       <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
@@ -200,7 +200,7 @@
       <Filter>[5]____________[ Util ]\[ Brush Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstantUtil.h">
-      <Filter>[5]____________[ Util ]\[ Root Constant Util ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
       <Filter>[4]____________[ Camera ]</Filter>
@@ -266,7 +266,7 @@
       <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
     </ClCompile>
     <ClCompile Include="CBVUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ CBV Util ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
       <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
@@ -290,7 +290,7 @@
       <Filter>[5]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstantUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ Root Constant Util ]</Filter>
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]</Filter>
     </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[4]____________[ Camera ]</Filter>
