@@ -7,29 +7,13 @@
 class TerrainUtil {
 private:
 	Mesh* TerrainMesh{};
-	Shader* TerrainShader{};
-	Texture* TerrainTexture{};
-
-	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
-	XMFLOAT3 TerrainColor{};
-
-	float AlphaValue{ 1.0f };
+	XMFLOAT4X4 TerrainMatrix = Mat4::Identity();
 
 public:
-	void SetMesh(Mesh* MeshPtr);
-	void SetShader(Shader* ShaderPtr);
-	void SetTexture(Texture* TexturePtr);
 	bool CheckFloor(XMFLOAT3 Position);
-	void ClampToFloor(XMFLOAT3& Position);
+	void ClampToFloor(XMFLOAT3& Position, float Offset);
+	float GetFloorHeight(float x, float z, float Offset);
 	void CheckCollision(XMFLOAT3& Position);
-	void SetColor(float R, float G, float B);
-	void Scale(XMFLOAT3 SizeValue);
-	void Render(ID3D12GraphicsCommandList* CmdList);
-	void EnableLight(ID3D12GraphicsCommandList* CmdList);
-	void DisableLight(ID3D12GraphicsCommandList* CmdList);
-	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
-	void FlipTexture(ID3D12GraphicsCommandList* CmdList, bool H_Flip, bool V_Flip);
-	void SetAlpha(ID3D12GraphicsCommandList* CmdList, float AlphaValue);
-	void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
+	void InputData(XMFLOAT4X4& TMat, XMFLOAT4X4& RMat, XMFLOAT4X4& SMat, Mesh* MeshData);
 };
 extern TerrainUtil terrainUtil;

@@ -83,11 +83,8 @@ VS_OUTPUT VSTexColor(VS_INPUT input)
     return (output);
 }
 
-float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
+float3 ComputeLightColor(VS_OUTPUT input, float4 texColor)
 {
-    float4 texColor = gTexture.Sample(gSampler, input.uv);
-    float3 meshColor = gf3ObjectColor;
-
     float3 ambient = gAmbientColor * texColor.rgb;
     float3 lightDir = normalize(-gLightDirection); // 광원의 방향
     float3 normal = normalize(input.normalW); // 법선 벡터 정규화
@@ -96,12 +93,21 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
     diffuse *= gShadowStrength;
 
     float3 finalColorWithLight = ambient + diffuse;
-    float3 finalColorWithoutLight = texColor.rgb;
-    
+    return finalColorWithLight;
+}
+
+float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
+{
+    float4 texColor = gTexture.Sample(gSampler, input.uv);
+    float3 meshColor = gf3ObjectColor;
+
     // UseLight가 0이면 조명 사용 안 함, 1이면 조명 사용함
-    float3 finalColor = lerp(finalColorWithoutLight, finalColorWithLight, UseLight);
+    float3 finalColor = lerp(texColor.rgb, ComputeLightColor(input, texColor), UseLight);
     
     finalColor += meshColor;
+    
+    if(texColor.a < 0.01)
+        texColor.a = 0.0;
   
     float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;

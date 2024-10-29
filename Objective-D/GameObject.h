@@ -1,6 +1,6 @@
 #pragma once
 #include "GameResource.h"
-#include "CBVManager.h"
+#include "CBVUtil.h"
 #include "TransformUtil.h"
 #include "CollisionUtil.h"
 #include "MathUtil.h"
