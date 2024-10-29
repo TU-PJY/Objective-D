@@ -10,8 +10,8 @@
 #include "MouseUtil.h"
 #include "TerrainUtil.h"
 
-int SCREEN_WIDTH = START_UP_WIDTH;
-int SCREEN_HEIGHT = START_UP_HEIGHT;
+int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
+int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 Framework framework;
 

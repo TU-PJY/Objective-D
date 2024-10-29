@@ -46,7 +46,7 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 	BoundMesh->CreateBoundboxMesh(Device, CmdList);
 
 	// 바운드스페어 출력용 매쉬 생성
-	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//Models//BoundingSphereMesh.txt", MESH_TYPE_TEXT);
+	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//SystemResources//Models//BoundingSphereMesh.txt", MESH_TYPE_TEXT);
 	////////////////////////////////
 
 	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MESH_TYPE_BIN);
@@ -55,10 +55,10 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	////////////////////////////////
 	// 선 그리기용 텍스처 생성
-	LineTex = new Texture(Device, CmdList, L"Resources//Image//line_tex.png");
+	LineTex = new Texture(Device, CmdList, L"Resources//SystemResources//Textures//line_tex.png", TEXTURE_TYPE_WIC);
 	////////////////////////////////
 
-	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg");
-	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg");
-	SkyboxTex = new Texture(Device, CmdList, L"Resources//Image//skytex.png");
+	Tex = new Texture(Device, CmdList, L"Resources//Image//Gun.jpg", TEXTURE_TYPE_WIC);
+	WoodTex = new Texture(Device, CmdList, L"Resources//Image//Wood.jpg", TEXTURE_TYPE_WIC);
+	SkyboxTex = new Texture(Device, CmdList, L"Resources//Image//skytex.png", TEXTURE_TYPE_WIC);
 }

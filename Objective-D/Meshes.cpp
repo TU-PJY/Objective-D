@@ -284,7 +284,7 @@ void Mesh::CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* C
 	IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
 }
 
-// 파일로부터 매뮈를 불러온다,
+// 파일로부터 매쉬를 불러온다,
 void Mesh::ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode) {
 	char Token[64] = { '\0' };
 

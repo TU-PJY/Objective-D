@@ -23,6 +23,7 @@
 
 #include "d3dx12.h"
 #include "WICTextureLoader12.h"
+#include "DDSTextureLoader12.h"
 #include "CBVResource.h"
 
 #include <d3d12.h>
@@ -55,6 +56,12 @@ enum FlipTypeEnum {
 enum MeshTypeEnum {
 	MESH_TYPE_TEXT,
 	MESH_TYPE_BIN
+};
+
+// 텍스처 파일 타입 열거형
+enum TextureTypeEnum {
+	TEXTURE_TYPE_WIC,
+	TEXTURE_TYPE_DDS
 };
 
 // 오브젝트 벡터 구조체
