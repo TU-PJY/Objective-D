@@ -4,7 +4,7 @@
 #include "TextureUtil.h"
 
 ////////////////////////////////// 기본 리소스
-extern BasicObjectShader* BasicShader;
+extern BasicObjectShader* ObjectShader;
 extern BasicObjectShader* BoundboxShader;
 
 // 선 출력용 텍스처

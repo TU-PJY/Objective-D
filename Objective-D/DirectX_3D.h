@@ -51,6 +51,12 @@ enum FlipTypeEnum {
 	FLIP_TYPE_HV,
 };
 
+// 매쉬 파일 타입 열거형
+enum MeshTypeEnum {
+	MESH_TYPE_TEXT,
+	MESH_TYPE_BIN
+};
+
 // 오브젝트 벡터 구조체
 typedef struct Vector {
 	DirectX::XMFLOAT3 Look;

@@ -46,7 +46,7 @@ void LineBrush::Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, flo
 	Transform::Scale(ScaleMatrix, Width + Length, Width, 1.0);
 
 	LineTex->Render(CmdList);
-	BasicShader->Render(CmdList, false);
+	ObjectShader->Render(CmdList, false);
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	XMFLOAT4X4 xmf4x4World;

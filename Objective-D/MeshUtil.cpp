@@ -7,11 +7,11 @@
 // 매쉬를 담당하는 유틸이다.
 
 // ResourList에서 해당 함수를 사용하여 매쉬를 로드하도록 한다
-Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, MeshType Type) {
+Mesh::Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, int Type) {
 	if (Directory) {
-		if (Type == MeshType::Text)
+		if (Type == MESH_TYPE_TEXT)
 			ImportMesh(Device, CmdList, Directory, true);
-		else if (Type == MeshType::Binary)
+		else if (Type == MESH_TYPE_BIN)
 			ImportMesh(Device, CmdList, Directory, false);
 	}
 }

@@ -5,7 +5,7 @@
 // Scene::Init()에서 실행된다.
 
 ////////////////////////////////
-BasicObjectShader* BasicShader;
+BasicObjectShader* ObjectShader;
 BasicObjectShader* BoundboxShader;
 Texture* LineTex;
 Mesh* BoundMesh;
@@ -19,11 +19,11 @@ void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Devi
 	////////////////////////////////
 	// 파이프라인 생성이 곧 쉐이더 설정의 마무리이다.
 	// 일반 렌더링 쉐이더 생성
-	BasicShader = new BasicObjectShader();
-	BasicShader->CreateDefaultPipeline(Device, RootSignature);
+	ObjectShader = new BasicObjectShader();
+	ObjectShader->CreateDefaultPipeline(Device, RootSignature);
 
 	// 깊이 검사 미포함 파이프라인 생성
-	BasicShader->CreateImageDepthPipelineState(Device, RootSignature);
+	ObjectShader->CreateImageDepthPipelineState(Device, RootSignature);
 
 	// 바운드박스 쉐이더 생성
 	BoundboxShader = new BasicObjectShader();
@@ -46,10 +46,10 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 	BoundMesh->CreateBoundboxMesh(Device, CmdList);
 
 	// 바운드스페어 출력용 매쉬 생성
-	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//Models//BoundingSphereMesh.txt", MeshType::Text);
+	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//Models//BoundingSphereMesh.txt", MESH_TYPE_TEXT);
 	////////////////////////////////
 
-	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MeshType::Binary);
+	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MESH_TYPE_BIN);
 }
 
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {

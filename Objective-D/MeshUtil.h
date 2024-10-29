@@ -2,11 +2,6 @@
 #include "DirectX_3D.h"
 #include <fstream>
 
-enum class MeshType
-{
-	Text, Binary
-};
-
 class CVertex {
 protected:
 	XMFLOAT3 Position{};
@@ -86,7 +81,7 @@ protected:
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
-	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, MeshType Type);
+	Mesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, int Type);
 	Mesh();
 	~Mesh();
 	void ReleaseUploadBuffers();

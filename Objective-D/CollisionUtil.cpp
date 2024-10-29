@@ -208,7 +208,7 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::Input(CmdList, FlipCBV, 0);
 
 	LineTex->Render(CmdList);
-	BasicShader->Render(CmdList);
+	ObjectShader->Render(CmdList);
 
 	camera.InitMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
