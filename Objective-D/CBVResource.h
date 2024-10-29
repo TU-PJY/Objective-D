@@ -18,6 +18,8 @@ extern CBV LightCBV;
 // light bool info CBV
 extern CBV BoolLightCBV;
 
+
+// CBV 생성 관련 함수들
 void CreateCBVResource(ID3D12Device* Device);
 inline void ReserveCBV(CBV& CBV_Struct, int ReserveSize) {
 	CBV_Struct.Buffer.reserve(ReserveSize);

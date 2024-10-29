@@ -37,9 +37,6 @@
     <Filter Include="[5]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]">
       <UniqueIdentifier>{f550e7bc-0bb1-4940-a2cf-ef5a66d383c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Util ]\[ Timer Util ]">
-      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Util ]\[ Shader Util ]">
       <UniqueIdentifier>{b6dba01f-4495-421d-b07d-2f1ae3602a65}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="[5]____________[ Util ]\[ Collision Util ]">
       <UniqueIdentifier>{d8926a5b-3aa1-4959-ab02-5a2302da5eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Util ]\[ Mouse Util ]">
-      <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
     </Filter>
     <Filter Include="[5]____________[ Util ]\[ Terrain Util ]">
       <UniqueIdentifier>{19a62344-2409-47b7-bb75-4d6abbcb9220}</UniqueIdentifier>
@@ -70,31 +64,6 @@
     <Filter Include="[5]____________[ Util ]\[ Brush Util ]">
       <UniqueIdentifier>{12f8bb1d-4b55-4e19-981f-78f7dc7fda6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]">
-      <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ Framework ]">
-      <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ Scene ]">
-      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ D3D ]">
-      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ WICTextureLoader12 ]">
-      <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]">
-      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]">
-      <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]">
       <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
     </Filter>
@@ -107,19 +76,53 @@
     <Filter Include="[8]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]">
-      <UniqueIdentifier>{1fd2374a-8d54-4524-ac12-03fcf2665e4c}</UniqueIdentifier>
+    <Filter Include="[1]____________[ Game Resource ]\[1][ Common ]">
+      <UniqueIdentifier>{0f8a68f8-ffdc-49f7-9188-1b4a57a768ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]">
-      <UniqueIdentifier>{3d47fba7-be5d-4755-87ef-afce9724eb34}</UniqueIdentifier>
+    <Filter Include="[1]____________[ Game Resource ]\[2][ CBV ]">
+      <UniqueIdentifier>{2e441570-2469-4d4a-96e6-39f9f7bd4a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]____________[ Game Resource ]\[3][RC]">
+      <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]">
+      <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ Framework ]">
+      <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ Scene ]">
+      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ D3D ]">
+      <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ WICTextureLoader12 ]">
+      <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ WinAPI ]">
+      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ WinAPI ]\[ Res ]">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ WinAPI ]\[ Header ]">
+      <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ Timer ]">
+      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ Objective-D ]\[ Mouse Util ]">
+      <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ Scene ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Scene ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ D3D ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ D3D ]</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>[0]____________[ Config ]</Filter>
@@ -128,19 +131,19 @@
       <Filter>[5]____________[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TimerUtil.h">
-      <Filter>[5]____________[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Timer ]</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
       <Filter>[5]____________[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Mode1.h">
       <Filter>[2]____________[ Game Mode ]\[ Mode1 ]</Filter>
@@ -155,7 +158,7 @@
       <Filter>[5]____________[ Util ]\[ Collision Util ]</Filter>
     </ClInclude>
     <ClInclude Include="MouseUtil.h">
-      <Filter>[5]____________[ Util ]\[ Mouse Util ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Mouse Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TerrainUtil.h">
       <Filter>[5]____________[ Util ]\[ Terrain Util ]</Filter>
@@ -173,55 +176,55 @@
       <Filter>[3]____________[ Game Object ]\[1] [ CustomObject ]</Filter>
     </ClInclude>
     <ClInclude Include="d3dx12.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ D3D ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ D3D ]</Filter>
     </ClInclude>
     <ClInclude Include="WICTextureLoader12.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ WICTextureLoader12 ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WICTextureLoader12 ]</Filter>
     </ClInclude>
     <ClInclude Include="TextureUtil.h">
       <Filter>[5]____________[ Util ]\[ Texture Util ]</Filter>
     </ClInclude>
-    <ClInclude Include="CBVData.h">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
-    </ClInclude>
-    <ClInclude Include="CBVManager.h">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
-    </ClInclude>
     <ClInclude Include="Framework.h">
-      <Filter>[6]____________[ DirectX 3D ]\[ Framework ]</Filter>
-    </ClInclude>
-    <ClInclude Include="CBVUtil.h">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]</Filter>
-    </ClInclude>
-    <ClInclude Include="RootConstants.h">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Framework ]</Filter>
     </ClInclude>
     <ClInclude Include="LineBrush.h">
       <Filter>[5]____________[ Util ]\[ Brush Util ]</Filter>
-    </ClInclude>
-    <ClInclude Include="RootConstantUtil.h">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtil.h">
       <Filter>[4]____________[ Camera ]</Filter>
     </ClInclude>
     <ClInclude Include="GameResource.h">
-      <Filter>[1]____________[ Game Resource ]</Filter>
+      <Filter>[1]____________[ Game Resource ]\[1][ Common ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CBVData.h">
+      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CBVResource.h">
+      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
+    </ClInclude>
+    <ClInclude Include="CBVUtil.h">
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
+    </ClInclude>
+    <ClInclude Include="RootConstantUtil.h">
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
+    </ClInclude>
+    <ClInclude Include="RootConstants.h">
+      <Filter>[1]____________[ Game Resource ]\[3][RC]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
-      <Filter>[6]____________[ DirectX 3D ]\[ Scene ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Scene ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
-      <Filter>[6]____________[ DirectX 3D ]\[ D3D ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ D3D ]</Filter>
     </ClCompile>
     <ClCompile Include="Framework.cpp">
-      <Filter>[6]____________[ DirectX 3D ]\[ Framework ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Framework ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="TimerUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ Timer Util ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Timer ]</Filter>
     </ClCompile>
     <ClCompile Include="PickingUtil.cpp">
       <Filter>[5]____________[ Util ]\[ Picking Util ]</Filter>
@@ -239,7 +242,7 @@
       <Filter>[5]____________[ Util ]\[ Collision Util ]</Filter>
     </ClCompile>
     <ClCompile Include="MouseUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ Mouse Util ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ Mouse Util ]</Filter>
     </ClCompile>
     <ClCompile Include="TerrainUtil.cpp">
       <Filter>[5]____________[ Util ]\[ Terrain Util ]</Filter>
@@ -257,19 +260,10 @@
       <Filter>[0]____________[ Config ]</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader12.cpp">
-      <Filter>[6]____________[ DirectX 3D ]\[ WICTextureLoader12 ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WICTextureLoader12 ]</Filter>
     </ClCompile>
     <ClCompile Include="TextureUtil.cpp">
       <Filter>[5]____________[ Util ]\[ Texture Util ]</Filter>
-    </ClCompile>
-    <ClCompile Include="CBVManager.cpp">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
-    </ClCompile>
-    <ClCompile Include="CBVUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]\[ CBV Util ]</Filter>
-    </ClCompile>
-    <ClCompile Include="RootConstants.cpp">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="LineBrush.cpp">
       <Filter>[5]____________[ Util ]\[ Brush Util ]</Filter>
@@ -289,27 +283,36 @@
     <ClCompile Include="Meshes.cpp">
       <Filter>[5]____________[ Util ]\[ Mesh Util ]\[1][ Set Up ]</Filter>
     </ClCompile>
-    <ClCompile Include="RootConstantUtil.cpp">
-      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]\[ Root Constant Util ]</Filter>
-    </ClCompile>
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[4]____________[ Camera ]</Filter>
     </ClCompile>
     <ClCompile Include="GameResource.cpp">
-      <Filter>[1]____________[ Game Resource ]</Filter>
+      <Filter>[1]____________[ Game Resource ]\[1][ Common ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CBVResource.cpp">
+      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
+    </ClCompile>
+    <ClCompile Include="CBVUtil.cpp">
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
+    </ClCompile>
+    <ClCompile Include="RootConstantUtil.cpp">
+      <Filter>[5]____________[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
+    </ClCompile>
+    <ClCompile Include="RootConstants.cpp">
+      <Filter>[1]____________[ Game Resource ]\[3][RC]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>[6]____________[ DirectX 3D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[6]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

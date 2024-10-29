@@ -1,4 +1,4 @@
-#include "CBVManager.h"
+#include "CBVResource.h"
 #include "CBVUtil.h"
 
 CBV FlipCBV; // texture flip

@@ -3,7 +3,7 @@
 #include "CameraUtil.h"
 #include "Scene.h"
 #include "StartMode.h"
-#include "CBVManager.h"
+#include "CBVUtil.h"
 
 void Framework::Init() {
 	SetBackgroundColor(0.4, 0.4, 0.4);
