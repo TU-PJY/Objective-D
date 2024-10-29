@@ -18,6 +18,9 @@ extern Mesh* SkyboxMesh;
 
 // 바운드박스 출력용 매쉬
 extern Mesh* BoundMesh;
+
+// 바운드 스페어 출력용 매쉬
+extern Mesh* BoundingSphereMesh;
 //////////////////////////////////
 
 // 커스텀 매쉬 및 텍스처

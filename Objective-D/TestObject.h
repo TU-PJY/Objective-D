@@ -8,7 +8,7 @@
 
 class TestObject : public GameObject {
 public:
-	XMFLOAT3 Position{};
+	XMFLOAT3 Position{0.0, 0.0, 3.0};
 	XMFLOAT3 Rotation{};
 	XMFLOAT3 RotationDest{};
 	XMFLOAT3 Size{ 0.5, 0.5, 0.5 };
@@ -19,6 +19,7 @@ public:
 	LineBrush line;
 
 	OOBB oobb;
+	Range range;
 
 	Vector Vec{};
 
@@ -94,7 +95,7 @@ public:
 	void Render(CommandList CmdList) {
 		InitMatrix(CmdList, RENDER_TYPE_PERS);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		Transform::Move(TranslateMatrix, Position.x, Position.y, 3.0);
+		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
 		FlipTexture(CmdList, FLIP_TYPE_V);
 
@@ -103,11 +104,9 @@ public:
 
 		RenderMesh(CmdList, GunMesh, Tex, BasicShader, GunAlpha);
 
-		// 바운드 박스 출력
-		// OOBB의 경우 대상 모델을 렌더링한 직후 해야한다.
-		// AABB, Range는 순서 무관
-		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
-		oobb.Render(CmdList);
+		// 바운드 스페어 출력
+		range.Update(Position, 0.3);
+		range.Render(CmdList);
 
 		// 이미지 출력
 		InitMatrix(CmdList, RENDER_TYPE_IMAGE);

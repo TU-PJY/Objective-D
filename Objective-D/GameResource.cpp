@@ -9,6 +9,7 @@ BasicObjectShader* BasicShader;
 BasicObjectShader* BoundboxShader;
 Texture* LineTex;
 Mesh* BoundMesh;
+Mesh* BoundingSphereMesh;
 ////////////////////////////////
 
 Mesh* GunMesh;
@@ -43,6 +44,9 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 	// 바운드박스 출력용 매쉬 생성
 	BoundMesh = new Mesh;
 	BoundMesh->CreateBoundboxMesh(Device, CmdList);
+
+	// 바운드스페어 출력용 매쉬 생성
+	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//Models//BoundingSphereMesh.txt", MeshType::Text);
 	////////////////////////////////
 
 	GunMesh = new Mesh(Device, CmdList, "Resources//Models//model.bin", MeshType::Binary);

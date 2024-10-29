@@ -12,7 +12,6 @@ private:
 	XMFLOAT4X4 ScaleMatrix{};
 
 	XMFLOAT3 BoundboxColor{ 1.0, 0.0, 0.0 };
-	float AlphaValue{ 1.0f };
 
 public:
 	void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
@@ -32,7 +31,6 @@ private:
 	XMFLOAT4X4 ScaleMatrix{};
 
 	XMFLOAT3 BoundboxColor{ 1.0, 0.0, 0.0 };
-	float AlphaValue{ 1.0f };
 
 public:
 	void Update(XMFLOAT3 Position, XMFLOAT3 Size);
@@ -48,9 +46,15 @@ private:
 	BoundingSphere sphere = BoundingSphere();
 	bool Collide{};
 
+	XMFLOAT4X4 TranslateMatrix{};
+	XMFLOAT4X4 ScaleMatrix{};
+
+	XMFLOAT3 BoundboxColor{ 1.0, 0.0, 0.0 };
+
 public:
-	void Update(const XMFLOAT3& Center, const float& Size);
+	void Update(const XMFLOAT3& Center, float Size);
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const BoundingBox& Other);
 	bool CheckCollision(const BoundingOrientedBox& Other);
+	void Render(ID3D12GraphicsCommandList* CmdList);
 };

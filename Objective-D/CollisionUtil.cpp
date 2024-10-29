@@ -48,6 +48,8 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
+	float AlphaValue = 1.0;
+
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
@@ -117,6 +119,8 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
+	float AlphaValue = 1.0;
+
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
@@ -157,7 +161,7 @@ bool AABB::CheckCollision(const BoundingSphere& Other) {
 
 
 
-void Range::Update(const XMFLOAT3& Center, const float& Size) {
+void Range::Update(const XMFLOAT3& Center, float Size) {
 	sphere.Center = Center;
 	sphere.Radius = Size;
 }
@@ -190,4 +194,38 @@ bool Range::CheckCollision(const BoundingOrientedBox& Other) {
 
 	Collide = false;
 	return false;
+}
+
+void Range::Render(ID3D12GraphicsCommandList* CmdList) {
+#ifdef SHOW_BOUND_BOX
+	TranslateMatrix = Mat4::Identity();
+	ScaleMatrix = Mat4::Identity();
+
+	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
+	Transform::Scale(ScaleMatrix, sphere.Radius, sphere.Radius, sphere.Radius);
+
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
+	CBVUtil::Input(CmdList, FlipCBV, 0);
+
+	LineTex->Render(CmdList);
+	BasicShader->Render(CmdList);
+
+	camera.InitMatrix();
+	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
+	camera.SetViewportsAndScissorRects(CmdList);
+	camera.UpdateShaderVariables(CmdList);
+
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
+
+	XMFLOAT4X4 xmf4x4World;
+	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
+
+	float AlphaValue = 1.0;
+
+	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
+
+	BoundingSphereMesh->Render(CmdList);
+#endif
 }
