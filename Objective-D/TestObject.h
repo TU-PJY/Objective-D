@@ -45,8 +45,7 @@ public:
 			float cyDelta = (float)(mouse.CurrentPosition().y - MotionPosition.y) / 5.0f;
 			mouse.UpdateMotionPosition(MotionPosition);
 
-			RotationDest.x += cyDelta;
-			RotationDest.y += cxDelta;
+			UpdateMotionRotation(RotationDest, cxDelta, cyDelta);
 		}
 	}
 

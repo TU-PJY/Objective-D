@@ -37,7 +37,7 @@ void GameObject::SetColor(XMFLOAT3 Color) {
 	ModelColor = Color;
 }
 
-// RGB값을 이용하여 객체 매쉬의 색상을 설정한다.
+// 객체 매쉬의 색상을 설정한다.
 void GameObject::SetColor(float R, float G, float B) {
 	ModelColor.x = R;
 	ModelColor.y = G;
@@ -59,8 +59,43 @@ void GameObject::MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
 	Position = Vec3::Add(Position, Up, Distance);
 }
 
-////////////////////////////////
+// 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
+void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType) {
+	CBVUtil::Input(CmdList, FlipCBV, FlipType);
+}
 
+// 조명 사용 비활성화
+void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
+	CBVUtil::Input(CmdList, BoolLightCBV, 0);
+}
+
+// 조명 사용 활성화
+void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
+	CBVUtil::Input(CmdList, BoolLightCBV, 1);
+}
+
+// 쉐이더에 조명 데이터 전송
+void GameObject::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
+	CBVUtil::Input(CmdList, LightCBV, 0);
+}
+
+// 값에 종횡비를 곱한다. UI를 구현할때 주로 사용한다.
+float GameObject::ASP(float Value) {
+	return ASPECT * Value;
+}
+
+void GameObject::UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY) {
+	RotationX += DeltaY;
+	RotationY += DeltaX;
+}
+
+void GameObject::UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY) {
+	Rotation.x += DeltaY;
+	Rotation.y += DeltaX;
+}
+
+////////////////////////////////
+// 
 // 텍스처를 바인딩한다. 반드시 매쉬를 렌더링하기 전에 사용해야 한다. 커맨드 리스트와 매핑할 텍스처를 파라미터로 전달하면 된다.
 // 좌우 또는 상하 또는 좌우상하 반전이 가능하다.
 void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr) {
@@ -107,38 +142,6 @@ void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, T
 		MeshPtr->Render(CmdList);
 }
 
-// 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
-void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType) {
-	CBVUtil::Input(CmdList, FlipCBV, FlipType);
-}
-
-// 조명 사용 비활성화
-void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
-}
-
-// 조명 사용 활성화
-void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, BoolLightCBV, 1);
-}
-
-// 쉐이더에 조명 데이터 전송
-void GameObject::InputLightInfo(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, LightCBV, 0);
-}
-
-// 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
-void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
-	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
-
-	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, ResultMatrix * xmmtxView);
-	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
-	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
-	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
-	xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
-}
-
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
 int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
 	int nIntersected = 0;
@@ -161,6 +164,18 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(CmdList, &ObjectAlpha, ALPHA_INDEX, 1, 0);
+}
+
+// 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
+void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
+	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
+
+	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, ResultMatrix * xmmtxView);
+	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
+	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
+	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
+	xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
 }
 
 // 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.

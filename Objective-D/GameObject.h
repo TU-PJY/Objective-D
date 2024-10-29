@@ -43,6 +43,9 @@ public:
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
 	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
+	float ASP(float Value);
+	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
+	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);
 	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
 
 	void SetToDefaultMode(ID3D12GraphicsCommandList* CmdList);
