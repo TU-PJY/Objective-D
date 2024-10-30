@@ -10,10 +10,6 @@ typedef void(*Function)(void);
 using LayerIter = std::multimap<const char*, GameObject*>::iterator;
 constexpr int Layers = static_cast<int>(END);
 
-typedef struct {
-	LayerIter First, End;
-}ObjectRange;
-
 class Scene {
 private:
 	std::array<std::vector<GameObject*>, Layers> ObjectList;
@@ -54,7 +50,7 @@ public:
 	void AddObject(GameObject*&& Object, const char* Tag, int InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);
-	ObjectRange EqualRange(const char* Tag);
+	std::pair<LayerIter, LayerIter> EqualRange(const char* Tag);
 	void ClearAll();
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

@@ -154,14 +154,8 @@ GameObject* Scene::Find(const char* Tag) {
 
 // 특정 태그를 가진 오브젝트들의 포인터 범위를 리턴한다.
 // 해당 함수로 equal range를 얻어 for문으로 접근하면 된다.
-ObjectRange Scene::EqualRange(const char* Tag) {
-	ObjectRange Range{};
-
-	auto It = ObjectIndex.equal_range(Tag);
-	Range.First = It.first;
-	Range.End = It.second;
-
-	return Range;
+std::pair<LayerIter, LayerIter> Scene::EqualRange(const char* Tag) {
+	return ObjectIndex.equal_range(Tag);
 }
 
 // 현재 존재하는 모든 객체들을 삭제한다.
