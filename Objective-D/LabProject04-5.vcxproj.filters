@@ -73,9 +73,6 @@
     <Filter Include="[7]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[8]____________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[1]____________[ Game Resource ]\[1][ Common ]">
       <UniqueIdentifier>{0f8a68f8-ffdc-49f7-9188-1b4a57a768ef}</UniqueIdentifier>
     </Filter>
@@ -118,6 +115,9 @@
     </Filter>
     <Filter Include="[6]____________[ Objective-D ]\[ DDSTextureLoader12 ]">
       <UniqueIdentifier>{5983987d-bc91-4c09-814d-3736d2a90331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]____________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -333,7 +333,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shader\BasicShader.hlsl">
+    <FxCompile Include="Resources\SystemResources\Shader\BasicShader.hlsl">
       <Filter>[7]____________[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>
