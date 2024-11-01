@@ -167,6 +167,7 @@
     <ClInclude Include="MeshUtil.h" />
     <ClInclude Include="PickingUtil.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceFileLink.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="DirectX_3D.h" />
     <ClInclude Include="GameResource.h" />

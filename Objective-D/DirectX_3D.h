@@ -25,6 +25,7 @@
 #include "WICTextureLoader12.h"
 #include "DDSTextureLoader12.h"
 #include "CBVResource.h"
+#include "ResourceFileLink.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
