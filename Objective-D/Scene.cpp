@@ -100,8 +100,11 @@ void Scene::Update(float FT) {
 void Scene::Render(ID3D12GraphicsCommandList* CmdList) {
 	for (int i = 0; i < Layers; ++i) {
 		for (auto const& O : ObjectList[i]) {
-			if (!O->DeleteMark)
-				O->Render(CmdList);
+			if (!O->DeleteMark) {
+				// 커맨드 리스트 입력
+				O->InputCommandList(CmdList);
+				O->Render();
+			}
 		}
 	}
 }

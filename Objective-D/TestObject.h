@@ -4,8 +4,6 @@
 #include "CameraUtil.h"
 #include <cmath>
 
-#include "LineBrush.h"
-
 class TestObject : public GameObject {
 public:
 	XMFLOAT3 Position{0.0, 0.0, 3.0};
@@ -42,11 +40,9 @@ public:
 			mouse.HideCursor();
 			GetCapture();
 
-			float cxDelta = (float)(mouse.CurrentPosition().x - MotionPosition.x) / 5.0f;
-			float cyDelta = (float)(mouse.CurrentPosition().y - MotionPosition.y) / 5.0f;
+			XMFLOAT2 Delta = mouse.GetMotionDelta(MotionPosition, 0.5);
 			mouse.UpdateMotionPosition(MotionPosition);
-
-			UpdateMotionRotation(RotationDest, cxDelta, cyDelta);
+			UpdateMotionRotation(RotationDest, Delta.x, Delta.y);
 		}
 	}
 
@@ -92,28 +88,28 @@ public:
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
 	}
 
-	void Render(CommandList CmdList) {
-		InitRenderState(CmdList, RENDER_TYPE_PERS);
+	void Render() {
+		InitRenderState(RENDER_TYPE_PERS);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
-		FlipTexture(CmdList, FLIP_TYPE_V);
+		FlipTexture(FLIP_TYPE_V);
 
 		if (!UseLight)
-			DisableLight(CmdList);
+			DisableLight();
 
-		RenderMesh(CmdList, GunMesh, Tex, ObjectShader, GunAlpha);
+		RenderMesh(GunMesh, Tex, ObjectShader, GunAlpha);
 
 		// 바운드 스페어 출력
 		range.Update(Position, 0.3);
-		range.Render(CmdList);
+		range.Render(ObjectCmdList);
 
 		// 이미지 출력
-		InitRenderState(CmdList, RENDER_TYPE_IMAGE);
+		InitRenderState(RENDER_TYPE_IMAGE);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
 		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
-		RenderMesh(CmdList, ImagePannel, WoodTex, ObjectShader);
+		RenderMesh(ImagePannel, WoodTex, ObjectShader);
 
-		line.Draw(CmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);
+		line.Draw(ObjectCmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);
 	}
 };

@@ -83,7 +83,7 @@ void Framework::Update() {
 	// 모든 객체의 업데이트는 이 함수를 통해 이루어진다.
 	scene.Update(Timer.GetTimeElapsed());
 
-	// 객체의 변환 정보를 쉐이더로 전달한다
+	// 로트시그니처를 쉐이더로 전달한다
 	scene.PrepareRender(CmdList);
 
 	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다

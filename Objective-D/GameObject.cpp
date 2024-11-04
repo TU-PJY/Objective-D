@@ -10,7 +10,7 @@
 
 
 // 객체의 렌더링 상태를 초기화 한다. 모든 객체는 이 함수로 렌더링 과정이 시작된다.
-void GameObject::InitRenderState(ID3D12GraphicsCommandList* CmdList, int RenderTypeFlag) {
+void GameObject::InitRenderState(int RenderTypeFlag) {
 	// RENDER_TYPE_NONE일 경우 행렬 초기화를 실행하지 않는다. 
 	// 변환을 실시간으로 적용할 필요가 없는 터레인이나 빌보드 렌더링 용도로 사용하는 플래그이다.
 	if (RenderTypeFlag != RENDER_TYPE_NONE) {
@@ -24,17 +24,17 @@ void GameObject::InitRenderState(ID3D12GraphicsCommandList* CmdList, int RenderT
 
 	// 텍스처 상태 초기화
 	ObjectAlpha = 1.0f;
-	FlipTexture(CmdList, FLIP_TYPE_NONE);
+	FlipTexture(FLIP_TYPE_NONE);
 
 	// 매쉬 색상 초기화
 	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
 
 	// 이미지 타입 렌더링일 경우 이미지 모드로 변경
 	if (RenderTypeFlag == RENDER_TYPE_IMAGE)
-		SetToImageMode(CmdList);
+		SetToImageMode();
 
 	else // 나머지 타입일 경우 기본 모드로 변경
-		SetToDefaultMode(CmdList);
+		SetToDefaultMode();
 }
 
 // 객체 메쉬의 색상을 설정한다.
@@ -50,52 +50,41 @@ void GameObject::SetColorRGB(float R, float G, float B) {
 }
 
 // 조명 사용 비활성화
-void GameObject::DisableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
+void GameObject::DisableLight() {
+	CBVUtil::Input(ObjectCmdList, BoolLightCBV, 0);
 }
 
 // 조명 사용 활성화
-void GameObject::EnableLight(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, BoolLightCBV, 1);
+void GameObject::EnableLight() {
+	CBVUtil::Input(ObjectCmdList, BoolLightCBV, 1);
 }
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
-void GameObject::FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType) {
-	CBVUtil::Input(CmdList, FlipCBV, FlipType);
+void GameObject::FlipTexture(int FlipType) {
+	CBVUtil::Input(ObjectCmdList, FlipCBV, FlipType);
 }
 
 // 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다.
-void GameObject::RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha, bool DepthTestFlag) {
+void GameObject::RenderMesh(Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha, bool DepthTestFlag) {
 	// 텍스처 바인딩 및 쉐이더 설정
 	// 이미지 랜더 타입이 아니라면 깊이 검사 플래그를 따르도록 한다.
-	BindTexture(CmdList, TexturePtr);
+	BindTexture(TexturePtr);
 	if(RenderType != RENDER_TYPE_IMAGE)
-		UseShader(CmdList, ShaderPtr, DepthTestFlag);
+		UseShader(ShaderPtr, DepthTestFlag);
 	else 
-		UseShader(CmdList, ShaderPtr, false);
+		UseShader(ShaderPtr, false);
 
 	// 카메라 설정
-	SetCamera(CmdList);
+	SetCamera();
 
 	// 알파값 설정
 	ObjectAlpha = Alpha;
 
 	// 쉐이더로 최종 전달
-	UpdateShaderVariables(CmdList);
+	UpdateShaderVariables();
 
-	if (MeshPtr)
-		MeshPtr->Render(CmdList);
-}
-
-// 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
-int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
-	int nIntersected = 0;
-
-	XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
-	GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
-	nIntersected = MeshPtr->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
-
-	return(nIntersected);
+	// 매쉬 렌더링
+	UseMesh(MeshPtr);
 }
 
 // 마우스 모션으로부터 회전값 업데이트 한다.
@@ -115,23 +104,45 @@ float GameObject::ASP(float Value) {
 	return ASPECT * Value;
 }
 
+// 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
+int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
+	int nIntersected = 0;
+
+	XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
+	GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
+	nIntersected = MeshPtr->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
+
+	return(nIntersected);
+}
+
+// 오브젝트에 커맨드 리스트를 부여한다.
+void GameObject::InputCommandList(ID3D12GraphicsCommandList* CmdList) {
+	ObjectCmdList = CmdList;
+}
+
 
 //////////////////////////////////////// private
 // 텍스처를 바인딩한다. 
-void GameObject::BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr) {
+void GameObject::BindTexture(Texture* TexturePtr) {
 	if (TexturePtr)
-		TexturePtr->Render(CmdList);
+		TexturePtr->Render(ObjectCmdList);
 }
 
 // 쉐이더를 적용한다.
-void GameObject::UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest) {
+void GameObject::UseShader(Shader* ShaderPtr, bool DepthTest) {
 	if (ShaderPtr)
-		ShaderPtr->Render(CmdList, DepthTest);
+		ShaderPtr->Render(ObjectCmdList, DepthTest);
+}
+
+// 매쉬를 최종 렌더링 한다
+void GameObject::UseMesh(Mesh* MeshPtr) {
+	if (MeshPtr)
+		MeshPtr->Render(ObjectCmdList);
 }
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
-void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
-	CBVUtil::Input(CmdList, LightCBV, 0);
+void GameObject::UpdateShaderVariables() {
+	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
@@ -139,27 +150,27 @@ void GameObject::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
-	RCUtil::Input(CmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(CmdList, &ObjectAlpha, ALPHA_INDEX, 1, 0);
+	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(ObjectCmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(ObjectCmdList, &ObjectAlpha, ALPHA_INDEX, 1, 0);
 }
 
 // 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
-void GameObject::SetToImageMode(ID3D12GraphicsCommandList* CmdList) {
-	FlipTexture(CmdList, FLIP_TYPE_V);
-	DisableLight(CmdList);
+void GameObject::SetToImageMode() {
+	FlipTexture(FLIP_TYPE_V);
+	DisableLight();
 	camera.SetToStaticMode();
 }
 
 // 기본 출력 모드로 전환한다. 텍스처 반전 해제 후 조명 사용을 활성화 한다.
-void GameObject::SetToDefaultMode(ID3D12GraphicsCommandList* CmdList) {
-	FlipTexture(CmdList, FLIP_TYPE_NONE);
-	EnableLight(CmdList);
+void GameObject::SetToDefaultMode() {
+	FlipTexture(FLIP_TYPE_NONE);
+	EnableLight();
 	camera.SetToDefaultMode();
 }
 
 // 렌더링 전 카메라를 설정한다.
-void GameObject::SetCamera(ID3D12GraphicsCommandList* CmdList) {
+void GameObject::SetCamera() {
 	// 카메라 뷰 행렬을 설정한다.
 	camera.SetViewMatrix();
 
@@ -170,8 +181,8 @@ void GameObject::SetCamera(ID3D12GraphicsCommandList* CmdList) {
 	else if (RenderType == RENDER_TYPE_ORTHO || RenderType == RENDER_TYPE_IMAGE)
 		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0f, 10.0f);
 
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
+	camera.SetViewportsAndScissorRects(ObjectCmdList);
+	camera.UpdateShaderVariables(ObjectCmdList);
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

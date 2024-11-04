@@ -19,7 +19,8 @@ public:
 	void HideCursor();
 	void StartMotionCapture(HWND hWnd);
 	void EndMotionCapture();
-	void UpdateMotionPosition(POINT PrevPosition);
+	void UpdateMotionPosition(POINT MotionPosition);
+	XMFLOAT2 GetMotionDelta(POINT MotionPosition, float Sensivity);
 	POINT CurrentPosition();
 	void UpdateMousePosition(HWND hWnd);
 };
