@@ -37,7 +37,7 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	LineTex->Render(CmdList);
 	BoundboxShader->Render(CmdList);
 
-	camera.InitMatrix();
+	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
@@ -109,7 +109,7 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	LineTex->Render(CmdList);
 	BoundboxShader->Render(CmdList);
 
-	camera.InitMatrix();
+	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
@@ -210,7 +210,7 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	LineTex->Render(CmdList);
 	ObjectShader->Render(CmdList);
 
-	camera.InitMatrix();
+	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);

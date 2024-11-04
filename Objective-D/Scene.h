@@ -7,18 +7,18 @@
 #include <map>
 
 typedef void(*Function)(void);
-using LayerIter = std::multimap<const char*, GameObject*>::iterator;
+using ObjectRange = std::multimap<const char*, GameObject*>::iterator;
 constexpr int Layers = static_cast<int>(END);
 
 class Scene {
 private:
-	std::array<std::vector<GameObject*>, Layers> ObjectList;
-	std::multimap<const char*, GameObject*> ObjectIndex;
+	std::array<std::vector<GameObject*>, Layers> ObjectList{};
+	std::multimap<const char*, GameObject*> ObjectIndex{};
 
 	const char* RunningMode{};
-	void (*MouseControllerPtr)(HWND, UINT, WPARAM, LPARAM);
-	void (*MouseMotionControllerPtr)(HWND);
-	void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM);
+	void (*MouseControllerPtr)(HWND, UINT, WPARAM, LPARAM) {};
+	void (*MouseMotionControllerPtr)(HWND) {};
+	void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM) {};
 
 	Function DestructorBuffer{};
 
@@ -50,7 +50,7 @@ public:
 	void AddObject(GameObject*&& Object, const char* Tag, int InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);
-	std::pair<LayerIter, LayerIter> EqualRange(const char* Tag);
+	std::pair<ObjectRange, ObjectRange> EqualRange(const char* Tag);
 	void ClearAll();
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();

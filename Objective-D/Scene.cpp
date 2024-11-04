@@ -32,15 +32,17 @@ const char* Scene::GetMode() {
 	return RunningMode;
 }
 
+// 모드 소멸자를 등록한다.
 void Scene::RegisterDestructor(Function Destructor) {
 	DestructorBuffer = Destructor;
 }
 
+// 모드 소멸자 포인터를 끊는다.
 void Scene::ReleaseDestructor() {
 	DestructorBuffer = nullptr;
 }
 
-// 모드를 변경한다. 모드 변경 시 기존 모드에 있던 객체들은 모두 삭제된다.
+// 모드를 변경한다. 모드 변경 시 기존 scene에 있던 객체들은 모두 삭제된다.
 void Scene::SwitchMode(Function ModeFunction) {
 	ClearAll();
 	if (DestructorBuffer)
@@ -48,6 +50,7 @@ void Scene::SwitchMode(Function ModeFunction) {
 	ModeFunction();
 }
 
+// 모드 이름을 등록한다. 중복되는 모드 이름을 등록하지 않도록 유의한다.
 void Scene::RegisterModeName(const char* ModeName) {
 	RunningMode = ModeName;
 }
@@ -63,48 +66,25 @@ void Scene::RegisterMouseMotionController(void (*FunctionPtr)(HWND)) {
 	MouseMotionControllerPtr = FunctionPtr;
 }
 
-// 키보드, 마우스, 마우스 움직임을 WinMain으로부터 받아온다. 직접 쓸 일은 없다.
-void Scene::InputKeyMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-	if (KeyboardControllerPtr)
-		KeyboardControllerPtr(hWnd, nMessageID, wParam, lParam);
-}
-
-void Scene::InputMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-	if (MouseControllerPtr)
-		MouseControllerPtr(hWnd, nMessageID, wParam, lParam);
-}
-
-void Scene::InputMouseMotionMessage(HWND hWnd) {
-	if (MouseMotionControllerPtr)
-		MouseMotionControllerPtr(hWnd);
-}
-
 // 객체를 찾아 컨트롤러 함수로 메시지를 전달한다. 다수로 존재하는 객체에 사용하지 않도록 유의한다.
 void Scene::InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
 	auto It = ObjectIndex.find(ObjectTag);
 	if (It != end(ObjectIndex) && !It->second->DeleteMark)
 		It->second->InputMouse(hWnd, nMessageID, wParam, lParam);
 }
-
 void Scene::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
 	auto It = ObjectIndex.find(ObjectTag);
 	if (It != end(ObjectIndex) && !It->second->DeleteMark)
 		It->second->InputKey(hWnd, nMessageID, wParam, lParam);
 }
-
 void Scene::InputMouseMotion(HWND hWnd,  const char* ObjectTag) {
 	auto It = ObjectIndex.find(ObjectTag);
 	if (It != end(ObjectIndex) && !It->second->DeleteMark)
 		It->second->InputMouseMotion(hWnd, mouse.MotionPosition);
 }
 
-// 프로그램을 종료한다.
-void Scene::Exit() {
-	PostQuitMessage(1);
-}
-
 // 현재 존재하는 모든 객체들을 업데이트한다
-// 삭제 마크가 표시된 객체를 업데이트되지 않는다
+// 삭제 마크가 표시된 객체들은 업데이트되지 않는다
 void Scene::Update(float FT) {
 	for (int i = 0; i < Layers; ++i) {
 		for (auto const& O : ObjectList[i]) {
@@ -154,7 +134,7 @@ GameObject* Scene::Find(const char* Tag) {
 
 // 특정 태그를 가진 오브젝트들의 포인터 범위를 리턴한다.
 // 해당 함수로 equal range를 얻어 for문으로 접근하면 된다.
-std::pair<LayerIter, LayerIter> Scene::EqualRange(const char* Tag) {
+std::pair<ObjectRange, ObjectRange> Scene::EqualRange(const char* Tag) {
 	return ObjectIndex.equal_range(Tag);
 }
 
@@ -189,7 +169,30 @@ void Scene::UpdateObjectIndex() {
 	}
 }
 
+// 프로그램을 종료한다.
+void Scene::Exit() {
+	PostQuitMessage(1);
+}
+
+
+// 키보드, 마우스, 마우스 움직임을 WinMain으로부터 받아온다. 직접 쓸 일은 없다.
+void Scene::InputKeyMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	if (KeyboardControllerPtr)
+		KeyboardControllerPtr(hWnd, nMessageID, wParam, lParam);
+}
+void Scene::InputMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	if (MouseControllerPtr)
+		MouseControllerPtr(hWnd, nMessageID, wParam, lParam);
+}
+void Scene::InputMouseMotionMessage(HWND hWnd) {
+	if (MouseMotionControllerPtr)
+		MouseMotionControllerPtr(hWnd);
+}
+
 /////////////////////
+
+
+
 
 void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, int RegisterNum, int RootIndex, int& IndexValue) {
 	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
@@ -254,26 +257,23 @@ ID3D12RootSignature* Scene::CreateGraphicsRootSignature(ID3D12Device* Device) {
 	D3D12_DESCRIPTOR_RANGE Range{};
 
 	// 루트 파라미터
-	std::vector<D3D12_ROOT_PARAMETER> RootParameters(9);
+	std::vector<D3D12_ROOT_PARAMETER> RootParameters(8);
 
-	int Dummy{};
-	SetRoot(RootParameters, 0, 0, 0, Dummy);                // b0, cbFrameworkInfo | 미사용이라서 루트상수 미할당
+	SetRoot(RootParameters, 19, 0, 0, GAME_OBJECT_INDEX);   // b0, cbGameObjectInfo
 
-	SetRoot(RootParameters, 19, 1, 1, GAME_OBJECT_INDEX);   // b1, cbGameObjectInfo
+	SetRoot(RootParameters, 35, 1, 1, CAMERA_INDEX);        // b1, cbCameraInfo
 
-	SetRoot(RootParameters, 35, 2, 2, CAMERA_INDEX);        // b2, cbCameraInfo
+	SetCBV(Range, RootParameters, 2, 2, FlipCBV);           // b2, cbFlipInfo
 
-	SetCBV(Range, RootParameters, 3, 3, FlipCBV);           // b3, cbFlipInfo
+	SetRoot(RootParameters, 1, 3, 3, ALPHA_INDEX);          // b3, cbAlphaInfo
 
-	SetRoot(RootParameters, 1, 4, 4, ALPHA_INDEX);          // b4, cbAlphaInfo
+	SetCBV(Range, RootParameters, 4, 4, LightCBV);          // b4, cbLightInfo
 
-	SetCBV(Range, RootParameters, 5, 5, LightCBV);          // b5, cbLightInfo
+	SetCBV(Range, RootParameters, 5, 5, BoolLightCBV);      // b5, cbLightUseInfo
 
-	SetCBV(Range, RootParameters, 6, 6, BoolLightCBV);      // b6, cbLightUseInfo
+	SetSRV(Range, RootParameters, 0, 6, SRV_INDEX);         // t0, SRV
 
-	SetSRV(Range, RootParameters, 0, 7, SRV_INDEX);         // t0, SRV
-
-	SetSampler(Range, RootParameters, 0, 8, SAMPLER_INDEX); // s0, Sampler
+	SetSampler(Range, RootParameters, 0, 7, SAMPLER_INDEX); // s0, Sampler
 
 	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;

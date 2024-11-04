@@ -30,8 +30,6 @@ protected:
 
 private:
 	CamMode Mode{};
-
-	// 활성화 시 초기 행렬이 쉐이더에 전송된다.
 	bool StaticMode{};
 
 public:
@@ -52,10 +50,8 @@ public:
 	void SetToDefaultMode();
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
-	void GenerateViewMatrix();
-	void GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAt, XMFLOAT3 UpValue);
 	void SetToStaticMode();
-	void InitMatrix();
+	void SetViewMatrix();
 	void InitStaticMatrix();
 	void UpdateStaticMatrix();
 	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
@@ -63,7 +59,7 @@ public:
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
 	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);
-	void SetCameraMode(CamMode GetMode);
+	void SwitchCameraMode(CamMode GetMode);
 
 	CamMode CurrentMode();
 
@@ -96,13 +92,14 @@ public:
 	D3D12_RECT GetScissorRect();
 
 	void Move(float X, float Y, float Z);
+	void Vector_MoveForward(float MoveDistance);
 	void MoveForward(float MoveDistance);
-	void MoveForwardWithoutHeight(float MoveDistance);
+	void Vector_MoveStrafe(float MoveDistance);
+	void Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
 	void MoveStrafe(float MoveDistance);
-	void MoveStrafeWithoutHeight(float MoveDistance);
-	void MoveVertical(float MoveDistance);
+	void MoveUp(float MoveDistance);
 	void Track(XMFLOAT3& ObjectPosition, Vector& VectorStruct, float fTimeElapsed);
-	void TrackWithOffset(XMFLOAT3& ObjectPosition, Vector& VectorStruct, XMFLOAT3& OffsetValue, float fTimeElapsed);
+	void TrackOffset(XMFLOAT3& ObjectPosition, Vector& VectorStruct, XMFLOAT3& OffsetValue, float fTimeElapsed);
 	void SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec);
 	void CalculateFrustumPlanes();
 	bool IsInFrustum(BoundingBox& BoundingBox);

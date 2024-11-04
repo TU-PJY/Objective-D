@@ -1,17 +1,17 @@
-cbuffer cbFrameworkInfo : register(b0) 
-{
-    float gfCurrentTime;
-    float gfElapsedTime;
-    float2 gf2CursorPos;
-};
+//cbuffer cbFrameworkInfo : register(b0) 
+//{
+//    float gfCurrentTime;
+//    float gfElapsedTime;
+//    float2 gf2CursorPos;
+//};
 
-cbuffer cbGameObjectInfo : register(b1) 
+cbuffer cbGameObjectInfo : register(b0) 
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
 };
 
-cbuffer cbCameraInfo : register(b2) 
+cbuffer cbCameraInfo : register(b1) 
 {
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
@@ -19,20 +19,20 @@ cbuffer cbCameraInfo : register(b2)
 };
 
 // 텍스처 반전
-cbuffer cbFlipInfo : register(b3) 
+cbuffer cbFlipInfo : register(b2) 
 {
     int X_Flip; // 텍스처 좌우반전 여부
     int Y_Flip; // 텍스처 상하반전 여부
 }
 
 // 텍스처 투명도
-cbuffer cbAlphaInfo : register(b4) 
+cbuffer cbAlphaInfo : register(b3) 
 {
     float AlphaValue;
 }
 
 // 조명
-cbuffer cbLightInfo : register(b5) 
+cbuffer cbLightInfo : register(b4) 
 {
     float3 gLightDirection;
     float3 gLightColor;
@@ -40,7 +40,8 @@ cbuffer cbLightInfo : register(b5)
     float gShadowStrength;
 };
 
-cbuffer cbLightUseInfo : register(b6)
+// 조명 사용 여부
+cbuffer cbLightUseInfo : register(b5)
 {
     int UseLight;
 }
@@ -104,8 +105,10 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
     // UseLight가 0이면 조명 사용 안 함, 1이면 조명 사용함
     float3 finalColor = lerp(texColor.rgb, ComputeLightColor(input, texColor), UseLight);
     
+    // 덮어씌울 색상이 있다면 덮어 씌움
     finalColor += meshColor;
     
+    // 텍스처의 투명 부분을 제거
     if(texColor.a < 0.01)
         discard;
   

@@ -24,7 +24,7 @@ void LineBrush::Init(ID3D12GraphicsCommandList* CmdList) {
 	CBVUtil::Input(CmdList, BoolLightCBV, 0);
 
 	camera.SetToStaticMode();
-	camera.InitMatrix();
+	camera.SetViewMatrix();
 	camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0, 10.0);
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);

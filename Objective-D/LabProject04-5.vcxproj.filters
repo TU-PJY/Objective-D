@@ -31,9 +31,6 @@
     <Filter Include="[1]____________[ Game Resource ]\[2][ CBV ]">
       <UniqueIdentifier>{2e441570-2469-4d4a-96e6-39f9f7bd4a43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]____________[ Game Resource ]\[3][ RC ]">
-      <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[1]____________[ Game Resource ]\[1][ Resource ]">
       <UniqueIdentifier>{0f8a68f8-ffdc-49f7-9188-1b4a57a768ef}</UniqueIdentifier>
     </Filter>
@@ -121,6 +118,9 @@
     </Filter>
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Mouse Util ]">
       <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[1]____________[ Game Resource ]\[3][ Root Constant ]">
+      <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -215,7 +215,7 @@
       <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstants.h">
-      <Filter>[1]____________[ Game Resource ]\[3][ RC ]</Filter>
+      <Filter>[1]____________[ Game Resource ]\[3][ Root Constant ]</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader12.h">
       <Filter>[5]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
@@ -311,7 +311,7 @@
       <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
-      <Filter>[1]____________[ Game Resource ]\[3][ RC ]</Filter>
+      <Filter>[1]____________[ Game Resource ]\[3][ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader12.cpp">
       <Filter>[5]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>

@@ -30,34 +30,31 @@ public:
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitMatrix(ID3D12GraphicsCommandList* CmdList, int RenderTypeFlag=RENDER_TYPE_PERS);
+	void InitRenderState(ID3D12GraphicsCommandList* CmdList, int RenderTypeFlag=RENDER_TYPE_PERS);
 	void SetColor(XMFLOAT3 Color);
-	void SetColor(float R, float G, float B);
-	void MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
-	void MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
-	void MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
-	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
-	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest);
+	void SetColorRGB(float R, float G, float B);
 	void RenderMesh(ID3D12GraphicsCommandList* CmdList, Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0, bool DepthTestFlag=true);
 	void FlipTexture(ID3D12GraphicsCommandList* CmdList, int FlipType);
 	void DisableLight(ID3D12GraphicsCommandList* CmdList);
 	void EnableLight(ID3D12GraphicsCommandList* CmdList);
-	void InputLightInfo(ID3D12GraphicsCommandList* CmdList);
 	float ASP(float Value);
 	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
 	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);
-	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
-
-	void SetToDefaultMode(ID3D12GraphicsCommandList* CmdList);
-
-	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
 
-	////////// virtual functions
+private:
+	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
+	void BindTexture(ID3D12GraphicsCommandList* CmdList, Texture* TexturePtr);
+	void UseShader(ID3D12GraphicsCommandList* CmdList, Shader* ShaderPtr, bool DepthTest);
+	void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
+	void SetToImageMode(ID3D12GraphicsCommandList* CmdList);
+	void SetToDefaultMode(ID3D12GraphicsCommandList* CmdList);
+	void SetCamera(ID3D12GraphicsCommandList* CmdList);
 
+	////////// virtual functions
+public:
 	// 아래 함수들은 모든 객체에서 커스텀 가능한 버추얼 함수들이다. 필요하다면 새로운 버추얼 함수를 작성하여 사용할 수 있다.
 	virtual ~GameObject() {}
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 	virtual void ReleaseShaderVariables() {}
 	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
 	virtual void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}

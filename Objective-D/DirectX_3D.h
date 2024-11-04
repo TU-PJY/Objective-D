@@ -42,7 +42,8 @@
 enum RenderTypeEnum {
 	RENDER_TYPE_PERS, 
 	RENDER_TYPE_ORTHO, 
-	RENDER_TYPE_IMAGE 
+	RENDER_TYPE_IMAGE,
+	RENDER_TYPE_NONE
 };
 
 // 텍스처 반전 타입 열거형

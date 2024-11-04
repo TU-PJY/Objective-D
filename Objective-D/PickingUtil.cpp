@@ -5,7 +5,7 @@
 // 피킹을 담당하는 유틸이다
 
 // 커서를 사용하여 오브젝트를 피킹한다
-// 피킹할 대상의 클래스 포인터와 그 포인터가 가지는 매쉬가 필요하다
+// 피킹할 대상의 객체 포인터와 그 객체가 사용하는 매쉬 포인터가 필요하다.
 bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
 		return false;

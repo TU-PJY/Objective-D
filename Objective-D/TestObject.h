@@ -93,7 +93,7 @@ public:
 	}
 
 	void Render(CommandList CmdList) {
-		InitMatrix(CmdList, RENDER_TYPE_PERS);
+		InitRenderState(CmdList, RENDER_TYPE_PERS);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
@@ -109,7 +109,7 @@ public:
 		range.Render(CmdList);
 
 		// 이미지 출력
-		InitMatrix(CmdList, RENDER_TYPE_IMAGE);
+		InitRenderState(CmdList, RENDER_TYPE_IMAGE);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
 		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
 		RenderMesh(CmdList, ImagePannel, WoodTex, ObjectShader);

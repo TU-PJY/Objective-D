@@ -11,22 +11,14 @@ void Camera::Update(float FT) {
 	}
 }
 
-Camera::Camera() {
-	ViewMatrix = Mat4::Identity();
-	ProjectionMatrix = Mat4::Identity();
+// 카메라 모드를 변경한다. Config.h에 작성했던 모드 열거형을 파라미터에 넣으면 된다.
+void Camera::SwitchCameraMode(CamMode ModeValue) {
+	Mode = ModeValue;
+}
 
-	Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Pitch = 0.0f;
-	Roll = 0.0f;
-	Yaw = 0.0f;
-
-	Right = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	Look = XMFLOAT3(0.0f, 0.0f, 1.0f);
-	Up = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	Offset = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	LookAt = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	MovingDelay = 0.0f;
+// 현재 실행 중인 카메라 모드를 얻는다.
+CamMode Camera::CurrentMode() {
+	return Mode;
 }
 
 // 정적 출력 모드로 전환한다.
@@ -38,6 +30,30 @@ void Camera::SetToStaticMode() {
 void Camera::SetToDefaultMode() {
 	StaticMode = false;
 }
+
+
+
+Camera::Camera() {
+	ViewMatrix = Mat4::Identity();
+	ProjectionMatrix = Mat4::Identity();
+
+	Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	Pitch = 0.0f;
+	Roll = 0.0f;
+	Yaw = 0.0f;
+
+	Right = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	Look = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	Up = XMFLOAT3(0.0f, 1.0f, 0.0f);
+
+	Offset = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	LookAt = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	MovingDelay = 0.0f;
+}
+
+
 
 void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4View;
@@ -61,8 +77,8 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 }
 
-// 카메라 행렬을 초기화 한다.
-void Camera::InitMatrix() {
+// 카메라 뷰 행렬을 설정한다.
+void Camera::SetViewMatrix() {
 	Look = Vec3::Normalize(Look);
 	Right = Vec3::CrossProduct(Up, Look, true);
 	Up = Vec3::CrossProduct(Look, Right, true);
@@ -141,56 +157,84 @@ void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 	ScissorRect.bottom = yBottom;
 }
 
+// 뷰포트와 시저렉트를 쉐이더로 전달한다.
 void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->RSSetViewports(1, &Viewport);
 	CmdList->RSSetScissorRects(1, &ScissorRect);
 }
 
 
-void Camera::GenerateViewMatrix() {
-	ViewMatrix = Mat4::LookAtLH(Position, LookAt, Up);
-}
-
-void Camera::GenerateViewMatrix(XMFLOAT3 PositionValue, XMFLOAT3 LookAtVector, XMFLOAT3 UpVector) {
-	XMMATRIX viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&PositionValue), XMLoadFloat3(&LookAtVector), XMLoadFloat3(&UpVector));
-	XMStoreFloat4x4(&ViewMatrix, viewMatrix);
-}
-
-
-// 카메라 모드를 변경한다. Config.h에 작성했던 모드 열거형을 파라미터에 넣으면 된다.
-void Camera::SetCameraMode(CamMode ModeValue) {
-	Mode = ModeValue;
-}
-
-// 현재 실행 중인 카메라 모드를 얻는다.
-CamMode Camera::CurrentMode() {
-	return Mode;
-}
 
 // 위치 이동, 시점 추적 위치 설정 등 회전각도, 위치, 벡터 관련 함수들이다.
-void Camera::Move(XMFLOAT3 PositionValue) { Position = PositionValue; }
-XMFLOAT3& Camera::GetPosition() { return(Position); }
-void Camera::SetLookAtPosition(XMFLOAT3 LookAtValue) { LookAt = LookAtValue; }
-XMFLOAT3& Camera::GetLookAtPosition() { return(LookAt); }
+XMFLOAT3& Camera::GetPosition() { 
+	return Position; 
+}
 
-XMFLOAT3& Camera::GetRightVector() { return(Right); }
-XMFLOAT3& Camera::GetUpVector() { return(Up); }
-XMFLOAT3& Camera::GetLookVector() { return(Look); }
+void Camera::SetLookAtPosition(XMFLOAT3 LookAtValue) { 
+	LookAt = LookAtValue; 
+}
 
-float& Camera::GetPitch() { return(Pitch); }
-float& Camera::GetRoll() { return(Roll); }
-float& Camera::GetYaw() { return(Yaw); }
+XMFLOAT3& Camera::GetLookAtPosition() { 
+	return LookAt; 
+}
 
-void Camera::SetOffset(XMFLOAT3 Value) { Offset = Value; }
-XMFLOAT3& Camera::GetOffset() { return(Offset); }
+XMFLOAT3& Camera::GetRightVector() { 
+	return Right; 
+}
 
-void Camera::SetTimeLag(float DelayValue) { MovingDelay = DelayValue; }
-float Camera::GetTimeLag() { return(MovingDelay); }
+XMFLOAT3& Camera::GetUpVector() {
+	return Up; 
+}
 
-XMFLOAT4X4 Camera::GetViewMatrix() { return(ViewMatrix); }
-XMFLOAT4X4 Camera::GetProjectionMatrix() { return(ProjectionMatrix); }
-D3D12_VIEWPORT Camera::GetViewport() { return(Viewport); }
-D3D12_RECT Camera::GetScissorRect() { return(ScissorRect); }
+XMFLOAT3& Camera::GetLookVector() { 
+	return Look; 
+}
+
+float& Camera::GetPitch() { 
+	return Pitch; 
+}
+
+float& Camera::GetRoll() {
+	return Roll;
+}
+
+float& Camera::GetYaw() { 
+	return Yaw;
+}
+
+void Camera::SetOffset(XMFLOAT3 Value) { 
+	Offset = Value;
+}
+
+XMFLOAT3& Camera::GetOffset() { 
+	return Offset;
+}
+
+void Camera::SetTimeLag(float DelayValue) { 
+	MovingDelay = DelayValue;
+}
+
+float Camera::GetTimeLag() { 
+	return MovingDelay;
+}
+
+XMFLOAT4X4 Camera::GetViewMatrix() { 
+	return ViewMatrix; 
+}
+
+XMFLOAT4X4 Camera::GetProjectionMatrix() {
+	return ProjectionMatrix; 
+}
+
+D3D12_VIEWPORT Camera::GetViewport() { 
+	return Viewport; 
+}
+
+D3D12_RECT Camera::GetScissorRect() { 
+	return ScissorRect; 
+}
+
+
 
 // 카메라의 위치를 변경한다.
 void Camera::Move(float X, float Y, float Z) {
@@ -199,8 +243,13 @@ void Camera::Move(float X, float Y, float Z) {
 	Position.z = Z;
 }
 
-// 현재 시점에서 앞으로 움직인다.
-void Camera::MoveForward(float MoveDistance) {
+// 카메라의 위치를 변경한다.
+void Camera::Move(XMFLOAT3 PositionValue) { 
+	Position = PositionValue; 
+}
+
+// 현재 시점에서 look 벡터를 사용하여 앞으로 움직인다.
+void Camera::Vector_MoveForward(float MoveDistance) {
 	XMFLOAT3 NormlaizedLook = Vec3::Normalize(Look);
 
 	Position.x += NormlaizedLook.x * MoveDistance;
@@ -208,14 +257,8 @@ void Camera::MoveForward(float MoveDistance) {
 	Position.z += NormlaizedLook.z * MoveDistance;
 }
 
-// 현재 시점에서 높이 변화 없이 앞으로 움직인다.
-void Camera::MoveForwardWithoutHeight(float MoveDistance) {
-	Position.x += sin(Yaw) * MoveDistance;
-	Position.z += cos(Yaw) * MoveDistance;
-}
-
-// 현재 시점에서 옆으로 움직인다.
-void Camera::MoveStrafe(float MoveDistance) {
+// 현재 시점에서 right 벡터를 사용하여 옆으로 움직인다.
+void Camera::Vector_MoveStrafe(float MoveDistance) {
 	XMFLOAT3 NormlaizedRight = Vec3::Normalize(Right);
 
 	Position.x += NormlaizedRight.x * MoveDistance;
@@ -223,26 +266,37 @@ void Camera::MoveStrafe(float MoveDistance) {
 	Position.z += NormlaizedRight.z * MoveDistance;
 }
 
-// 현재 시점에서 높이 변화 없이 옆으로 움직인다.
-void Camera::MoveStrafeWithoutHeight(float MoveDistance) {
+// 현재 시점에서 up 벡터를 사용하여 위로 움직인다.
+void Camera::Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
+	Position = Vec3::Add(Position, Up, Distance);
+}
+
+// 현재 시점에서 앞으로 움직인다.
+void Camera::MoveForward(float MoveDistance) {
+	Position.x += sin(Yaw) * MoveDistance;
+	Position.z += cos(Yaw) * MoveDistance;
+}
+
+// 현재 시점에서 옆으로 움직인다.
+void Camera::MoveStrafe(float MoveDistance) {
 	Position.x += cos(Yaw) * MoveDistance;
 	Position.z -= sin(Yaw) * MoveDistance;
 }
 
 // 수직으로 움직인다.
-void Camera::MoveVertical(float MoveDistance) {
+void Camera::MoveUp(float MoveDistance) {
 	Position.y += MoveDistance;
 }
 
-// 카메라 회전, 벡터 초기화 후 새로운 벡터를 지정한다.
+// 카메라 회전, 새로운 벡터를 지정한다.
 void Camera::Rotate(float X, float Y, float Z) {
 	Look = XMFLOAT3(0.0, 0.0, 1.0);
 	Right = XMFLOAT3(1.0, 0.0, 0.0);
 	Up = XMFLOAT3(0.0, 1.0, 0.0);
 
-	Pitch = X;
-	Yaw = Y;
-	Roll = Z;
+	Pitch = XMConvertToRadians(X);
+	Yaw = XMConvertToRadians(Y);
+	Roll = XMConvertToRadians(Z);
 
 	// 회전 행렬 생성
 	XMMATRIX RotationMatrix = XMMatrixRotationRollPitchYaw(Pitch, Yaw, Roll);
@@ -291,7 +345,7 @@ void Camera::Track(XMFLOAT3& ObjectPosition, Vector& VectorStruct, float fTimeEl
 }
 
 // 동작은 Track과 동일하나, 시점 Offset을 설정할 수 있다.
-void Camera::TrackWithOffset(XMFLOAT3& ObjectPosition, Vector& VectorStruct, XMFLOAT3& OffsetValue, float fTimeElapsed) {
+void Camera::TrackOffset(XMFLOAT3& ObjectPosition, Vector& VectorStruct, XMFLOAT3& OffsetValue, float fTimeElapsed) {
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 
 	XMFLOAT3 UpVector = VectorStruct.Up;
@@ -344,6 +398,8 @@ void Camera::SetLookAt(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec) {
 	Up = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
 	Look = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
 }
+
+
 
 
 // 프러스텀 관련 함수들
