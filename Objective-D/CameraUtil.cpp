@@ -162,6 +162,11 @@ void Camera::SetCameraMode(CamMode ModeValue) {
 	Mode = ModeValue;
 }
 
+// 현재 실행 중인 카메라 모드를 얻는다.
+CamMode Camera::CurrentMode() {
+	return Mode;
+}
+
 // 위치 이동, 시점 추적 위치 설정 등 회전각도, 위치, 벡터 관련 함수들이다.
 void Camera::Move(XMFLOAT3 PositionValue) { Position = PositionValue; }
 XMFLOAT3& Camera::GetPosition() { return(Position); }
@@ -248,12 +253,12 @@ void Camera::Rotate(float X, float Y, float Z) {
 }
 
 // 파라미터로 입력받은 위치, 업벡터, 라이트벡터, 룩벡터를 추적한다.
-void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, float fTimeElapsed) {
+void Camera::Track(XMFLOAT3& ObjectPosition, Vector& VectorStruct, float fTimeElapsed) {
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 
-	XMFLOAT3 UpVector = UpVec;
-	XMFLOAT3 RightVector = RightVec;
-	XMFLOAT3 LookVector = LookVec;
+	XMFLOAT3 UpVector = VectorStruct.Up;
+	XMFLOAT3 RightVector = VectorStruct.Right;
+	XMFLOAT3 LookVector = VectorStruct.Look;
 
 	RotateMatrix._21 = UpVector.x;
 	RotateMatrix._22 = UpVector.y;
@@ -282,16 +287,16 @@ void Camera::Track(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec
 		MoveDistance = Length;
 
 	Position = Vec3::Add(Position, Direction, MoveDistance);
-	SetLookAt(ObjectPosition, UpVec);
+	SetLookAt(ObjectPosition, VectorStruct.Up);
 }
 
 // 동작은 Track과 동일하나, 시점 Offset을 설정할 수 있다.
-void Camera::TrackWithOffset(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3& RightVec, XMFLOAT3& LookVec, XMFLOAT3& Offset, float fTimeElapsed) {
+void Camera::TrackWithOffset(XMFLOAT3& ObjectPosition, Vector& VectorStruct, XMFLOAT3& OffsetValue, float fTimeElapsed) {
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 
-	XMFLOAT3 UpVector = UpVec;
-	XMFLOAT3 RightVector = RightVec;
-	XMFLOAT3 LookVector = LookVec;
+	XMFLOAT3 UpVector = VectorStruct.Up;
+	XMFLOAT3 RightVector = VectorStruct.Right;
+	XMFLOAT3 LookVector = VectorStruct.Look;
 
 	RotateMatrix._21 = UpVector.x;
 	RotateMatrix._22 = UpVector.y;
@@ -324,17 +329,12 @@ void Camera::TrackWithOffset(XMFLOAT3& ObjectPosition, XMFLOAT3& UpVec, XMFLOAT3
 	// 로컬 좌표계에서 LookAtPosition 조정
 	XMFLOAT3 LookAtPosition = ObjectPosition;
 
-	// 로컬 좌표계를 기준으로 x축(오른쪽), y축(위쪽), z축(앞쪽)으로 오프셋 적용
-	float OffsetX = Offset.x;  // 오른쪽으로 이동
-	float OffsetY = Offset.y;   // 위쪽으로 이동
-	float OffsetZ = Offset.z;   // 앞뒤로 이동
-
 	// 로컬 좌표계를 기준으로 오프셋 적용
-	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(RightVec, OffsetX));
-	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(UpVec, OffsetY));
-	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(LookVec, OffsetZ));
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(VectorStruct.Right, OffsetValue.x));
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(VectorStruct.Up, OffsetValue.y));
+	LookAtPosition = Vec3::Add(LookAtPosition, Vec3::Scale(VectorStruct.Look, OffsetValue.z));
 
-	SetLookAt(LookAtPosition, UpVec);
+	SetLookAt(LookAtPosition, VectorStruct.Up);
 }
 
 // 카메라가 바라보는 방향을 설정한다. Track에서 실행되므로 보통의 경우 직접 쓸 일은 없다.

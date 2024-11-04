@@ -107,7 +107,7 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
     finalColor += meshColor;
     
     if(texColor.a < 0.01)
-        texColor.a = 0.0;
+        discard;
   
     float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;
