@@ -22,7 +22,6 @@ public:
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const OOBB& Other);
-	bool CheckCollision(const Range& Other);
 };
 
 
