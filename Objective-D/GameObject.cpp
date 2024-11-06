@@ -81,7 +81,7 @@ void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, 
 }
 
 // 2D 렌더링
-void GameObject::Render2D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue) {
+void GameObject::Render2D(Texture* TexturePtr, float AlphaValue) {
 	if (TexturePtr) TexturePtr->Render(ObjectCmdList);
 	ImageShader->Render(ObjectCmdList, false);
 	ObjectAlpha = AlphaValue;
@@ -89,7 +89,7 @@ void GameObject::Render2D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue) 
 	SetCamera();
 	UpdateShaderVariables();
 
-	if (MeshPtr) MeshPtr->Render(ObjectCmdList);
+	ImagePannel->Render(ObjectCmdList);
 }
 
 // 마우스 모션으로부터 회전값 업데이트 한다.

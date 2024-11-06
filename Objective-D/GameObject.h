@@ -42,7 +42,7 @@ public:
 	void DisableLight();
 	float ASP(float Value);
 	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);
-	void Render2D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f);
+	void Render2D(Texture* TexturePtr, float AlphaValue=1.0f);
 	void UpdateShaderVariables();
 	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
 	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);

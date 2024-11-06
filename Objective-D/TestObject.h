@@ -108,7 +108,7 @@ public:
 		InitRenderState(RENDER_TYPE_IMAGE);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
 		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
-		Render2D(ImagePannel, WoodTex);
+		Render2D(WoodTex);
 
 		line.Draw(ObjectCmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);
 	}
