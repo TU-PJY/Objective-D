@@ -1,7 +1,6 @@
 #include "ShaderUtil.h"
 
 // 쉐이더
-
 Shader::~Shader() {
 	if (PipelineState)
 		PipelineState->Release();
@@ -69,30 +68,4 @@ void Shader::Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest) {
 		OnPrepareRender(CmdList, PipelineState);
 	else
 		OnPrepareRender(CmdList, PSDepthNone);
-}
-
-
-////////////////////////////////
-// 이 프로젝트에서 현재 사용하는 쉐이더, 추후 변경될 수 있음
-D3D12_INPUT_LAYOUT_DESC BasicObjectShader::CreateInputLayout() {
-	UINT NumInputElementDescs = 3;
-	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];
-
-	InputElementDescs[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-	InputElementDescs[1] = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-	InputElementDescs[2] = { "TEXTURECOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
-
-	D3D12_INPUT_LAYOUT_DESC InputLayoutDesc;
-	InputLayoutDesc.pInputElementDescs = InputElementDescs;
-	InputLayoutDesc.NumElements = NumInputElementDescs;
-
-	return(InputLayoutDesc);
-}
-
-D3D12_SHADER_BYTECODE BasicObjectShader::CreateVertexShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//BasicShader.hlsl", "VSTexColor", "vs_5_1", ShaderBlob));
-}
-
-D3D12_SHADER_BYTECODE BasicObjectShader::CreatePixelShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//BasicShader.hlsl", "PSTexColor", "ps_5_1", ShaderBlob));
 }

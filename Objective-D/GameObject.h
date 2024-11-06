@@ -9,7 +9,6 @@
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
 
-
 class GameObject {
 public:
 	// 각 객체는 각자의 행렬을 가진다.
@@ -34,7 +33,8 @@ public:
 	const char* ObjectTag{};
 	bool DeleteMark{};
 
-	void InitRenderState(int RenderTypeFlagg = RENDER_TYPE_PERS);
+	void InputCommandList(ID3D12GraphicsCommandList* CmdList);
+	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_PERS);
 	void SetColor(XMFLOAT3 Color);
 	void SetColorRGB(float R, float G, float B);
 	void EnableLight();
@@ -42,7 +42,6 @@ public:
 	void DisableLight();
 	void RenderMesh(Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0f, bool DepthTestFlag=true);
 	float ASP(float Value);
-	void InputCommandList(ID3D12GraphicsCommandList* CmdList);
 	void UseShader(Shader* ShaderPtr, bool DepthTest);
 	void UseMesh(Mesh* MeshPtr);
 	void UpdateShaderVariables();

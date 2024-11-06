@@ -122,6 +122,12 @@
     <Filter Include="[1]____________[ Game Resource ]\[3][ Root Constant ]">
       <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]">
+      <UniqueIdentifier>{cefc5f65-788d-49ad-a6db-dded9c8cc763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader">
+      <UniqueIdentifier>{766937e9-460b-4942-b672-6d82b626e016}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -223,6 +229,12 @@
     <ClInclude Include="ResourceFileLink.h">
       <Filter>[1]____________[ Game Resource ]\[1][ Resource ]</Filter>
     </ClInclude>
+    <ClInclude Include="BoundboxShader.hlsl">
+      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectShader.h">
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -316,6 +328,9 @@
     <ClCompile Include="DDSTextureLoader12.cpp">
       <Filter>[5]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectShader.cpp">
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
@@ -339,7 +354,10 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\SystemResources\Shader\BasicShader.hlsl">
+    <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">
+      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+    </FxCompile>
+    <FxCompile Include="ImageShader.hlsl">
       <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>

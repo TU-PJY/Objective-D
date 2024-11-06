@@ -10,6 +10,7 @@
 
 
 // 객체의 렌더링 상태를 초기화 한다. 모든 객체는 이 함수로 렌더링 과정이 시작된다.
+// 기본 RANDER_TYPE_PERS로 타입이 지정되어있다.
 void GameObject::InitRenderState(int RenderTypeFlag) {
 	// RENDER_TYPE_NONE일 경우 행렬 초기화를 실행하지 않는다. 
 	// 변환을 실시간으로 적용할 필요가 없는 터레인이나 빌보드 렌더링 용도로 사용하는 플래그이다.

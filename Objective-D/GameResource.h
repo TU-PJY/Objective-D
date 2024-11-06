@@ -1,6 +1,6 @@
 #pragma once
 #include "MeshUtil.h"
-#include "ShaderUtil.h"
+#include "ObjectShader.h"
 #include "TextureUtil.h"
 
 ////////////////////////////////// 기본 리소스
