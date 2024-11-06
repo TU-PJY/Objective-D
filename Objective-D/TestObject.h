@@ -98,7 +98,7 @@ public:
 		if (!UseLight)
 			DisableLight();
 
-		RenderMesh(GunMesh, Tex, ObjectShader, GunAlpha);
+		Render3D(GunMesh, Tex, GunAlpha);
 
 		// 바운드 스페어 출력
 		range.Update(Position, 0.3);
@@ -108,7 +108,7 @@ public:
 		InitRenderState(RENDER_TYPE_IMAGE);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
 		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
-		RenderMesh(ImagePannel, WoodTex, ObjectShader);
+		Render2D(ImagePannel, WoodTex);
 
 		line.Draw(ObjectCmdList, 0.0, 0.0, mouse.x , mouse.y, 0.01);
 	}

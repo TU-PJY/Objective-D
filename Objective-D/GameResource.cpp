@@ -33,7 +33,6 @@ void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Devi
 	ImageShader = new Image_Shader();
 	ImageShader->CreateNoneDepthPS(Device, RootSignature);
 
-
 	// 바운드박스 쉐이더 생성
 	BoundboxShader = new Object_Shader();
 	BoundboxShader->CreateBoundboxPS(Device, RootSignature);

@@ -20,22 +20,25 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		ScaleMatrix = Mat4::Identity();
 	}
 
+	// 매쉬 색상 초기화
+	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
+
 	// 출력 모드 지정
 	RenderType = RenderTypeFlag;
 
 	// 텍스처 상태 초기화
-	ObjectAlpha = 1.0f;
 	FlipTexture(FLIP_TYPE_NONE);
+	ObjectAlpha = 1.0f;
 
-	// 매쉬 색상 초기화
-	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
+	switch(RenderTypeFlag) {
+		case RENDER_TYPE_IMAGE: 
+			SetToImageMode();
+			break;
 
-	// 이미지 타입 렌더링일 경우 이미지 모드로 변경
-	if (RenderTypeFlag == RENDER_TYPE_IMAGE)
-		SetToImageMode();
-
-	else // 나머지 타입일 경우 기본 모드로 변경
-		SetToDefaultMode();
+		default: 
+			SetToDefaultMode(); 
+			break;
+	}
 }
 
 // 객체 메쉬의 색상을 설정한다.
@@ -65,27 +68,28 @@ void GameObject::FlipTexture(int FlipType) {
 	CBVUtil::Input(ObjectCmdList, FlipCBV, FlipType);
 }
 
-// 메쉬를 랜더링 한다. 변환 작업이 끝난 후 맨 마지막에 실행한다.
-void GameObject::RenderMesh(Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha, bool DepthTestFlag) {
-	// 텍스처 바인딩 및 쉐이더 설정
-	// 이미지 랜더 타입이 아니라면 깊이 검사 플래그를 따르도록 한다.
-	BindTexture(TexturePtr);
-	if(RenderType != RENDER_TYPE_IMAGE)
-		UseShader(ShaderPtr, DepthTestFlag);
-	else 
-		UseShader(ShaderPtr, false);
+// 3D 렌더링
+void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, bool DepthTestFlag) {
+	if (TexturePtr) TexturePtr->Render(ObjectCmdList);
+	ObjectShader->Render(ObjectCmdList, DepthTestFlag);
+	ObjectAlpha = AlphaValue;
 
-	// 카메라 설정
 	SetCamera();
-
-	// 알파값 설정
-	ObjectAlpha = Alpha;
-
-	// 쉐이더로 최종 전달
 	UpdateShaderVariables();
 
-	// 매쉬 렌더링
-	UseMesh(MeshPtr);
+	if (MeshPtr) MeshPtr->Render(ObjectCmdList);
+}
+
+// 2D 렌더링
+void GameObject::Render2D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue) {
+	if (TexturePtr) TexturePtr->Render(ObjectCmdList);
+	ImageShader->Render(ObjectCmdList, false);
+	ObjectAlpha = AlphaValue;
+
+	SetCamera();
+	UpdateShaderVariables();
+
+	if (MeshPtr) MeshPtr->Render(ObjectCmdList);
 }
 
 // 마우스 모션으로부터 회전값 업데이트 한다.
@@ -123,23 +127,6 @@ void GameObject::InputCommandList(ID3D12GraphicsCommandList* CmdList) {
 
 
 //////////////////////////////////////// private
-// 텍스처를 바인딩한다. 
-void GameObject::BindTexture(Texture* TexturePtr) {
-	if (TexturePtr)
-		TexturePtr->Render(ObjectCmdList);
-}
-
-// 쉐이더를 적용한다.
-void GameObject::UseShader(Shader* ShaderPtr, bool DepthTest) {
-	if (ShaderPtr)
-		ShaderPtr->Render(ObjectCmdList, DepthTest);
-}
-
-// 매쉬를 최종 렌더링 한다
-void GameObject::UseMesh(Mesh* MeshPtr) {
-	if (MeshPtr)
-		MeshPtr->Render(ObjectCmdList);
-}
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables() {
@@ -158,15 +145,15 @@ void GameObject::UpdateShaderVariables() {
 
 // 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode() {
-	FlipTexture(FLIP_TYPE_V);
 	DisableLight();
+	FlipTexture(FLIP_TYPE_V);
 	camera.SetToStaticMode();
 }
 
 // 기본 출력 모드로 전환한다. 텍스처 반전 해제 후 조명 사용을 활성화 한다.
 void GameObject::SetToDefaultMode() {
-	FlipTexture(FLIP_TYPE_NONE);
 	EnableLight();
+	FlipTexture(FLIP_TYPE_NONE);
 	camera.SetToDefaultMode();
 }
 

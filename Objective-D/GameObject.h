@@ -40,15 +40,13 @@ public:
 	void EnableLight();
 	void FlipTexture(int FlipType);
 	void DisableLight();
-	void RenderMesh(Mesh* MeshPtr, Texture* TexturePtr, Shader* ShaderPtr, float Alpha=1.0f, bool DepthTestFlag=true);
 	float ASP(float Value);
-	void UseShader(Shader* ShaderPtr, bool DepthTest);
-	void UseMesh(Mesh* MeshPtr);
+	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);
+	void Render2D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f);
 	void UpdateShaderVariables();
 	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
 	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
-	void BindTexture(Texture* TexturePtr);
 
 private:
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
