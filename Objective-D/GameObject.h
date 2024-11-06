@@ -15,6 +15,7 @@ public:
 	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
 	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
 	XMFLOAT4X4 ScaleMatrix = Mat4::Identity();
+	XMFLOAT4X4 ImageAspectMatrix = Mat4::Identity();
 
 	// 매쉬 색상
 	XMFLOAT3 ModelColor{};
@@ -42,7 +43,7 @@ public:
 	void FlipTexture(int FlipType);
 	float ASP(float Value);
 	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);
-	void Render2D(Texture* TexturePtr, float AlphaValue=1.0f);
+	void Render2D(Texture* TexturePtr, float AlphaValue=1.0f, bool EnableAspect=true);
 	void UpdateShaderVariables();
 	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
 	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);

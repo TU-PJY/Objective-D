@@ -2,6 +2,7 @@ cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
+    float AlphaValue : packoffset(c4.w);
 };
 
 cbuffer cbCameraInfo : register(b1)
@@ -9,11 +10,6 @@ cbuffer cbCameraInfo : register(b1)
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
-}
-
-cbuffer cbAlphaInfo : register(b3)
-{
-    float AlphaValue;
 }
 
 struct VS_INPUT

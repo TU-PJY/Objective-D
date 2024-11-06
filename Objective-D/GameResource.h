@@ -12,8 +12,6 @@ extern Boundbox_Shader* BoundboxShader;
 extern Image_Shader* ImageShader;
 extern Line_Shader* LineShader;
 
-// 선 출력용 텍스처
-extern Texture* ColorTex;
 
 // 이미지 출력용 매쉬
 extern Mesh* ImagePannel;
@@ -30,7 +28,7 @@ extern Mesh* BoundingSphereMesh;
 
 // 커스텀 매쉬 및 텍스처
 extern Mesh* GunMesh;
-extern Texture* Tex, * WoodTex, * SkyboxTex;
+extern Texture* Tex, * SkyboxTex, *WoodTex;
 
 void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);

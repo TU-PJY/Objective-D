@@ -24,7 +24,7 @@ void LineBrush::Init(ID3D12GraphicsCommandList* CmdList) {
 
 	camera.SetToStaticMode();
 	camera.SetViewMatrix();
-	camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0, 10.0);
+	camera.GenerateStaticMatrix();
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
 }
@@ -39,7 +39,7 @@ void LineBrush::Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, flo
 	Rotation = Math::CalcDegree2D(X1, Y1, X2, Y2);
 
 	Transform::Move(TranslateMatrix, X1, Y1, 0.0);
-	Transform::Rotate(TranslateMatrix, Rotation, 0.0, 0.0, 1.0);
+	Transform::Rotate(TranslateMatrix, 0.0, 0.0, Rotation);
 	Transform::Move(TranslateMatrix, Length / 2.0, 0.0, 0.0);
 	Transform::Scale(ScaleMatrix, Width + Length, Width, 1.0);
 
@@ -51,7 +51,7 @@ void LineBrush::Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, flo
 
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &LineColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(CmdList, &TransparencyValue, ALPHA_INDEX, 1, 0);
+	RCUtil::Input(CmdList, &TransparencyValue, GAME_OBJECT_INDEX, 1, 19);
 
 	ImagePannel->Render(CmdList);
 }

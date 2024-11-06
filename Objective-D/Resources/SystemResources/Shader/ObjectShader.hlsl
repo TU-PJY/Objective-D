@@ -2,6 +2,7 @@ cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
+    float AlphaValue : packoffset(c4.w); 
 }
 
 cbuffer cbCameraInfo : register(b1) 
@@ -17,9 +18,9 @@ cbuffer cbFlipInfo : register(b2)
     int Y_Flip;
 }
 
-cbuffer cbAlphaInfo : register(b3) 
+cbuffer cbLightUseInfo : register(b3)
 {
-    float AlphaValue;
+    int UseLight;
 }
 
 cbuffer cbLightInfo : register(b4) 
@@ -28,11 +29,6 @@ cbuffer cbLightInfo : register(b4)
     float3 gLightColor;
     float3 gAmbientColor;
     float gShadowStrength;
-}
-
-cbuffer cbLightUseInfo : register(b5)
-{
-    int UseLight;
 }
 
 Texture2D gTexture : register(t0);
@@ -64,11 +60,8 @@ VS_OUTPUT VSTexColor(VS_INPUT input)
     output.normal = input.normal;
     output.uv = input.uv;
     
-    if(X_Flip == 1)
-        output.uv.x = 1.0f - output.uv.x;
-    
-    if(Y_Flip == 1)
-        output.uv.y = 1.0f - output.uv.y;
+    output.uv.x = lerp(output.uv.x, 1.0f - output.uv.x, X_Flip);
+    output.uv.y = lerp(output.uv.y, 1.0f - output.uv.y, Y_Flip);
 
     return (output);
 }

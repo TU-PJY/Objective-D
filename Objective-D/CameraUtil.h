@@ -53,7 +53,7 @@ public:
 	void SetToStaticMode();
 	void SetViewMatrix();
 	void InitStaticMatrix();
-	void UpdateStaticMatrix();
+	void GenerateStaticMatrix();
 	void GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov);
 	void GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);

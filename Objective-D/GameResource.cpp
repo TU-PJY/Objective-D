@@ -13,13 +13,13 @@ Boundbox_Shader* BoundboxShader;
 Image_Shader* ImageShader;
 Line_Shader* LineShader;
 
-Texture* ColorTex;
 Mesh* BoundMesh;
 Mesh* BoundingSphereMesh;
 ////////////////////////////////
 
 Mesh* GunMesh;
-Texture* Tex, * WoodTex, * SkyboxTex;
+Texture* Tex, * SkyboxTex, *WoodTex;
+
 
 void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	////////////////////////////////
@@ -68,12 +68,7 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 }
 
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	////////////////////////////////
-	// 선 그리기용 텍스처 생성
-	ColorTex = new Texture(Device, CmdList, LINE_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
-	////////////////////////////////
-
 	Tex = new Texture(Device, CmdList, GUN_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
-	WoodTex = new Texture(Device, CmdList, WOOD_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
 	SkyboxTex = new Texture(Device, CmdList, SKY_BOX_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
+	WoodTex = new Texture(Device, CmdList, WOOD_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
 }

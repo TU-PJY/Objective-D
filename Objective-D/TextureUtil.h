@@ -8,6 +8,8 @@ private:
 	ID3D12DescriptorHeap* Sampler{};
 
 public:
+	int Width{}, Height{};
+
 	Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar_t* FileName, int Type);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	void CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap, int Type);

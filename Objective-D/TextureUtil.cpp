@@ -77,6 +77,10 @@ ID3D12Resource* Texture::CreateTextureResourceFromWICFile(ID3D12Device* pd3dDevi
 		return nullptr;
 	}
 
+	D3D12_RESOURCE_DESC textureDesc = pd3dTexture->GetDesc();
+	Width = static_cast<int>(textureDesc.Width);
+	Height = static_cast<int>(textureDesc.Height);
+
 	// 중간 버퍼 크기를 계산 (pd3dTexture가 NULL인지 다시 확인)
 	UINT64 nBytes = GetRequiredIntermediateSize(pd3dTexture, 0, 1);
 	if (nBytes == 0) {

@@ -2,6 +2,7 @@ cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
+    float AlphaValue : packoffset(c4.w);
 };
 
 cbuffer cbCameraInfo : register(b1)
@@ -11,9 +12,10 @@ cbuffer cbCameraInfo : register(b1)
     float3 gf3CameraPosition : packoffset(c8);
 }
 
-cbuffer cbAlphaInfo : register(b3)
+cbuffer cbFlipInfo : register(b2)
 {
-    float AlphaValue;
+    int X_Flip;
+    int Y_Flip;
 }
 
 Texture2D gTexture : register(t0);
@@ -45,8 +47,8 @@ VS_OUTPUT VSImageColor(VS_INPUT input)
     output.normal = input.normal;
     output.uv = input.uv;
    
-    // 기본적으로 수직 반전됨
-    output.uv.y = 1.0f - output.uv.y;
+    output.uv.x = lerp(output.uv.x, 1.0f - output.uv.x, X_Flip);
+    output.uv.y = lerp(output.uv.y, 1.0f - output.uv.y, Y_Flip);
 
     return (output);
 }

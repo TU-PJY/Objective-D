@@ -43,6 +43,7 @@ POINT MouseUtil::CurrentPosition() {
 void MouseUtil::UpdateMousePosition(HWND hWnd) {
 	::GetCursorPos(&ClientPosition);
 	::ScreenToClient(hWnd, &ClientPosition); // 클라이언트 좌표로 변환
-	x = (((2.0f * (float)ClientPosition.x) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
-	y = -(((2.0f * (float)ClientPosition.y) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
+
+	x = (((2.0f * (float)ClientPosition.x) / (float)SCREEN_WIDTH) - 1.0f) / camera.StaticProjectionMatrix._11;
+	y = -(((2.0f * (float)(ClientPosition.y)) / (float)SCREEN_HEIGHT) - 1.0f) / camera.StaticProjectionMatrix._22;
 }

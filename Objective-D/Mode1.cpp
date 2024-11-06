@@ -33,9 +33,6 @@ void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM
 	if (nMessageID == WM_KEYDOWN && wParam == VK_ESCAPE)
 		// 프로그램을 종료하는 Scene 멤버 함수
 		scene.Exit();
-
-	// 객체로 키보드 입력
-	scene.InputKey(hWnd, nMessageID, wParam, lParam, "test_object");
 }
 
 //  마우스 모션을 지정된 객체 포인터로 전달한다

@@ -20,6 +20,7 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		TranslateMatrix = Mat4::Identity();
 		RotateMatrix = Mat4::Identity();
 		ScaleMatrix = Mat4::Identity();
+		ImageAspectMatrix = Mat4::Identity();
 	}
 
 	// 매쉬 색상 초기화
@@ -65,7 +66,29 @@ void GameObject::EnableLight() {
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
 void GameObject::FlipTexture(int FlipType) {
-	CBVUtil::Input(ObjectCmdList, FlipCBV, FlipType);
+	// 이미지 출력 모드에서는 수직 반전이 기본 적용이기 떄문에 반전이 다르게 동작한다.
+	if (RenderType == RENDER_TYPE_2D || RenderType == RENDER_TYPE_2D_STATIC) {
+		switch (FlipType) {
+		case FLIP_TYPE_V:
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_NONE);
+			break;
+
+		case FLIP_TYPE_H:
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_HV);
+			break;
+
+		case FLIP_TYPE_HV:
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_H);
+			break;
+
+		case FLIP_TYPE_NONE:
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_V);
+			break;
+		}
+	}
+
+	else
+		CBVUtil::Input(ObjectCmdList, FlipCBV, FlipType);
 }
 
 // 3D 렌더링
@@ -83,7 +106,9 @@ void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, 
 }
 
 // 2D 렌더링
-void GameObject::Render2D(Texture* TexturePtr, float AlphaValue) {
+void GameObject::Render2D(Texture* TexturePtr, float AlphaValue, bool EnableAspect) {
+	if(EnableAspect)
+		Transform::ImageAspect(ImageAspectMatrix, TexturePtr->Width, TexturePtr->Height);
 	TexturePtr->Render(ObjectCmdList);
 	ImageShader->Render(ObjectCmdList, false);
 	ObjectAlpha = AlphaValue;
@@ -132,15 +157,19 @@ void GameObject::InputCommandList(ID3D12GraphicsCommandList* CmdList) {
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables() {
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
-	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
+	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), ResultMatrix);
+
+	// 이미지 출력 모드일경우 종횡비를 적용한다.
+	if (RenderType == RENDER_TYPE_2D || RenderType == RENDER_TYPE_2D_STATIC)
+		ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ImageAspectMatrix), ResultMatrix);
 
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
 	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(ObjectCmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(ObjectCmdList, &ObjectAlpha, ALPHA_INDEX, 1, 0);
+	RCUtil::Input(ObjectCmdList, &ObjectAlpha, GAME_OBJECT_INDEX, 1, 19);
 }
 
 // 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
@@ -152,7 +181,6 @@ void GameObject::SetToImageMode() {
 // 기본 출력 모드로 전환한다. 텍스처 반전 해제 후 조명 사용을 활성화 한다.
 void GameObject::SetToDefaultMode() {
 	EnableLight();
-	FlipTexture(FLIP_TYPE_NONE);
 	camera.SetToDefaultMode();
 }
 
@@ -167,9 +195,12 @@ void GameObject::SetCamera() {
 		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f); 
 		break;
 
-	case RENDER_TYPE_3D_ORTHO: case RENDER_TYPE_2D: case RENDER_TYPE_2D_STATIC:
+	case RENDER_TYPE_3D_ORTHO:
 		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0f, 10.0f);
 		break;
+
+	case RENDER_TYPE_2D: case RENDER_TYPE_2D_STATIC:
+		camera.GenerateStaticMatrix();
 	}
 
 	camera.SetViewportsAndScissorRects(ObjectCmdList);

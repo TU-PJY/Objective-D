@@ -134,7 +134,7 @@ void Camera::InitStaticMatrix() {
 }
 
 // 윈도우 사이즈 변경 시 실행된다.
-void Camera::UpdateStaticMatrix() {
+void Camera::GenerateStaticMatrix() {
 	StaticProjectionMatrix = Mat4::Identity();
 	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);

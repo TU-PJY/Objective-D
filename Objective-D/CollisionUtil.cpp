@@ -211,11 +211,8 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	float AlphaValue = 1.0;
-
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 
 	BoundingSphereMesh->Render(CmdList);
 #endif

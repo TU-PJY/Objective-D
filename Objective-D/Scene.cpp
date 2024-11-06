@@ -260,23 +260,21 @@ ID3D12RootSignature* Scene::CreateGraphicsRootSignature(ID3D12Device* Device) {
 	D3D12_DESCRIPTOR_RANGE Range{};
 
 	// 루트 파라미터
-	std::vector<D3D12_ROOT_PARAMETER> RootParameters(8);
+	std::vector<D3D12_ROOT_PARAMETER> RootParameters(7);
 
-	SetRoot(RootParameters, 19, 0, 0, GAME_OBJECT_INDEX);   // b0, cbGameObjectInfo
+	SetRoot(RootParameters, 20, 0, 0, GAME_OBJECT_INDEX);   // b0, cbGameObjectInfo
 
 	SetRoot(RootParameters, 35, 1, 1, CAMERA_INDEX);        // b1, cbCameraInfo
 
 	SetCBV(Range, RootParameters, 2, 2, FlipCBV);           // b2, cbFlipInfo
 
-	SetRoot(RootParameters, 1, 3, 3, ALPHA_INDEX);          // b3, cbAlphaInfo
+	SetCBV(Range, RootParameters, 3, 3, BoolLightCBV);      // b3, cbLightUseInfo
 
 	SetCBV(Range, RootParameters, 4, 4, LightCBV);          // b4, cbLightInfo
 
-	SetCBV(Range, RootParameters, 5, 5, BoolLightCBV);      // b5, cbLightUseInfo
+	SetSRV(Range, RootParameters, 0, 5, SRV_INDEX);         // t0, SRV
 
-	SetSRV(Range, RootParameters, 0, 6, SRV_INDEX);         // t0, SRV
-
-	SetSampler(Range, RootParameters, 0, 7, SAMPLER_INDEX); // s0, Sampler
+	SetSampler(Range, RootParameters, 0, 6, SAMPLER_INDEX); // s0, Sampler
 
 	// 루트 시그니처 설정
 	D3D12_ROOT_SIGNATURE_DESC RootSignatureDesc;
