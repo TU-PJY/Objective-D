@@ -1,16 +1,19 @@
 #pragma once
 #include "MeshUtil.h"
+#include "TextureUtil.h"
 #include "ImageShader.h"
 #include "ObjectShader.h"
-#include "TextureUtil.h"
+#include "BoundboxShader.h"
+#include "LineShader.h"
 
 ////////////////////////////////// 기본 리소스
 extern Object_Shader* ObjectShader;
-extern Object_Shader* BoundboxShader;
+extern Boundbox_Shader* BoundboxShader;
 extern Image_Shader* ImageShader;
+extern Line_Shader* LineShader;
 
 // 선 출력용 텍스처
-extern Texture* LineTex;
+extern Texture* ColorTex;
 
 // 이미지 출력용 매쉬
 extern Mesh* ImagePannel;

@@ -9,9 +9,11 @@
 
 ////////////////////////////////
 Object_Shader* ObjectShader;
-Object_Shader* BoundboxShader;
+Boundbox_Shader* BoundboxShader;
 Image_Shader* ImageShader;
-Texture* LineTex;
+Line_Shader* LineShader;
+
+Texture* ColorTex;
 Mesh* BoundMesh;
 Mesh* BoundingSphereMesh;
 ////////////////////////////////
@@ -34,8 +36,13 @@ void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Devi
 	ImageShader->CreateNoneDepthPS(Device, RootSignature);
 
 	// 바운드박스 쉐이더 생성
-	BoundboxShader = new Object_Shader();
-	BoundboxShader->CreateBoundboxPS(Device, RootSignature);
+	BoundboxShader = new Boundbox_Shader();
+	BoundboxShader->CreateWireframePS(Device, RootSignature);
+	BoundboxShader->CreateDefaultPS(Device, RootSignature);
+
+	// 라인 브러쉬 출력용 쉐이더 생성
+	LineShader = new Line_Shader();
+	LineShader->CreateNoneDepthPS(Device, RootSignature);
 	////////////////////////////////
 }
 
@@ -63,7 +70,7 @@ void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	////////////////////////////////
 	// 선 그리기용 텍스처 생성
-	LineTex = new Texture(Device, CmdList, LINE_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
+	ColorTex = new Texture(Device, CmdList, LINE_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);
 	////////////////////////////////
 
 	Tex = new Texture(Device, CmdList, GUN_TEXTURE_DIRECTORY, TEXTURE_TYPE_WIC);

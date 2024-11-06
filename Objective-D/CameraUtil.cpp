@@ -60,17 +60,18 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4Projection;
 
 	// 스테틱 모드 실행 시 스테틱 행렬을 쉐이더로 전달한다.
-	if (StaticMode) {
+	switch(StaticMode) {
+	case false:
+		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
+		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
+		RCUtil::Input(CmdList, &Position, CAMERA_INDEX, 3, 32);
+		break;
+
+	case true:
 		XMFLOAT3 StaticPosition{ 0.0, 0.0, 0.0 };
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&StaticViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&StaticProjectionMatrix)));
 		RCUtil::Input(CmdList, &StaticPosition, CAMERA_INDEX, 3, 32);
-	}
-
-	else {
-		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
-		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
-		RCUtil::Input(CmdList, &Position, CAMERA_INDEX, 3, 32);
 	}
 
 	RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);

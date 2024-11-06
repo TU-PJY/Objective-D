@@ -21,7 +21,6 @@ void LineBrush::Init(ID3D12GraphicsCommandList* CmdList) {
 	TranslateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
 	TransparencyValue = 1.0f;
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
 
 	camera.SetToStaticMode();
 	camera.SetViewMatrix();
@@ -44,8 +43,7 @@ void LineBrush::Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, flo
 	Transform::Move(TranslateMatrix, Length / 2.0, 0.0, 0.0);
 	Transform::Scale(ScaleMatrix, Width + Length, Width, 1.0);
 
-	LineTex->Render(CmdList);
-	ObjectShader->Render(CmdList, false);
+	LineShader->Render(CmdList, false);
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	XMFLOAT4X4 xmf4x4World;

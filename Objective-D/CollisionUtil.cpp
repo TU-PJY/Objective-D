@@ -18,6 +18,14 @@ void OOBB::Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLO
 	}
 }
 
+void OOBB::Update(XMFLOAT3& Position, XMFLOAT3& Size, XMFLOAT3& Rotation) {
+	oobb.Center = Position;
+	oobb.Extents = Size;
+	XMVECTOR Quarternion =
+		XMQuaternionRotationRollPitchYaw(XMConvertToRadians(Rotation.x), XMConvertToRadians(Rotation.y), XMConvertToRadians(Rotation.z));
+	XMStoreFloat4(&oobb.Orientation, Quarternion);
+}
+
 void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 #ifdef SHOW_BOUND_BOX
 	TranslateMatrix = Mat4::Identity();
@@ -31,11 +39,7 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(QuaternionForMatrix);
 	XMStoreFloat4x4(&RotateMatrix, rotationMatrix);
 
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
-	CBVUtil::Input(CmdList, FlipCBV, 0);
-
-	LineTex->Render(CmdList);
-	BoundboxShader->Render(CmdList);
+	BoundboxShader->RenderWireframe(CmdList);
 
 	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
@@ -48,11 +52,8 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	float AlphaValue = 1.0;
-
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 
 	BoundMesh->Render(CmdList);
 #endif
@@ -91,7 +92,7 @@ bool OOBB::CheckCollision(const Range& Other) {
 
 
 
-void AABB::Update(XMFLOAT3 Position, XMFLOAT3 Size) {
+void AABB::Update(XMFLOAT3& Position, XMFLOAT3& Size) {
 	aabb.Center = Position;
 	aabb.Extents = Size;
 }
@@ -104,11 +105,7 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	Transform::Move(TranslateMatrix, aabb.Center.x, aabb.Center.y, aabb.Center.z);
 	Transform::Scale(ScaleMatrix, aabb.Extents.x, aabb.Extents.y, aabb.Extents.z);
 
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
-	CBVUtil::Input(CmdList, FlipCBV, 0);
-
-	LineTex->Render(CmdList);
-	BoundboxShader->Render(CmdList);
+	BoundboxShader->RenderWireframe(CmdList);
 
 	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
@@ -120,11 +117,8 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	float AlphaValue = 1.0;
-
 	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
-	RCUtil::Input(CmdList, &AlphaValue, ALPHA_INDEX, 1, 0);
 
 	BoundMesh->Render(CmdList);
 #endif
@@ -164,7 +158,7 @@ bool AABB::CheckCollision(const Range& Other) {
 
 void Range::Update(const XMFLOAT3& Center, float Size) {
 	sphere.Center = Center;
-	sphere.Radius = Size;
+	sphere.Radius = Size * 0.5;
 }
 
 bool Range::CheckCollision(const Range& Other) {
@@ -203,13 +197,9 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	ScaleMatrix = Mat4::Identity();
 
 	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
-	Transform::Scale(ScaleMatrix, sphere.Radius, sphere.Radius, sphere.Radius);
+	Transform::Scale(ScaleMatrix, sphere.Radius * 0.54, sphere.Radius * 0.54, sphere.Radius * 0.54);
 
-	CBVUtil::Input(CmdList, BoolLightCBV, 0);
-	CBVUtil::Input(CmdList, FlipCBV, 0);
-
-	LineTex->Render(CmdList);
-	ObjectShader->Render(CmdList);
+	BoundboxShader->Render(CmdList);
 
 	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);

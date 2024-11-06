@@ -18,6 +18,7 @@ private:
 public:
 	BoundingOrientedBox oobb = BoundingOrientedBox();
 	void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
+	void Update(XMFLOAT3& Position, XMFLOAT3& Size, XMFLOAT3& Rotation);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const Range& Other);
@@ -36,7 +37,7 @@ private:
 
 public:
 	BoundingBox aabb = BoundingBox();
-	void Update(XMFLOAT3 Position, XMFLOAT3 Size);
+	void Update(XMFLOAT3& Position, XMFLOAT3& Size);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const OOBB& Other);

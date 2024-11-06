@@ -2,13 +2,18 @@ cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
-}
+};
 
 cbuffer cbCameraInfo : register(b1)
 {
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
+}
+
+cbuffer cbAlphaInfo : register(b3)
+{
+    float AlphaValue;
 }
 
 struct VS_INPUT
@@ -27,7 +32,7 @@ struct VS_OUTPUT
     float2 uv : TEXTURECOORD;
 };
 
-VS_OUTPUT VSBoundboxColor(VS_INPUT input)
+VS_OUTPUT VSLineColor(VS_INPUT input)
 {
     VS_OUTPUT output;
 
@@ -38,10 +43,10 @@ VS_OUTPUT VSBoundboxColor(VS_INPUT input)
     return (output);
 }
 
-float4 PSBoundboxColor(VS_OUTPUT input) : SV_TARGET
+float4 PSLineColor(VS_OUTPUT input) : SV_TARGET
 {
     float3 meshColor = gf3ObjectColor;
-    float4 RetvalMeshColor = float4(meshColor, 1.0);
+    float4 RetvalMeshColor = float4(meshColor, AlphaValue);
   
     float4 outputColor = RetvalMeshColor;
     return outputColor;

@@ -26,15 +26,17 @@ public:
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ShaderBlob);
 	D3D12_SHADER_BYTECODE Shader::CompileShaderFromFile(WCHAR* FileName, LPCSTR Shadername, LPCSTR ShaderProfile, ID3DBlob** ShaderBlob);
 	virtual void CreateDefaultPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
-	void CreateBoundboxPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
+	void CreateWireframePS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void CreateNoneDepthPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS);
 	void Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest = true);
+	void RenderWireframe(ID3D12GraphicsCommandList* CmdList);
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {}
 	virtual void ReleaseShaderVariables() {}
 
 protected:
-	ID3D12PipelineState* PipelineState = NULL;
+	ID3D12PipelineState* PipelineState{};
 	ID3D12PipelineState* PSDepthNone{};
+	ID3D12PipelineState* PSWireframe{};
 };

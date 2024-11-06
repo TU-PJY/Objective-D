@@ -69,3 +69,8 @@ void Shader::Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest) {
 	else
 		OnPrepareRender(CmdList, PSDepthNone);
 }
+
+// 바운드 박스 출력용
+void Shader::RenderWireframe(ID3D12GraphicsCommandList* CmdList) {
+	OnPrepareRender(CmdList, PSWireframe);
+}

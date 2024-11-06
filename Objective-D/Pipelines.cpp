@@ -70,7 +70,7 @@ void Shader::CreateNoneDepthPS(ID3D12Device* Device, ID3D12RootSignature* RootSi
 }
 
 // 바운드박스 출력용 파이프라인을 생성한다.
-void Shader::CreateBoundboxPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
+void Shader::CreateWireframePS(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
 	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;
@@ -89,7 +89,7 @@ void Shader::CreateBoundboxPS(ID3D12Device* Device, ID3D12RootSignature* RootSig
 	PipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	PipelineStateDesc.SampleDesc.Count = 1;
 	PipelineStateDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
-	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PipelineState);
+	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PSWireframe);
 
 	if (VertexShaderBlob)
 		VertexShaderBlob->Release();

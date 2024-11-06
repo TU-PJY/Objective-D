@@ -23,7 +23,7 @@ public:
 	float ObjectAlpha{ 1.0f };
 
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
-	int RenderType = RENDER_TYPE_PERS;
+	int RenderType = RENDER_TYPE_3D;
 
 	// 오브젝트 내부에서 사용하는 커맨드 리스트
 	ID3D12GraphicsCommandList* ObjectCmdList{};
@@ -34,7 +34,7 @@ public:
 	bool DeleteMark{};
 
 	void InputCommandList(ID3D12GraphicsCommandList* CmdList);
-	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_PERS);
+	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_3D);
 	void SetColor(XMFLOAT3 Color);
 	void SetColorRGB(float R, float G, float B);
 	void EnableLight();

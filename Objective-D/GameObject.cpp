@@ -11,9 +11,12 @@
 
 // 객체의 렌더링 상태를 초기화 한다. 모든 객체는 이 함수로 렌더링 과정이 시작된다.
 // 기본 RANDER_TYPE_PERS로 타입이 지정되어있다.
-// RENDER_TYPE_NONE일 경우 행렬 초기화를 실행하지 않는다. 
+// RENDER_TYPE_3D_STATIC또는 RENDER_TYPE_2D_STATIC일 경우 행렬 초기화를 실행하지 않는다. 
 void GameObject::InitRenderState(int RenderTypeFlag) {
-	if (RenderTypeFlag != RENDER_TYPE_NONE) {
+	// 출력 모드 지정
+	RenderType = RenderTypeFlag;
+
+	if (RenderTypeFlag != RENDER_TYPE_3D_STATIC && RenderTypeFlag != RENDER_TYPE_2D_STATIC) {
 		TranslateMatrix = Mat4::Identity();
 		RotateMatrix = Mat4::Identity();
 		ScaleMatrix = Mat4::Identity();
@@ -22,21 +25,19 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 	// 매쉬 색상 초기화
 	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
 
-	// 출력 모드 지정
-	RenderType = RenderTypeFlag;
-
 	// 텍스처 상태 초기화
 	FlipTexture(FLIP_TYPE_NONE);
 	ObjectAlpha = 1.0f;
 
+	// 출력 모드 변경
 	switch(RenderTypeFlag) {
-		case RENDER_TYPE_IMAGE: 
-			SetToImageMode();
-			break;
+	case RENDER_TYPE_2D: case RENDER_TYPE_2D_STATIC:
+		SetToImageMode();
+		break;
 
-		default: 
-			SetToDefaultMode(); 
-			break;
+	case RENDER_TYPE_3D: case RENDER_TYPE_3D_STATIC:
+		SetToDefaultMode(); 
+		break;
 	}
 }
 
@@ -69,19 +70,21 @@ void GameObject::FlipTexture(int FlipType) {
 
 // 3D 렌더링
 void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, bool DepthTestFlag) {
-	if (TexturePtr) TexturePtr->Render(ObjectCmdList);
+	TexturePtr->Render(ObjectCmdList);
 	ObjectShader->Render(ObjectCmdList, DepthTestFlag);
+	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
+
 	ObjectAlpha = AlphaValue;
 
 	SetCamera();
 	UpdateShaderVariables();
 
-	if (MeshPtr) MeshPtr->Render(ObjectCmdList);
+	MeshPtr->Render(ObjectCmdList);
 }
 
 // 2D 렌더링
 void GameObject::Render2D(Texture* TexturePtr, float AlphaValue) {
-	if (TexturePtr) TexturePtr->Render(ObjectCmdList);
+	TexturePtr->Render(ObjectCmdList);
 	ImageShader->Render(ObjectCmdList, false);
 	ObjectAlpha = AlphaValue;
 
@@ -129,8 +132,6 @@ void GameObject::InputCommandList(ID3D12GraphicsCommandList* CmdList) {
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables() {
-	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
-
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
 
@@ -145,7 +146,6 @@ void GameObject::UpdateShaderVariables() {
 // 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
 void GameObject::SetToImageMode() {
 	DisableLight();
-	FlipTexture(FLIP_TYPE_V);
 	camera.SetToStaticMode();
 }
 
@@ -161,12 +161,16 @@ void GameObject::SetCamera() {
 	// 카메라 뷰 행렬을 설정한다.
 	camera.SetViewMatrix();
 
-	// 렌더 타입에 따라 다른 투영 행렬을 생성한다.
-	if (RenderType == RENDER_TYPE_PERS)
-		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
+	// 렌더 타입에 따라 다른 행렬을 초기화 한다.
+	switch (RenderType) {
+	case RENDER_TYPE_3D: case RENDER_TYPE_3D_STATIC:
+		camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f); 
+		break;
 
-	else if (RenderType == RENDER_TYPE_ORTHO || RenderType == RENDER_TYPE_IMAGE)
+	case RENDER_TYPE_3D_ORTHO: case RENDER_TYPE_2D: case RENDER_TYPE_2D_STATIC:
 		camera.GenerateOrthoMatrix(1.0, 1.0, ASPECT, 0.0f, 10.0f);
+		break;
+	}
 
 	camera.SetViewportsAndScissorRects(ObjectCmdList);
 	camera.UpdateShaderVariables(ObjectCmdList);

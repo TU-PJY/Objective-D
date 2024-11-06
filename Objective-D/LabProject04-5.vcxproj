@@ -149,6 +149,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoundboxShader.h" />
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CBVData.h" />
     <ClInclude Include="CBVResource.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImageShader.h" />
     <ClInclude Include="LineBrush.h" />
+    <ClInclude Include="LineShader.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mode1.h" />
     <ClInclude Include="MouseUtil.h" />
@@ -187,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Blends.cpp" />
+    <ClCompile Include="BoundboxShader.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
     <ClCompile Include="CBVResource.cpp" />
     <ClCompile Include="CBVUtil.cpp" />
@@ -196,6 +199,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImageShader.cpp" />
     <ClCompile Include="LineBrush.cpp" />
+    <ClCompile Include="LineShader.cpp" />
     <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="Meshes.cpp" />
     <ClCompile Include="MeshUtil.cpp" />
@@ -241,6 +245,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\ImageShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\SystemResources\Shader\LineShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">
