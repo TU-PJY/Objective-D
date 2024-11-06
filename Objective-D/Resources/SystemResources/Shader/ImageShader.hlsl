@@ -9,7 +9,7 @@ cbuffer cbCameraInfo : register(b1)
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
-};
+}
 
 // 텍스처 반전
 cbuffer cbFlipInfo : register(b2)
@@ -23,6 +23,9 @@ cbuffer cbAlphaInfo : register(b3)
 {
     float AlphaValue;
 }
+
+cbuffer cbLightInfo : register(b4){}
+cbuffer cbLightUseInfo : register(b5){}
 
 Texture2D gTexture : register(t0); // 텍스처 샘플링을 위한 텍스처 리소스
 SamplerState gSampler : register(s0); // 텍스처 샘플러 상태

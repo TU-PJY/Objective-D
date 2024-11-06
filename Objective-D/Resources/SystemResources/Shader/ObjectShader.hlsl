@@ -1,22 +1,15 @@
-//cbuffer cbFrameworkInfo : register(b0) 
-//{
-//    float gfCurrentTime;
-//    float gfElapsedTime;
-//    float2 gf2CursorPos;
-//};
-
 cbuffer cbGameObjectInfo : register(b0) 
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
-};
+}
 
 cbuffer cbCameraInfo : register(b1) 
 {
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
-};
+}
 
 // 텍스처 반전
 cbuffer cbFlipInfo : register(b2) 
@@ -38,7 +31,7 @@ cbuffer cbLightInfo : register(b4)
     float3 gLightColor;
     float3 gAmbientColor;
     float gShadowStrength;
-};
+}
 
 // 조명 사용 여부
 cbuffer cbLightUseInfo : register(b5)

@@ -2,14 +2,19 @@ cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
-};
+}
 
 cbuffer cbCameraInfo : register(b1)
 {
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
-};
+}
+
+cbuffer cbFlipInfo : register(b2){}
+cbuffer cbAlphaInfo : register(b3){}
+cbuffer cbLightInfo : register(b4){}
+cbuffer cbLightUseInfo : register(b5){}
 
 struct VS_INPUT
 {
