@@ -149,9 +149,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BoundboxShader.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="CameraUtil.h" />
     <ClInclude Include="CBVData.h" />
     <ClInclude Include="CBVResource.h" />
@@ -162,6 +159,7 @@
     <ClInclude Include="DDSTextureLoader12.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImageShader.h" />
     <ClInclude Include="LineBrush.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mode1.h" />
@@ -196,6 +194,7 @@
     <ClCompile Include="DDSTextureLoader12.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImageShader.cpp" />
     <ClCompile Include="LineBrush.cpp" />
     <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="Meshes.cpp" />
@@ -238,7 +237,10 @@
     <Text Include="MotionCode.txt" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ImageShader.hlsl">
+    <FxCompile Include="Resources\SystemResources\Shader\BoundboxShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\SystemResources\Shader\ImageShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">

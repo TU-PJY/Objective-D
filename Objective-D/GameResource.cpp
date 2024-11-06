@@ -8,8 +8,9 @@
 // ResourceFileLink.h에 작성한 파일 경로를 사용할 수 있다.
 
 ////////////////////////////////
-BasicObjectShader* ObjectShader;
-BasicObjectShader* BoundboxShader;
+Object_Shader* ObjectShader;
+Object_Shader* BoundboxShader;
+Image_Shader* ImageShader;
 Texture* LineTex;
 Mesh* BoundMesh;
 Mesh* BoundingSphereMesh;
@@ -22,15 +23,20 @@ void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Devi
 	////////////////////////////////
 	// 파이프라인 생성이 곧 쉐이더 설정의 마무리이다.
 	// 일반 렌더링 쉐이더 생성
-	ObjectShader = new BasicObjectShader();
-	ObjectShader->CreateDefaultPipeline(Device, RootSignature);
-
+	ObjectShader = new Object_Shader();
+	// 기본 파이프라인 생성
+	ObjectShader->CreateDefaultPS(Device, RootSignature);
 	// 깊이 검사 미포함 파이프라인 생성
-	ObjectShader->CreateImageDepthPipelineState(Device, RootSignature);
+	ObjectShader->CreateNoneDepthPS(Device, RootSignature);
+
+	// 이미지 출력용 파이프라인 생성
+	ImageShader = new Image_Shader();
+	ImageShader->CreateNoneDepthPS(Device, RootSignature);
+
 
 	// 바운드박스 쉐이더 생성
-	BoundboxShader = new BasicObjectShader();
-	BoundboxShader->CreateBoundboxPipeline(Device, RootSignature);
+	BoundboxShader = new Object_Shader();
+	BoundboxShader->CreateBoundboxPS(Device, RootSignature);
 	////////////////////////////////
 }
 

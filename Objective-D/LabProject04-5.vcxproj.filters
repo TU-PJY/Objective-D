@@ -128,6 +128,9 @@
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader">
       <UniqueIdentifier>{766937e9-460b-4942-b672-6d82b626e016}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]">
+      <UniqueIdentifier>{220c33db-4578-48f5-875a-0958547fd7d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -229,11 +232,11 @@
     <ClInclude Include="ResourceFileLink.h">
       <Filter>[1]____________[ Game Resource ]\[1][ Resource ]</Filter>
     </ClInclude>
-    <ClInclude Include="BoundboxShader.hlsl">
-      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectShader.h">
       <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageShader.h">
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +334,9 @@
     <ClCompile Include="ObjectShader.cpp">
       <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\Object Shader</Filter>
     </ClCompile>
+    <ClCompile Include="ImageShader.cpp">
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
@@ -357,7 +363,10 @@
     <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">
       <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
     </FxCompile>
-    <FxCompile Include="ImageShader.hlsl">
+    <FxCompile Include="Resources\SystemResources\Shader\ImageShader.hlsl">
+      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\SystemResources\Shader\BoundboxShader.hlsl">
       <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>

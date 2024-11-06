@@ -3,7 +3,7 @@
 // 여기에 파이프라인을 작성한다.
 
 // 일반 출력 파이프라인을 생성한다.
-void Shader::CreateDefaultPipeline(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
+void Shader::CreateDefaultPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
 	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;
@@ -35,8 +35,7 @@ void Shader::CreateDefaultPipeline(ID3D12Device* Device, ID3D12RootSignature* Ro
 }
 
 // 깊이 검사가 비활성화된 파이프라인을 생성한다.
-// 이미지 출력 전용
-void Shader::CreateImageDepthPipelineState(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
+void Shader::CreateNoneDepthPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
 	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;
@@ -71,7 +70,7 @@ void Shader::CreateImageDepthPipelineState(ID3D12Device* Device, ID3D12RootSigna
 }
 
 // 바운드박스 출력용 파이프라인을 생성한다.
-void Shader::CreateBoundboxPipeline(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
+void Shader::CreateBoundboxPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature) {
 	ID3DBlob* VertexShaderBlob = NULL, * PixelShaderBlob = NULL;
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC PipelineStateDesc;

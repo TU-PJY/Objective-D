@@ -1,7 +1,7 @@
-#include "ObjectShader.h"
+#include "ImageShader.h"
 
-// 오브젝트 출력용 쉐이더
-D3D12_INPUT_LAYOUT_DESC Object_Shader::CreateInputLayout() {
+// 이미지 출력용 쉐이더
+D3D12_INPUT_LAYOUT_DESC Image_Shader::CreateInputLayout() {
 	UINT NumInputElementDescs = 3;
 	D3D12_INPUT_ELEMENT_DESC* InputElementDescs = new D3D12_INPUT_ELEMENT_DESC[NumInputElementDescs];
 
@@ -16,10 +16,10 @@ D3D12_INPUT_LAYOUT_DESC Object_Shader::CreateInputLayout() {
 	return(InputLayoutDesc);
 }
 
-D3D12_SHADER_BYTECODE Object_Shader::CreateVertexShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//ObjectShader.hlsl", "VSTexColor", "vs_5_1", ShaderBlob));
+D3D12_SHADER_BYTECODE Image_Shader::CreateVertexShader(ID3DBlob** ShaderBlob) {
+	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//ImageShader.hlsl", "VSImageColor", "vs_5_1", ShaderBlob));
 }
 
-D3D12_SHADER_BYTECODE Object_Shader::CreatePixelShader(ID3DBlob** ShaderBlob) {
-	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//ObjectShader.hlsl", "PSTexColor", "ps_5_1", ShaderBlob));
+D3D12_SHADER_BYTECODE Image_Shader::CreatePixelShader(ID3DBlob** ShaderBlob) {
+	return(Shader::CompileShaderFromFile(L"Resources//SystemResources//Shader//ImageShader.hlsl", "PSImageColor", "ps_5_1", ShaderBlob));
 }
