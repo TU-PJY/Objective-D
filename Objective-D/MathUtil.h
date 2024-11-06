@@ -1,11 +1,18 @@
 #pragma once
 #include "DirectX_3D.h"
+#include "CollisionUtil.h"
 
 namespace Math {
 	void UpdateVector(ObjectVector& VectorStruct, float Pitch, float Yaw, float Roll);
 	void UpdateVector(ObjectVector& VectorStruct, XMFLOAT3& Rotation);
 	void InitVector(ObjectVector& VectorStruct);
 	void LookAt(XMFLOAT4X4& Matrix, ObjectVector& VectorStruct, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition, XMFLOAT3& TargetUpVector);
+	void BillboardLookAt(XMFLOAT4X4& Matrix, ObjectVector& VectorStruct, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition);
+	XMVECTOR CalcRayDirection(XMFLOAT3& Rotation);
+	XMVECTOR CalcRayOrigin(XMFLOAT3& Position);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, AABB& Other);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, OOBB& Other);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, Range& Other);
 	void Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
 	void Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
@@ -15,4 +22,5 @@ namespace Math {
 	float CalcDistance2D(float FromX, float FromY, float ToX, float ToY);
 	float CalcDegree2D(float FromX, float FromY, float ToX, float ToY);
 	float CalcRadians2D(float FromX, float FromY, float ToX, float ToY);
+	void Normalize2DAngleTo360(float& Degree);
 }

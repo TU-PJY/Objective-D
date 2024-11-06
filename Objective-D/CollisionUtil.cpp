@@ -58,6 +58,7 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 #endif
 }
 
+
 bool OOBB::CheckCollision(const OOBB& Other) {
 	if (oobb.Intersects(Other.oobb)) {
 		Collide = true;
@@ -68,8 +69,8 @@ bool OOBB::CheckCollision(const OOBB& Other) {
 	return false;
 }
 
-bool OOBB::CheckCollision(const BoundingBox& Other) {
-	if (oobb.Intersects(Other)) {
+bool OOBB::CheckCollision(const AABB& Other) {
+	if (oobb.Intersects(Other.aabb)) {
 		Collide = true;
 		return true;
 	}
@@ -78,8 +79,8 @@ bool OOBB::CheckCollision(const BoundingBox& Other) {
 	return false;
 }
 
-bool OOBB::CheckCollision(const BoundingSphere& Other) {
-	if (oobb.Intersects(Other)) {
+bool OOBB::CheckCollision(const Range& Other) {
+	if (oobb.Intersects(Other.sphere)) {
 		Collide = true;
 		return true;
 	}
@@ -139,8 +140,8 @@ bool AABB::CheckCollision(const AABB& Other) {
 	return false;
 }
 
-bool AABB::CheckCollision(const BoundingOrientedBox& Other) {
-	if (aabb.Intersects(Other)) {
+bool AABB::CheckCollision(const OOBB& Other) {
+	if (aabb.Intersects(Other.oobb)) {
 		Collide = true;
 		return true;
 	}
@@ -149,8 +150,8 @@ bool AABB::CheckCollision(const BoundingOrientedBox& Other) {
 	return false;
 }
 
-bool AABB::CheckCollision(const BoundingSphere& Other) {
-	if (aabb.Intersects(Other)) {
+bool AABB::CheckCollision(const Range& Other) {
+	if (aabb.Intersects(Other.sphere)) {
 		Collide = true;
 		return true;
 	}
@@ -176,8 +177,8 @@ bool Range::CheckCollision(const Range& Other) {
 	return false;
 }
 
-bool Range::CheckCollision(const BoundingBox& Other) {
-	if (sphere.Intersects(Other)) {
+bool Range::CheckCollision(const AABB& Other) {
+	if (sphere.Intersects(Other.aabb)) {
 		Collide = true;
 		return true;
 	}
@@ -186,8 +187,8 @@ bool Range::CheckCollision(const BoundingBox& Other) {
 	return false;
 }
 
-bool Range::CheckCollision(const BoundingOrientedBox& Other) {
-	if (sphere.Intersects(Other)) {
+bool Range::CheckCollision(const OOBB& Other) {
+	if (sphere.Intersects(Other.oobb)) {
 		Collide = true;
 		return true;
 	}

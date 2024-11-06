@@ -75,6 +75,53 @@ void Math::LookAt(XMFLOAT4X4& Matrix, ObjectVector& VectorStruct, XMFLOAT3& This
 	VectorStruct.Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
 }
 
+// 빌보드용 LookAt 함수
+void Math::BillboardLookAt(XMFLOAT4X4& Matrix, ObjectVector& VectorStruct, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition) {
+	XMFLOAT4X4 xmf4x4View = Mat4::LookAtLH(TargetPosition, ThisPosition, XMFLOAT3(0.0, 1.0, 0.0));
+	Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
+
+	VectorStruct.Up = Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23));
+	VectorStruct.Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
+	VectorStruct.Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
+}
+
+// 회전각도로 레이를 계산한다.
+XMVECTOR Math::CalcRayDirection(XMFLOAT3& Rotation) {
+	float RotationX = XMConvertToRadians(Rotation.x);
+	float RotationY = XMConvertToRadians(Rotation.y);
+	float RotationZ = XMConvertToRadians(Rotation.z);
+
+	XMVECTOR RotationQuat = XMQuaternionRotationRollPitchYaw(RotationX, RotationY, RotationZ);
+	XMVECTOR DefaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR RayDirection = XMVector3Rotate(DefaultForward, RotationQuat);
+
+	return RayDirection;
+}
+
+// 레이가 시작되는 위치를 계산한다.
+XMVECTOR Math::CalcRayOrigin(XMFLOAT3& Position) {
+	return XMVectorSet(Position.x, Position.y, Position.z, 1.0f);
+}
+
+// 레이가 바운딩 박스와 충돌하는지 검사한다
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, AABB& Other) {
+	float Distance;
+	return Other.aabb.Intersects(RayOrigin, RayDirection, Distance);
+}
+
+// 레이가 바운딩 박스와 충돌하는지 검사한다
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, OOBB& Other) {
+	float Distance;
+	return Other.oobb.Intersects(RayOrigin, RayDirection, Distance);
+}
+
+// 레이가 바운딩 박스와 충돌하는지 검사한다
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, Range& Other) {
+	float Distance;
+	return Other.sphere.Intersects(RayOrigin, RayDirection, Distance);
+}
+
+
 // 위치를 앞으로 움직인다. 현재 자신의 위치값과 자신의 look벡터, 속도값을 넣어주면 된다.
 void Math::Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) {
 	Position = Vec3::Add(Position, Look, Distance);
@@ -120,4 +167,11 @@ float Math::CalcDegree2D(float FromX, float FromY, float ToX, float ToY) {
 // 2차원 라디안을 계산한다.
 float Math::CalcRadians2D(float FromX, float FromY, float ToX, float ToY) {
 	return atan2(ToY - FromY, ToX - FromX);
+}
+
+// 2차원 각도를 360도 범위로 정규화 한다.
+void Math::Normalize2DAngleTo360(float& Degree) {
+	Degree = fmod(Degree, 360.0f);
+	if (Degree < 0.0f)
+		Degree += 360.0f;
 }
