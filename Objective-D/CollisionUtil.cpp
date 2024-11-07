@@ -41,8 +41,9 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 
 	BoundboxShader->RenderWireframe(CmdList);
 
-	camera.SetViewMatrix();
+	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
+	camera.SetViewMatrix();
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
 
@@ -107,8 +108,9 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 
 	BoundboxShader->RenderWireframe(CmdList);
 
-	camera.SetViewMatrix();
+	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
+	camera.SetViewMatrix();
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
 
@@ -156,9 +158,10 @@ bool AABB::CheckCollision(const Range& Other) {
 
 
 
-void Range::Update(const XMFLOAT3& Center, float Size) {
+void Range::Update(const XMFLOAT3& Center, float SizeValue) {
 	sphere.Center = Center;
-	sphere.Radius = Size * 0.5;
+	sphere.Radius = SizeValue * 0.5;
+	Size = SizeValue;
 }
 
 bool Range::CheckCollision(const Range& Other) {
@@ -197,12 +200,13 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	ScaleMatrix = Mat4::Identity();
 
 	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
-	Transform::Scale(ScaleMatrix, sphere.Radius * 0.54, sphere.Radius * 0.54, sphere.Radius * 0.54);
+	Transform::Scale(ScaleMatrix, Size * 0.27, Size * 0.27, Size * 0.27);
 
 	BoundboxShader->RenderDefault(CmdList);
 
-	camera.SetViewMatrix();
+	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
+	camera.SetViewMatrix();
 	camera.SetViewportsAndScissorRects(CmdList);
 	camera.UpdateShaderVariables(CmdList);
 

@@ -66,3 +66,21 @@ void Transform::ImageAspect(XMFLOAT4X4& Matrix, int Width, int Height) {
 	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, 1.0);
 	Matrix = Mat4::Multiply(ScaleMat, Matrix);
 }
+
+// 2차원 이동 변환
+void Transform::Move2D(XMFLOAT4X4& Matrix, float X, float Y) {
+	XMMATRIX TranslateMat = XMMatrixTranslation(X, Y, 0.0);
+	Matrix = Mat4::Multiply(TranslateMat, Matrix);
+}
+
+// 2차원 회전 변환
+void Transform::Rotate2D(XMFLOAT4X4& Matrix, float Rotation) {
+	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(XMConvertToRadians(0.0), XMConvertToRadians(0.0), XMConvertToRadians(Rotation));
+	Matrix = Mat4::Multiply(RotateMat, Matrix);
+}
+
+// 2차원 스케일 변환
+void Transform::Scale2D(XMFLOAT4X4& Matrix, float X, float Y) {
+	XMMATRIX ScaleMat = XMMatrixScaling(X, Y, 1.0);
+	Matrix = Mat4::Multiply(ScaleMat, Matrix);
+}

@@ -49,6 +49,8 @@ class Range {
 private:
 	bool Collide{};
 
+	float Size{};
+
 	XMFLOAT4X4 TranslateMatrix{};
 	XMFLOAT4X4 ScaleMatrix{};
 
@@ -56,7 +58,7 @@ private:
 
 public:
 	BoundingSphere sphere = BoundingSphere();
-	void Update(const XMFLOAT3& Center, float Size);
+	void Update(const XMFLOAT3& Center, float SizeValue);
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const AABB& Other);

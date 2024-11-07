@@ -25,7 +25,7 @@ public:
 	virtual D3D12_SHADER_BYTECODE CreateVertexShader(ID3DBlob** ShaderBlob);
 	virtual D3D12_SHADER_BYTECODE CreatePixelShader(ID3DBlob** ShaderBlob);
 	D3D12_SHADER_BYTECODE Shader::CompileShaderFromFile(WCHAR* FileName, LPCSTR Shadername, LPCSTR ShaderProfile, ID3DBlob** ShaderBlob);
-	virtual void CreateDefaultPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
+	void CreateDefaultPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void CreateWireframePS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void CreateNoneDepthPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS);

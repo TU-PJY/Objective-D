@@ -13,6 +13,9 @@ public:
 
 	LineBrush line;
 
+	AABB aabb;
+	Range range;
+
 	TestObject() {
 		line.SetColor(1.0, 1.0, 1.0);
 		Position.z = 5.0;

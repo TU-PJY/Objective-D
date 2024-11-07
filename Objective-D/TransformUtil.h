@@ -8,4 +8,7 @@ namespace Transform {
 	void RotateYX(XMFLOAT4X4& Matrix, float RotationX, float RotationY);
 	void Scale(XMFLOAT4X4& Matrix, float X, float Y, float Z);
 	void ImageAspect(XMFLOAT4X4& Matrix, int Width, int Height);
+	void Move2D(XMFLOAT4X4& Matrix, float X, float Y);
+	void Rotate2D(XMFLOAT4X4& Matrix, float Rotation);
+	void Scale2D(XMFLOAT4X4& Matrix, float X, float Y);
 }

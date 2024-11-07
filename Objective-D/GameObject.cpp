@@ -20,8 +20,10 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		TranslateMatrix = Mat4::Identity();
 		RotateMatrix = Mat4::Identity();
 		ScaleMatrix = Mat4::Identity();
-		ImageAspectMatrix = Mat4::Identity();
 	}
+
+	if(RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC)
+		ImageAspectMatrix = Mat4::Identity();
 
 	// 매쉬 색상 초기화
 	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
@@ -66,7 +68,7 @@ void GameObject::EnableLight() {
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
 void GameObject::FlipTexture(int FlipType) {
-	// 이미지 출력 모드에서는 수직 반전이 기본 적용이기 떄문에 반전이 다르게 동작한다.
+	// 이미지 출력 모드에서는 수직 반전이 기본 적용이기 때문에 반전이 다르게 동작한다.
 	if (RenderType == RENDER_TYPE_2D || RenderType == RENDER_TYPE_2D_STATIC) {
 		switch (FlipType) {
 		case FLIP_TYPE_V:
