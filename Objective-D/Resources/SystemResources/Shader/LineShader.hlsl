@@ -15,7 +15,6 @@ cbuffer cbCameraInfo : register(b1)
 struct VS_INPUT
 {
     float3 position : POSITION;
-    float3 normal : NORMAL;
     float2 uv : TEXTURECOORD;
 };
 
@@ -23,8 +22,6 @@ struct VS_OUTPUT
 {
     float4 positionH : SV_POSITION;
     float3 positionW : POSITION;
-    float3 normal : NORMAL0;
-    float3 normalW : NORMAL1;
     float2 uv : TEXTURECOORD;
 };
 
@@ -34,7 +31,6 @@ VS_OUTPUT VSLineColor(VS_INPUT input)
 
     output.positionW = mul(float4(input.position, 1.0f), gmtxWorld).xyz;
     output.positionH = mul(mul(float4(output.positionW, 1.0f), gmtxView), gmtxProjection);
-    output.normalW = mul(float4(input.normal, 0.0f), gmtxWorld).xyz;
 
     return (output);
 }

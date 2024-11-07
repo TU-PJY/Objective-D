@@ -35,11 +35,12 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 	// 출력 모드 변경
 	switch(RenderTypeFlag) {
 	case RENDER_TYPE_2D: case RENDER_TYPE_2D_STATIC:
-		SetToImageMode();
+		camera.SetToStaticMode();
 		break;
 
 	case RENDER_TYPE_3D: case RENDER_TYPE_3D_STATIC:
-		SetToDefaultMode(); 
+		EnableLight();
+		camera.SetToDefaultMode();
 		break;
 	}
 }
@@ -176,18 +177,6 @@ void GameObject::UpdateShaderVariables() {
 	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
 	RCUtil::Input(ObjectCmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(ObjectCmdList, &ObjectAlpha, GAME_OBJECT_INDEX, 1, 19);
-}
-
-// 이미지 출력 모드로 전환한다. 텍스처 수직 반전 후 조명 사용을 비활성화 한다.
-void GameObject::SetToImageMode() {
-	DisableLight();
-	camera.SetToStaticMode();
-}
-
-// 기본 출력 모드로 전환한다. 텍스처 반전 해제 후 조명 사용을 활성화 한다.
-void GameObject::SetToDefaultMode() {
-	EnableLight();
-	camera.SetToDefaultMode();
 }
 
 // 렌더링 전 카메라를 설정한다.

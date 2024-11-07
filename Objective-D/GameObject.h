@@ -48,8 +48,6 @@ public:
 
 private:
 	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
-	void SetToImageMode();
-	void SetToDefaultMode();
 	void SetCamera();
 
 	////////// virtual functions
