@@ -72,20 +72,16 @@ void GameObject::FlipTexture(int FlipType) {
 	if (RenderType == RENDER_TYPE_2D || RenderType == RENDER_TYPE_2D_STATIC) {
 		switch (FlipType) {
 		case FLIP_TYPE_V:
-			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_NONE);
-			break;
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_NONE); break;
 
 		case FLIP_TYPE_H:
-			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_HV);
-			break;
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_HV);   break;
 
 		case FLIP_TYPE_HV:
-			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_H);
-			break;
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_H);    break;
 
 		case FLIP_TYPE_NONE:
-			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_V);
-			break;
+			CBVUtil::Input(ObjectCmdList, FlipCBV, FLIP_TYPE_V);    break;
 		}
 	}
 
@@ -213,8 +209,8 @@ void GameObject::SetCamera() {
 		camera.GenerateStaticMatrix();
 	}
 
-	camera.SetViewportsAndScissorRects(ObjectCmdList);
-	camera.UpdateShaderVariables(ObjectCmdList);
+	camera.SetViewportsAndScissorRects();
+	camera.UpdateShaderVariables();
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.

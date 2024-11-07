@@ -19,7 +19,7 @@ public:
 	BoundingOrientedBox oobb = BoundingOrientedBox();
 	void Update(Mesh* MeshPtr, XMFLOAT4X4& TMatrix, XMFLOAT4X4& RMatrix, XMFLOAT4X4& SMatrix);
 	void Update(XMFLOAT3& Position, XMFLOAT3& Size, XMFLOAT3& Rotation);
-	void Render(ID3D12GraphicsCommandList* CmdList);
+	void Render();
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const OOBB& Other);
@@ -38,7 +38,7 @@ private:
 public:
 	BoundingBox aabb = BoundingBox();
 	void Update(XMFLOAT3& Position, XMFLOAT3& Size);
-	void Render(ID3D12GraphicsCommandList* CmdList);
+	void Render();
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const OOBB& Other);
 	bool CheckCollision(const Range& Other);
@@ -59,7 +59,7 @@ private:
 public:
 	BoundingSphere sphere = BoundingSphere();
 	void Update(const XMFLOAT3& Center, float SizeValue);
-	void Render(ID3D12GraphicsCommandList* CmdList);
+	void Render();
 	bool CheckCollision(const Range& Other);
 	bool CheckCollision(const AABB& Other);
 	bool CheckCollision(const OOBB& Other);

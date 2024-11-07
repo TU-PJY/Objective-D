@@ -12,6 +12,6 @@ public:
 
 	// 선의 색상을 지정한다.
 	void SetColor(float R, float G, float B);
-	void Init(ID3D12GraphicsCommandList* CmdList);
-	void Draw(ID3D12GraphicsCommandList* CmdList, float X1, float Y1, float X2, float Y2, float Width, float Alpha=1.0f);
+	void Draw(float X1, float Y1, float X2, float Y2, float Width, float Alpha=1.0f);
+	void Init();
 };

@@ -55,7 +55,7 @@ Camera::Camera() {
 
 
 
-void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
+void Camera::UpdateShaderVariables() {
 	XMFLOAT4X4 xmf4x4View;
 	XMFLOAT4X4 xmf4x4Projection;
 
@@ -64,18 +64,18 @@ void Camera::UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {
 	case false:
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&ViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&ProjectionMatrix)));
-		RCUtil::Input(CmdList, &Position, CAMERA_INDEX, 3, 32);
+		RCUtil::Input(ObjectCmdList, &Position, CAMERA_INDEX, 3, 32);
 		break;
 
 	case true:
 		XMFLOAT3 StaticPosition{ 0.0, 0.0, 0.0 };
 		XMStoreFloat4x4(&xmf4x4View, XMMatrixTranspose(XMLoadFloat4x4(&StaticViewMatrix)));
 		XMStoreFloat4x4(&xmf4x4Projection, XMMatrixTranspose(XMLoadFloat4x4(&StaticProjectionMatrix)));
-		RCUtil::Input(CmdList, &StaticPosition, CAMERA_INDEX, 3, 32);
+		RCUtil::Input(ObjectCmdList, &StaticPosition, CAMERA_INDEX, 3, 32);
 	}
 
-	RCUtil::Input(CmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
-	RCUtil::Input(CmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
+	RCUtil::Input(ObjectCmdList, &xmf4x4View, CAMERA_INDEX, 16, 0);
+	RCUtil::Input(ObjectCmdList, &xmf4x4Projection, CAMERA_INDEX, 16, 16);
 }
 
 // 카메라 뷰 행렬을 설정한다.
@@ -122,19 +122,19 @@ void Camera::GenerateOrthoMatrix(float Width, float Height, float AspRatio, floa
 #endif
 }
 
+// 정적 직각 투영 행렬을 초기화 한다
+void Camera::GenerateStaticMatrix() {
+	StaticProjectionMatrix = Mat4::Identity();
+	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
+	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
+}
+
 // 정적 출력을 위한 스테틱 행렬을 생성한다. UI, 이미지 등의 출력을 목적으로 하는 행렬이므로 
 // 프로그램 실행 시 최초 1회만 실행한다.
 void Camera::InitStaticMatrix() {
 	StaticViewMatrix = Mat4::Identity();
 
 	// 직각투영이 디폴트이다.
-	StaticProjectionMatrix = Mat4::Identity();
-	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
-	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
-}
-
-// 윈도우 사이즈 변경 시 실행된다.
-void Camera::GenerateStaticMatrix() {
 	StaticProjectionMatrix = Mat4::Identity();
 	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
@@ -159,9 +159,9 @@ void Camera::SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom) {
 }
 
 // 뷰포트와 시저렉트를 쉐이더로 전달한다.
-void Camera::SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList) {
-	CmdList->RSSetViewports(1, &Viewport);
-	CmdList->RSSetScissorRects(1, &ScissorRect);
+void Camera::SetViewportsAndScissorRects() {
+	ObjectCmdList->RSSetViewports(1, &Viewport);
+	ObjectCmdList->RSSetScissorRects(1, &ScissorRect);
 }
 
 

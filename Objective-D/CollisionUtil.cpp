@@ -26,7 +26,7 @@ void OOBB::Update(XMFLOAT3& Position, XMFLOAT3& Size, XMFLOAT3& Rotation) {
 	XMStoreFloat4(&oobb.Orientation, Quarternion);
 }
 
-void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
+void OOBB::Render() {
 #ifdef SHOW_BOUND_BOX
 	TranslateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
@@ -39,13 +39,13 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(QuaternionForMatrix);
 	XMStoreFloat4x4(&RotateMatrix, rotationMatrix);
 
-	BoundboxShader->RenderWireframe(CmdList);
+	BoundboxShader->RenderWireframe(ObjectCmdList);
 
 	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
+	camera.SetViewportsAndScissorRects();
+	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
@@ -53,10 +53,10 @@ void OOBB::Render(ID3D12GraphicsCommandList* CmdList) {
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
-	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(ObjectCmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
 
-	BoundMesh->Render(CmdList);
+	BoundMesh->Render(ObjectCmdList);
 #endif
 }
 
@@ -98,7 +98,7 @@ void AABB::Update(XMFLOAT3& Position, XMFLOAT3& Size) {
 	aabb.Extents = Size;
 }
 
-void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
+void AABB::Render() {
 #ifdef SHOW_BOUND_BOX
 	TranslateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
@@ -106,23 +106,23 @@ void AABB::Render(ID3D12GraphicsCommandList* CmdList) {
 	Transform::Move(TranslateMatrix, aabb.Center.x, aabb.Center.y, aabb.Center.z);
 	Transform::Scale(ScaleMatrix, aabb.Extents.x, aabb.Extents.y, aabb.Extents.z);
 
-	BoundboxShader->RenderWireframe(CmdList);
+	BoundboxShader->RenderWireframe(ObjectCmdList);
 
 	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
+	camera.SetViewportsAndScissorRects();
+	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
-	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(ObjectCmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
 
-	BoundMesh->Render(CmdList);
+	BoundMesh->Render(ObjectCmdList);
 #endif
 }
 
@@ -194,7 +194,7 @@ bool Range::CheckCollision(const OOBB& Other) {
 	return false;
 }
 
-void Range::Render(ID3D12GraphicsCommandList* CmdList) {
+void Range::Render() {
 #ifdef SHOW_BOUND_BOX
 	TranslateMatrix = Mat4::Identity();
 	ScaleMatrix = Mat4::Identity();
@@ -202,22 +202,22 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
 	Transform::Scale(ScaleMatrix, Size * 0.27, Size * 0.27, Size * 0.27);
 
-	BoundboxShader->RenderDefault(CmdList);
+	BoundboxShader->RenderDefault(ObjectCmdList);
 
 	camera.SetToDefaultMode();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
 	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects(CmdList);
-	camera.UpdateShaderVariables(CmdList);
+	camera.SetViewportsAndScissorRects();
+	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 
 	XMFLOAT4X4 xmf4x4World;
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
-	RCUtil::Input(CmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
-	RCUtil::Input(CmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
+	RCUtil::Input(ObjectCmdList, &BoundboxColor, GAME_OBJECT_INDEX, 3, 16);
 
-	BoundingSphereMesh->Render(CmdList);
+	BoundingSphereMesh->Render(ObjectCmdList);
 #endif
 }

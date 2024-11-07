@@ -13,9 +13,6 @@ public:
 
 	LineBrush line;
 
-	AABB aabb;
-	Range range;
-
 	TestObject() {
 		line.SetColor(1.0, 1.0, 1.0);
 		Position.z = 5.0;
@@ -52,19 +49,19 @@ public:
 	void Render() {
 		// 모델 출력
 		InitRenderState(RENDER_TYPE_3D);
-		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
+		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		FlipTexture(FLIP_TYPE_V);
 		Render3D(GunMesh, Tex);
 
 		// 이미지 출력, 이미지 종횡비가 자동으로 적용된다.
 		InitRenderState(RENDER_TYPE_2D);
-		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
-		Transform::Move(TranslateMatrix, -0.5, 0.5, 0.0);
+		Transform::Move2D(TranslateMatrix, -0.5, 0.5);
+		Transform::Scale2D(ScaleMatrix, 0.5, 0.5);
 		Render2D(WoodTex);
 
 		// 선 출력
-		line.Draw(ObjectCmdList, 0.5, 0.0, mouse.x, mouse.y, 0.02);
+		line.Draw(0.5, 0.0, mouse.x, mouse.y, 0.02);
 	}
 };

@@ -98,13 +98,12 @@ void Scene::Update(float FT) {
 // 현재 존재하는 모든 객체들을 렌더링한다
 // 삭제 마크가 표시된 객체들은 렌더링되지 않는다.
 void Scene::Render(ID3D12GraphicsCommandList* CmdList) {
+	ObjectCmdList = CmdList;
+
 	for (int i = 0; i < Layers; ++i) {
 		for (auto const& O : ObjectList[i]) {
-			if (!O->DeleteMark) {
-				// 커맨드 리스트 입력
-				O->InputCommandList(CmdList);
+			if (!O->DeleteMark)
 				O->Render();
-			}
 		}
 	}
 }

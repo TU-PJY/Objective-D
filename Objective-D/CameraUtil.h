@@ -48,9 +48,9 @@ public:
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 	virtual void ReleaseShaderVariables() {}
 	void SetToDefaultMode();
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList);
 
 	void SetToStaticMode();
+	void UpdateShaderVariables();
 	void SetViewMatrix();
 	void InitStaticMatrix();
 	void GenerateStaticMatrix();
@@ -58,7 +58,7 @@ public:
 	void GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far);
 	void SetViewport(int xTopLeft, int yTopLeft, int nWidth, int nHeight, float zMin = 0.0f, float zMax = 1.0f);
 	void SetScissorRect(LONG xLeft, LONG yTop, LONG xRight, LONG yBottom);
-	virtual void SetViewportsAndScissorRects(ID3D12GraphicsCommandList* CmdList);
+	void SetViewportsAndScissorRects();
 	void SwitchCameraMode(CamMode GetMode);
 
 	CamMode CurrentMode();

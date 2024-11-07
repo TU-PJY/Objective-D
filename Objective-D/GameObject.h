@@ -26,9 +26,6 @@ public:
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
 	int RenderType = RENDER_TYPE_3D;
 
-	// 오브젝트 내부에서 사용하는 커맨드 리스트
-	ID3D12GraphicsCommandList* ObjectCmdList{};
-
 	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.
 	const char* ObjectTag{};

@@ -27,6 +27,9 @@ Mesh* ImagePannel;
 // 스카이박스
 Mesh* SkyboxMesh;
 
+// 공용 커맨드 리스트
+ID3D12GraphicsCommandList* ObjectCmdList;
+
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
 TCHAR							WindowClass[MAX_LOADSTRING];
