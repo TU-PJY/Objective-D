@@ -10,10 +10,10 @@ private:
 	XMFLOAT4X4 TerrainMatrix = Mat4::Identity();
 
 public:
-	bool CheckFloor(XMFLOAT3 Position);
-	void ClampToFloor(XMFLOAT3& Position, float Offset);
-	float GetFloorHeight(float x, float z, float Offset);
-	void CheckCollision(XMFLOAT3& Position);
 	void InputData(XMFLOAT4X4& TMat, XMFLOAT4X4& RMat, XMFLOAT4X4& SMat, Mesh* MeshData);
+	bool CheckFloor(XMFLOAT3 Position, float HeightOffset = 0.0);
+	void ClampToFloor(XMFLOAT3& Position, float HeightOffset = 0.0);
+	float GetFloorHeight(float x, float z, float HeightOffset = 0.0);
+	bool CheckCollision(XMFLOAT3& Position, float HeightOffset = 0.0);
 };
 extern TerrainUtil terrainUtil;

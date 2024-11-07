@@ -78,6 +78,9 @@ protected:
 	UINT StartIndex{};
 	int	BaseVertex{};
 
+	bool HeightCacheSaved{};
+	std::vector<XMFLOAT3> HeightCache;
+
 public:
 	BoundingOrientedBox	OOBB = BoundingOrientedBox();
 
@@ -88,6 +91,8 @@ public:
 	void Render(ID3D12GraphicsCommandList* CmdList);
 	BOOL RayIntersectionByTriangle(XMVECTOR& xmRayOrigin, XMVECTOR& xmRayDirection, XMVECTOR v0, XMVECTOR v1, XMVECTOR v2, float* pfNearHitDistance);
 	int CheckRayIntersection(XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection, float* pfNearHitDistance);
+	void ClearHeightCache();
+	void SetHeightCache(Mesh* terrainMesh, const XMFLOAT4X4& worldMatrix);
 	void CreateSkyboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void CreateImagePannelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
