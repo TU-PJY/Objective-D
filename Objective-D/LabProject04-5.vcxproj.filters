@@ -25,12 +25,6 @@
     <Filter Include="[4]____________[ Camera ]">
       <UniqueIdentifier>{2a8bb781-cc47-466a-bc74-8a9e1cea7d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]____________[ Game Resource ]\[2][ CBV ]">
-      <UniqueIdentifier>{2e441570-2469-4d4a-96e6-39f9f7bd4a43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[1]____________[ Game Resource ]\[1][ Resource ]">
-      <UniqueIdentifier>{0f8a68f8-ffdc-49f7-9188-1b4a57a768ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Objective-D ]">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
@@ -68,12 +62,6 @@
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[1][ Set Up ]">
       <UniqueIdentifier>{37c1029a-4cd8-4b6e-83e0-7d1bdfce11fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[3][ CBV ]">
-      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Root Constant ]">
-      <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Picking Util ]">
       <UniqueIdentifier>{ba62d479-4117-4520-9523-ec8071756d84}</UniqueIdentifier>
     </Filter>
@@ -110,32 +98,47 @@
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Mouse Util ]">
       <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[1]____________[ Game Resource ]\[3][ Root Constant ]">
-      <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]">
-      <UniqueIdentifier>{cefc5f65-788d-49ad-a6db-dded9c8cc763}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]">
-      <UniqueIdentifier>{220c33db-4578-48f5-875a-0958547fd7d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[3]____________[ Game Object ]\[2] [ Template ]">
       <UniqueIdentifier>{03b6b546-94f5-4152-a165-f88612df9eb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Object Shader ]">
-      <UniqueIdentifier>{766937e9-460b-4942-b672-6d82b626e016}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Boundbox Shader ]">
-      <UniqueIdentifier>{0a2de861-97da-4ab0-b6da-6f48b3ae91f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Line Shader ]">
-      <UniqueIdentifier>{a1359e18-8f0d-4d56-9a9c-98440265ff52}</UniqueIdentifier>
     </Filter>
     <Filter Include="[7]____________[ Template ]">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Root Signature ]">
+      <UniqueIdentifier>{3f042948-dac6-40de-9897-8492044f7036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]">
+      <UniqueIdentifier>{a9ca5656-3ff4-48ac-83d8-4d0664b37dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]">
+      <UniqueIdentifier>{2e441570-2469-4d4a-96e6-39f9f7bd4a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Signature ]">
+      <UniqueIdentifier>{1e3be45c-3b9f-441a-a1c4-69e1f7c06aac}</UniqueIdentifier>
+    </Filter>
     <Filter Include="[6]____________[ HLSL ]">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ RC Util ]">
+      <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ CBV Util ]">
+      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]">
+      <UniqueIdentifier>{cefc5f65-788d-49ad-a6db-dded9c8cc763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Image Shader ]">
+      <UniqueIdentifier>{220c33db-4578-48f5-875a-0958547fd7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Object Shader ]">
+      <UniqueIdentifier>{766937e9-460b-4942-b672-6d82b626e016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Boundbox Shader ]">
+      <UniqueIdentifier>{0a2de861-97da-4ab0-b6da-6f48b3ae91f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Line Shader ]">
+      <UniqueIdentifier>{a1359e18-8f0d-4d56-9a9c-98440265ff52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -214,41 +217,44 @@
     <ClInclude Include="CameraUtil.h">
       <Filter>[4]____________[ Camera ]</Filter>
     </ClInclude>
-    <ClInclude Include="GameResource.h">
-      <Filter>[1]____________[ Game Resource ]\[1][ Resource ]</Filter>
+    <ClInclude Include="ConstantBufferData.h">
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]</Filter>
     </ClInclude>
-    <ClInclude Include="CBVData.h">
-      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
-    </ClInclude>
-    <ClInclude Include="CBVResource.h">
-      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]</Filter>
     </ClInclude>
     <ClInclude Include="CBVUtil.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ CBV Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstantUtil.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ RC Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstants.h">
-      <Filter>[1]____________[ Game Resource ]\[3][ Root Constant ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader12.h">
       <Filter>[5]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceFileLink.h">
-      <Filter>[1]____________[ Game Resource ]\[1][ Resource ]</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectShader.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Object Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Object Shader ]</Filter>
     </ClInclude>
     <ClInclude Include="ImageShader.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Image Shader ]</Filter>
     </ClInclude>
     <ClInclude Include="BoundboxShader.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Boundbox Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Boundbox Shader ]</Filter>
     </ClInclude>
     <ClInclude Include="LineShader.h">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Line Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Line Shader ]</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingRootSignature.h">
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Signature ]</Filter>
+    </ClInclude>
+    <ClInclude Include="GameResource.h">
+      <Filter>[1]____________[ Game Resource ]</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceFileLink.h">
+      <Filter>[1]____________[ Game Resource ]</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -325,35 +331,38 @@
     <ClCompile Include="CameraUtil.cpp">
       <Filter>[4]____________[ Camera ]</Filter>
     </ClCompile>
-    <ClCompile Include="GameResource.cpp">
-      <Filter>[1]____________[ Game Resource ]\[1][ Resource ]</Filter>
-    </ClCompile>
-    <ClCompile Include="CBVResource.cpp">
-      <Filter>[1]____________[ Game Resource ]\[2][ CBV ]</Filter>
+    <ClCompile Include="ConstantBuffers.cpp">
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]</Filter>
     </ClCompile>
     <ClCompile Include="CBVUtil.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[3][ CBV ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ CBV Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstantUtil.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Root Constant ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ RC Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
-      <Filter>[1]____________[ Game Resource ]\[3][ Root Constant ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader12.cpp">
       <Filter>[5]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
     </ClCompile>
     <ClCompile Include="ObjectShader.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Object Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Object Shader ]</Filter>
     </ClCompile>
     <ClCompile Include="ImageShader.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Image Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Image Shader ]</Filter>
     </ClCompile>
     <ClCompile Include="BoundboxShader.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Boundbox Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Boundbox Shader ]</Filter>
     </ClCompile>
     <ClCompile Include="LineShader.cpp">
-      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Line Shader ]</Filter>
+      <Filter>[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Line Shader ]</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingRootSignature.cpp">
+      <Filter>[5]____________[ Objective-D ]\[ Root Signature ]\[ Root Signature ]</Filter>
+    </ClCompile>
+    <ClCompile Include="GameResource.cpp">
+      <Filter>[1]____________[ Game Resource ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

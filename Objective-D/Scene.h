@@ -2,7 +2,7 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "ShaderUtil.h"
-#include <vector>
+#include <deque>
 #include <array>
 #include <map>
 
@@ -12,7 +12,7 @@ constexpr int Layers = static_cast<int>(END);
 
 class Scene {
 private:
-	std::array<std::vector<GameObject*>, Layers> ObjectList{};
+	std::array<std::deque<GameObject*>, Layers> ObjectList{};
 	std::multimap<const char*, GameObject*> ObjectIndex{};
 
 	const char* RunningMode{};
@@ -42,11 +42,9 @@ public:
 	void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag);
 	void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag);
 	void InputMouseMotion(HWND hWnd, const char* ObjectTag);
+	void Routine(float FT, ID3D12GraphicsCommandList* CmdList);
 	void Exit();
-	void Update(float FT);
-	void Render(ID3D12GraphicsCommandList* CmdList);
-	void UpdateObjectList(int Index);
-	void UpdateObjectIndex();
+	void ProcessIndexCommand();
 	void AddObject(GameObject*&& Object, const char* Tag, int InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);

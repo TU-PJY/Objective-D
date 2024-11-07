@@ -1,6 +1,6 @@
 #pragma once
 #include "DirectX_3D.h"
-#include "CBVResource.h"
+#include "ConstantBuffers.h"
 
 namespace CBVUtil {
 	void Create(ID3D12Device* Device, void* Data, size_t DataSize, CBV& CBV_Struct, int CBV_Index);

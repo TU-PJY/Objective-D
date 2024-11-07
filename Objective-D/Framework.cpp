@@ -16,7 +16,7 @@ void Framework::Init() {
 	scene.Init(Device, CmdList, StartMode);
 
 	// CBV를 생성한다.
-	CreateCBVResource(Device);
+	CreateConstantBufferResource(Device);
 
 	// 카메라 초기 설정(완전 초기값)
 	camera.Move(XMFLOAT3(0.0, 0.0, 0.0));
@@ -76,21 +76,18 @@ void Framework::Update() {
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
 
+	// 루트시그니처를 쉐이더로 전달한다
+	scene.PrepareRender(CmdList);
+
 	// 카메라를 업데이트한다.
 	camera.Update(Timer.GetTimeElapsed());
 
 	// scene을 업데이트한다.
-	// 모든 객체의 업데이트는 이 함수를 통해 이루어진다.
-	scene.Update(Timer.GetTimeElapsed());
-
-	// 루트시그니처를 쉐이더로 전달한다
-	scene.PrepareRender(CmdList);
-
-	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다
-	scene.Render(CmdList);
+	// 모든 객체의 업데이트 및 렌더링은 이 함수를 통해 이루어진다.
+	scene.Routine(Timer.GetTimeElapsed(), CmdList);
 
 	// 삭제 마크가 표시된 객체를 최종삭제한다.
-	scene.UpdateObjectIndex();
+	scene.ProcessIndexCommand();
 
 #ifdef _WITH_PLAYER_TOP
 	CmdList->ClearDepthStencilView(DsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);

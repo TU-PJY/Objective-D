@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d12.h>
 #include <vector>
-#include "CBVData.h"
+#include "ConstantBufferData.h"
 
 typedef struct {
 	std::vector<ID3D12DescriptorHeap*> Heap;
@@ -20,8 +20,8 @@ extern CBV BoolLightCBV;
 
 
 // CBV 생성 관련 함수들
-void CreateCBVResource(ID3D12Device* Device);
-inline void ReserveCBV(CBV& CBV_Struct, int ReserveSize) {
+void CreateConstantBufferResource(ID3D12Device* Device);
+inline void ReserveConstantBuffer(CBV& CBV_Struct, int ReserveSize) {
 	CBV_Struct.Buffer.reserve(ReserveSize);
 	CBV_Struct.Heap.reserve(ReserveSize);
 }

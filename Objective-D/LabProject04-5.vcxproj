@@ -151,8 +151,8 @@
   <ItemGroup>
     <ClInclude Include="BoundboxShader.h" />
     <ClInclude Include="CameraUtil.h" />
-    <ClInclude Include="CBVData.h" />
-    <ClInclude Include="CBVResource.h" />
+    <ClInclude Include="ConstantBufferData.h" />
+    <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="CBVUtil.h" />
     <ClInclude Include="CollisionUtil.h" />
     <ClInclude Include="Config.h" />
@@ -177,6 +177,7 @@
     <ClInclude Include="RootConstants.h" />
     <ClInclude Include="RootConstantUtil.h" />
     <ClInclude Include="ObjectShader.h" />
+    <ClInclude Include="SettingRootSignature.h" />
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="StartMode.h" />
     <ClInclude Include="targetver.h" />
@@ -191,7 +192,7 @@
     <ClCompile Include="Blends.cpp" />
     <ClCompile Include="BoundboxShader.cpp" />
     <ClCompile Include="CameraUtil.cpp" />
-    <ClCompile Include="CBVResource.cpp" />
+    <ClCompile Include="ConstantBuffers.cpp" />
     <ClCompile Include="CBVUtil.cpp" />
     <ClCompile Include="CollisionUtil.cpp" />
     <ClCompile Include="DDSTextureLoader12.cpp" />
@@ -212,6 +213,7 @@
     <ClCompile Include="RootConstants.cpp" />
     <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="RootConstantUtil.cpp" />
+    <ClCompile Include="SettingRootSignature.cpp" />
     <ClCompile Include="StartMode.cpp" />
     <ClCompile Include="Stencils.cpp" />
     <ClCompile Include="TerrainUtil.cpp" />

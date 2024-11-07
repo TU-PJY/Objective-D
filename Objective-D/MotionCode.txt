@@ -1,8 +1,10 @@
-if (mouse.LBUTTONDOWN && GetCapture() == hWnd) {
-	mouse.HideCursor();
-	GetCapture();
+void InputMouseMotion(HWND hwnd, POINT MotionPosition) {
+		if (GetCapture() == hwnd) {
+			mouse.HideCursor();
+			GetCapture();
 
-	float cxDelta = (float)(mouse.CurrentPosition().x - PrevCursorPos.x) / 5.0f;
-	float cyDelta = (float)(mouse.CurrentPosition().y - PrevCursorPos.y) / 5.0f;
-	mouse.SetPositionToPrev(PrevCursorPos);
-}
+			XMFLOAT2 Delta = mouse.GetMotionDelta(MotionPosition, 0.5);
+			mouse.UpdateMotionPosition(MotionPosition);
+			UpdateMotionRotation(RotationDest, Delta.x, Delta.y);
+		}
+	}

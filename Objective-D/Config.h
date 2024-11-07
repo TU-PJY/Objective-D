@@ -24,8 +24,5 @@ constexpr float FRAME_LIMITS = 0;
 enum LayerEnum
 { LAYER_1, LAYER_2, LAYER_3, END };
 
-// Scene 컨테이너 리저브 사이즈 지정
-constexpr int OBJECT_LIST_RESERVE = 500;
-
 // 제목표시줄 문자열을 설정한다. 반드시 아래와 같은 형식으로 저정해야 한다.
 constexpr TCHAR TitleName[] = _T("Objective-D(");

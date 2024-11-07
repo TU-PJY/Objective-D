@@ -5,12 +5,10 @@
 #include "RootConstantUtil.h"
 
 // GameObject 클래스는 모든 객체들이 상속받는 부모 클래스이다.
-// 모든 객체는 반드시 이 클래스로부터 상복받아야 Scene이 객체를 업데이트하고 렌더링한다.
-// 일부 함수들은 별도의 파일로 분리 예정이니 코드에 변동이 있을 수 있다.
-
+// 모든 객체는 반드시 이 클래스로부터 상속받아야 Scene이 객체를 업데이트하고 렌더링한다.
 
 // 객체의 렌더링 상태를 초기화 한다. 모든 객체는 이 함수로 렌더링 과정이 시작된다.
-// 기본 RANDER_TYPE_PERS로 타입이 지정되어있다.
+// 기본 RANDER_TYPE_3D로 타입이 지정되어있다.
 // RENDER_TYPE_3D_STATIC또는 RENDER_TYPE_2D_STATIC일 경우 행렬 초기화를 실행하지 않는다. 
 void GameObject::InitRenderState(int RenderTypeFlag) {
 	// 출력 모드 지정
@@ -22,7 +20,7 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		ScaleMatrix = Mat4::Identity();
 	}
 
-	if(RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC)
+	if (RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC)
 		ImageAspectMatrix = Mat4::Identity();
 
 	// 매쉬 색상 초기화
@@ -39,7 +37,7 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		break;
 
 	case RENDER_TYPE_3D: case RENDER_TYPE_3D_STATIC:
-		EnableLight();
+		SetLightUse(ENABLE_LIGHT);
 		camera.SetToDefaultMode();
 		break;
 	}
@@ -47,24 +45,14 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 
 // 객체 메쉬의 색상을 설정한다.
 void GameObject::SetColor(XMFLOAT3 Color) {
-	ModelColor = Color;
+	ObjectColor = Color;
 }
 
 // 객체 매쉬의 색상을 설정한다.
 void GameObject::SetColorRGB(float R, float G, float B) {
-	ModelColor.x = R;
-	ModelColor.y = G;
-	ModelColor.z = B;
-}
-
-// 조명 사용 비활성화
-void GameObject::DisableLight() {
-	CBVUtil::Input(ObjectCmdList, BoolLightCBV, 0);
-}
-
-// 조명 사용 활성화
-void GameObject::EnableLight() {
-	CBVUtil::Input(ObjectCmdList, BoolLightCBV, 1);
+	ObjectColor.x = R;
+	ObjectColor.y = G;
+	ObjectColor.z = B;
 }
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
@@ -88,6 +76,11 @@ void GameObject::FlipTexture(int FlipType) {
 
 	else
 		CBVUtil::Input(ObjectCmdList, FlipCBV, FlipType);
+}
+
+// 조명 활성화 / 비활성화
+void GameObject::SetLightUse(int Flag) {
+	CBVUtil::Input(ObjectCmdList, BoolLightCBV, Flag);
 }
 
 // 3D 렌더링
@@ -154,15 +147,10 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX&
 	return(nIntersected);
 }
 
-// 오브젝트에 커맨드 리스트를 부여한다.
-void GameObject::InputCommandList(ID3D12GraphicsCommandList* CmdList) {
-	ObjectCmdList = CmdList;
-}
-
 
 //////////////////////////////////////// private
 
-// 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. RenderMesh함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
+// 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. Render함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables() {
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), ResultMatrix);
@@ -175,7 +163,7 @@ void GameObject::UpdateShaderVariables() {
 	XMStoreFloat4x4(&xmf4x4World, XMMatrixTranspose(ResultMatrix));
 
 	RCUtil::Input(ObjectCmdList, &xmf4x4World, GAME_OBJECT_INDEX, 16, 0);
-	RCUtil::Input(ObjectCmdList, &ModelColor, GAME_OBJECT_INDEX, 3, 16);
+	RCUtil::Input(ObjectCmdList, &ObjectColor, GAME_OBJECT_INDEX, 3, 16);
 	RCUtil::Input(ObjectCmdList, &ObjectAlpha, GAME_OBJECT_INDEX, 1, 19);
 }
 

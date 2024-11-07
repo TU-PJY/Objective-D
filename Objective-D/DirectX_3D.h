@@ -24,7 +24,7 @@
 #include "d3dx12.h"
 #include "WICTextureLoader12.h"
 #include "DDSTextureLoader12.h"
-#include "CBVResource.h"
+#include "ConstantBuffers.h"
 #include "ResourceFileLink.h"
 
 #include <d3d12.h>
@@ -53,6 +53,12 @@ enum FlipTypeEnum {
 	FLIP_TYPE_H,
 	FLIP_TYPE_V,
 	FLIP_TYPE_HV
+};
+
+// 조명 사용 여부 열거형
+enum UseLightEnum {
+	DISABLE_LIGHT,
+	ENABLE_LIGHT
 };
 
 // 매쉬 파일 타입 열거형

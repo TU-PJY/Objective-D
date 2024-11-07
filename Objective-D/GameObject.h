@@ -12,31 +12,29 @@ typedef ID3D12GraphicsCommandList* (CommandList);
 class GameObject {
 public:
 	// 각 객체는 각자의 행렬을 가진다.
-	XMFLOAT4X4 TranslateMatrix = Mat4::Identity();
-	XMFLOAT4X4 RotateMatrix = Mat4::Identity();
-	XMFLOAT4X4 ScaleMatrix = Mat4::Identity();
-	XMFLOAT4X4 ImageAspectMatrix = Mat4::Identity();
+	XMFLOAT4X4 TranslateMatrix{ Mat4::Identity() };
+	XMFLOAT4X4 RotateMatrix{ Mat4::Identity() };
+	XMFLOAT4X4 ScaleMatrix { Mat4::Identity() };
+	XMFLOAT4X4 ImageAspectMatrix{ Mat4::Identity() };
 
 	// 매쉬 색상
-	XMFLOAT3 ModelColor{};
+	XMFLOAT3 ObjectColor{};
 
 	// 텍스처 투명도
 	float ObjectAlpha{ 1.0f };
 
 	// 렌더링 타입, 해당 렌더링 타입에 따라 렌더링 형식이 달라진다.
-	int RenderType = RENDER_TYPE_3D;
+	int RenderType{ RENDER_TYPE_3D };
 
-	// 프레임워크 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
+	// scene 오브젝트 리스트에서 검색하기 위한 태그와 삭제될 오브젝트임을 알리는 삭제 마크이다.
 	// 이 두 멤버변수들은 프로그래머가 직접 건들일이 없다.
 	const char* ObjectTag{};
-	bool DeleteMark{};
+	bool ObjectDeleteCommand{};
 
-	void InputCommandList(ID3D12GraphicsCommandList* CmdList);
 	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_3D);
 	void SetColor(XMFLOAT3 Color);
 	void SetColorRGB(float R, float G, float B);
-	void EnableLight();
-	void DisableLight();
+	void SetLightUse(int Flag);
 	void FlipTexture(int FlipType);
 	float ASP(float Value);
 	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);
@@ -62,9 +60,8 @@ public:
 	virtual void Render() {}
 	virtual Mesh* GetObjectMesh() { return {}; }
 	virtual XMFLOAT3 GetPosition() { return {}; }
+	virtual OOBB GetAABB() { return {}; }
 	virtual OOBB GetOOBB() { return {}; }
-	virtual XMFLOAT3 GetUp() { return {}; }
-	virtual XMFLOAT3 GetRight() { return {}; }
-	virtual XMFLOAT3 GetLook() { return {}; }
+	virtual OOBB GetRange() { return {}; }
 	virtual Vector GetVectorSet() { return {}; }
 };
