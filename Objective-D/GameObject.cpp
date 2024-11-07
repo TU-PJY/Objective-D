@@ -94,7 +94,15 @@ void GameObject::FlipTexture(int FlipType) {
 // 3D ·»´õ¸µ
 void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, bool DepthTestFlag) {
 	TexturePtr->Render(ObjectCmdList);
-	ObjectShader->Render(ObjectCmdList, DepthTestFlag);
+
+	switch (DepthTestFlag) {
+	case true:
+		ObjectShader->RenderDefault(ObjectCmdList);    break;
+
+	case false:
+		ObjectShader->RenderDepthNone(ObjectCmdList);  break;
+	}
+		
 	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
 
 	ObjectAlpha = AlphaValue;
@@ -110,7 +118,7 @@ void GameObject::Render2D(Texture* TexturePtr, float AlphaValue, bool EnableAspe
 	if(EnableAspect)
 		Transform::ImageAspect(ImageAspectMatrix, TexturePtr->Width, TexturePtr->Height);
 	TexturePtr->Render(ObjectCmdList);
-	ImageShader->Render(ObjectCmdList, false);
+	ImageShader->RenderDepthNone(ObjectCmdList);
 	ObjectAlpha = AlphaValue;
 
 	SetCamera();

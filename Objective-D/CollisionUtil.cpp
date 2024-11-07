@@ -199,7 +199,7 @@ void Range::Render(ID3D12GraphicsCommandList* CmdList) {
 	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
 	Transform::Scale(ScaleMatrix, sphere.Radius * 0.54, sphere.Radius * 0.54, sphere.Radius * 0.54);
 
-	BoundboxShader->Render(CmdList);
+	BoundboxShader->RenderDefault(CmdList);
 
 	camera.SetViewMatrix();
 	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);

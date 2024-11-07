@@ -58,10 +58,10 @@ public:
 		// 이미지 출력, 이미지 종횡비가 자동으로 적용된다.
 		InitRenderState(RENDER_TYPE_2D);
 		Transform::Scale(ScaleMatrix, 0.5, 0.5, 1.0);
-		Transform::Move(TranslateMatrix, -0.5, -0.5, 0.0);
+		Transform::Move(TranslateMatrix, -0.5, 0.5, 0.0);
 		Render2D(WoodTex);
 
 		// 선 출력
-		line.Draw(ObjectCmdList, mouse.x, mouse.y, mouse.x, mouse.y, 0.02);
+		line.Draw(ObjectCmdList, 0.5, 0.0, mouse.x, mouse.y, 0.02);
 	}
 };

@@ -95,12 +95,6 @@
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Brush Util ]">
       <UniqueIdentifier>{12f8bb1d-4b55-4e19-981f-78f7dc7fda6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[5]____________[ Objective-D ]\[ HLSL ]">
-      <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[6]____________[ Template ]">
-      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[5]____________[ Objective-D ]\[ Header ]">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
@@ -136,6 +130,12 @@
     </Filter>
     <Filter Include="[5]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[4][ Shaders ]\[ Line Shader ]">
       <UniqueIdentifier>{a1359e18-8f0d-4d56-9a9c-98440265ff52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[7]____________[ Template ]">
+      <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]____________[ HLSL ]">
+      <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -371,24 +371,24 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ModeCodeTemplate.txt">
-      <Filter>[6]____________[ Template ]</Filter>
+      <Filter>[7]____________[ Template ]</Filter>
     </Text>
     <Text Include="MotionCode.txt">
-      <Filter>[6]____________[ Template ]</Filter>
+      <Filter>[7]____________[ Template ]</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">
-      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+      <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\ImageShader.hlsl">
-      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+      <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\BoundboxShader.hlsl">
-      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+      <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\LineShader.hlsl">
-      <Filter>[5]____________[ Objective-D ]\[ HLSL ]</Filter>
+      <Filter>[6]____________[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

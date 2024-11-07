@@ -2,9 +2,9 @@
 
 // 쉐이더
 Shader::~Shader() {
-	if (PipelineState)
-		PipelineState->Release();
-	PipelineState = NULL;
+	if (PSDefault)
+		PSDefault->Release();
+	PSDefault = NULL;
 
 	ReleaseShaderVariables();
 }
@@ -62,15 +62,17 @@ void Shader::OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineS
 		CmdList->SetPipelineState(PS);
 }
 
-// DepthTest가 true일 때만 깊이 검사 실행
-void Shader::Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest) {
-	if (DepthTest)
-		OnPrepareRender(CmdList, PipelineState);
-	else
-		OnPrepareRender(CmdList, PSDepthNone);
-}
-
-// 바운드 박스 출력용
+// 와이어 프레임 파이프라인 적용, 깊이 검사 적용됨
 void Shader::RenderWireframe(ID3D12GraphicsCommandList* CmdList) {
 	OnPrepareRender(CmdList, PSWireframe);
+}
+
+// 깊이 검사를 해제한 파이프라인 적용
+void Shader::RenderDepthNone(ID3D12GraphicsCommandList* CmdList) {
+	OnPrepareRender(CmdList, PSDepthNone);
+}
+
+// 깊이 검사를 포함한 파이프라인 적용
+void Shader::RenderDefault(ID3D12GraphicsCommandList* CmdList) {
+	OnPrepareRender(CmdList, PSDefault);
 }

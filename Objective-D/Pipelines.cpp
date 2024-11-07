@@ -22,7 +22,7 @@ void Shader::CreateDefaultPS(ID3D12Device* Device, ID3D12RootSignature* RootSign
 	PipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	PipelineStateDesc.SampleDesc.Count = 1;
 	PipelineStateDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
-	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PipelineState);
+	Device->CreateGraphicsPipelineState(&PipelineStateDesc, __uuidof(ID3D12PipelineState), (void**)&PSDefault);
 
 	if (VertexShaderBlob)
 		VertexShaderBlob->Release();

@@ -79,11 +79,11 @@ void Framework::Update() {
 	// 카메라를 업데이트한다.
 	camera.Update(Timer.GetTimeElapsed());
 
-	// 프레임워크를 업데이트한다.
+	// scene을 업데이트한다.
 	// 모든 객체의 업데이트는 이 함수를 통해 이루어진다.
 	scene.Update(Timer.GetTimeElapsed());
 
-	// 로트시그니처를 쉐이더로 전달한다
+	// 루트시그니처를 쉐이더로 전달한다
 	scene.PrepareRender(CmdList);
 
 	// 모든 객체의 렌더링은 이 함수를 통해 이루어진다
@@ -171,9 +171,6 @@ Framework::Framework() {
 	for (int i = 0; i < SwapChainBuffers; i++)
 		FenceValues[i] = 0;
 
-	CLIENT_WIDTH = SCREEN_WIDTH;
-	CLIENT_HEIGHT = SCREEN_HEIGHT;
-
 	memset(WindowName, 0, sizeof(WindowName));
 	TitleNameLength = sizeof(TitleName) / sizeof(TCHAR);
 	_tcscpy_s(WindowName, TitleNameLength, TitleName);
@@ -196,10 +193,8 @@ bool Framework::Create(HINSTANCE hInstance, HWND hMainWnd) {
 }
 
 void Framework::CreateSwapChain() {
-	RECT rcClient;
-	::GetClientRect(hWnd, &rcClient);
-	CLIENT_WIDTH = rcClient.right - rcClient.left;
-	CLIENT_HEIGHT = rcClient.bottom - rcClient.top;
+	CLIENT_WIDTH = SCREEN_WIDTH;
+	CLIENT_HEIGHT = SCREEN_HEIGHT;
 
 #ifdef _WITH_CREATE_SWAPCHAIN_FOR_HWND
 	DXGI_SWAP_CHAIN_DESC1 DxgiSwapChainDesc;

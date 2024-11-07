@@ -29,14 +29,15 @@ public:
 	void CreateWireframePS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void CreateNoneDepthPS(ID3D12Device* Device, ID3D12RootSignature* RootSignature);
 	void OnPrepareRender(ID3D12GraphicsCommandList* CmdList, ID3D12PipelineState* PS);
-	void Render(ID3D12GraphicsCommandList* CmdList, bool DepthTest = true);
 	void RenderWireframe(ID3D12GraphicsCommandList* CmdList);
+	void RenderDepthNone(ID3D12GraphicsCommandList* CmdList);
+	void RenderDefault(ID3D12GraphicsCommandList* CmdList);
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
 	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {}
 	virtual void ReleaseShaderVariables() {}
 
 protected:
-	ID3D12PipelineState* PipelineState{};
+	ID3D12PipelineState* PSDefault{};
 	ID3D12PipelineState* PSDepthNone{};
 	ID3D12PipelineState* PSWireframe{};
 };

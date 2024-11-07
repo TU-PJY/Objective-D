@@ -45,5 +45,5 @@ void MouseUtil::UpdateMousePosition(HWND hWnd) {
 	::ScreenToClient(hWnd, &ClientPosition); // 클라이언트 좌표로 변환
 
 	x = (((2.0f * (float)ClientPosition.x) / (float)SCREEN_WIDTH) - 1.0f) / camera.StaticProjectionMatrix._11;
-	y = -(((2.0f * (float)(ClientPosition.y)) / (float)SCREEN_HEIGHT) - 1.0f) / camera.StaticProjectionMatrix._22;
+	y = 1.0f - (((2.0f * (float)(ClientPosition.y)) / (float)SCREEN_HEIGHT)) / camera.StaticProjectionMatrix._22;
 }
