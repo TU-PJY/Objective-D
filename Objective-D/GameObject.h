@@ -5,6 +5,7 @@
 #include "CollisionUtil.h"
 #include "MathUtil.h"
 #include "LineBrush.h"
+#include "TerrainUtil.h"
 
 class Shader;
 typedef ID3D12GraphicsCommandList* (CommandList);
@@ -64,4 +65,7 @@ public:
 	virtual OOBB GetOOBB() { return {}; }
 	virtual OOBB GetRange() { return {}; }
 	virtual Vector GetVectorSet() { return {}; }
+	virtual TerrainUtil GetTerrain() { return {}; }
+
+	// 사용자 정의 리턴 함수는 아래에 정의한다.
 };

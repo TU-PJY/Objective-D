@@ -19,7 +19,6 @@ Framework framework;
 Scene scene;
 Camera camera;
 MouseUtil mouse;
-TerrainUtil terrainUtil;
 
 // 이미지 출력을 위한 패널 매쉬
 Mesh* ImagePannel;
