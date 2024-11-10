@@ -20,6 +20,8 @@ void TerrainUtil::InputData(XMFLOAT4X4& TMat, XMFLOAT4X4& RMat, XMFLOAT4X4& SMat
 	TerrainMesh->SetHeightCache(TerrainMesh, TerrainMatrix);
 }
 
+// 아래의 함수들은 터레인 객체에서 실행 할 필요 없다.
+
 // 현재 위치와 높이 오프셋을 입력한다
 void TerrainUtil::InputPosition(XMFLOAT3& PositionValue, float HeightOffsetValue) {
 	Position = PositionValue;
@@ -31,8 +33,7 @@ void TerrainUtil::SetHeightToTerrain(XMFLOAT3& PositionValue) {
 	PositionValue.y = Position.y;
 }
 
-// 특정 오브젝트의 위치를 터레인 바닥의 위치로 이동시킨다.
-// 특정 오브젝트가 터레인의 바닥에 닿았는지 검사한다. 닿았을 경우 true를 리턴한다.
+// 입력한 높이가 터레인의 바닥 높이보다 낮은지 검사한다. 낮을 경우 true를 리턴한다.
 bool TerrainUtil::CheckCollision(const TerrainUtil& Other) {
 	float Height = Other.TerrainMesh->GetHeightAtPosition(Other.TerrainMesh, Position.x, Position.z, Other.TerrainMatrix) + HeightOffset;
 
