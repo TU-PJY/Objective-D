@@ -210,9 +210,6 @@ void Scene::ProcessObjectCommand() {
 
 // 삭제 마크가 표시된 객체들을 실제로 삭제한다.
 void Scene::ProcessSceneCommand() {
-	if (SceneCommandCount == 0)
-		return;
-
 	auto Object = begin(ObjectIndex);
 	while (Object != end(ObjectIndex) && SceneCommandCount != 0) {
 		if (Object->second->DeleteCommand) {
