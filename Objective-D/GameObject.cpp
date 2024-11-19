@@ -147,7 +147,6 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX&
 	return(nIntersected);
 }
 
-
 //////////////////////////////////////// private
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. Render함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.

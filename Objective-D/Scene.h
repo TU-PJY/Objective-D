@@ -5,6 +5,7 @@
 #include <deque>
 #include <array>
 #include <map>
+#include <vector>
 
 typedef void(*Function)(void);
 using ObjectRange = std::multimap<const char*, GameObject*>::iterator;
@@ -14,6 +15,10 @@ class Scene {
 private:
 	std::array<std::deque<GameObject*>, Layers> ObjectList{};
 	std::multimap<const char*, GameObject*> ObjectIndex{};
+	std::array<std::vector<int>, Layers> DeleteLocation{};
+	int CurrentReferPosition{};
+	int SceneCommandCount{};
+	bool CommandExist{};
 
 	const char* RunningMode{};
 	void (*MouseControllerPtr)(HWND, UINT, WPARAM, LPARAM) {};
@@ -44,16 +49,21 @@ public:
 	void InputMouseMotion(HWND hWnd, const char* ObjectTag);
 	void Routine(float FT, ID3D12GraphicsCommandList* CmdList);
 	void Exit();
-	void ProcessIndexCommand();
 	void AddObject(GameObject*&& Object, const char* Tag, int InputLayer);
 	void DeleteObject(GameObject* Object);
 	GameObject* Find(const char* Tag);
 	std::pair<ObjectRange, ObjectRange> EqualRange(const char* Tag);
-	void ClearAll();
+	void CompleteCommand();
 	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();
 	void ReleaseObjects();
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList);
+
+private:
+	void AddLocation(int Layer, int Position);
+	void ProcessObjectCommand();
+	void ProcessSceneCommand();
+	void ClearAll();
 };
 
 // global scope scene
