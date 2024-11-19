@@ -1,6 +1,7 @@
 #include "CameraUtil.h"
 #include "RootConstants.h"
 #include "RootConstantUtil.h"
+#include "TransformUtil.h"
 
 // Config.h 에서 작성한 모드에 따라 카메라가 다르게 동작하도록 작성할 수 있다.
 // 예) 카메라 추적 대상 변경, 카메라 시점 변경 등
@@ -102,7 +103,7 @@ void Camera::SetViewMatrix() {
 
 // 원근 투영 행렬을 초기화한다. 윈도우 사이즈 변경 시 이 함수가 실행된다.
 void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float AspRatio, float Fov) {
-	ProjectionMatrix = Mat4::Identity();
+	Transform::Identity(ProjectionMatrix);
 	XMMATRIX Projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(Fov), AspRatio, NearPlane, FarPlane);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);
 
@@ -113,7 +114,7 @@ void Camera::GeneratePerspectiveMatrix(float NearPlane, float FarPlane, float As
 
 // 직각 투영 행렬을 초기화 한다
 void Camera::GenerateOrthoMatrix(float Width, float Height, float AspRatio, float Near, float Far) {
-	ProjectionMatrix = Mat4::Identity();
+	Transform::Identity(ProjectionMatrix);
 	XMMATRIX Projection = XMMatrixOrthographicLH(Width * AspRatio * 2.0, Height * 2.0, Near, Far);
 	XMStoreFloat4x4(&ProjectionMatrix, Projection);
 
@@ -124,18 +125,17 @@ void Camera::GenerateOrthoMatrix(float Width, float Height, float AspRatio, floa
 
 // 정적 직각 투영 행렬을 초기화 한다
 void Camera::GenerateStaticMatrix() {
-	StaticProjectionMatrix = Mat4::Identity();
+	Transform::Identity(StaticProjectionMatrix);
 	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }
 
 // 정적 출력을 위한 스테틱 행렬을 생성한다. UI, 이미지 등의 출력을 목적으로 하는 행렬이므로 
 // 프로그램 실행 시 최초 1회만 실행한다.
+// 직각투영이 디폴트이다.
 void Camera::InitStaticMatrix() {
-	StaticViewMatrix = Mat4::Identity();
-
-	// 직각투영이 디폴트이다.
-	StaticProjectionMatrix = Mat4::Identity();
+	Transform::Identity(StaticViewMatrix);
+	Transform::Identity(StaticProjectionMatrix);
 	XMMATRIX Projection = XMMatrixOrthographicLH(2.0 * ASPECT, 2.0, 0.0, 10.0);
 	XMStoreFloat4x4(&StaticProjectionMatrix, Projection);
 }

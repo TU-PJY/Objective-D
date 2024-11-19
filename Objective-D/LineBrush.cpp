@@ -18,8 +18,8 @@ void LineBrush::SetColor(float R, float G, float B) {
 }
 
 void LineBrush::Init() {
-	TranslateMatrix = Mat4::Identity();
-	ScaleMatrix = Mat4::Identity();
+	Transform::Identity(TranslateMatrix);
+	Transform::Identity(ScaleMatrix);
 	TransparencyValue = 1.0f;
 
 	camera.SetToStaticMode();

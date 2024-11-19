@@ -116,7 +116,9 @@ void Mesh::SetHeightCache(Mesh* terrainMesh, const XMFLOAT4X4& worldMatrix) {
 
 // 현재 지점의 높이를 구한다.
 float Mesh::GetHeightAtPosition(Mesh* terrainMesh, float x, float z, const XMFLOAT4X4& worldMatrix) {
-	for (UINT i = 0; i < HeightCache.size(); i += 3) {
+	size_t Size = HeightCache.size();
+
+	for (UINT i = 0; i < Size; i += 3) {
 		XMFLOAT3 v0 = HeightCache[i];
 		XMFLOAT3 v1 = HeightCache[i + 1];
 		XMFLOAT3 v2 = HeightCache[i + 2];

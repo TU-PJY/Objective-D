@@ -26,10 +26,6 @@ public:
 
 	void Update();
 
-	virtual void CreateShaderVariables();
-	virtual void UpdateShaderVariables();
-	virtual void ReleaseShaderVariables();
-
 	void WaitForGpuComplete();
 	void MoveToNextFrame();
 

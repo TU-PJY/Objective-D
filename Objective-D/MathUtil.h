@@ -10,9 +10,10 @@ namespace Math {
 	void BillboardLookAt(XMFLOAT4X4& Matrix, ObjectVector& VectorStruct, XMFLOAT3& ThisPosition, XMFLOAT3& TargetPosition);
 	XMVECTOR CalcRayDirection(XMFLOAT3& Rotation);
 	XMVECTOR CalcRayOrigin(XMFLOAT3& Position);
-	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, AABB& Other);
-	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, OOBB& Other);
-	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, Range& Other);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, const AABB& Other);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, const OOBB& Other);
+	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, const Range& Other);
+	bool IsRightOfTarget(XMFLOAT3& ThisPosition, ObjectVector& Vector, XMFLOAT3& TargetPosition);
 	void Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
 	void Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
 	void Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);

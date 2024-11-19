@@ -104,23 +104,40 @@ XMVECTOR Math::CalcRayOrigin(XMFLOAT3& Position) {
 }
 
 // 레이가 바운딩 박스와 충돌하는지 검사한다
-bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, AABB& Other) {
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, const AABB& Other) {
 	float Distance;
 	return Other.aabb.Intersects(RayOrigin, RayDirection, Distance);
 }
 
 // 레이가 바운딩 박스와 충돌하는지 검사한다
-bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, OOBB& Other) {
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, const OOBB& Other) {
 	float Distance;
 	return Other.oobb.Intersects(RayOrigin, RayDirection, Distance);
 }
 
 // 레이가 바운딩 박스와 충돌하는지 검사한다
-bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, Range& Other) {
+bool Math::CheckRayCollision(XMVECTOR& RayOrigin, XMVECTOR& RayDirection, const Range& Other) {
 	float Distance;
 	return Other.sphere.Intersects(RayOrigin, RayDirection, Distance);
 }
 
+// 현재 시점을 기준으로 자신의 위치가 특정 지점으로 부터 오른쪽에 있는지 검사한다. 오른쪽이라면 true, 왼쪽이라면 false를 리턴한다.
+bool Math::IsRightOfTarget(XMFLOAT3& ThisPosition, ObjectVector& Vector, XMFLOAT3& TargetPosition) {
+	XMFLOAT3 Direction = XMFLOAT3(
+		TargetPosition.x - ThisPosition.x,
+		TargetPosition.y - ThisPosition.y,
+		TargetPosition.z - ThisPosition.z
+	);
+
+	XMVECTOR RightVec = XMLoadFloat3(&Vector.Right);
+	XMVECTOR DirectionVec = XMLoadFloat3(&Direction);
+	float DotProduct = XMVectorGetX(XMVector3Dot(RightVec, DirectionVec));
+
+	if (DotProduct < 0)
+		return true;
+
+	return false;
+}
 
 // 위치를 앞으로 움직인다. 현재 자신의 위치값과 자신의 look벡터, 속도값을 넣어주면 된다.
 void Math::Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) {

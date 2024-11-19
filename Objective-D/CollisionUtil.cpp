@@ -28,8 +28,8 @@ void OOBB::Update(XMFLOAT3& Position, XMFLOAT3& Size, XMFLOAT3& Rotation) {
 
 void OOBB::Render() {
 #ifdef SHOW_BOUND_BOX
-	TranslateMatrix = Mat4::Identity();
-	ScaleMatrix = Mat4::Identity();
+	Transform::Identity(TranslateMatrix);
+	Transform::Identity(ScaleMatrix);
 
 	Transform::Move(TranslateMatrix, oobb.Center.x, oobb.Center.y, oobb.Center.z);
 	Transform::Scale(ScaleMatrix, oobb.Extents.x, oobb.Extents.y, oobb.Extents.z);
@@ -100,8 +100,8 @@ void AABB::Update(XMFLOAT3& Position, XMFLOAT3& Size) {
 
 void AABB::Render() {
 #ifdef SHOW_BOUND_BOX
-	TranslateMatrix = Mat4::Identity();
-	ScaleMatrix = Mat4::Identity();
+	Transform::Identity(TranslateMatrix);
+	Transform::Identity(ScaleMatrix);
 
 	Transform::Move(TranslateMatrix, aabb.Center.x, aabb.Center.y, aabb.Center.z);
 	Transform::Scale(ScaleMatrix, aabb.Extents.x, aabb.Extents.y, aabb.Extents.z);
@@ -196,8 +196,8 @@ bool Range::CheckCollision(const OOBB& Other) {
 
 void Range::Render() {
 #ifdef SHOW_BOUND_BOX
-	TranslateMatrix = Mat4::Identity();
-	ScaleMatrix = Mat4::Identity();
+	Transform::Identity(TranslateMatrix);
+	Transform::Identity(ScaleMatrix);
 
 	Transform::Move(TranslateMatrix, sphere.Center.x, sphere.Center.y, sphere.Center.z);
 	Transform::Scale(ScaleMatrix, Size * 0.27, Size * 0.27, Size * 0.27);

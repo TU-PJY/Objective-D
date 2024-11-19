@@ -481,27 +481,6 @@ void Framework::ReleaseObjects() {
 	scene.ReleaseObjects();
 }
 
-void Framework::CreateShaderVariables() {}
-
-void Framework::ReleaseShaderVariables() {}
-
-void Framework::UpdateShaderVariables() {
-	/*float CurrentTime = Timer.GetTotalTime();
-	float ElapsedTime = Timer.GetTimeElapsed();
-
-	CmdList->SetGraphicsRoot32BitConstants(0, 1, &CurrentTime, 0);
-	CmdList->SetGraphicsRoot32BitConstants(0, 1, &ElapsedTime, 1);
-
-	POINT CursorPos;
-	::GetCursorPos(&CursorPos);
-	::ScreenToClient(hWnd, &CursorPos);
-	float xCursorPos = (CursorPos.x < 0) ? 0.0f : float(CursorPos.x);
-	float yCursorPos = (CursorPos.y < 0) ? 0.0f : float(CursorPos.y);
-
-	CmdList->SetGraphicsRoot32BitConstants(0, 1, &xCursorPos, 2);
-	CmdList->SetGraphicsRoot32BitConstants(0, 1, &yCursorPos, 3);*/
-}
-
 void Framework::WaitForGpuComplete() {
 	UINT64 FenceValue = ++FenceValues[SwapChainBufferIndex];
 	HRESULT hResult = CmdQueue->Signal(m_pd3dFence, FenceValue);

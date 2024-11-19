@@ -15,13 +15,13 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 	RenderType = RenderTypeFlag;
 
 	if (RenderTypeFlag != RENDER_TYPE_3D_STATIC && RenderTypeFlag != RENDER_TYPE_2D_STATIC) {
-		TranslateMatrix = Mat4::Identity();
-		RotateMatrix = Mat4::Identity();
-		ScaleMatrix = Mat4::Identity();
+		Transform::Identity(TranslateMatrix);
+		Transform::Identity(RotateMatrix);
+		Transform::Identity(ScaleMatrix);
 	}
 
 	if (RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC)
-		ImageAspectMatrix = Mat4::Identity();
+		Transform::Identity(ImageAspectMatrix);
 
 	// 매쉬 색상 초기화
 	SetColor(XMFLOAT3(0.0, 0.0, 0.0));

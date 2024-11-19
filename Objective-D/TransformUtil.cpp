@@ -4,6 +4,11 @@
 // 원래는 세 가지 행렬에 각각 Move, Rotate, Scale만 가능하게 하도록 하려 했으나
 // 변환을 직접 커스텀 할 수 있도록 행렬을 레퍼런스로 전달하도록 했다
 
+// 행렬 초기화
+void Transform::Identity(XMFLOAT4X4& Matrix) {
+	Matrix = Mat4::Identity();
+}
+
 // 평행이동 변환
 void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
 	XMMATRIX TranslateMat = XMMatrixTranslation(X, Y, Z);
