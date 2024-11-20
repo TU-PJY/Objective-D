@@ -25,7 +25,7 @@ void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Funct
 
 	// 삭제 위치 버퍼 할당
 	for (int i = 0; i < Layers; ++i)
-		DeleteLocation[i].reserve(500);
+		DeleteLocation[i].reserve(DELETE_LOCATION_BUFFER_SIZE);
 }
 
 // 현재 실행 중인 모드 이름을 리턴한다

@@ -15,7 +15,7 @@
 
 void Mode1::Start() {
 	// 필요한 객체 추가
-	scene.AddObject(new TestObject, "test_object", LAYER_1);
+	scene.AddObject(new TestObject, "test_object", LAYER1);
 	
 	// scene에 컨트롤러 및 모드 소멸자 등록
 	RegisterController();

@@ -9,7 +9,7 @@
 
 typedef void(*Function)(void);
 using ObjectRange = std::multimap<const char*, GameObject*>::iterator;
-constexpr int Layers = static_cast<int>(END);
+constexpr int Layers = static_cast<int>(EOL);
 
 class Scene {
 private:

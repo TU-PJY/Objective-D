@@ -19,10 +19,13 @@ constexpr float FRAME_LIMITS = 0;
 // 바운드박스 표시 여부를 설정한다.
 #define SHOW_BOUND_BOX
 
-// 게임 월드에 사용할 레이어를 설정한다. 끝 부분에는 반드시 END표기를 해야한다.
+// 게임 월드에 사용할 레이어를 설정한다. 끝 부분에는 반드시 EOL(End Of Layer)표기를 해야한다.
 // UI의 경우 가장 최상단 레이어에 추가하는 것을 권장한다.
 enum LayerEnum
-{ LAYER_1, LAYER_2, LAYER_3, END };
+{ LAYER1, LAYER2, LAYER3, EOL };
+
+// 삭제 위치 버퍼 크기 지정, 기본값 200
+constexpr int DELETE_LOCATION_BUFFER_SIZE = 200;
 
 // 제목표시줄 문자열을 설정한다. 반드시 아래와 같은 형식으로 저정해야 한다.
 constexpr TCHAR TitleName[] = _T("Objective-D(");
