@@ -226,6 +226,7 @@ void Scene::ProcessSceneCommand() {
 void Scene::ClearAll() {
 	int ReferPosition{};
 	for (int Layer = 0; Layer < Layers; ++Layer) {
+		DeleteLocation[Layer].clear();
 		for (auto Object = begin(ObjectList[Layer]); Object != end(ObjectList[Layer]); ++Object) {
 			(*Object)->DeleteCommand = true;
 			AddLocation(Layer, ReferPosition);
