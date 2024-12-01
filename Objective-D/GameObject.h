@@ -30,6 +30,7 @@ public:
 	int ObjectLayer{};
 	const char* ObjectTag{};
 	bool DeleteCommand{};
+	bool DeleteReserveCommand{};
 
 	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_3D);
 	void SetColor(XMFLOAT3 Color);

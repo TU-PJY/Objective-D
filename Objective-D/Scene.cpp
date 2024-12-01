@@ -47,11 +47,14 @@ void Scene::ReleaseDestructor() {
 // 삭제 마크가 표시된 객체들은 오브젝트 리스트에서 삭제된다. (실제 객체 삭제가 아님)
 void Scene::Routine(float FT, ID3D12GraphicsCommandList* CmdList) {
 	ObjectCmdList = CmdList;
-
 	for (int i = 0; i < Layers; ++i) {
-		for (auto Object = begin(ObjectList[i]); Object != end(ObjectList[i]); ++Object) {
-			(*Object)->Update(FT);
-			(*Object)->Render();
+		for (auto Object : ObjectList[i]) {
+			Object->Update(FT);
+			Object->Render();
+			if (Object->DeleteReserveCommand) {
+				Object->DeleteCommand = true;
+				AddLocation(i, CurrentReferPosition);
+			}
 			++CurrentReferPosition;
 		}
 		CurrentReferPosition = 0;
@@ -113,9 +116,7 @@ void Scene::AddObject(GameObject*&& Object, const char* Tag, int InputLayer) {
 // 삭제 마크가 표시된 객체는 UpdateObjectIndex()에서 최종적으로 삭제된다.
 // 클래스 내부에서 this 포인터로도 자신을 삭제할 수 있다.
 void Scene::DeleteObject(GameObject* Object) {
-	Object->DeleteCommand = true;
-	AddLocation(Object->ObjectLayer, CurrentReferPosition);
-	CommandExist = true;
+	Object->DeleteReserveCommand = true;
 }
 
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
@@ -185,6 +186,7 @@ void Scene::PrepareRender(ID3D12GraphicsCommandList* CmdList) {
 // 삭제 위치를 저장한다.
 void Scene::AddLocation(int Layer, int Position) {
 	DeleteLocation[Layer].emplace_back(Position);
+	CommandExist = true;
 }
 
 // 삭제 마크가 표시된 객체들을 컨테이너에서 제거한다. 실제로 객체가 삭제되는것이 아님에 유의한다.
