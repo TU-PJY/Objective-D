@@ -125,7 +125,7 @@ void Scene::DeleteObject(GameObject* Object) {
 // 이진 탐색을 사용하여 검색하므로 매우 빠르다.
 GameObject* Scene::Find(const char* Tag) {
 	auto Object = ObjectIndex.find(Tag);
-	if (Object != std::end(ObjectIndex) && !Object->second->DeleteCommand)
+	if (Object != std::end(ObjectIndex))
 		return Object->second;
 	else
 		return nullptr;
