@@ -6,6 +6,11 @@ Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar
 	CreateTextureAndSRV(Device, CmdList, FileName, &Tex, &SRV, &Sampler, Type);
 }
 
+void Texture::ReleaseUploadBuffers() {
+	if (UploadBuffer) 
+		UploadBuffer->Release();
+}
+
 void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
 	ID3D12DescriptorHeap* DescriptorHeap[] = { SRV, Sampler };
 	CmdList->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
@@ -14,14 +19,12 @@ void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
 }
 
 void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap, int Type) {
-	ID3D12Resource* pd3dUploadBuffer = nullptr;
-
 	// 텍스처 로드, 입력한 타입에 따라 다른 형식의 파일을 로드한다.
 	if(Type == TEXTURE_TYPE_WIC)
-		*ppd3dTexture = CreateTextureResourceFromWICFile(pd3dDevice, pd3dCommandList, pszTextureFilename, &pd3dUploadBuffer, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+		*ppd3dTexture = CreateTextureResourceFromWICFile(pd3dDevice, pd3dCommandList, pszTextureFilename, &UploadBuffer, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 	else if(Type == TEXTURE_TYPE_DDS)
-		*ppd3dTexture = CreateTextureResourceFromDDSFile(pd3dDevice, pd3dCommandList, pszTextureFilename, &pd3dUploadBuffer, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+		*ppd3dTexture = CreateTextureResourceFromDDSFile(pd3dDevice, pd3dCommandList, pszTextureFilename, &UploadBuffer, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 	// SRV 힙 생성
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};

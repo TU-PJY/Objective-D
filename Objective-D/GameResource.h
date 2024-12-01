@@ -6,6 +6,11 @@
 #include "BoundboxShader.h"
 #include "LineShader.h"
 
+// 매쉬, 텍스처 로드 시 포인터를 저장하는 벡터
+// 한꺼번에 업로드 버퍼를 삭제함
+extern std::vector<Mesh*> LoadedMeshList;
+extern std::vector<Texture*> LoadedTextureList;
+
 ////////////////////////////////// 기본 리소스
 extern Object_Shader* ObjectShader;
 extern Boundbox_Shader* BoundboxShader;
@@ -33,3 +38,4 @@ extern Texture* Tex, * SkyboxTex, *WoodTex;
 void CreateShaderResource(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 void CreateMeshResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 void CreateTextureResource(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
+void ClearUploadBuffer();

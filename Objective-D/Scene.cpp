@@ -48,7 +48,7 @@ void Scene::ReleaseDestructor() {
 void Scene::Routine(float FT, ID3D12GraphicsCommandList* CmdList) {
 	ObjectCmdList = CmdList;
 	for (int i = 0; i < Layers; ++i) {
-		for (auto Object : ObjectList[i]) {
+		for (auto const& Object : ObjectList[i]) {
 			Object->Update(FT);
 			Object->Render();
 			if (Object->DeleteReserveCommand) {
@@ -88,17 +88,17 @@ void Scene::RegisterMouseMotionController(void (*FunctionPtr)(HWND)) {
 // 객체를 찾아 컨트롤러 함수로 메시지를 전달한다. 다수로 존재하는 객체에 사용하지 않도록 유의한다.
 void Scene::InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
 	auto Object = ObjectIndex.find(ObjectTag);
-	if (Object != end(ObjectIndex) && !Object->second->DeleteCommand)
+	if (Object != end(ObjectIndex))
 		Object->second->InputMouse(hWnd, nMessageID, wParam, lParam);
 }
 void Scene::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
 	auto Object = ObjectIndex.find(ObjectTag);
-	if (Object != end(ObjectIndex) && !Object->second->DeleteCommand)
+	if (Object != end(ObjectIndex))
 		Object->second->InputKey(hWnd, nMessageID, wParam, lParam);
 }
 void Scene::InputMouseMotion(HWND hWnd,  const char* ObjectTag) {
 	auto Object = ObjectIndex.find(ObjectTag);
-	if (Object != end(ObjectIndex) && !Object->second->DeleteCommand)
+	if (Object != end(ObjectIndex))
 		Object->second->InputMouseMotion(hWnd, mouse.MotionPosition);
 }
 
@@ -226,14 +226,6 @@ void Scene::ProcessSceneCommand() {
 
 // 현재 존재하는 모든 객체들을 삭제한다.
 void Scene::ClearAll() {
-	int ReferPosition{};
-	for (int Layer = 0; Layer < Layers; ++Layer) {
-		DeleteLocation[Layer].clear();
-		for (auto Object = begin(ObjectList[Layer]); Object != end(ObjectList[Layer]); ++Object) {
-			(*Object)->DeleteCommand = true;
-			AddLocation(Layer, ReferPosition);
-			++ReferPosition;
-		}
-		ReferPosition = 0;
-	}
+	for (auto const& Object : ObjectIndex)
+		Object.second->DeleteReserveCommand = true;
 }
