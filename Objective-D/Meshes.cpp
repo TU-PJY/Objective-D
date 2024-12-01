@@ -59,6 +59,7 @@ void Mesh::CreateSkyboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* Cmd
 		20, 22, 21, 20, 23, 22
 	};
 
+
 	// 정점 개수와 인덱스 개수 설정
 	Vertices = 24;
 	Indices = 36;
@@ -77,9 +78,8 @@ void Mesh::CreateSkyboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* Cmd
 	}
 
 	// 인덱스 데이터 복사
-	for (UINT i = 0; i < Indices; i++) {
+	for (UINT i = 0; i < Indices; i++)
 		PnIndices[i] = indices[i];
-	}
 
 	// DirectX 버퍼 생성 및 뷰 설정 (원래 코드와 동일)
 	PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
@@ -181,10 +181,10 @@ void Mesh::CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* C
 	float BoundboxVertices[][8] = {
 		// x, y, z, nx, ny, nz, u, v
 		// Front face (중앙)
-		{ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.2509f, 0.3339f },  // Top-left
-		{ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.2509f, 0.6661f },  // Bottom-left
-		{  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.4991f, 0.6661f },  // Bottom-right
-		{  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.4991f, 0.3339f },  // Top-right
+		{ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },  // Top-left
+		{ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },  // Bottom-left
+		{  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },  // Bottom-right
+		{  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },  // Top-right
 
 		// Back face (오른쪽)
 		{  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.7491f, 0.3339f },  // Top-left
@@ -193,28 +193,28 @@ void Mesh::CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* C
 		{ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.9991f, 0.3339f },  // Top-right
 
 		// Left face (왼쪽)
-		{ -1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.2491f, 0.3339f },   // Top-left
-		{ -1.0f, -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.2491f, 0.6661f },   // Bottom-left
-		{ -1.0f, -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0009f, 0.6661f },   // Bottom-right
-		{ -1.0f,  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0009f, 0.3339f },   // Top-right
+		{ -1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f },   // Top-left
+		{ -1.0f, -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f },   // Bottom-left
+		{ -1.0f, -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f },   // Bottom-right
+		{ -1.0f,  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f },   // Top-right
 
 		// Right face (오른쪽 중앙)
-		{  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.7491f, 0.3339f },    // Top-left
-		{  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.7491f, 0.6661f },    // Bottom-left
-		{  1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.5009f, 0.6661f },    // Bottom-right
-		{  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.5009f, 0.3339f },    // Top-right
+		{  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },    // Top-left
+		{  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },    // Bottom-left
+		{  1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },    // Bottom-right
+		{  1.0f,  1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },    // Top-right
 
 		// Top face (중앙 아래)
-		{ -1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.2509f, 0.0009f },    // Top-left
-		{ -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.2509f, 0.3339f },    // Bottom-left
-		{  1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.4991f, 0.3339f },    // Bottom-right
-		{  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.4991f, 0.0009f },    // Top-right
+		{ -1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },    // Top-left
+		{ -1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },    // Bottom-left
+		{  1.0f,  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },    // Bottom-right
+		{  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },    // Top-right
 
 		// Bottom face (중앙 위)
-		{ -1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.2509f, 0.9991f },   // Top-left
-		{ -1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.2509f, 0.6661f },   // Bottom-left
-		{  1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.4991f, 0.6661f },   // Bottom-right
-		{  1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.4991f, 0.9991f }    // Top-right
+		{ -1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f },   // Top-left
+		{ -1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f },   // Bottom-left
+		{  1.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f },   // Bottom-right
+		{  1.0f, -1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f }    // Top-right
 	};
 
 	UINT indices[] = {
@@ -238,42 +238,26 @@ void Mesh::CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* C
 
 	// 정점 및 관련 데이터 할당
 	Position = new XMFLOAT3[Vertices];
-	Normal = new XMFLOAT3[Vertices];
-	TextureCoords = new XMFLOAT2[Vertices];
 	PnIndices = new UINT[Indices];
 
-	// SkyboxVertices 데이터를 이용하여 각 정점의 포지션, 노말, 텍스처 좌표를 설정
-	for (UINT i = 0; i < Vertices; i++) {
+	// 각 정점의 포지션 좌표를 설정
+	for (UINT i = 0; i < Vertices; i++) 
 		Position[i] = XMFLOAT3(BoundboxVertices[i][0], BoundboxVertices[i][1], BoundboxVertices[i][2]);
-		Normal[i] = XMFLOAT3(BoundboxVertices[i][3], BoundboxVertices[i][4], BoundboxVertices[i][5]);
-		TextureCoords[i] = XMFLOAT2(BoundboxVertices[i][6], BoundboxVertices[i][7]);
-	}
-
+	
 	// 인덱스 데이터 복사
-	for (UINT i = 0; i < Indices; i++) {
+	for (UINT i = 0; i < Indices; i++) 
 		PnIndices[i] = indices[i];
-	}
-
+	
 	// DirectX 버퍼 생성 및 뷰 설정 (원래 코드와 동일)
 	PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
-	NormalBuffer = ::CreateBufferResource(Device, CmdList, Normal, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &NormalUploadBuffer);
-	TextureCoordBuffer = ::CreateBufferResource(Device, CmdList, TextureCoords, sizeof(XMFLOAT2) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &TextureCoordUploadBuffer);
 
 	// 버퍼 뷰 설정
-	NumVertexBufferViews = 3;
+	NumVertexBufferViews = 1;
 	VertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[NumVertexBufferViews];
 
 	VertexBufferViews[0].BufferLocation = PositionBuffer->GetGPUVirtualAddress();
 	VertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
 	VertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
-
-	VertexBufferViews[1].BufferLocation = NormalBuffer->GetGPUVirtualAddress();
-	VertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
-	VertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
-
-	VertexBufferViews[2].BufferLocation = TextureCoordBuffer->GetGPUVirtualAddress();
-	VertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
-	VertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * Vertices;
 
 	// 인덱스 버퍼 생성
 	IndexBuffer = ::CreateBufferResource(Device, CmdList, PnIndices, sizeof(UINT) * Indices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &IndexUploadBuffer);

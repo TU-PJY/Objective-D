@@ -13,6 +13,8 @@ public:
 
 	LineBrush line;
 
+	OOBB oobb;
+
 	TestObject() {
 		line.SetColor(1.0, 1.0, 1.0);
 		Position.z = 5.0;
@@ -44,9 +46,16 @@ public:
 	void Update(float FT) {
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
+
+		//camera.Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 
 	void Render() {
+		/*InitRenderState(RENDER_TYPE_3D);
+		SetLightUse(DISABLE_LIGHT);
+		Transform::Scale(ScaleMatrix, 20.0, 20.0, 20.0);
+		Render3D(SkyboxMesh, SkyboxTex, 1.0, false);*/
+
 		// 모델 출력
 		InitRenderState(RENDER_TYPE_3D);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
@@ -54,6 +63,9 @@ public:
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		FlipTexture(FLIP_TYPE_V);
 		Render3D(GunMesh, Tex);
+
+		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
+		oobb.Render();
 
 		// 이미지 출력, 이미지 종횡비가 자동으로 적용된다.
 		InitRenderState(RENDER_TYPE_2D);

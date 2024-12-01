@@ -17,7 +17,7 @@ Texture* Tex, * SkyboxTex, * WoodTex;
 // 택스처를 여기서 로드한다.
 void LoadTexture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	ImportTexture(Device, CmdList, Tex, L"Resources//Image//Gun.jpg", TEXTURE_TYPE_WIC);
-	ImportTexture(Device, CmdList, SkyboxTex, L"Resources//Image//skytex.png", TEXTURE_TYPE_WIC);
+	ImportTexture(Device, CmdList, SkyboxTex, L"Resources//Image//SkyBox_0.dds", TEXTURE_TYPE_DDS);
 	ImportTexture(Device, CmdList, WoodTex, L"Resources//Image//Wood.jpg", TEXTURE_TYPE_WIC);
 }
 /////////////////////////////////////////////////////////////////////////////////
