@@ -9,10 +9,10 @@
 // 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
 void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction) {
 	// 루트 시그니처를 생성한다.
-	RootSignature = CreateGraphicsRootSignature(Device);
+	ObjectRootSignature = CreateObjectRootSignature(Device);
 
 	// 전역 쉐이더를 생성한다.
-	LoadShader(RootSignature, Device, CmdList);
+	LoadShader(ObjectRootSignature, Device, CmdList);
 
 	// 전역 기본 매쉬를 로드한다.
 	LoadSystemMesh(Device, CmdList);
@@ -22,6 +22,8 @@ void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Funct
 
 	// 전역 텍스처를 로드한다.
 	LoadTexture(Device, CmdList);
+
+	InitializeParticles(Device);
 
 	// 시작 모드 함수 실행
 	ModeFunction();
@@ -172,18 +174,18 @@ void Scene::InputMouseMotionMessage(HWND hWnd) {
 
 // 루트 시그니처를 리턴한다
 ID3D12RootSignature* Scene::GetGraphicsRootSignature() {
-	return(RootSignature);
+	return(ObjectRootSignature);
 }
 
 // 루트시그니처를 릴리즈한다
 void Scene::ReleaseObjects() {
-	if (RootSignature)
-		RootSignature->Release();
+	if (ObjectRootSignature)
+		ObjectRootSignature->Release();
 }
 
 // 렌더링을 준비한다
 void Scene::PrepareRender(ID3D12GraphicsCommandList* CmdList) {
-	CmdList->SetGraphicsRootSignature(RootSignature);
+	
 }
 
 /////////////// private

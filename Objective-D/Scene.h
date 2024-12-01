@@ -26,9 +26,7 @@ private:
 	void (*KeyboardControllerPtr)(HWND, UINT, WPARAM, LPARAM) {};
 
 	Function DestructorBuffer{};
-
-protected:
-	ID3D12RootSignature* RootSignature{};
+	
 
 public:
 	const char* GetMode();
@@ -54,7 +52,7 @@ public:
 	GameObject* Find(const char* Tag);
 	std::pair<ObjectRange, ObjectRange> EqualRange(const char* Tag);
 	void CompleteCommand();
-	ID3D12RootSignature* CreateGraphicsRootSignature(ID3D12Device* Device);
+	ID3D12RootSignature* CreateObjectRootSignature(ID3D12Device* Device);
 	ID3D12RootSignature* GetGraphicsRootSignature();
 	void ReleaseObjects();
 	void PrepareRender(ID3D12GraphicsCommandList* CmdList);

@@ -42,6 +42,14 @@ D3D12_SHADER_BYTECODE Shader::CreatePixelShader(ID3DBlob** ShaderBlob) {
 	return(ShaderByteCode);
 }
 
+D3D12_SHADER_BYTECODE Shader::CreateGeometryShader(ID3DBlob** ShaderBlob) {
+	D3D12_SHADER_BYTECODE ShaderByteCode;
+	ShaderByteCode.BytecodeLength = 0;
+	ShaderByteCode.pShaderBytecode = NULL;
+
+	return(ShaderByteCode);
+}
+
 D3D12_SHADER_BYTECODE Shader::CompileShaderFromFile(WCHAR* FileName, LPCSTR Shadername, LPCSTR ShaderProfile, ID3DBlob** ShaderBlob) {
 	UINT CompileFlags = 0;
 #if defined(_DEBUG)
@@ -75,4 +83,8 @@ void Shader::RenderDepthNone(ID3D12GraphicsCommandList* CmdList) {
 // 깊이 검사를 포함한 파이프라인 적용
 void Shader::RenderDefault(ID3D12GraphicsCommandList* CmdList) {
 	OnPrepareRender(CmdList, PSDefault);
+}
+
+void Shader::RenderParticle(ID3D12GraphicsCommandList* CmdList) {
+	OnPrepareRender(CmdList, PSParticle);
 }

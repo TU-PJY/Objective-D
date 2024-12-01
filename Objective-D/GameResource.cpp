@@ -27,6 +27,7 @@ Object_Shader* ObjectShader;
 Boundbox_Shader* BoundboxShader;
 Image_Shader* ImageShader;
 Line_Shader* LineShader;
+Particle_Shader* ParticleShader;
 
 // 쉐이더를 여기서 로드한다.
 void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
@@ -49,6 +50,9 @@ void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12
 	// 라인 브러쉬 출력용 쉐이더 생성
 	LineShader = new Line_Shader();
 	LineShader->CreateNoneDepthPS(Device, RootSignature);
+
+	ParticleShader = new Particle_Shader();
+	ParticleShader->CreateParticlePS(Device, RootSignature);
 }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////

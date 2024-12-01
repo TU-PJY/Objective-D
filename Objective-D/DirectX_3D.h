@@ -82,6 +82,9 @@ typedef struct Vector {
 // 오브젝트에서 공용으로 사용하는 커맨트 리스트
 extern ID3D12GraphicsCommandList* ObjectCmdList;
 
+// 기본 루트 시그니처
+extern ID3D12RootSignature* ObjectRootSignature;
+
 // screen size
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;
 #define ASPECT (float(SCREEN_WIDTH) / float(SCREEN_HEIGHT))

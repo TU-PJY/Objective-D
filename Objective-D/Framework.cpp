@@ -80,7 +80,8 @@ void Framework::Update() {
 	CmdList->OMSetRenderTargets(1, &RtvCPUDescriptorHandle, TRUE, &DsvCPUDescriptorHandle);
 
 	// 루트시그니처를 쉐이더로 전달한다
-	scene.PrepareRender(CmdList);
+	//scene.PrepareRender(CmdList);
+	CmdList->SetGraphicsRootSignature(ObjectRootSignature);
 
 	// 카메라를 업데이트한다.
 	camera.Update(Timer.GetTimeElapsed());

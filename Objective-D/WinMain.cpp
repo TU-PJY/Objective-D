@@ -9,7 +9,7 @@
 #include "ShaderUtil.h"
 #include "MouseUtil.h"
 #include "TerrainUtil.h"
-
+#include <random>
 int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
@@ -22,6 +22,9 @@ MouseUtil mouse;
 
 // 공용 커맨드 리스트
 ID3D12GraphicsCommandList* ObjectCmdList;
+
+// 기본 루트 시그니처
+ID3D12RootSignature* ObjectRootSignature;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];

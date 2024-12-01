@@ -4,7 +4,7 @@
 #include "ConstantBuffers.h"
 
 // 루트 시그니처 설정
-ID3D12RootSignature* Scene::CreateGraphicsRootSignature(ID3D12Device* Device) {
+ID3D12RootSignature* Scene::CreateObjectRootSignature(ID3D12Device* Device) {
 	ID3D12RootSignature* GraphicsRootSignature = NULL;
 
 	// 32비트 상수들을 정의
