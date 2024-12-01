@@ -12,13 +12,16 @@ void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Funct
 	RootSignature = CreateGraphicsRootSignature(Device);
 
 	// 전역 쉐이더를 생성한다.
-	CreateShaderResource(RootSignature, Device, CmdList);
+	LoadShader(RootSignature, Device, CmdList);
 
-	// 전역 매쉬를 생성한다.
-	CreateMeshResource(Device, CmdList);
+	// 전역 기본 매쉬를 로드한다.
+	LoadSystemMesh(Device, CmdList);
 
-	// 전역 텍스처를 생성한다
-	CreateTextureResource(Device, CmdList);
+	// 전역 매쉬를 로드한다.
+	LoadMesh(Device, CmdList);
+
+	// 전역 텍스처를 로드한다.
+	LoadTexture(Device, CmdList);
 
 	// 시작 모드 함수 실행
 	ModeFunction();
@@ -44,7 +47,7 @@ void Scene::ReleaseDestructor() {
 }
 
 // 현재 존재하는 모든 객체들을 업데이트하고 렌더링한다.
-// 삭제 마크가 표시된 객체들은 오브젝트 리스트에서 삭제된다. (실제 객체 삭제가 아님)
+// 삭제 예약이 활성화된 객체들은 삭제 커맨드 활성화 후 프레임이 끝난 후 일괄 삭제된다.
 void Scene::Routine(float FT, ID3D12GraphicsCommandList* CmdList) {
 	ObjectCmdList = CmdList;
 	for (int i = 0; i < Layers; ++i) {

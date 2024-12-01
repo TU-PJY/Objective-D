@@ -253,9 +253,6 @@
     <ClInclude Include="GameResource.h">
       <Filter>[5]____________[ Game Resource ]</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceFileLink.h">
-      <Filter>[5]____________[ Game Resource ]</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">

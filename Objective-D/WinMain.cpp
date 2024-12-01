@@ -20,12 +20,6 @@ Scene scene;
 Camera camera;
 MouseUtil mouse;
 
-// 이미지 출력을 위한 패널 매쉬
-Mesh* ImagePannel;
-
-// 스카이박스
-Mesh* SkyboxMesh;
-
 // 공용 커맨드 리스트
 ID3D12GraphicsCommandList* ObjectCmdList;
 
