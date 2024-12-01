@@ -256,9 +256,6 @@
     <ClInclude Include="GameResource.h">
       <Filter>[5]____________[ Game Resource ]</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleShader.h">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Particle Shader ]</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -367,9 +364,6 @@
     <ClCompile Include="GameResource.cpp">
       <Filter>[5]____________[ Game Resource ]</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleShader.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Particle Shader ]</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
@@ -403,9 +397,6 @@
       <Filter>[4]____________[ Objective-D ]\[ HLSL ]</Filter>
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\LineShader.hlsl">
-      <Filter>[4]____________[ Objective-D ]\[ HLSL ]</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\SystemResources\Shader\ParticleShader.hlsl">
       <Filter>[4]____________[ Objective-D ]\[ HLSL ]</Filter>
     </FxCompile>
   </ItemGroup>

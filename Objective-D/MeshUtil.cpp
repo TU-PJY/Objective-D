@@ -62,7 +62,6 @@ void Mesh::Render(ID3D12GraphicsCommandList* CmdList) {
 		CmdList->DrawIndexedInstanced(Indices, 1, 0, 0, 0);
 	}
 
-
 	else
 		CmdList->DrawInstanced(Vertices, 1, Offset, 0);
 }

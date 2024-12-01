@@ -23,8 +23,6 @@ void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Funct
 	// 전역 텍스처를 로드한다.
 	LoadTexture(Device, CmdList);
 
-	InitializeParticles(Device);
-
 	// 시작 모드 함수 실행
 	ModeFunction();
 

@@ -168,7 +168,6 @@
     <ClInclude Include="MouseUtil.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="MeshUtil.h" />
-    <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="PickingUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
@@ -207,7 +206,6 @@
     <ClCompile Include="Mode1.cpp" />
     <ClCompile Include="MouseUtil.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
-    <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="PickingUtil.cpp" />
     <ClCompile Include="GameResource.cpp" />
     <ClCompile Include="Resterizers.cpp" />
@@ -255,9 +253,6 @@
     </FxCompile>
     <FxCompile Include="Resources\SystemResources\Shader\ObjectShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="Resources\SystemResources\Shader\ParticleShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>

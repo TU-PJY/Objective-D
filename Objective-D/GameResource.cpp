@@ -1,7 +1,9 @@
 #include "GameResource.h"
+#include <random>
 // 이 파일은 리소스를 관리한다.
 // 기본적으로 전역 리소스이며, ResourceManager.h에 먼저 extern 선언한 뒤, 이 파일에 아래와 같이 정의하면 된다.
 // Scene::Init()에서 실행된다.
+
 
 Mesh* GunMesh;
 
@@ -27,7 +29,6 @@ Object_Shader* ObjectShader;
 Boundbox_Shader* BoundboxShader;
 Image_Shader* ImageShader;
 Line_Shader* LineShader;
-Particle_Shader* ParticleShader;
 
 // 쉐이더를 여기서 로드한다.
 void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
@@ -50,9 +51,6 @@ void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12
 	// 라인 브러쉬 출력용 쉐이더 생성
 	LineShader = new Line_Shader();
 	LineShader->CreateNoneDepthPS(Device, RootSignature);
-
-	ParticleShader = new Particle_Shader();
-	ParticleShader->CreateParticlePS(Device, RootSignature);
 }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////

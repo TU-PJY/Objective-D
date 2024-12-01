@@ -36,7 +36,7 @@ public:
 	void RenderDefault(ID3D12GraphicsCommandList* CmdList);
 	void RenderParticle(ID3D12GraphicsCommandList* CmdList);
 	virtual void CreateShaderVariables(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {}
-	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList) {}
+	virtual void UpdateShaderVariables(ID3D12GraphicsCommandList* CmdList, float elapsedTime) {}
 	virtual void ReleaseShaderVariables() {}
 
 protected:

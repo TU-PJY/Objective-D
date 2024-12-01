@@ -5,7 +5,6 @@
 #include "ObjectShader.h"
 #include "BoundboxShader.h"
 #include "LineShader.h"
-#include "ParticleShader.h"
 
 // 매쉬, 텍스처, 쉐이더 전역 뱐수를 여기에 extern 선언
 extern Mesh* GunMesh;
@@ -18,7 +17,6 @@ extern Object_Shader* ObjectShader;
 extern Boundbox_Shader* BoundboxShader;
 extern Image_Shader* ImageShader;
 extern Line_Shader* LineShader;
-extern Particle_Shader* ParticleShader;
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////// 기본 리소스
 // 매쉬, 텍스처 로드 시 포인터를 저장하는 벡터
