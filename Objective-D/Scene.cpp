@@ -49,14 +49,14 @@ void Scene::Routine(float FT, ID3D12GraphicsCommandList* CmdList) {
 	ObjectCmdList = CmdList;
 	for (int i = 0; i < Layers; ++i) {
 		for (auto const& Object : ObjectList[i]) {
-			if (!Object->DeleteCommand) {
-				Object->Update(FT);
-				Object->Render();
-				if (Object->DeleteReserveCommand) {
-					Object->DeleteCommand = true;
-					AddLocation(i, CurrentReferPosition);
-				}
+			Object->Update(FT);
+			Object->Render();
+
+			if (Object->DeleteReserveCommand) {
+				Object->DeleteCommand = true;
+				AddLocation(i, CurrentReferPosition);
 			}
+			
 			++CurrentReferPosition;
 		}
 		CurrentReferPosition = 0;
