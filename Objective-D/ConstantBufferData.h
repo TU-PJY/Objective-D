@@ -3,18 +3,18 @@
 // 여기에 CBV로 사용할 구조체를 정의한다.
 
 // texture flip
-struct FlipInfo {
+struct FLIP_DATA {
 	int X_Flip;
 	int Y_Flip;
 };
 
 // texture alpha
-struct AlphaInfo {
+struct ALPHA_DATA {
 	float AlphaValue;
 };
 
 // light data
-struct LightInfo {
+struct LIGHT_DATA {
 	DirectX::XMFLOAT3 gLightDirection;  // 12 bytes
 	float padding1;                     // 4 bytes (패딩을 추가하여 16바이트 정렬)
 
@@ -25,6 +25,6 @@ struct LightInfo {
 	float gShadowStrength;              // 4 bytes (이로 인해 16바이트 정렬 완료)
 };
 
-struct UseLightInfo {
+struct USE_LIGHT_DATA {
 	int UseLight;
 };

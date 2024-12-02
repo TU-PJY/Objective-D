@@ -34,47 +34,11 @@ void CBVUtil::Create(ID3D12Device* Device, void* Data, size_t DataSize, CBV& CBV
 	void* pCbData = nullptr;  // void*로 매핑
 	D3D12_RANGE readRange = { 0, 0 };  // 읽기 범위가 없으므로 0으로 설정
 	CBV_Struct.Buffer[CBV_Index]->Map(0, &readRange, reinterpret_cast<void**>(&pCbData));
-
 	memcpy(pCbData, Data, DataSize);
-
 	CBV_Struct.Buffer[CBV_Index]->Unmap(0, nullptr);
-
-	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-	heapDesc.NumDescriptors = 1;
-	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-
-	Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&CBV_Struct.Heap[CBV_Index]));
-
-	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
-	cbvDesc.BufferLocation = CBV_Struct.Buffer[CBV_Index]->GetGPUVirtualAddress();
-	cbvDesc.SizeInBytes = cbSize;
-
-	Device->CreateConstantBufferView(&cbvDesc, CBV_Struct.Heap[CBV_Index]->GetCPUDescriptorHandleForHeapStart());
-}
-
-// CBV 구조체에 루트 시그니처 인덱스를 부여한다.
-void CBVUtil::SetSignatureIndex(CBV& CBV_Struct, int RootSignatureIndex) {
-	CBV_Struct.SignatureIndex = RootSignatureIndex;
 }
 
 // CBV를 쉐이더로 전송한다.
 void CBVUtil::Input(ID3D12GraphicsCommandList* CmdList, CBV& CBV_Struct, int CBV_Index) {
-	ID3D12DescriptorHeap* heaps[] = { CBV_Struct.Heap[CBV_Index] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(CBV_Struct.SignatureIndex, CBV_Struct.Heap[CBV_Index]->GetGPUDescriptorHandleForHeapStart());
-}
-
-// CBV를 업데이트 한다.
-void CBVUtil::Update(ID3D12GraphicsCommandList* CmdList, void* Data, size_t DataSize, CBV& CBV_Struct, int CBVIndex) {
-	void* pCbData = nullptr;
-	D3D12_RANGE readRange = { 0, 0 };
-
-	CBV_Struct.Buffer[CBVIndex]->Map(0, &readRange, reinterpret_cast<void**>(&pCbData));
-	memcpy(pCbData, Data, DataSize);
-	CBV_Struct.Buffer[CBVIndex]->Unmap(0, nullptr);
-
-	ID3D12DescriptorHeap* heaps[] = { CBV_Struct.Heap[CBVIndex] };
-	CmdList->SetDescriptorHeaps(_countof(heaps), heaps);
-	CmdList->SetGraphicsRootDescriptorTable(CBV_Struct.SignatureIndex, CBV_Struct.Heap[CBVIndex]->GetGPUDescriptorHandleForHeapStart());
+	CmdList->SetGraphicsRootConstantBufferView(CBV_Struct.SignatureIndex, CBV_Struct.Buffer[CBV_Index]->GetGPUVirtualAddress());
 }
