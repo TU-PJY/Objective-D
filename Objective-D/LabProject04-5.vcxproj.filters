@@ -267,7 +267,6 @@
     <ClCompile Include="Framework.cpp">
       <Filter>[5]____________[ Objective-D ]\[6] - [ System ]\[ Framework ]</Filter>
     </ClCompile>
-    <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="TimerUtil.cpp">
       <Filter>[5]____________[ Objective-D ]\[6] - [ System ]\[ Timer ]</Filter>
     </ClCompile>
@@ -363,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="SettingRootSignature.cpp">
       <Filter>[5]____________[ Objective-D ]\[3] - [ Root Signature ]</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>[5]____________[ Objective-D ]\[6] - [ System ]\[ WinAPI ]</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

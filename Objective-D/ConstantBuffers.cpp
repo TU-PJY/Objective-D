@@ -7,6 +7,8 @@ CBV LightCBV;  // light data
 CBV BoolFogCBV; // use fog data
 CBV FogCBV; // fog data
 
+float RGB_(int ColorValue);
+
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 void CreateConstantBufferResource(ID3D12Device* Device) {
 	// texture flipdata
@@ -54,4 +56,14 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 	};
 	ReserveConstantBuffer(FogCBV, 1);
 	CBVUtil::Create(Device, &FogData, sizeof(FOG_DATA), FogCBV, 0);
+}
+
+// RGB -> 1.0 색상값 변한 함수
+XMFLOAT3 RGB_(int R, int G, int B) {
+	XMFLOAT3 ReturnColor{};
+	ReturnColor.x = 1.0 / 255.0 * float(R);
+	ReturnColor.y = 1.0 / 255.0 * float(G);
+	ReturnColor.z = 1.0 / 255.0 * float(B);
+
+	return ReturnColor;
 }
