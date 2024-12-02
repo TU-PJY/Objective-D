@@ -9,7 +9,7 @@
 #include "ShaderUtil.h"
 #include "MouseUtil.h"
 #include "TerrainUtil.h"
-#include <random>
+
 int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
