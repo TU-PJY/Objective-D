@@ -81,7 +81,7 @@ void Framework::Update() {
 
 	// 루트시그니처를 쉐이더로 전달한다
 	//scene.PrepareRender(CmdList);
-	CmdList->SetGraphicsRootSignature(ObjectRootSignature);
+	CmdList->SetGraphicsRootSignature(DefaultRootSignature);
 
 	// 카메라를 업데이트한다.
 	camera.Update(Timer.GetTimeElapsed());

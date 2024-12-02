@@ -83,7 +83,7 @@ typedef struct Vector {
 extern ID3D12GraphicsCommandList* ObjectCmdList;
 
 // 기본 루트 시그니처
-extern ID3D12RootSignature* ObjectRootSignature;
+extern ID3D12RootSignature* DefaultRootSignature;
 
 // screen size
 extern int SCREEN_WIDTH, SCREEN_HEIGHT;

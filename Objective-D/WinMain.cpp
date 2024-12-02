@@ -24,7 +24,7 @@ MouseUtil mouse;
 ID3D12GraphicsCommandList* ObjectCmdList;
 
 // 기본 루트 시그니처
-ID3D12RootSignature* ObjectRootSignature;
+ID3D12RootSignature* DefaultRootSignature;
 
 HINSTANCE						AppInstance;
 TCHAR							Title[MAX_LOADSTRING];
