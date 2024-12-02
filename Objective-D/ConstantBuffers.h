@@ -12,11 +12,14 @@ typedef struct {
 // flip CBV
 extern CBV FlipCBV;
 
+// light bool info CBV
+extern CBV BoolLightCBV;
+
 // light CBV
 extern CBV LightCBV;
 
-// light bool info CBV
-extern CBV BoolLightCBV;
+// fog bool info cbv
+extern CBV BoolFogCBV;
 
 // fog cbv
 extern CBV FogCBV;

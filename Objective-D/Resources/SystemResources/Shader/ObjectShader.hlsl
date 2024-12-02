@@ -31,7 +31,12 @@ cbuffer cbLightInfo : register(b4)
     float gShadowStrength;
 }
 
-cbuffer cbFogInfo : register(b5)
+cbuffer cbUseFogInfo : register(b5)
+{
+    int UseFog;
+}
+
+cbuffer cbFogInfo : register(b6)
 {
     float3 gFogColor;
     float gFogStart;
@@ -110,7 +115,8 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
         discard;
 
     // 최종 색상과 안개 색상 혼합
-    finalColor = lerp(finalColor, gFogColor, ComputeFog(input));
+    // UseFog = 1 일 시 안개 색상 혼합, 0일 시 혼합 안 함
+    finalColor = lerp(finalColor, lerp(finalColor, gFogColor, ComputeFog(input)), UseFog);
 
     float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;

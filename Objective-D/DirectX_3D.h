@@ -60,6 +60,12 @@ enum UseLightEnum {
 	ENABLE_LIGHT
 };
 
+// 안개 사용 여부 열거형
+enum UseFogenum {
+	DISABLE_FOG,
+	ENABLE_FOG
+};
+
 // 매쉬 파일 타입 열거형
 enum MeshTypeEnum {
 	MESH_TYPE_TEXT,

@@ -10,6 +10,11 @@ struct TEXTURE_FLIP_DATA {
 	int Y_Flip;
 };
 
+// use light data
+struct USE_LIGHT_DATA {
+	int UseLight;
+};
+
 // light data
 struct LIGHT_DATA {
 	XMFLOAT3 gLightDirection;  // 12 bytes
@@ -22,11 +27,12 @@ struct LIGHT_DATA {
 	float gShadowStrength;              // 4 bytes (이로 인해 16바이트 정렬 완료)
 };
 
-// use light data
-struct USE_LIGHT_DATA {
-	int UseLight;
+// use fog data
+struct USE_FOG_DATA {
+	int UseFog;
 };
 
+// fog data
 struct FOG_DATA {
 	DirectX::XMFLOAT3 FogColor; // 12 bytes
 	float Padding1;     // 4 bytes

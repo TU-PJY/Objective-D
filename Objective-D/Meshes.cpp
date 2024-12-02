@@ -187,10 +187,10 @@ void Mesh::CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* C
 		{  1.0f,  1.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },  // Top-right
 
 		// Back face (¿À¸¥ÂÊ)
-		{  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.7491f, 0.3339f },  // Top-left
-		{  1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.7491f, 0.6661f },  // Bottom-left
-		{ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.9991f, 0.6661f },  // Bottom-right
-		{ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.9991f, 0.3339f },  // Top-right
+		{  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f, 0.0f },  // Top-left
+		{  1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f, 0.0f },  // Bottom-left
+		{ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f, 0.0f },  // Bottom-right
+		{ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f, 0.0f },  // Top-right
 
 		// Left face (¿ÞÂÊ)
 		{ -1.0f,  1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f },   // Top-left

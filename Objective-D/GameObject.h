@@ -36,6 +36,7 @@ public:
 	void SetColor(XMFLOAT3 Color);
 	void SetColorRGB(float R, float G, float B);
 	void SetLightUse(int Flag);
+	void SetFogUse(int Flag);
 	void FlipTexture(int FlipType);
 	float ASP(float Value);
 	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);

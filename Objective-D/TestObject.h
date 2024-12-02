@@ -71,7 +71,7 @@ public:
 		//camera.Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 
-	void Render() {
+	void Render() override {
 		/*InitRenderState(RENDER_TYPE_3D);
 		SetLightUse(DISABLE_LIGHT);
 		Transform::Scale(ScaleMatrix, 20.0, 20.0, 20.0);
@@ -82,7 +82,6 @@ public:
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		FlipTexture(FLIP_TYPE_V);
 		Render3D(GunMesh, Tex);
 
 		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);

@@ -2,8 +2,9 @@
 #include "CBVUtil.h"
 
 CBV FlipCBV; // texture flip data
-CBV LightCBV;  // light data
 CBV BoolLightCBV;  // light bool data
+CBV LightCBV;  // light data
+CBV BoolFogCBV; // use fog data
 CBV FogCBV; // fog data
 
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
@@ -13,6 +14,12 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 	ReserveConstantBuffer(FlipCBV, 4);
 	for (int i = 0; i < 4; ++i)
 		CBVUtil::Create(Device, &TextureFlipData[i], sizeof(TEXTURE_FLIP_DATA), FlipCBV, i);
+
+	// light bool data
+	USE_LIGHT_DATA UselightData[2]{ {0}, {1} };
+	ReserveConstantBuffer(BoolLightCBV, 2);
+	for (int i = 0; i < 2; ++i)
+		CBVUtil::Create(Device, &UselightData[i], sizeof(USE_LIGHT_DATA), BoolLightCBV, i);
 
 	// light data
 	LIGHT_DATA LighData{
@@ -28,11 +35,11 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 	ReserveConstantBuffer(LightCBV, 1);
 	CBVUtil::Create(Device, &LighData, sizeof(LIGHT_DATA), LightCBV, 0);
 
-	// light bool data
-	USE_LIGHT_DATA UselightData[2]{ {0}, {1} };
-	ReserveConstantBuffer(BoolLightCBV, 2);
+	// use fog data
+	USE_FOG_DATA UseFogData[2]{ {0}, {1} };
+	ReserveConstantBuffer(BoolFogCBV, 2);
 	for (int i = 0; i < 2; ++i)
-		CBVUtil::Create(Device, &UselightData[i], sizeof(USE_LIGHT_DATA), BoolLightCBV, i);
+		CBVUtil::Create(Device, &UseFogData[i], sizeof(USE_FOG_DATA), BoolFogCBV, i);
 
 	// fog data
 	FOG_DATA FogData{

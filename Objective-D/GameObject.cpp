@@ -20,14 +20,29 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 		Transform::Identity(ScaleMatrix);
 	}
 
-	if (RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC)
+	if (RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC) {
 		Transform::Identity(ImageAspectMatrix);
+		FlipTexture(FLIP_TYPE_V);
+	}
+
+	if (RenderTypeFlag == RENDER_TYPE_3D || RenderTypeFlag == RENDER_TYPE_3D_STATIC || RenderTypeFlag == RENDER_TYPE_3D_ORTHO) {
+		// 옵션에 따라 안개가 우선 비활성화 되거나 우선 활성화 된다.
+		if (ENABLE_FOG_AFFTER_INIT_RENDER_STATE)
+			SetFogUse(ENABLE_FOG);
+		else
+			SetFogUse(DISABLE_FOG);
+
+		// 옵션에 따라 텍스처 수직 반전이 적용되거나 적용되지 않는다.
+		if (ENABLE_TEXTURE_V_FLIP_AFTER_INIT_RENDER_STATE)
+			FlipTexture(FLIP_TYPE_V);
+		else
+			FlipTexture(FLIP_TYPE_NONE);
+	}
 
 	// 매쉬 색상 초기화
 	SetColor(XMFLOAT3(0.0, 0.0, 0.0));
 
 	// 텍스처 상태 초기화
-	FlipTexture(FLIP_TYPE_NONE);
 	ObjectAlpha = 1.0f;
 
 	// 출력 모드 변경
@@ -81,6 +96,11 @@ void GameObject::FlipTexture(int FlipType) {
 // 조명 활성화 / 비활성화
 void GameObject::SetLightUse(int Flag) {
 	CBVUtil::Input(ObjectCmdList, BoolLightCBV, Flag);
+}
+
+// 안개 활성화 / 비활성화
+void GameObject::SetFogUse(int Flag) {
+	CBVUtil::Input(ObjectCmdList, BoolFogCBV, Flag);
 }
 
 // 3D 렌더링
