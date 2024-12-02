@@ -1,18 +1,18 @@
-cbuffer cbGameObjectInfo : register(b0) 
+cbuffer cbGameObjectInfo : register(b0)
 {
     matrix gmtxWorld : packoffset(c0);
     float3 gf3ObjectColor : packoffset(c4);
-    float AlphaValue : packoffset(c4.w); 
+    float AlphaValue : packoffset(c4.w);
 }
 
-cbuffer cbCameraInfo : register(b1) 
+cbuffer cbCameraInfo : register(b1)
 {
     matrix gmtxView : packoffset(c0);
     matrix gmtxProjection : packoffset(c4);
     float3 gf3CameraPosition : packoffset(c8);
 }
 
-cbuffer cbFlipInfo : register(b2) 
+cbuffer cbFlipInfo : register(b2)
 {
     int X_Flip;
     int Y_Flip;
@@ -23,7 +23,7 @@ cbuffer cbLightUseInfo : register(b3)
     int UseLight;
 }
 
-cbuffer cbLightInfo : register(b4) 
+cbuffer cbLightInfo : register(b4)
 {
     float3 gLightDirection;
     float3 gLightColor;
@@ -31,17 +31,24 @@ cbuffer cbLightInfo : register(b4)
     float gShadowStrength;
 }
 
+cbuffer cbFogInfo : register(b5)
+{
+    float3 gFogColor;
+    float gFogStart;
+    float gFogEnd;
+}
+
 Texture2D gTexture : register(t0);
 SamplerState gSampler : register(s0);
 
-struct VS_INPUT 
+struct VS_INPUT
 {
     float3 position : POSITION;
     float3 normal : NORMAL;
     float2 uv : TEXTURECOORD;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
     float4 positionH : SV_POSITION;
     float3 positionW : POSITION;
@@ -50,7 +57,7 @@ struct VS_OUTPUT
     float2 uv : TEXTURECOORD;
 };
 
-VS_OUTPUT VSTexColor(VS_INPUT input) 
+VS_OUTPUT VSTexColor(VS_INPUT input)
 {
     VS_OUTPUT output;
 
@@ -69,14 +76,22 @@ VS_OUTPUT VSTexColor(VS_INPUT input)
 float3 ComputeLightColor(VS_OUTPUT input, float4 texColor)
 {
     float3 ambient = gAmbientColor * texColor.rgb;
-    float3 lightDir = normalize(-gLightDirection); 
+    float3 lightDir = normalize(-gLightDirection);
     float3 normal = normalize(input.normalW);
-    float NdotL = max(dot(normal, lightDir), 0.0); 
+    float NdotL = max(dot(normal, lightDir), 0.0);
     float3 diffuse = gLightColor * NdotL * texColor.rgb;
     diffuse *= gShadowStrength;
 
     float3 finalColorWithLight = ambient + diffuse;
     return finalColorWithLight;
+}
+
+float ComputeFog(VS_OUTPUT input)
+{
+    float distance = length(input.positionW - gf3CameraPosition);
+    float FogFactor = saturate((distance - gFogStart) / (gFogEnd - gFogStart));
+    
+    return FogFactor;
 }
 
 float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
@@ -89,11 +104,14 @@ float4 PSTexColor(VS_OUTPUT input) : SV_TARGET
     
     // 덮어씌울 색상이 있다면 덮어 씌움
     finalColor += meshColor;
-    
+
     // 텍스처의 투명 부분을 제거
-    if(texColor.a < 0.01)
+    if (texColor.a < 0.01)
         discard;
-  
+
+    // 최종 색상과 안개 색상 혼합
+    finalColor = lerp(finalColor, gFogColor, ComputeFog(input));
+
     float4 outputColor = float4(finalColor, texColor.a * AlphaValue);
     return outputColor;
 }

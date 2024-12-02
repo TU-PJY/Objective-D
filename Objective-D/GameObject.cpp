@@ -85,9 +85,6 @@ void GameObject::SetLightUse(int Flag) {
 
 // 3D ·»´õ¸µ
 void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, bool DepthTestFlag) {
-	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
-	//CBVUtil::Input(ObjectCmdList, FogCBV, 0);
-
 	TexturePtr->Render(ObjectCmdList);
 
 	switch (DepthTestFlag) {
@@ -99,6 +96,8 @@ void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, 
 	}
 
 	ObjectAlpha = AlphaValue;
+	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
+	CBVUtil::Input(ObjectCmdList, FogCBV, 0);
 
 	SetCamera();
 	UpdateShaderVariables();

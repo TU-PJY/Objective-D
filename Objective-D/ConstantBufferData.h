@@ -10,11 +10,6 @@ struct TEXTURE_FLIP_DATA {
 	int Y_Flip;
 };
 
-// texture alpha
-struct ALPHA_DATA {
-	float AlphaValue;
-};
-
 // light data
 struct LIGHT_DATA {
 	XMFLOAT3 gLightDirection;  // 12 bytes

@@ -36,13 +36,13 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 
 	// fog data
 	FOG_DATA FogData{
-		{0.8, 0.8, 0.8}, // Fog Color
+		{0.5, 0.5, 0.5}, // Fog Color
 		0.0,   //   padding1
 
-		{50.0}, // Fog Start
+		10.0, // Fog Start
 		{0.0, 0.0, 0.0}, // padding2
 
-		{100.0}, // FogEnd
+		20.0, // FogEnd
 		{0.0, 0.0, 0.0} // padding3
 	};
 	ReserveConstantBuffer(FogCBV, 1);

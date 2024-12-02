@@ -6,7 +6,7 @@
 #include "CBVUtil.h"
 
 void Framework::Init() {
-	SetBackgroundColor(0.4, 0.4, 0.4);
+	SetBackgroundColor(0.5, 0.5, 0.5);
 
 	CmdList->Reset(CmdAllocator, NULL);
 

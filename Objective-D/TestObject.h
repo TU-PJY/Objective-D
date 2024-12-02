@@ -14,6 +14,7 @@ public:
 	LineBrush line;
 
 	OOBB oobb;
+	bool move{}, moveback{};
 
 	TestObject() {
 		line.SetColor(1.0, 1.0, 1.0);
@@ -41,6 +42,22 @@ public:
 		case WM_LBUTTONUP:
 			mouse.EndMotionCapture();
 			break;
+
+		case WM_RBUTTONDOWN:
+			move = true;
+			break;
+
+		case WM_RBUTTONUP:
+			move = false;
+			break;
+
+		case WM_MBUTTONDOWN:
+			moveback = true;
+			break;
+
+		case WM_MBUTTONUP:
+			moveback = false;
+			break;
 		}
 	}
 
@@ -48,6 +65,9 @@ public:
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
 
+
+		if (move) Position.z += FT * 10;
+		if (moveback) Position.z -= FT * 10;
 		//camera.Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 

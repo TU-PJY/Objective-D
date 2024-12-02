@@ -76,12 +76,6 @@
     <Filter Include="[4]____________[ Objective-D ]\[ Util ]\[ Mouse Util ]">
       <UniqueIdentifier>{3a5cbc8f-6164-4837-b52b-8688b219d9a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Util ]\[ Constant Buffer Util ]">
-      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Util ]\[ Root Constant Util ]">
-      <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[4]____________[ Objective-D ]\[ Header ]">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
@@ -145,6 +139,12 @@
     </Filter>
     <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Timer ]">
       <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]\[ Constant Buffer Util ]">
+      <UniqueIdentifier>{8a9a0685-ce18-4df7-bf17-ba13635518e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]\[ Root Constant Util ]">
+      <UniqueIdentifier>{454bc9de-c7e0-4efc-93a0-6a13c1b25425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,10 +230,10 @@
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]</Filter>
     </ClInclude>
     <ClInclude Include="CBVUtil.h">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Constant Buffer Util ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]\[ Constant Buffer Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstantUtil.h">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Root Constant Util ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]\[ Root Constant Util ]</Filter>
     </ClInclude>
     <ClInclude Include="RootConstants.h">
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>
@@ -338,10 +338,10 @@
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]</Filter>
     </ClCompile>
     <ClCompile Include="CBVUtil.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Constant Buffer Util ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Constant Buffer ]\[ Constant Buffer Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstantUtil.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Root Constant Util ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]\[ Root Constant Util ]</Filter>
     </ClCompile>
     <ClCompile Include="RootConstants.cpp">
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>

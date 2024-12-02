@@ -13,8 +13,15 @@ inline void SetRoot(std::vector<D3D12_ROOT_PARAMETER>& RootParam, int NumValue, 
 }
 
 inline void SetCBV(D3D12_DESCRIPTOR_RANGE Range, std::vector<D3D12_ROOT_PARAMETER>& RootParam, int RegisterNum, int RootIndex, CBV& CBV_Struct) {
-	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	RootParam[RootIndex].Descriptor.ShaderRegister = RegisterNum;
+	Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	Range.NumDescriptors = 1;
+	Range.BaseShaderRegister = RegisterNum;
+	Range.RegisterSpace = 0;
+	Range.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	RootParam[RootIndex].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	RootParam[RootIndex].DescriptorTable.NumDescriptorRanges = 1;
+	RootParam[RootIndex].DescriptorTable.pDescriptorRanges = &Range;
 	RootParam[RootIndex].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	CBV_Struct.SignatureIndex = RootIndex;
