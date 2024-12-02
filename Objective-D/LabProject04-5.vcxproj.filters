@@ -22,25 +22,6 @@
     <Filter Include="[4]____________[ Objective-D ]">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Framework ]">
-      <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Scene ]">
-      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ WinAPI ]">
-      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ WinAPI ]\[ Res ]">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ WinAPI ]\[ Header ]">
-      <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Timer ]">
-      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[4]____________[ Objective-D ]\[ Util ]">
       <UniqueIdentifier>{b6d4afa3-90e4-47a5-ba1f-f41d49ed0da4}</UniqueIdentifier>
     </Filter>
@@ -104,15 +85,6 @@
     <Filter Include="[4]____________[ Objective-D ]\[ Header ]">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Texture Loader ]">
-      <UniqueIdentifier>{73e6f496-ce6c-4cd5-bee3-8f2023e35c7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Texture Loader ]\[ WICTextureLoader12 ]">
-      <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[4]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]">
-      <UniqueIdentifier>{5983987d-bc91-4c09-814d-3736d2a90331}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[4]____________[ Objective-D ]\[ Root Signature ]">
       <UniqueIdentifier>{3f042948-dac6-40de-9897-8492044f7036}</UniqueIdentifier>
     </Filter>
@@ -143,10 +115,41 @@
     <Filter Include="[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Particle Shader ]">
       <UniqueIdentifier>{25a07db2-158f-42e8-9f95-f4c7f3ad2bdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]">
+      <UniqueIdentifier>{80837fba-8383-4839-89ef-9bb43664b334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]">
+      <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Res ]">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Header ]">
+      <UniqueIdentifier>{72b2faf8-f4fd-434a-96dc-e0c382f6e0c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Framework ]">
+      <UniqueIdentifier>{0663579a-f565-40d0-80bb-d7e8bb127ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Scene ]">
+      <UniqueIdentifier>{a882829a-dff4-4946-9ffa-c1aee2ad70cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]">
+      <UniqueIdentifier>{73e6f496-ce6c-4cd5-bee3-8f2023e35c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ WICTextureLoader12 ]">
+      <UniqueIdentifier>{09d3e037-e897-42ba-b91b-0ca90bae1be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ DDSTextureLoader12 ]">
+      <UniqueIdentifier>{5983987d-bc91-4c09-814d-3736d2a90331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]____________[ Objective-D ]\[ System ]\[ Timer ]">
+      <UniqueIdentifier>{316a1113-7690-4ecb-9a65-31ebb3a73328}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
-      <Filter>[4]____________[ Objective-D ]\[ Scene ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Scene ]</Filter>
     </ClInclude>
     <ClInclude Include="DirectX_3D.h">
       <Filter>[4]____________[ Objective-D ]\[ Header ]</Filter>
@@ -158,19 +161,19 @@
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Mesh Util ]</Filter>
     </ClInclude>
     <ClInclude Include="TimerUtil.h">
-      <Filter>[4]____________[ Objective-D ]\[ Timer ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Timer ]</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Header ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="Mode1.h">
       <Filter>[1]____________[ Game Mode ]\[ Mode1 ]</Filter>
@@ -206,13 +209,13 @@
       <Filter>[4]____________[ Objective-D ]\[ Header ]</Filter>
     </ClInclude>
     <ClInclude Include="WICTextureLoader12.h">
-      <Filter>[4]____________[ Objective-D ]\[ Texture Loader ]\[ WICTextureLoader12 ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ WICTextureLoader12 ]</Filter>
     </ClInclude>
     <ClInclude Include="TextureUtil.h">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Texture Util ]</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
-      <Filter>[4]____________[ Objective-D ]\[ Framework ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Framework ]</Filter>
     </ClInclude>
     <ClInclude Include="LineBrush.h">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Brush Util ]</Filter>
@@ -236,7 +239,7 @@
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader12.h">
-      <Filter>[4]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
     </ClInclude>
     <ClInclude Include="ObjectShader.h">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Object Shader ]</Filter>
@@ -259,17 +262,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Scene ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Scene ]</Filter>
     </ClCompile>
     <ClCompile Include="DirectX_3D.cpp">
       <Filter>[4]____________[ Objective-D ]\[ Header ]</Filter>
     </ClCompile>
     <ClCompile Include="Framework.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Framework ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Framework ]</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="TimerUtil.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Timer ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Timer ]</Filter>
     </ClCompile>
     <ClCompile Include="PickingUtil.cpp">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Picking Util ]</Filter>
@@ -305,7 +308,7 @@
       <Filter>[4]____________[ Objective-D ]\[ Config ]</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader12.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Texture Loader ]\[ WICTextureLoader12 ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ WICTextureLoader12 ]</Filter>
     </ClCompile>
     <ClCompile Include="TextureUtil.cpp">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Texture Util ]</Filter>
@@ -344,7 +347,7 @@
       <Filter>[4]____________[ Objective-D ]\[ Root Signature ]\[ Root Constant ]</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader12.cpp">
-      <Filter>[4]____________[ Objective-D ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ Texture Loader ]\[ DDSTextureLoader12 ]</Filter>
     </ClCompile>
     <ClCompile Include="ObjectShader.cpp">
       <Filter>[4]____________[ Objective-D ]\[ Util ]\[ Shader Util ]\[2][ Shaders ]\[ Object Shader ]</Filter>
@@ -367,15 +370,15 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Res ]</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>[4]____________[ Objective-D ]\[ WinAPI ]\[ Res ]</Filter>
+      <Filter>[4]____________[ Objective-D ]\[ System ]\[ WinAPI ]\[ Res ]</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

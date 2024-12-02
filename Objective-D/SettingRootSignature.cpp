@@ -23,6 +23,8 @@ ID3D12RootSignature* Scene::CreateObjectRootSignature(ID3D12Device* Device) {
 
 	SetCBV(Range, RootParameters, 4, 4, LightCBV);          // b4, cbLightInfo
 
+	//SetCBV(Range, RootParameters, 5, 5, FogCBV);            // b5, cbFogInfo
+
 	SetSRV(Range, RootParameters, 0, 5, SRV_INDEX);         // t0, SRV
 
 	SetSampler(Range, RootParameters, 0, 6, SAMPLER_INDEX); // s0, Sampler

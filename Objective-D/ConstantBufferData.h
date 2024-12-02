@@ -1,9 +1,11 @@
 #pragma once
 #include <DirectXMath.h>
+using namespace DirectX;
+
 // 여기에 CBV로 사용할 구조체를 정의한다.
 
 // texture flip
-struct FLIP_DATA {
+struct TEXTURE_FLIP_DATA {
 	int X_Flip;
 	int Y_Flip;
 };
@@ -15,16 +17,29 @@ struct ALPHA_DATA {
 
 // light data
 struct LIGHT_DATA {
-	DirectX::XMFLOAT3 gLightDirection;  // 12 bytes
+	XMFLOAT3 gLightDirection;  // 12 bytes
 	float padding1;                     // 4 bytes (패딩을 추가하여 16바이트 정렬)
 
-	DirectX::XMFLOAT3 gLightColor;      // 12 bytes
+	XMFLOAT3 gLightColor;      // 12 bytes
 	float padding2;                     // 4 bytes (16바이트 정렬)
 
-	DirectX::XMFLOAT3 gAmbientColor;    // 12 bytes
+	XMFLOAT3 gAmbientColor;    // 12 bytes
 	float gShadowStrength;              // 4 bytes (이로 인해 16바이트 정렬 완료)
 };
 
+// use light data
 struct USE_LIGHT_DATA {
 	int UseLight;
 };
+
+struct FOG_DATA {
+	DirectX::XMFLOAT3 FogColor; // 12 bytes
+	float Padding1;     // 4 bytes
+
+	float FogStart;    // 4 bytes
+	XMFLOAT3 Padding2;  // 12 bytes
+
+	float FogEnd;      // 4 bytes
+	XMFLOAT3 Padding3;  // 12 bytes
+};
+
