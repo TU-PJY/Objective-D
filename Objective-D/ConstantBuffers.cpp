@@ -7,7 +7,7 @@ CBV LightCBV;  // light data
 CBV BoolFogCBV; // use fog data
 CBV FogCBV; // fog data
 
-float RGB_(int ColorValue);
+XMFLOAT3 RGB_(int R, int G, int B);
 
 // 상수버퍼로 사용할 버퍼 및 힙을 설정한다.
 void CreateConstantBufferResource(ID3D12Device* Device) {
