@@ -47,7 +47,7 @@ public:
 			break;
 
 		case WM_RBUTTONDOWN:
-			if (PickingUtil::PickByWinCoordOOBB(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, oobb)) {
+			if (PickingUtil::PickByViewportOOBB(mouse.x, mouse.y, oobb)) {
 				Color = XMFLOAT3(1.0, 0.0, 0.0);
 			}
 			else
