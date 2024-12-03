@@ -15,6 +15,12 @@ void Transform::Move(XMFLOAT4X4& Matrix, float X, float Y, float Z) {
 	Matrix = Mat4::Multiply(TranslateMat, Matrix);
 }
 
+// 평행이동 변환
+void Transform::Move(XMFLOAT4X4& Matrix, XMFLOAT3& Value) {
+	XMMATRIX TranslateMat = XMMatrixTranslation(Value.x,Value.y, Value.z);
+	Matrix = Mat4::Multiply(TranslateMat, Matrix);
+}
+
 // 축을 지정하여 특정 각도만큼 회전 변환 시킨다.
 void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationValue, float X, float Y, float Z) {
 	XMMATRIX RotateMat = XMMatrixRotationAxis(XMVectorSet(X, Y, Z, 0.0f), XMConvertToRadians(RotationValue));
@@ -25,6 +31,13 @@ void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationValue, float X, float Y
 void Transform::Rotate(XMFLOAT4X4& Matrix, float RotationX, float RotationY, float RotationZ) {
 	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
 		XMConvertToRadians(RotationX), XMConvertToRadians(RotationY), XMConvertToRadians(RotationZ));
+	Matrix = Mat4::Multiply(RotateMat, Matrix);
+}
+
+// 각 축에 회전 각도를 부여하여 회전 변환 시킨다.
+void Transform::Rotate(XMFLOAT4X4& Matrix, XMFLOAT3& Rotation) {
+	XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
+		XMConvertToRadians(Rotation.x), XMConvertToRadians(Rotation.y), XMConvertToRadians(Rotation.z));
 	Matrix = Mat4::Multiply(RotateMat, Matrix);
 }
 
@@ -45,6 +58,12 @@ void Transform::RotateYX(XMFLOAT4X4& Matrix, float RotationX, float RotationY) {
 // 스케일 변환
 void Transform::Scale(XMFLOAT4X4& Matrix, float ScaleX, float ScaleY, float ScaleZ) {
 	XMMATRIX ScaleMat = XMMatrixScaling(ScaleX, ScaleY, ScaleZ);
+	Matrix = Mat4::Multiply(ScaleMat, Matrix);
+}
+
+// 스케일 변환
+void Transform::Scale(XMFLOAT4X4& Matrix, XMFLOAT3& Size) {
+	XMMATRIX ScaleMat = XMMatrixScaling(Size.x, Size.y, Size.z);
 	Matrix = Mat4::Multiply(ScaleMat, Matrix);
 }
 

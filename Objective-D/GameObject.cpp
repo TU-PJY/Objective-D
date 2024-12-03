@@ -59,15 +59,22 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 }
 
 // 객체 메쉬의 색상을 설정한다.
-void GameObject::SetColor(XMFLOAT3 Color) {
+void GameObject::SetColor(XMFLOAT3& Color) {
 	ObjectColor = Color;
 }
 
-// 객체 매쉬의 색상을 설정한다.
-void GameObject::SetColorRGB(float R, float G, float B) {
+// 객체 메쉬의 색상을 설정한다.
+void GameObject::SetColor(float R, float G, float B) {
 	ObjectColor.x = R;
 	ObjectColor.y = G;
 	ObjectColor.z = B;
+}
+
+// RGB값을 사용하여 객체 매쉬의 색상을 설정한다.
+void GameObject::SetColorRGB(float R, float G, float B) {
+	ObjectColor.x = 1.0 / 255.0 * float(R);
+	ObjectColor.y = 1.0 / 255.0 * float(G);
+	ObjectColor.z = 1.0 / 255.0 * float(B);
 }
 
 // 텍스처를 반전시킨다. 모델에 따라 다르게 사용할 수 있다.
@@ -107,21 +114,16 @@ void GameObject::SetFogUse(int Flag) {
 void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, bool DepthTestFlag) {
 	TexturePtr->Render(ObjectCmdList);
 
-	switch (DepthTestFlag) {
-	case true:
-		ObjectShader->RenderDefault(ObjectCmdList);    break;
-
-	case false:
-		ObjectShader->RenderDepthNone(ObjectCmdList);  break;
-	}
+	if(DepthTestFlag)
+		ObjectShader->RenderDefault(ObjectCmdList);
+	else
+		ObjectShader->RenderDepthNone(ObjectCmdList);
 
 	ObjectAlpha = AlphaValue;
 	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
 	CBVUtil::Input(ObjectCmdList, FogCBV, 0);
 
-	SetCamera();
-	UpdateShaderVariables();
-
+	PrepareRender();
 	MeshPtr->Render(ObjectCmdList);
 }
 
@@ -133,9 +135,7 @@ void GameObject::Render2D(Texture* TexturePtr, float AlphaValue, bool EnableAspe
 	ImageShader->RenderDepthNone(ObjectCmdList);
 	ObjectAlpha = AlphaValue;
 
-	SetCamera();
-	UpdateShaderVariables();
-
+	PrepareRender();
 	ImagePannel->Render(ObjectCmdList);
 }
 
@@ -172,14 +172,12 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& Vi
 	return(InterSected);
 }
 
-bool GameObject::PickRayInterOOBB(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, const OOBB& Other) {
-
-}
-
 //////////////////////////////////////// private
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. Render함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
-void GameObject::UpdateShaderVariables() {
+void GameObject::PrepareRender() {
+	SetCamera();
+
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), ResultMatrix);
 
@@ -221,14 +219,6 @@ void GameObject::SetCamera() {
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
 void GameObject::GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection) {
 	XMMATRIX MatrixTomodel = XMMatrixInverse(NULL, PickMatrix * ViewMatrix);
-	XMFLOAT3 CameraOrigin(0.0f, 0.0f, 0.0f);
-	PickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&CameraOrigin), MatrixTomodel);
-	PickRayDirection = XMVector3TransformCoord(PickPosition, MatrixTomodel);
-	PickRayDirection = XMVector3Normalize(PickRayDirection - PickRayOrigin);
-}
-
-void GameObject::GenBoundboxPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection) {
-	XMMATRIX MatrixTomodel = XMMatrixInverse(NULL, ViewMatrix);
 	XMFLOAT3 CameraOrigin(0.0f, 0.0f, 0.0f);
 	PickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&CameraOrigin), MatrixTomodel);
 	PickRayDirection = XMVector3TransformCoord(PickPosition, MatrixTomodel);

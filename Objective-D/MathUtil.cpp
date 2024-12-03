@@ -140,17 +140,17 @@ bool Math::IsRightOfTarget(XMFLOAT3& ThisPosition, ObjectVector& Vector, XMFLOAT
 }
 
 // 위치를 앞으로 움직인다. 현재 자신의 위치값과 자신의 look벡터, 속도값을 넣어주면 된다.
-void Math::Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance) {
+void Math::Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3& Look, float Distance) {
 	Position = Vec3::Add(Position, Look, Distance);
 }
 
 // 위치를 옆으로 움직인다. 현재 자신의 위치값과 자신의 right벡터, 속도값을 넣어주면 된다.
-void Math::Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance) {
+void Math::Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3& Right, float Distance) {
 	Position = Vec3::Add(Position, Right, Distance);
 }
 
 // 위치를 위로 움직인다. 현재 자신의 위치값과 자신의 up벡터, 속도값을 넣어주면 된다.
-void Math::Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance) {
+void Math::Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3& Up, float Distance) {
 	Position = Vec3::Add(Position, Up, Distance);
 }
 

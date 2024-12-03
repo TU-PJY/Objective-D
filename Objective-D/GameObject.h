@@ -37,7 +37,8 @@ public:
 	bool DeleteReserveCommand{};
 
 	void InitRenderState(int RenderTypeFlag = RENDER_TYPE_3D);
-	void SetColor(XMFLOAT3 Color);
+	void SetColor(XMFLOAT3& Color);
+	void SetColor(float R, float G, float B);
 	void SetColorRGB(float R, float G, float B);
 	void SetLightUse(int Flag);
 	void SetFogUse(int Flag);
@@ -50,13 +51,10 @@ public:
 	void UpdatePickMatrix();
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, float* HitDistance);
 
-	bool PickRayInterOOBB(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, const OOBB& Other);
-
 private:
-	void UpdateShaderVariables();
-	void GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
-	void GenBoundboxPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
+	void PrepareRender();
 	void SetCamera();
+	void GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
 
 	////////// virtual functions
 public:

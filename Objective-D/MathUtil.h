@@ -14,9 +14,9 @@ namespace Math {
 	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, const OOBB& Other);
 	bool CheckRayCollision(XMVECTOR& rayOrigin, XMVECTOR& rayDirection, const Range& Other);
 	bool IsRightOfTarget(XMFLOAT3& ThisPosition, ObjectVector& Vector, XMFLOAT3& TargetPosition);
-	void Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3 Look, float Distance);
-	void Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3 Right, float Distance);
-	void Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3 Up, float Distance);
+	void Vector_MoveForward(XMFLOAT3& Position, XMFLOAT3& Look, float Distance);
+	void Vector_MoveStrafe(XMFLOAT3& Position, XMFLOAT3& Right, float Distance);
+	void Vector_MoveUp(XMFLOAT3& Position, XMFLOAT3& Up, float Distance);
 	void MoveForward(XMFLOAT3& Position, float RotationY, float MoveDistance);
 	void MoveStrafe(XMFLOAT3& Position, float RotationY, float MoveDistance);
 	void MoveUp(XMFLOAT3& Position, float MoveDistance);

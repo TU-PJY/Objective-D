@@ -18,12 +18,12 @@ void MouseUtil::EndMotionCapture() {
 }
 
 // 마우스 모션 위치를 업데이트 한다
-void MouseUtil::UpdateMotionPosition(POINT MotionPosition) {
+void MouseUtil::UpdateMotionPosition(POINT& MotionPosition) {
 	::SetCursorPos(MotionPosition.x, MotionPosition.y);
 }
 
 // 마우스 모션에 따른 delta값을 리턴한다. Sensivity 값이 높을 수록 delta값이 커진다.
-XMFLOAT2 MouseUtil::GetMotionDelta(POINT MotionPosition, float Sensivity) {
+XMFLOAT2 MouseUtil::GetMotionDelta(POINT& MotionPosition, float Sensivity) {
 	XMFLOAT2 Delta{};
 	Delta.x = (float)(CurrentPosition().x - MotionPosition.x) * Sensivity;
 	Delta.y = (float)(CurrentPosition().y - MotionPosition.y) * Sensivity;

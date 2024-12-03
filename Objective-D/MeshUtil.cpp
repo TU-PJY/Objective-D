@@ -129,7 +129,7 @@ float Mesh::GetHeightAtPosition(Mesh* terrainMesh, float x, float z, const XMFLO
 	return 0.0f;
 }
 
-bool Mesh::IsPointInTriangle(XMFLOAT2 pt, XMFLOAT2 v0, XMFLOAT2 v1, XMFLOAT2 v2) {
+bool Mesh::IsPointInTriangle(XMFLOAT2& pt, XMFLOAT2& v0, XMFLOAT2& v1, XMFLOAT2& v2) {
 	float d00 = (v1.x - v0.x) * (v1.x - v0.x) + (v1.y - v0.y) * (v1.y - v0.y);
 	float d01 = (v1.x - v0.x) * (v2.x - v0.x) + (v1.y - v0.y) * (v2.y - v0.y);
 	float d11 = (v2.x - v0.x) * (v2.x - v0.x) + (v2.y - v0.y) * (v2.y - v0.y);
@@ -143,7 +143,7 @@ bool Mesh::IsPointInTriangle(XMFLOAT2 pt, XMFLOAT2 v0, XMFLOAT2 v1, XMFLOAT2 v2)
 	return (u >= 0) && (v >= 0) && (w >= 0);
 }
 
-float Mesh::ComputeHeightOnTriangle(XMFLOAT3 pt, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2) {
+float Mesh::ComputeHeightOnTriangle(XMFLOAT3& pt, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2) {
 	XMVECTOR p = XMLoadFloat3(&pt);
 	XMVECTOR a = XMLoadFloat3(&v0);
 	XMVECTOR b = XMLoadFloat3(&v1);
