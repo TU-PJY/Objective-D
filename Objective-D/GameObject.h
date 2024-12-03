@@ -50,9 +50,12 @@ public:
 	void UpdatePickMatrix();
 	int PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, float* HitDistance);
 
+	bool PickRayInterOOBB(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, const OOBB& Other);
+
 private:
 	void UpdateShaderVariables();
 	void GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
+	void GenBoundboxPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
 	void SetCamera();
 
 	////////// virtual functions

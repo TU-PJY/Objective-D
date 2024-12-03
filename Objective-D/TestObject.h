@@ -16,8 +16,6 @@ public:
 	LineBrush line;
 
 	OOBB oobb;
-
-	PickingUtil pickUtil;
 	
 	float point = 0.1;
 
@@ -49,7 +47,7 @@ public:
 			break;
 
 		case WM_RBUTTONDOWN:
-			if (pickUtil.PickByCursor(lParam, this, GunMesh)) {
+			if (PickingUtil::PickByWinCoordOOBB(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, oobb)) {
 				Color = XMFLOAT3(1.0, 0.0, 0.0);
 			}
 			else

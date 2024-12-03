@@ -172,6 +172,10 @@ int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& Vi
 	return(InterSected);
 }
 
+bool GameObject::PickRayInterOOBB(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, const OOBB& Other) {
+
+}
+
 //////////////////////////////////////// private
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. Render함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
@@ -217,6 +221,14 @@ void GameObject::SetCamera() {
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
 void GameObject::GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection) {
 	XMMATRIX MatrixTomodel = XMMatrixInverse(NULL, PickMatrix * ViewMatrix);
+	XMFLOAT3 CameraOrigin(0.0f, 0.0f, 0.0f);
+	PickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&CameraOrigin), MatrixTomodel);
+	PickRayDirection = XMVector3TransformCoord(PickPosition, MatrixTomodel);
+	PickRayDirection = XMVector3Normalize(PickRayDirection - PickRayOrigin);
+}
+
+void GameObject::GenBoundboxPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection) {
+	XMMATRIX MatrixTomodel = XMMatrixInverse(NULL, ViewMatrix);
 	XMFLOAT3 CameraOrigin(0.0f, 0.0f, 0.0f);
 	PickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&CameraOrigin), MatrixTomodel);
 	PickRayDirection = XMVector3TransformCoord(PickPosition, MatrixTomodel);
