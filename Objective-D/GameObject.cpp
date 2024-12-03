@@ -22,7 +22,7 @@ void GameObject::InitRenderState(int RenderTypeFlag) {
 
 	if (RenderTypeFlag == RENDER_TYPE_2D || RenderTypeFlag == RENDER_TYPE_2D_STATIC) {
 		Transform::Identity(ImageAspectMatrix);
-		FlipTexture(FLIP_TYPE_V);
+		FlipTexture(FLIP_TYPE_NONE);
 	}
 
 	if (RenderTypeFlag == RENDER_TYPE_3D || RenderTypeFlag == RENDER_TYPE_3D_STATIC || RenderTypeFlag == RENDER_TYPE_3D_ORTHO) {
@@ -151,27 +151,32 @@ void GameObject::UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float De
 	Rotation.y += DeltaX;
 }
 
+// 피킹을 위한 행렬을 업데이트 한다.
+void GameObject::UpdatePickMatrix() {
+	PickMatrix = ResultMatrix;
+}
+
 // 값에 종횡비를 곱한다. UI를 구현할때 주로 사용한다.
 float GameObject::ASP(float Value) {
 	return ASPECT * Value;
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
-int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance) {
-	int nIntersected = 0;
+int GameObject::PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, float* HitDistance) {
+	int InterSected{};
 
-	XMVECTOR xmvPickRayOrigin, xmvPickRayDirection;
-	GenPickingRay(xmvPickPosition, xmmtxView, xmvPickRayOrigin, xmvPickRayDirection);
-	nIntersected = MeshPtr->CheckRayIntersection(xmvPickRayOrigin, xmvPickRayDirection, pfHitDistance);
+	XMVECTOR PickRayOrigin, PickRayDirecton;
+	GenPickingRay(PickPosition, ViewMatrix, PickRayOrigin, PickRayDirecton);
+	InterSected = MeshPtr->CheckRayIntersection(PickRayOrigin, PickRayDirecton, HitDistance);
 
-	return(nIntersected);
+	return(InterSected);
 }
 
 //////////////////////////////////////// private
 
 // 행렬과 쉐이더 및 색상 관련 값들을 쉐이더에 전달한다. Render함수를 실행하면 이 함수도 실행된다. 즉, 직접 사용할 일이 없다.
 void GameObject::UpdateShaderVariables() {
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
+	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), ResultMatrix);
 
 	// 이미지 출력 모드일경우 종횡비를 적용한다.
@@ -210,13 +215,10 @@ void GameObject::SetCamera() {
 }
 
 // 피킹 시 사용하는 함수이다. 프로그래머가 이 함수를 직접 사용할 일은 없다.
-void GameObject::GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection) {
-	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
-	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
-
-	XMMATRIX xmmtxToModel = XMMatrixInverse(NULL, ResultMatrix * xmmtxView);
-	XMFLOAT3 xmf3CameraOrigin(0.0f, 0.0f, 0.0f);
-	xmvPickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&xmf3CameraOrigin), xmmtxToModel);
-	xmvPickRayDirection = XMVector3TransformCoord(xmvPickPosition, xmmtxToModel);
-	xmvPickRayDirection = XMVector3Normalize(xmvPickRayDirection - xmvPickRayOrigin);
+void GameObject::GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection) {
+	XMMATRIX MatrixTomodel = XMMatrixInverse(NULL, PickMatrix * ViewMatrix);
+	XMFLOAT3 CameraOrigin(0.0f, 0.0f, 0.0f);
+	PickRayOrigin = XMVector3TransformCoord(XMLoadFloat3(&CameraOrigin), MatrixTomodel);
+	PickRayDirection = XMVector3TransformCoord(PickPosition, MatrixTomodel);
+	PickRayDirection = XMVector3Normalize(PickRayDirection - PickRayOrigin);
 }

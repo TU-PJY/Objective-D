@@ -1,59 +1,51 @@
 #include "PickingUtil.h"
 #include "MouseUtil.h"
-
+#include "MathUtil.h"
 
 // 피킹을 담당하는 유틸이다
 
 // 커서를 사용하여 오브젝트를 피킹한다
 // 피킹할 대상의 객체 포인터와 그 객체가 사용하는 매쉬 포인터가 필요하다.
-bool PickingUtil::PickByCursor(LPARAM lparam, GameObject* Object, Mesh* MeshPtr) {
+bool PickingUtil::PickByCursor(LPARAM lParam, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
 		return false;
+	
+	XMFLOAT3 PickPoint{};
+	PickPoint.x = (((2.0f * LOWORD(lParam)) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
+	PickPoint.y = -(((2.0f * HIWORD(lParam)) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
+	PickPoint.z = 1.0f;
 
-	float xclient = LOWORD(lparam);
-	float yclient = HIWORD(lparam);
+	std::cout << PickPoint.x << " " << PickPoint.y << "\n";
 
-	XMFLOAT3 xmf3pickposition;
-	xmf3pickposition.x = mouse.x;
-	xmf3pickposition.y = mouse.y;
-	xmf3pickposition.z = 1.0f;
+	int Intersected{};
+	float NearestHitDist = FLT_MAX;
+	float HitDist = FLT_MAX;
+	Intersected = Object->PickRayInter(MeshPtr, XMLoadFloat3(&PickPoint), XMLoadFloat4x4(&camera.ViewMatrix), &HitDist);
 
-	XMVECTOR xmvpickposition = XMLoadFloat3(&xmf3pickposition);
-	XMMATRIX xmmtxview = XMLoadFloat4x4(&camera.ViewMatrix);
-
-	int nintersected = 0;
-	float fnearesthitdistance = FLT_MAX;
-	float fhitdistance = FLT_MAX;
-	nintersected = Object->PickRayInter(MeshPtr, xmvpickposition, xmmtxview, &fhitdistance);
-
-	if ((nintersected > 0) && (fhitdistance < fnearesthitdistance))
+	if (Intersected > 0 && HitDist < NearestHitDist)
 		return true;
 
 	return false;
 }
 
-// 원리는 위의 함수와 같으나 부포트 좌표를 사용하여 오브젝트를 피킹한다
-bool PickingUtil::PickByCoord(float x, float y, GameObject* Object, Mesh* MeshPtr) {
+// 윈도우 좌표를 사용하여 오브젝트를 피킹한다
+bool PickingUtil::PickByWinCoord(int X, int Y, GameObject* Object, Mesh* MeshPtr) {
 	if (!MeshPtr)
 		return false;
 
-	float xclient = (x + 1.0) / 2.0 * SCREEN_WIDTH;
-	float yclient = (1.0 - y) / 2.0 * SCREEN_HEIGHT;
+	XMFLOAT3 PickPoint{};
+	PickPoint.x = (((2.0f * X) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
+	PickPoint.y = -(((2.0f * Y) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
+	PickPoint.z = 1.0f;
 
-	XMFLOAT3 xmf3pickposition;
-	xmf3pickposition.x = (((2.0f * xclient) / (float)SCREEN_WIDTH) - 1) / camera.ProjectionMatrix._11;
-	xmf3pickposition.y = -(((2.0f * yclient) / (float)SCREEN_HEIGHT) - 1) / camera.ProjectionMatrix._22;
-	xmf3pickposition.z = 1.0f;
+	std::cout << PickPoint.x << " " << PickPoint.y << "\n";
 
-	XMVECTOR xmvpickposition = XMLoadFloat3(&xmf3pickposition);
-	XMMATRIX xmmtxview = XMLoadFloat4x4(&camera.ViewMatrix);
+	int Intersected{};
+	float NearestHitDist = FLT_MAX;
+	float HitDist = FLT_MAX;
+	Intersected = Object->PickRayInter(MeshPtr, XMLoadFloat3(&PickPoint), XMLoadFloat4x4(&camera.ViewMatrix), &HitDist);
 
-	int nintersected = 0;
-	float fnearesthitdistance = FLT_MAX;
-	float fhitdistance = FLT_MAX;
-	nintersected = Object->PickRayInter(MeshPtr, xmvpickposition, xmmtxview, &fhitdistance);
-
-	if ((nintersected > 0) && (fhitdistance < fnearesthitdistance))
+	if (Intersected > 0 && HitDist < NearestHitDist)
 		return true;
 
 	return false;

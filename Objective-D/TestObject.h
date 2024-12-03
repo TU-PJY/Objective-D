@@ -3,6 +3,7 @@
 #include "MouseUtil.h"
 #include "CameraUtil.h"
 #include <cmath>
+#include "PickingUtil.h"
 
 class TestObject : public GameObject {
 public:
@@ -10,11 +11,15 @@ public:
 	XMFLOAT3 Rotation{};
 	XMFLOAT3 RotationDest{};
 	XMFLOAT3 Size{ 0.5, 0.5, 0.5 };
+	XMFLOAT3 Color{ 0.0, 0.0, 0.0 };
 
 	LineBrush line;
 
 	OOBB oobb;
-	bool move{}, moveback{};
+
+	PickingUtil pickUtil;
+	
+	float point = 0.1;
 
 	TestObject() {
 		line.SetColor(1.0, 1.0, 1.0);
@@ -44,19 +49,11 @@ public:
 			break;
 
 		case WM_RBUTTONDOWN:
-			move = true;
-			break;
-
-		case WM_RBUTTONUP:
-			move = false;
-			break;
-
-		case WM_MBUTTONDOWN:
-			moveback = true;
-			break;
-
-		case WM_MBUTTONUP:
-			moveback = false;
+			if (pickUtil.PickByCursor(lParam, this, GunMesh)) {
+				Color = XMFLOAT3(1.0, 0.0, 0.0);
+			}
+			else
+				Color = XMFLOAT3(0.0, 0.0, 0.0);
 			break;
 		}
 	}
@@ -64,11 +61,6 @@ public:
 	void Update(float FT) {
 		Rotation.x = std::lerp(Rotation.x, RotationDest.x, FT * 10);
 		Rotation.y = std::lerp(Rotation.y, RotationDest.y, FT * 10);
-
-
-		if (move) Position.z += FT * 10;
-		if (moveback) Position.z -= FT * 10;
-		//camera.Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 
 	void Render() override {
@@ -79,10 +71,14 @@ public:
 
 		// 모델 출력
 		InitRenderState(RENDER_TYPE_3D);
+		SetColor(Color);
 		Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
 		Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
 		Render3D(GunMesh, Tex);
+
+		// 피킹 행렬 업데이트, 렌더링 직후 실행할 것을 추천
+		UpdatePickMatrix();
 
 		oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
 		oobb.Render();

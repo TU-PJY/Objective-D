@@ -17,6 +17,10 @@ public:
 	XMFLOAT4X4 RotateMatrix{ Mat4::Identity() };
 	XMFLOAT4X4 ScaleMatrix { Mat4::Identity() };
 	XMFLOAT4X4 ImageAspectMatrix{ Mat4::Identity() };
+	XMMATRIX ResultMatrix{};
+
+	// 오브젝트 피킹 될 경우 사용될 행렬
+	XMMATRIX PickMatrix{};
 
 	// 매쉬 색상
 	XMFLOAT3 ObjectColor{};
@@ -41,13 +45,14 @@ public:
 	float ASP(float Value);
 	void Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue=1.0f, bool DepthTestFlag=true);
 	void Render2D(Texture* TexturePtr, float AlphaValue=1.0f, bool EnableAspect=true);
-	void UpdateShaderVariables();
 	void UpdateMotionRotation(float& RotationX, float& RotationY, float DeltaX, float DeltaY);
 	void UpdateMotionRotation(XMFLOAT3& Rotation, float DeltaX, float DeltaY);
-	int PickRayInter(Mesh* MeshPtr, XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, float* pfHitDistance);
+	void UpdatePickMatrix();
+	int PickRayInter(Mesh* MeshPtr, XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, float* HitDistance);
 
 private:
-	void GenPickingRay(XMVECTOR& xmvPickPosition, XMMATRIX& xmmtxView, XMVECTOR& xmvPickRayOrigin, XMVECTOR& xmvPickRayDirection);
+	void UpdateShaderVariables();
+	void GenPickingRay(XMVECTOR& PickPosition, XMMATRIX& ViewMatrix, XMVECTOR& PickRayOrigin, XMVECTOR& PickRayDirection);
 	void SetCamera();
 
 	////////// virtual functions

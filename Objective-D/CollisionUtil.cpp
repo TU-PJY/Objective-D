@@ -40,12 +40,7 @@ void OOBB::Render() {
 	XMStoreFloat4x4(&RotateMatrix, rotationMatrix);
 
 	BoundboxShader->RenderWireframe(ObjectCmdList);
-
 	camera.SetToDefaultMode();
-	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
-	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects();
-	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&RotateMatrix));
 	ResultMatrix = XMMatrixMultiply(ResultMatrix, XMLoadFloat4x4(&TranslateMatrix));
@@ -107,12 +102,7 @@ void AABB::Render() {
 	Transform::Scale(ScaleMatrix, aabb.Extents.x, aabb.Extents.y, aabb.Extents.z);
 
 	BoundboxShader->RenderWireframe(ObjectCmdList);
-
 	camera.SetToDefaultMode();
-	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
-	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects();
-	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 
@@ -203,12 +193,7 @@ void Range::Render() {
 	Transform::Scale(ScaleMatrix, Size * 0.27, Size * 0.27, Size * 0.27);
 
 	BoundboxShader->RenderDefault(ObjectCmdList);
-
 	camera.SetToDefaultMode();
-	camera.GeneratePerspectiveMatrix(0.01f, 5000.0f, ASPECT, 45.0f);
-	camera.SetViewMatrix();
-	camera.SetViewportsAndScissorRects();
-	camera.UpdateShaderVariables();
 
 	XMMATRIX ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), XMLoadFloat4x4(&TranslateMatrix));
 
