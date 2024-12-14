@@ -35,7 +35,7 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 		2.5,  // Shadow Strength
 	};
 	ReserveConstantBuffer(LightCBV, 1);
-	CBVUtil::Create(Device, &LighData, sizeof(LIGHT_DATA), LightCBV, 0);
+	CBVUtil::Create(Device, &LighData, sizeof(LIGHT_DATA), LightCBV);
 
 	// use fog data
 	USE_FOG_DATA UseFogData[2]{ {0}, {1} };
@@ -55,7 +55,7 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 		{0.0, 0.0, 0.0} // padding3
 	};
 	ReserveConstantBuffer(FogCBV, 1);
-	CBVUtil::Create(Device, &FogData, sizeof(FOG_DATA), FogCBV, 0);
+	CBVUtil::Create(Device, &FogData, sizeof(FOG_DATA), FogCBV);
 }
 
 // RGB -> 1.0 색상값 변한 함수

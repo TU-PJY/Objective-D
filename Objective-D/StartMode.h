@@ -1,4 +1,4 @@
 #pragma once
-typedef void(*Start_Mode)(void);
+typedef void(*START_MODE_PTR)(void);
 
-extern Start_Mode StartMode;
+extern START_MODE_PTR StartMode;

@@ -85,6 +85,34 @@ typedef struct Vector {
 	DirectX::XMFLOAT3 Up;
 }ObjectVector;
 
+// 키보드 이벤트 구조체
+typedef struct {
+	HWND hWnd;
+	UINT Type;
+	WPARAM Key;
+	LPARAM lParam;
+}KeyEvent;
+
+// 마우스 이벤트 구조체
+typedef struct {
+	HWND hWnd;
+	UINT Type;
+	WPARAM wParam;
+	LPARAM lParam;
+}MouseEvent;
+
+// 마우스 모션 이벤트 구조체
+typedef struct {
+	HWND CaptureState;
+	POINT Motion;
+}MotionEvent;
+
+// 디바이스, 커맨드리스트 통합 구조체
+typedef struct {
+	ID3D12Device* Device;
+	ID3D12GraphicsCommandList* CmdList;
+}DeviceSystem;
+
 // 오브젝트에서 공용으로 사용하는 커맨트 리스트
 extern ID3D12GraphicsCommandList* ObjectCmdList;
 

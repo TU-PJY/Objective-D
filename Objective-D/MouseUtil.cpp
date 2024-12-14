@@ -27,6 +27,7 @@ XMFLOAT2 MouseUtil::GetMotionDelta(POINT& MotionPosition, float Sensivity) {
 	XMFLOAT2 Delta{};
 	Delta.x = (float)(CurrentPosition().x - MotionPosition.x) * Sensivity;
 	Delta.y = (float)(CurrentPosition().y - MotionPosition.y) * Sensivity;
+	UpdateMotionPosition(MotionPosition);
 
 	return Delta;
 }

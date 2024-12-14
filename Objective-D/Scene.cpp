@@ -7,22 +7,7 @@
 // 이 프로젝트의 핵심 유틸이다. 프로그램의 모든 객체의 업데이트 및 렌더링은 모두 이 프레임워크를 거친다.
 
 // 프레임워크를 초기화 한다. 실행 시 단 한 번만 실행되는 함수로, 더미 객체를 추가한 후 모드를 시작한다.
-void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Function ModeFunction) {
-	// 루트 시그니처를 생성한다.
-	DefaultRootSignature = CreateObjectRootSignature(Device);
-
-	// 전역 쉐이더를 생성한다.
-	LoadShader(DefaultRootSignature, Device, CmdList);
-
-	// 전역 기본 매쉬를 로드한다.
-	LoadSystemMesh(Device, CmdList);
-
-	// 전역 매쉬를 로드한다.
-	LoadMesh(Device, CmdList);
-
-	// 전역 텍스처를 로드한다.
-	LoadTexture(Device, CmdList);
-
+void Scene::Init(Function ModeFunction) {
 	// 시작 모드 함수 실행
 	ModeFunction();
 
@@ -32,7 +17,7 @@ void Scene::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, Funct
 }
 
 // 현재 실행 중인 모드 이름을 리턴한다
-const char* Scene::GetMode() {
+std::string Scene::GetMode() {
 	return RunningMode;
 }
 
@@ -55,10 +40,8 @@ void Scene::Routine(float FT, ID3D12GraphicsCommandList* CmdList) {
 			Object->Update(FT);
 			Object->Render();
 
-			if (Object->DeleteReserveCommand) {
-				Object->DeleteCommand = true;
+			if (Object->DeleteCommand) 
 				AddLocation(i, CurrentReferPosition);
-			}
 			
 			++CurrentReferPosition;
 		}
@@ -75,7 +58,7 @@ void Scene::SwitchMode(Function ModeFunction) {
 }
 
 // 모드 이름을 등록한다. 중복되는 모드 이름을 등록하지 않도록 유의한다.
-void Scene::RegisterModeName(const char* ModeName) {
+void Scene::RegisterModeName(std::string ModeName) {
 	RunningMode = ModeName;
 }
 
@@ -91,25 +74,25 @@ void Scene::RegisterMouseMotionController(void (*FunctionPtr)(HWND)) {
 }
 
 // 객체를 찾아 컨트롤러 함수로 메시지를 전달한다. 다수로 존재하는 객체에 사용하지 않도록 유의한다.
-void Scene::InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
+void Scene::InputMouse(std::string ObjectTag, MouseEvent& Event) {
 	auto Object = ObjectIndex.find(ObjectTag);
 	if (Object != end(ObjectIndex))
-		Object->second->InputMouse(hWnd, nMessageID, wParam, lParam);
+		Object->second->InputMouse(Event);
 }
-void Scene::InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam, const char* ObjectTag) {
+void Scene::InputKey(std::string ObjectTag, KeyEvent& Event) {
 	auto Object = ObjectIndex.find(ObjectTag);
 	if (Object != end(ObjectIndex))
-		Object->second->InputKey(hWnd, nMessageID, wParam, lParam);
+		Object->second->InputKey(Event);
 }
-void Scene::InputMouseMotion(HWND hWnd,  const char* ObjectTag) {
+void Scene::InputMouseMotion(std::string ObjectTag, MotionEvent& Event) {
 	auto Object = ObjectIndex.find(ObjectTag);
 	if (Object != end(ObjectIndex))
-		Object->second->InputMouseMotion(hWnd, mouse.MotionPosition);
+		Object->second->InputMouseMotion(Event);
 }
 
 // 객체를 추가한다. 원하는 객체와 태그, 레이어를 설정할 수 있다.
 // 이 함수에서 입력한 태그는 Find()함수에서 사용된다.
-void Scene::AddObject(GameObject*&& Object, const char* Tag, int InputLayer) {
+void Scene::AddObject(GameObject*&& Object, std::string Tag, int InputLayer) {
 	ObjectList[InputLayer].emplace_back(Object);
 	ObjectIndex.insert(std::make_pair(Tag, Object));
 	Object->ObjectTag = Tag;
@@ -121,12 +104,12 @@ void Scene::AddObject(GameObject*&& Object, const char* Tag, int InputLayer) {
 // 삭제 마크가 표시된 객체는 UpdateObjectIndex()에서 최종적으로 삭제된다.
 // 클래스 내부에서 this 포인터로도 자신을 삭제할 수 있다.
 void Scene::DeleteObject(GameObject* Object) {
-	Object->DeleteReserveCommand = true;
+	Object->DeleteCommand = true;
 }
 
 // 현재 존재하는 객체들 중 특정 객체의 포인터를 얻어 접근할 때 사용한다.
 // 이진 탐색을 사용하여 검색하므로 매우 빠르다.
-GameObject* Scene::Find(const char* Tag) {
+GameObject* Scene::Find(std::string Tag) {
 	auto Object = ObjectIndex.find(Tag);
 	if (Object != std::end(ObjectIndex))
 		return Object->second;
@@ -136,7 +119,7 @@ GameObject* Scene::Find(const char* Tag) {
 
 // 특정 태그를 가진 오브젝트들의 포인터 범위를 리턴한다.
 // 해당 함수로 equal range를 얻어 for문으로 접근하면 된다.
-std::pair<ObjectRange, ObjectRange> Scene::EqualRange(const char* Tag) {
+std::pair<ObjectRange, ObjectRange> Scene::EqualRange(std::string Tag) {
 	return ObjectIndex.equal_range(Tag);
 }
 

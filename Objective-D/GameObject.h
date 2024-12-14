@@ -32,7 +32,7 @@ public:
 	int RenderType{ RENDER_TYPE_3D };
 
 	int ObjectLayer{};
-	const char* ObjectTag{};
+	std::string ObjectTag{};
 	bool DeleteCommand{};
 	bool DeleteReserveCommand{};
 
@@ -61,9 +61,9 @@ public:
 	// 아래 함수들은 모든 객체에서 커스텀 가능한 버추얼 함수들이다. 필요하다면 새로운 버추얼 함수를 작성하여 사용할 수 있다.
 	virtual ~GameObject() {}
 	virtual void ReleaseShaderVariables() {}
-	virtual void InputKey(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
-	virtual void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
-	virtual void InputMouseMotion(HWND hWnd, POINT MotionPosition) {}
+	virtual void InputKey(KeyEvent& Event) {}
+	virtual void InputMouse(MouseEvent& Event) {}
+	virtual void InputMouseMotion(MotionEvent& Event) {}
 	virtual void Update(float FT) {}
 	virtual void Render() {}
 	virtual Mesh* GetObjectMesh() { return {}; }

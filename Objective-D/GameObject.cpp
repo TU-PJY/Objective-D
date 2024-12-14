@@ -120,8 +120,8 @@ void GameObject::Render3D(Mesh* MeshPtr, Texture* TexturePtr, float AlphaValue, 
 		ObjectShader->RenderDepthNone(ObjectCmdList);
 
 	ObjectAlpha = AlphaValue;
-	CBVUtil::Input(ObjectCmdList, LightCBV, 0);
-	CBVUtil::Input(ObjectCmdList, FogCBV, 0);
+	CBVUtil::Input(ObjectCmdList, LightCBV);
+	CBVUtil::Input(ObjectCmdList, FogCBV);
 
 	PrepareRender();
 	MeshPtr->Render(ObjectCmdList);

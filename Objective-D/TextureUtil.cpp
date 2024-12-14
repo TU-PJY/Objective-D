@@ -2,8 +2,8 @@
 #include "RootConstants.h"
 #include <iostream>
 
-Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar_t* FileName, int Type) {
-	CreateTextureAndSRV(Device, CmdList, FileName, &Tex, &SRV, &Sampler, Type);
+Texture::Texture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, wchar_t* FileName, int Type, D3D12_FILTER FilterOption) {
+	CreateTextureAndSRV(Device, CmdList, FileName, &Tex, &SRV, &Sampler, Type, FilterOption);
 }
 
 void Texture::ReleaseUploadBuffers() {
@@ -18,7 +18,7 @@ void Texture::Render(ID3D12GraphicsCommandList* CmdList) {
 	CmdList->SetGraphicsRootDescriptorTable(SAMPLER_INDEX, Sampler->GetGPUDescriptorHandleForHeapStart());
 }
 
-void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap, int Type) {
+void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, wchar_t* pszTextureFilename, ID3D12Resource** ppd3dTexture, ID3D12DescriptorHeap** ppd3dSrvDescriptorHeap, ID3D12DescriptorHeap** ppd3dSamplerDescriptorHeap, int Type, D3D12_FILTER FilterOption) {
 	// 텍스처 로드, 입력한 타입에 따라 다른 형식의 파일을 로드한다.
 	if(Type == TEXTURE_TYPE_WIC)
 		*ppd3dTexture = CreateTextureResourceFromWICFile(pd3dDevice, pd3dCommandList, pszTextureFilename, &UploadBuffer, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
@@ -50,7 +50,7 @@ void Texture::CreateTextureAndSRV(ID3D12Device* pd3dDevice, ID3D12GraphicsComman
 
 	// 샘플러 생성
 	D3D12_SAMPLER_DESC samplerDesc = {};
-	samplerDesc.Filter = D3D12_FILTER_ANISOTROPIC;  // 비등방 필터링
+	samplerDesc.Filter = FilterOption;  // 비등방 필터링
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // U 방향 랩 모드
 	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // V 방향 랩 모드
 	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;  // W 방향 랩 모드

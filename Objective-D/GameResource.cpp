@@ -8,8 +8,8 @@
 Mesh* GunMesh;
 
 // 매쉬를 여기서 로드한다.
-void LoadMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	ImportMesh(Device, CmdList, GunMesh, "Resources//Models//model.bin", MESH_TYPE_BIN);
+void LoadMesh(DeviceSystem& System) {
+	ImportMesh(System, GunMesh, "Resources//Models//model.bin", MESH_TYPE_BIN);
 }
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -17,10 +17,9 @@ void LoadMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 Texture* Tex, * SkyboxTex, * WoodTex;
 
 // 택스처를 여기서 로드한다.
-void LoadTexture(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
-	ImportTexture(Device, CmdList, Tex, L"Resources//Image//Gun.jpg", TEXTURE_TYPE_WIC);
-	//ImportTexture(Device, CmdList, SkyboxTex, L"Resources//Image//SkyBox_0.dds", TEXTURE_TYPE_DDS);
-	ImportTexture(Device, CmdList, WoodTex, L"Resources//Image//Wood.jpg", TEXTURE_TYPE_WIC);
+void LoadTexture(DeviceSystem& System) {
+	ImportTexture(System, Tex, L"Resources//Image//Gun.jpg", TEXTURE_TYPE_WIC);
+	ImportTexture(System, WoodTex, L"Resources//Image//Wood.jpg", TEXTURE_TYPE_WIC);
 }
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +30,7 @@ Image_Shader* ImageShader;
 Line_Shader* LineShader;
 
 // 쉐이더를 여기서 로드한다.
-void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device) {
 	// 일반 렌더링 쉐이더 생성
 	ObjectShader = new Object_Shader();
 	// 기본 파이프라인 생성
@@ -54,7 +53,7 @@ void LoadShader(ID3D12RootSignature* RootSignature, ID3D12Device* Device, ID3D12
 }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-// 업로드 버퍼를 처기하기 위한 벡터
+// 업로드 버퍼를 처리하기 위한 벡터
 std::vector<Mesh*> LoadedMeshList;
 std::vector<Texture*> LoadedTextureList;
 
@@ -64,23 +63,23 @@ Mesh* BoundMesh;
 Mesh* BoundingSphereMesh;
 
 // 기본 전역 매쉬 로드
-void LoadSystemMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
+void LoadSystemMesh(DeviceSystem& System) {
 	ImagePannel = new Mesh;
-	ImagePannel->CreateImagePannelMesh(Device, CmdList);
+	ImagePannel->CreateImagePannelMesh(System.Device, System.CmdList);
 	LoadedMeshList.emplace_back(ImagePannel);
 
 	// 스카이박스 출력용 매쉬 생성
 	SkyboxMesh = new Mesh;
-	SkyboxMesh->CreateSkyboxMesh(Device, CmdList);
+	SkyboxMesh->CreateSkyboxMesh(System.Device, System.CmdList);
 	LoadedMeshList.emplace_back(SkyboxMesh);
 
 	// 바운드박스 출력용 매쉬 생성
 	BoundMesh = new Mesh;
-	BoundMesh->CreateBoundboxMesh(Device, CmdList);
+	BoundMesh->CreateBoundboxMesh(System.Device, System.CmdList);
 	LoadedMeshList.emplace_back(BoundMesh);
 
 	// 바운드스페어 출력용 매쉬 생성
-	BoundingSphereMesh = new Mesh(Device, CmdList, "Resources//SystemResources//Models//BoundingSphereMesh.txt", MESH_TYPE_TEXT);
+	BoundingSphereMesh = new Mesh(System.Device, System.CmdList, "Resources//SystemResources//Models//BoundingSphereMesh.txt", MESH_TYPE_TEXT);
 	LoadedMeshList.emplace_back(BoundingSphereMesh);
 }
 

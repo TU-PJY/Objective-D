@@ -10,10 +10,18 @@ void Framework::Init() {
 
 	CmdList->Reset(CmdAllocator, NULL);
 
+	// 루트 시그니처를 생성한다.
+	DeviceSystem System{ Device, CmdList };
+	DefaultRootSignature = scene.CreateObjectRootSignature(System.Device);
+	LoadShader(DefaultRootSignature, System.Device);
+	LoadSystemMesh(System);
+	LoadMesh(System);
+	LoadTexture(System);
+
 	// scene 초기화
 	// 이 함수에서 모드를 실행하고 쉐이더를 로드한다.
 	// StartMode.cpp의 StartMode 변경 시 시작 모드 변경이 가능하다.
-	scene.Init(Device, CmdList, StartMode);
+	scene.Init(StartMode);
 
 	// CBV를 생성한다.
 	CreateConstantBufferResource(Device);
@@ -224,7 +232,7 @@ void Framework::CreateSwapChain() {
 	dxgiSwapChainFullScreenDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	dxgiSwapChainFullScreenDesc.Windowed = TRUE;
 
-	HRESULT hResult = DxgiFactory->CreateSwapChainForHwnd(CmdQueue, hWnd, &DxgiSwapChainDesc, &dxgiSwapChainFullScreenDesc, NULL, (IDXGISwapChain1**)&DxgiSwapChain);
+	HRESULT hResult = DxgiFactory->CreateSwapChainForHwnd(CmdQueue, CaptureState, &DxgiSwapChainDesc, &dxgiSwapChainFullScreenDesc, NULL, (IDXGISwapChain1**)&DxgiSwapChain);
 #else
 	DXGI_SWAP_CHAIN_DESC DxgiSwapChainDesc;
 	::ZeroMemory(&DxgiSwapChainDesc, sizeof(DxgiSwapChainDesc));

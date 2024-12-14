@@ -25,21 +25,20 @@ public:
 		Position.z = 5.0;
 	}
 
-	void InputMouseMotion(HWND hwnd, POINT MotionPosition) {
-		if (GetCapture() == hwnd) {
+	void InputMouseMotion(MotionEvent& Event) {
+		if (GetCapture() == Event.CaptureState) {
 			mouse.HideCursor();
 			GetCapture();
 
-			XMFLOAT2 Delta = mouse.GetMotionDelta(MotionPosition, 0.5);
-			mouse.UpdateMotionPosition(MotionPosition);
+			XMFLOAT2 Delta = mouse.GetMotionDelta(Event.Motion, 0.5);
 			UpdateMotionRotation(RotationDest, Delta.x, Delta.y);
 		}
 	}
 
-	void InputMouse(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-		switch (nMessageID) {
+	void InputMouse(MouseEvent& Event) {
+		switch (Event.Type) {
 		case WM_LBUTTONDOWN:
-			mouse.StartMotionCapture(hWnd);
+			mouse.StartMotionCapture(Event.hWnd);
 			break;
 
 		case WM_LBUTTONUP:

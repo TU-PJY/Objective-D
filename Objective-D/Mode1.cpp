@@ -29,25 +29,31 @@ void Mode1::Destructor() {
 }
 
 void Mode1::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	KeyEvent Event{ hWnd, nMessageID, wParam, lParam };
+
 	// esc 누를 시 프로그램 종료
-	if (nMessageID == WM_KEYDOWN && wParam == VK_ESCAPE)
+	if (Event.Type == WM_KEYDOWN && Event.Key == VK_ESCAPE)
 		// 프로그램을 종료하는 Scene 멤버 함수
 		scene.Exit();
 }
 
 //  마우스 모션을 지정된 객체 포인터로 전달한다
 void Mode1::MouseMotionController(HWND hWnd) {
+	MotionEvent Event{ hWnd, mouse.MotionPosition };
+
 	// 마우스 좌표를 뷰포트 좌표로 변환한다.
 	mouse.UpdateMousePosition(hWnd);
 
 	// 객체로 마우스 모션 입력
-	scene.InputMouseMotion(hWnd, "test_object");
+	scene.InputMouseMotion("test_object", Event);
 }
 
 // 마우스 버튼 클릭 이벤트를 지정된 객체 포인터로 전달한다
 void Mode1::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
+	MouseEvent Event{ hWnd, nMessageID, wParam, lParam };
+
 	// 객체로 마우스 입력
-	scene.InputMouse(hWnd, nMessageID, wParam, lParam, "test_object");
+	scene.InputMouse("test_object", Event);
 }
 
 // scene에 컨트롤러 및 모드 소멸자 등록
