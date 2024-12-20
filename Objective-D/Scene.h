@@ -59,7 +59,7 @@ public:
 private:
 	void AddLocation(int Layer, int Position);
 	void ProcessObjectCommand();
-	void ProcessSceneCommand();
+	void UpdateIndex();
 	void ClearAll();
 };
 

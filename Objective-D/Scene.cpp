@@ -129,7 +129,7 @@ void Scene::CompleteCommand() {
 		return;
 
 	ProcessObjectCommand();
-	ProcessSceneCommand();
+	UpdateIndex();
 	CommandExist = false;
 }
 
@@ -199,12 +199,13 @@ void Scene::ProcessObjectCommand() {
 }
 
 // 삭제 마크가 표시된 객체들을 실제로 삭제한다.
-void Scene::ProcessSceneCommand() {
+void Scene::UpdateIndex() {
 	auto Object = begin(ObjectIndex);
 	while (Object != end(ObjectIndex) && SceneCommandCount != 0) {
 		if (Object->second->DeleteCommand) {
 			delete Object->second;
 			Object->second = nullptr;
+			Object = ObjectIndex.erase(Object);
 			--SceneCommandCount;
 			continue;
 		}
@@ -215,5 +216,5 @@ void Scene::ProcessSceneCommand() {
 // 현재 존재하는 모든 객체들을 삭제한다.
 void Scene::ClearAll() {
 	for (auto const& Object : ObjectIndex)
-		Object.second->DeleteReserveCommand = true;
+		Object.second->DeleteCommand = true;
 }
