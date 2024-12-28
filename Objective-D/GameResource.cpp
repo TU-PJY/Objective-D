@@ -16,7 +16,7 @@ void LoadMesh(DeviceSystem& System) {
 	if (fbxUtil.LoadFBXFile(fbxUtil.manager, fbxUtil.scene, "Resources//Models//zombie.fbx")) {
 		fbxUtil.TriangulateScene(fbxUtil.manager, fbxUtil.scene);
 		fbxUtil.GetVertexData(fbxUtil.scene, parsedVertices);
-		fbxUtil.PrintVertexData(parsedVertices);
+		//fbxUtil.PrintVertexData(parsedVertices);
 		ZombieMesh = new Mesh();
 		ZombieMesh->CreateFBXMesh(System.Device, System.CmdList, parsedVertices);
 	}
