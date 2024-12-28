@@ -2,41 +2,6 @@
 #include "DirectX_3D.h"
 #include <fstream>
 
-class CVertex {
-protected:
-	XMFLOAT3 Position{};
-
-public:
-	CVertex() {
-		Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	}
-
-	CVertex(XMFLOAT3 PositionValue) {
-		Position = PositionValue;
-	}
-
-	~CVertex() { }
-};
-
-class CDiffusedVertex : public CVertex {
-protected:
-	XMFLOAT4 Diffuse{};
-
-public:
-	CDiffusedVertex() {
-		Position = XMFLOAT3(0.0f, 0.0f, 0.0f); Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-
-	CDiffusedVertex(float x, float y, float z, XMFLOAT4 Diffuse) {
-		Position = XMFLOAT3(x, y, z); Diffuse = Diffuse;
-	}
-
-	CDiffusedVertex(XMFLOAT3 Position, XMFLOAT4 Diffuse) {
-		Position = Position; Diffuse = Diffuse;
-	}
-
-	~CDiffusedVertex() {}
-};
 
 class Mesh {
 private:
@@ -74,9 +39,6 @@ protected:
 	UINT Slot{};
 	UINT Stride{};
 	UINT Offset{};
-
-	UINT StartIndex{};
-	int	BaseVertex{};
 
 	bool HeightCacheSaved{};
 	std::vector<XMFLOAT3> HeightCache;

@@ -37,6 +37,8 @@
 
 #include <iostream>
 
+#include <fbxsdk.h>
+
 // 렌더링 타입 열거형
 enum RenderTypeEnum {
 	RENDER_TYPE_3D, 

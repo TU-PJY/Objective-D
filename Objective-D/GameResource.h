@@ -25,6 +25,7 @@ extern std::vector<Mesh*> LoadedMeshList;
 extern std::vector<Texture*> LoadedTextureList;
 
 extern Mesh* ImagePannel;
+extern Mesh* BillboardMesh;
 extern Mesh* SkyboxMesh;
 extern Mesh* BoundMesh;
 extern Mesh* BoundingSphereMesh;

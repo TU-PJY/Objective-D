@@ -58,15 +58,20 @@ std::vector<Mesh*> LoadedMeshList;
 std::vector<Texture*> LoadedTextureList;
 
 Mesh* ImagePannel;
+Mesh* BillboardMesh;
 Mesh* SkyboxMesh;
 Mesh* BoundMesh;
 Mesh* BoundingSphereMesh;
 
 // 기본 전역 매쉬 로드
 void LoadSystemMesh(DeviceSystem& System) {
+	// 이미지 출력용 매쉬 생성
 	ImagePannel = new Mesh;
 	ImagePannel->CreateImagePannelMesh(System.Device, System.CmdList);
 	LoadedMeshList.emplace_back(ImagePannel);
+
+	// 이미지 패널과 빌보드 매쉬는 같은 버텍스를 사용함
+	BillboardMesh = ImagePannel;
 
 	// 스카이박스 출력용 매쉬 생성
 	SkyboxMesh = new Mesh;
