@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iostream>
 
+FBXUtil fbxUtil;
+
 // 매쉬를 담당하는 유틸이다.
 
 // ResourList에서 해당 함수를 사용하여 매쉬를 로드하도록 한다
@@ -156,4 +158,107 @@ float Mesh::ComputeHeightOnTriangle(XMFLOAT3& pt, XMFLOAT3& v0, XMFLOAT3& v1, XM
 	float height = -(XMVectorGetX(XMVector3Dot(n, XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f) * p)) + d) / XMVectorGetY(n);
 
 	return height;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
+void FBXUtil::InitializeFBX(FbxManager*& manager, FbxScene*& scene) {
+	// FBX Manager 생성
+	manager = FbxManager::Create();
+	if (!manager) {
+		std::cerr << "Error: Unable to create FBX Manager!\n";
+		exit(1);
+	}
+	std::cout << "FBX Manager created.\n";
+
+	// IOSettings 객체 생성 및 초기화
+	FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
+	manager->SetIOSettings(ios);
+
+	// FBX Scene 생성
+	scene = FbxScene::Create(manager, "My Scene");
+	if (!scene) {
+		std::cerr << "Error: Unable to create FBX Scene!\n";
+		exit(1);
+	}
+	std::cout << "FBX Scene created.\n";
+}
+
+bool FBXUtil::LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* filePath) {
+	// FBX Importer 생성
+	FbxImporter* importer = FbxImporter::Create(manager, "");
+
+	// 파일 열기
+	if (!importer->Initialize(filePath, -1, manager->GetIOSettings())) {
+		std::cerr << "Error: Unable to initialize importer!\n";
+		std::cerr << "Error: " << importer->GetStatus().GetErrorString() << "\n";
+		return false;
+	}
+
+	// 파일에서 Scene으로 데이터 읽기
+	if (!importer->Import(scene)) {
+		std::cerr << "Error: Unable to import FBX scene!\n";
+		return false;
+	}
+
+	std::cout << "FBX file loaded successfully.\n";
+
+	// Importer 삭제
+	importer->Destroy();
+	return true;
+}
+
+void FBXUtil::ProcessNode(FbxNode* node) {
+	std::cout << "Node Name: " << node->GetName() << "\n";
+
+	// 노드가 메쉬 데이터를 가지고 있는 경우
+	FbxMesh* mesh = node->GetMesh();
+	if (mesh) {
+		std::cout << "Processing Mesh: " << node->GetName() << "\n";
+
+		// 버텍스 정보 가져오기
+		int vertexCount = mesh->GetControlPointsCount();
+		FbxVector4* vertices = mesh->GetControlPoints();
+
+		for (int i = 0; i < vertexCount; ++i) {
+			std::cout << "Vertex " << i << ": "
+				<< vertices[i][0] << ", "
+				<< vertices[i][1] << ", "
+				<< vertices[i][2] << "\n";
+		}
+	}
+
+	// 하위 노드 순회
+	for (int i = 0; i < node->GetChildCount(); ++i) {
+		ProcessNode(node->GetChild(i));
+	}
+}
+
+void FBXUtil::ParseFBXScene(FbxScene* scene) {
+	FbxNode* rootNode = scene->GetRootNode();
+	if (rootNode) {
+		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
+			ProcessNode(rootNode->GetChild(i));
+		}
+	}
+}
+
+bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
+	// FbxGeometryConverter 생성
+	FbxGeometryConverter geomConverter(pManager);
+
+	// 씬 전체 Triangulate
+	// (replace = true 로 설정하면 기존 지오메트리가 삼각화 결과로 대체됩니다.)
+	bool result = geomConverter.Triangulate(pScene, /*replace=*/true);
+
+	if (!result)
+	{
+		std::cerr << "Error: Triangulation failed!\n";
+		return false;
+	}
+
+	std::cout << "Scene triangulated successfully.\n";
+	return true;
 }

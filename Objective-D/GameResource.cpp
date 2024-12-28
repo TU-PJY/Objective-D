@@ -10,6 +10,12 @@ Mesh* GunMesh;
 // 매쉬를 여기서 로드한다.
 void LoadMesh(DeviceSystem& System) {
 	ImportMesh(System, GunMesh, "Resources//Models//model.bin", MESH_TYPE_BIN);
+
+	fbxUtil.InitializeFBX(fbxUtil.manager, fbxUtil.scene);
+	if (fbxUtil.LoadFBXFile(fbxUtil.manager, fbxUtil.scene, "Resources//Models//zombie.fbx")) {
+		fbxUtil.TriangulateScene(fbxUtil.manager, fbxUtil.scene);
+		fbxUtil.ParseFBXScene(fbxUtil.scene);
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////
 

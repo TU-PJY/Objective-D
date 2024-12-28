@@ -63,3 +63,18 @@ public:
 	bool IsPointInTriangle(XMFLOAT2& pt, XMFLOAT2& v0, XMFLOAT2& v1, XMFLOAT2& v2);
 	float ComputeHeightOnTriangle(XMFLOAT3& pt, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2);
 };
+
+
+class FBXUtil {
+public:
+	FbxManager* manager{};
+	FbxScene* scene{};
+
+	void InitializeFBX(FbxManager*& manager, FbxScene*& scene);
+	bool LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* filePath);
+	void ProcessNode(FbxNode* node);
+	void ParseFBXScene(FbxScene* scene);
+	bool TriangulateScene(FbxManager* pManager, FbxScene* pScene);
+};
+
+extern FBXUtil fbxUtil;
