@@ -1,5 +1,4 @@
 #include "GameResource.h"
-#include <random>
 // 이 파일은 리소스를 관리한다.
 // 기본적으로 전역 리소스이며, ResourceManager.h에 먼저 extern 선언한 뒤, 이 파일에 아래와 같이 정의하면 된다.
 // Scene::Init()에서 실행된다.
@@ -11,10 +10,12 @@ Mesh* GunMesh;
 void LoadMesh(DeviceSystem& System) {
 	ImportMesh(System, GunMesh, "Resources//Models//model.bin", MESH_TYPE_BIN);
 
+	// FBX 로드 테스트
 	fbxUtil.InitializeFBX(fbxUtil.manager, fbxUtil.scene);
 	if (fbxUtil.LoadFBXFile(fbxUtil.manager, fbxUtil.scene, "Resources//Models//zombie.fbx")) {
 		fbxUtil.TriangulateScene(fbxUtil.manager, fbxUtil.scene);
-		fbxUtil.ParseFBXScene(fbxUtil.scene);
+		fbxUtil.GetVertexData(fbxUtil.scene, parsedVertices);
+		fbxUtil.PrintVertexData(parsedVertices);
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////

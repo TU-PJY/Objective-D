@@ -5,6 +5,7 @@
 #include <iostream>
 
 FBXUtil fbxUtil;
+std::vector<MyVertex> parsedVertices;
 
 // 매쉬를 담당하는 유틸이다.
 
@@ -210,41 +211,6 @@ bool FBXUtil::LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* file
 	return true;
 }
 
-void FBXUtil::ProcessNode(FbxNode* node) {
-	std::cout << "Node Name: " << node->GetName() << "\n";
-
-	// 노드가 메쉬 데이터를 가지고 있는 경우
-	FbxMesh* mesh = node->GetMesh();
-	if (mesh) {
-		std::cout << "Processing Mesh: " << node->GetName() << "\n";
-
-		// 버텍스 정보 가져오기
-		int vertexCount = mesh->GetControlPointsCount();
-		FbxVector4* vertices = mesh->GetControlPoints();
-
-		for (int i = 0; i < vertexCount; ++i) {
-			std::cout << "Vertex " << i << ": "
-				<< vertices[i][0] << ", "
-				<< vertices[i][1] << ", "
-				<< vertices[i][2] << "\n";
-		}
-	}
-
-	// 하위 노드 순회
-	for (int i = 0; i < node->GetChildCount(); ++i) {
-		ProcessNode(node->GetChild(i));
-	}
-}
-
-void FBXUtil::ParseFBXScene(FbxScene* scene) {
-	FbxNode* rootNode = scene->GetRootNode();
-	if (rootNode) {
-		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessNode(rootNode->GetChild(i));
-		}
-	}
-}
-
 bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
 	// FbxGeometryConverter 생성
 	FbxGeometryConverter geomConverter(pManager);
@@ -261,4 +227,103 @@ bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
 
 	std::cout << "Scene triangulated successfully.\n";
 	return true;
+}
+
+void FBXUtil::ParseFBXScene(FbxScene* scene) {
+	/*FbxNode* rootNode = scene->GetRootNode();
+	if (rootNode) {
+		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
+			ProcessNode(rootNode->GetChild(i));
+		}
+	}*/
+}
+
+void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec) {
+	FbxNode* rootNode = scene->GetRootNode();
+	if (rootNode) {
+		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
+			ProcessNode(rootNode->GetChild(i), VertexVec);
+		}
+	}
+}
+
+void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec) {
+	std::cout << "Node Name: " << node->GetName() << "\n";
+
+	// 노드가 메쉬 데이터를 가지고 있는 경우
+	FbxMesh* mesh = node->GetMesh();
+	if (mesh) {
+		std::cout << "Processing Mesh: " << node->GetName() << "\n";
+
+		// 폴리곤(삼각형) 개수
+		int polygonCount = mesh->GetPolygonCount();
+		// 컨트롤 포인트 (버텍스) 배열
+		FbxVector4* controlPoints = mesh->GetControlPoints();
+
+		// UVSet 이름 (보통 "map1" 또는 "UVMap" 등)
+		const char* uvSetName = nullptr;
+		if (mesh->GetElementUVCount() > 0) {
+			FbxLayerElementUV* uvElement = mesh->GetElementUV(0);
+			if (uvElement)
+				uvSetName = uvElement->GetName();
+		}
+
+		// 폴리곤 단위로 반복
+		for (int polyIndex = 0; polyIndex < polygonCount; polyIndex++) {
+			int vertexCountInPoly = mesh->GetPolygonSize(polyIndex);
+			for (int v = 0; v < vertexCountInPoly; v++) {
+				// 컨트롤 포인트 인덱스
+				int controlPointIndex = mesh->GetPolygonVertex(polyIndex, v);
+				if (controlPointIndex < 0) continue;
+
+				// 위치 (Pos)
+				FbxVector4 pos = controlPoints[controlPointIndex];
+
+				// 노멀 읽기
+				FbxVector4 normal(0, 0, 0, 0);
+				bool hasNormal = mesh->GetPolygonVertexNormal(polyIndex, v, normal);
+
+				// UV 읽기
+				FbxVector2 uv(0, 0);
+				bool unmapped = false;
+				bool hasUV = false;
+				if (uvSetName) {
+					hasUV = mesh->GetPolygonVertexUV(polyIndex, v, uvSetName, uv, unmapped);
+				}
+
+				// MyVertex 구조체에 저장
+				MyVertex vertex{};
+				vertex.px = static_cast<float>(pos[0]);
+				vertex.py = static_cast<float>(pos[1]);
+				vertex.pz = static_cast<float>(pos[2]);
+
+				vertex.nx = hasNormal ? static_cast<float>(normal[0]) : 0.0f;
+				vertex.ny = hasNormal ? static_cast<float>(normal[1]) : 0.0f;
+				vertex.nz = hasNormal ? static_cast<float>(normal[2]) : 0.0f;
+
+				vertex.u = (hasUV && !unmapped) ? static_cast<float>(uv[0]) : 0.0f;
+				vertex.v = (hasUV && !unmapped) ? static_cast<float>(uv[1]) : 0.0f;
+
+				// 벡터에 추가
+				VertexVec.push_back(vertex);
+			}
+		}
+	}
+
+	// 하위 노드 순회
+	for (int i = 0; i < node->GetChildCount(); ++i) {
+		ProcessNode(node->GetChild(i), VertexVec);
+	}
+}
+
+void FBXUtil::PrintVertexData(const std::vector<MyVertex>& VertexVec) {
+	std::cout << "\n--- Stored Vertex Data ---\n";
+	for (size_t i = 0; i < VertexVec.size(); ++i) {
+		const MyVertex& vertex = VertexVec[i];
+		std::cout << "Vertex " << i << ": ";
+		std::cout << "Pos(" << vertex.px << ", " << vertex.py << ", " << vertex.pz << "), ";
+		std::cout << "Normal(" << vertex.nx << ", " << vertex.ny << ", " << vertex.nz << "), ";
+		std::cout << "UV(" << vertex.u << ", " << vertex.v << ")\n";
+	}
+	std::cout << "--- End of Vertex Data ---\n";
 }

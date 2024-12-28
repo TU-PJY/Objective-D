@@ -65,6 +65,14 @@ public:
 };
 
 
+struct MyVertex
+{
+	float px, py, pz;   // Position
+	float nx, ny, nz;   // Normal
+	float u, v;         // UV
+};
+extern std::vector<MyVertex> parsedVertices;
+
 class FBXUtil {
 public:
 	FbxManager* manager{};
@@ -72,8 +80,10 @@ public:
 
 	void InitializeFBX(FbxManager*& manager, FbxScene*& scene);
 	bool LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* filePath);
-	void ProcessNode(FbxNode* node);
 	void ParseFBXScene(FbxScene* scene);
+	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec);
+	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec);
+	void PrintVertexData(const std::vector<MyVertex>& VertexVec);
 	bool TriangulateScene(FbxManager* pManager, FbxScene* pScene);
 };
 
