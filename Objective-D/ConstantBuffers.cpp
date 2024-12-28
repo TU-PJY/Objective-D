@@ -25,7 +25,7 @@ void CreateConstantBufferResource(ID3D12Device* Device) {
 
 	// light data
 	LIGHT_DATA LighData{
-		{1.0f, -1.0f, 0.0f },  // Light Position
+		{5.0f, 5.0f, 5.0f },  // Light Position
 		0.0, // padding1
 
 		{1.0f, 0.9f, 0.8f },  // Light Color

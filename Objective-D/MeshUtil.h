@@ -2,6 +2,14 @@
 #include "DirectX_3D.h"
 #include <fstream>
 
+struct MyVertex
+{
+	float px, py, pz;   // Position
+	float nx, ny, nz;   // Normal
+	float u, v;         // UV
+};
+extern std::vector<MyVertex> parsedVertices;
+
 
 class Mesh {
 private:
@@ -59,19 +67,11 @@ public:
 	void CreateImagePannelMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void CreateBoundboxMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList);
 	void ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, char* Directory, bool TextMode);
+	void CreateFBXMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::vector<MyVertex>& VertexData);
 	float GetHeightAtPosition(Mesh* terrainMesh, float x, float z, const XMFLOAT4X4& worldMatrix);
 	bool IsPointInTriangle(XMFLOAT2& pt, XMFLOAT2& v0, XMFLOAT2& v1, XMFLOAT2& v2);
 	float ComputeHeightOnTriangle(XMFLOAT3& pt, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2);
 };
-
-
-struct MyVertex
-{
-	float px, py, pz;   // Position
-	float nx, ny, nz;   // Normal
-	float u, v;         // UV
-};
-extern std::vector<MyVertex> parsedVertices;
 
 class FBXUtil {
 public:

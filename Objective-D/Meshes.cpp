@@ -372,3 +372,58 @@ void Mesh::ImportMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, 
 	IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
 	IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
 }
+
+void Mesh::CreateFBXMesh(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList, std::vector<MyVertex>& VertexData) {
+	// 정점 개수와 인덱스 개수 설정
+	Vertices = static_cast<UINT>(parsedVertices.size());
+	Indices = Vertices; // 인덱스를 정점 개수와 동일하게 초기화 (삼각형 팬 등으로 구성 가능)
+
+	// 정점 및 관련 데이터 할당
+	Position = new XMFLOAT3[Vertices];
+	Normal = new XMFLOAT3[Vertices];
+	TextureCoords = new XMFLOAT2[Vertices];
+	PnIndices = new UINT[Indices];
+
+	// parsedVertices 데이터를 이용하여 각 정점의 포지션, 노말, 텍스처 좌표를 설정
+	for (UINT i = 0; i < Vertices; i++) {
+		Position[i] = XMFLOAT3(parsedVertices[i].px, parsedVertices[i].py, parsedVertices[i].pz);
+		Normal[i] = XMFLOAT3(parsedVertices[i].nx, parsedVertices[i].ny, parsedVertices[i].nz);
+		TextureCoords[i] = XMFLOAT2(parsedVertices[i].u, parsedVertices[i].v);
+	}
+
+	// 인덱스 데이터 생성 (정점 순차 연결)
+	for (UINT i = 0; i < Indices; i++) {
+		PnIndices[i] = i;
+	}
+
+	// DirectX 버퍼 생성 및 뷰 설정
+	PositionBuffer = ::CreateBufferResource(Device, CmdList, Position, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &PositionUploadBuffer);
+	NormalBuffer = ::CreateBufferResource(Device, CmdList, Normal, sizeof(XMFLOAT3) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &NormalUploadBuffer);
+	TextureCoordBuffer = ::CreateBufferResource(Device, CmdList, TextureCoords, sizeof(XMFLOAT2) * Vertices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, &TextureCoordUploadBuffer);
+
+	// 버퍼 뷰 설정
+	NumVertexBufferViews = 3;
+	VertexBufferViews = new D3D12_VERTEX_BUFFER_VIEW[NumVertexBufferViews];
+
+	VertexBufferViews[0].BufferLocation = PositionBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[0].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[0].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[1].BufferLocation = NormalBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[1].StrideInBytes = sizeof(XMFLOAT3);
+	VertexBufferViews[1].SizeInBytes = sizeof(XMFLOAT3) * Vertices;
+
+	VertexBufferViews[2].BufferLocation = TextureCoordBuffer->GetGPUVirtualAddress();
+	VertexBufferViews[2].StrideInBytes = sizeof(XMFLOAT2);
+	VertexBufferViews[2].SizeInBytes = sizeof(XMFLOAT2) * Vertices;
+
+	// 인덱스 버퍼 생성
+	IndexBuffer = ::CreateBufferResource(Device, CmdList, PnIndices, sizeof(UINT) * Indices, D3D12_HEAP_TYPE_DEFAULT, D3D12_RESOURCE_STATE_INDEX_BUFFER, &IndexUploadBuffer);
+
+	// 인덱스 버퍼 뷰 설정
+	IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
+	IndexBufferView.Format = DXGI_FORMAT_R32_UINT;
+	IndexBufferView.SizeInBytes = sizeof(UINT) * Indices;
+
+	std::cout << "FBX Mesh created" << std::endl;
+}

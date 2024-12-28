@@ -8,9 +8,12 @@
 
 // 매쉬, 텍스처, 쉐이더 전역 뱐수를 여기에 extern 선언
 extern Mesh* GunMesh;
+extern Mesh* ZombieMesh;
 /////////////////////////////////////////////////////////////////////////////////
 
 extern Texture* Tex, * SkyboxTex, * WoodTex;
+extern Texture* ColorTex;
+extern Texture* ZombieTex;
 /////////////////////////////////////////////////////////////////////////////////
 
 extern Object_Shader* ObjectShader;
