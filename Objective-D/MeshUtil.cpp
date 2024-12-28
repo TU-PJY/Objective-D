@@ -327,3 +327,33 @@ void FBXUtil::PrintVertexData(const std::vector<MyVertex>& VertexVec) {
 	}
 	std::cout << "--- End of Vertex Data ---\n";
 }
+
+void FBXUtil::ProcessAnimation(FbxScene* scene) {
+	FbxAnimStack* animStack = scene->GetCurrentAnimationStack();
+	if (!animStack) return;
+
+	FbxAnimLayer* animLayer = animStack->GetMember<FbxAnimLayer>();
+	if (!animLayer) return;
+
+	FbxNode* rootNode = scene->GetRootNode();
+	if (rootNode) {
+		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
+			ProcessAnimationNode(rootNode->GetChild(i), animLayer);
+		}
+	}
+}
+
+void FBXUtil::ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer) {
+	FbxAnimCurve* translateX = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
+	if (translateX) {
+		for (int i = 0; i < translateX->KeyGetCount(); ++i) {
+			FbxTime time = translateX->KeyGetTime(i);
+			float value = translateX->KeyGetValue(i);
+			std::cout << "Node: " << node->GetName() << " Time: " << time.GetSecondDouble() << " Value: " << value << "\n";
+		}
+	}
+
+	for (int i = 0; i < node->GetChildCount(); ++i) {
+		ProcessAnimationNode(node->GetChild(i), animLayer);
+	}
+}

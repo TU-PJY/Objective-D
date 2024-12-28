@@ -84,6 +84,8 @@ public:
 	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec);
 	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec);
 	void PrintVertexData(const std::vector<MyVertex>& VertexVec);
+	void ProcessAnimation(FbxScene* scene);
+	void ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer);
 	bool TriangulateScene(FbxManager* pManager, FbxScene* pScene);
 };
 

@@ -37,7 +37,9 @@
 
 #include <iostream>
 
+#define FBXSDK_SHARED
 #include <fbxsdk.h>
+
 
 // 렌더링 타입 열거형
 enum RenderTypeEnum {
