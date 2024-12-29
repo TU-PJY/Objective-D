@@ -15,7 +15,7 @@ void LoadMesh(DeviceSystem& System) {
 	fbxUtil.InitializeFBX(fbxUtil.manager, fbxUtil.scene);
 	if (fbxUtil.LoadFBXFile(fbxUtil.manager, fbxUtil.scene, "Resources//Models//zombie.fbx")) {
 		fbxUtil.TriangulateScene(fbxUtil.manager, fbxUtil.scene);
-		fbxUtil.GetVertexData(fbxUtil.scene, parsedVertices, skinningData);
+		fbxUtil.GetVertexData(fbxUtil.scene, parsedVertices);
 
 		//fbxUtil.ProcessAnimation(fbxUtil.scene, animations);
 		//fbxUtil.PrintAnimationData(animations);

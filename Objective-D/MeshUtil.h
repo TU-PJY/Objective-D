@@ -14,20 +14,6 @@ struct MyVertex
 extern std::vector<MyVertex> parsedVertices;
 extern std::unordered_map<int, std::vector<std::pair<int, float>>> skinningData;
 
-struct AnimationKey {
-	double time;
-	XMFLOAT3 translation;
-	XMFLOAT3 rotation;
-	XMFLOAT3 scaling;
-};
-
-struct AnimatedNode {
-	std::string name;
-	std::vector<AnimationKey> keys;
-};
-
-extern std::vector<AnimatedNode> animations;
-
 class Mesh {
 private:
 	int Ref{};
@@ -105,13 +91,11 @@ public:
 
 	void InitializeFBX(FbxManager*& manager, FbxScene*& scene);
 	bool LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* filePath);
-	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData);
+	void ProcessSkin(FbxMesh* mesh, std::vector<std::vector<int>>& boneIndices, std::vector<std::vector<float>>& boneWeights);
 	void PrintVertexData(const std::vector<MyVertex>& VertexVec);
-	void ProcessAnimation(FbxScene* scene, std::vector<AnimatedNode>& animationNodes);
-	void ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer, std::vector<AnimatedNode>& animationNodes);
-	void PrintAnimationData(const std::vector<AnimatedNode>& animationNodes);
 	bool TriangulateScene(FbxManager* pManager, FbxScene* pScene);
-	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData);
+	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec);
+	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec);
 };
 
 extern FBXUtil fbxUtil;

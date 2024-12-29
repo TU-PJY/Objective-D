@@ -231,89 +231,84 @@ bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
 	return true;
 }
 
-void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData){
+void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec){
 	FbxNode* rootNode = scene->GetRootNode();
 	if (rootNode) {
 		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessNode(rootNode->GetChild(i), VertexVec, SkinningData);
+			ProcessNode(rootNode->GetChild(i), VertexVec);
 		}
 	}
 }
 
-void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData) {
+void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec) {
+	std::cout << "Node Name: " << node->GetName() << "\n";
+
 	FbxMesh* mesh = node->GetMesh();
 	if (mesh) {
-		int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
-		for (int i = 0; i < skinCount; i++) {
-			FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(i, FbxDeformer::eSkin));
-			int clusterCount = skin->GetClusterCount();
+		std::cout << "Processing Mesh: " << node->GetName() << "\n";
 
-			for (int j = 0; j < clusterCount; j++) {
-				FbxCluster* cluster = skin->GetCluster(j);
-				FbxNode* bone = cluster->GetLink();
-
-				if (!bone) continue;
-
-				int* indices = cluster->GetControlPointIndices();
-				double* weights = cluster->GetControlPointWeights();
-				int indexCount = cluster->GetControlPointIndicesCount();
-
-				for (int k = 0; k < indexCount; k++) {
-					int controlPointIndex = indices[k];
-					float weight = static_cast<float>(weights[k]);
-
-					SkinningData[controlPointIndex].emplace_back(j, weight);
-				}
-			}
-		}
-
-		int polygonCount = mesh->GetPolygonCount();
+		// 컨트롤 포인트(버텍스) 배열
 		FbxVector4* controlPoints = mesh->GetControlPoints();
+		int controlPointCount = mesh->GetControlPointsCount();
 
-		// UVSet 이름 가져오기
-		const char* uvSetName = nullptr;
-		if (mesh->GetElementUVCount() > 0) {
-			FbxLayerElementUV* uvElement = mesh->GetElementUV(0);
-			if (uvElement) {
-				uvSetName = uvElement->GetName();
-			}
-		}
+		// 뼈 및 스키닝 데이터 파싱
+		std::vector<std::vector<int>> controlPointBoneIndices(controlPointCount);
+		std::vector<std::vector<float>> controlPointBoneWeights(controlPointCount);
 
+		ProcessSkin(mesh, controlPointBoneIndices, controlPointBoneWeights);
+
+		// 폴리곤 반복
+		int polygonCount = mesh->GetPolygonCount();
 		for (int polyIndex = 0; polyIndex < polygonCount; polyIndex++) {
-			for (int v = 0; v < mesh->GetPolygonSize(polyIndex); v++) {
+			int vertexCountInPoly = mesh->GetPolygonSize(polyIndex);
+			for (int v = 0; v < vertexCountInPoly; v++) {
 				int controlPointIndex = mesh->GetPolygonVertex(polyIndex, v);
-				FbxVector4 pos = controlPoints[controlPointIndex];
+				if (controlPointIndex < 0) continue;
 
-				// 노멀 값 읽기
+				// 위치 (Pos)
+				FbxVector4 pos = controlPoints[controlPointIndex];
+				// 노멀 읽기
 				FbxVector4 normal(0, 0, 0, 0);
 				bool hasNormal = mesh->GetPolygonVertexNormal(polyIndex, v, normal);
-
-				// UV 좌표 읽기
+				// UV 읽기
 				FbxVector2 uv(0, 0);
-				bool unmapped = false;
-				if (uvSetName) {
-					mesh->GetPolygonVertexUV(polyIndex, v, uvSetName, uv, unmapped);
+
+				const char* uvSetName = nullptr;
+				if (mesh->GetElementUVCount() > 0) {
+					FbxLayerElementUV* uvElement = mesh->GetElementUV(0);
+					if (uvElement) {
+						uvSetName = uvElement->GetName();
+					}
 				}
 
+				bool unmapped = false;
+				bool hasUV = mesh->GetPolygonVertexUV(polyIndex, v, uvSetName, uv, unmapped);
+
+				// Vertex 구조체 생성
 				MyVertex vertex{};
 				vertex.px = static_cast<float>(pos[0]);
 				vertex.py = static_cast<float>(pos[1]);
 				vertex.pz = static_cast<float>(pos[2]);
 
-				// 노멀 값 할당
 				vertex.nx = hasNormal ? static_cast<float>(normal[0]) : 0.0f;
 				vertex.ny = hasNormal ? static_cast<float>(normal[1]) : 0.0f;
 				vertex.nz = hasNormal ? static_cast<float>(normal[2]) : 0.0f;
 
-				// UV 좌표 할당
-				vertex.u = unmapped ? 0.0f : static_cast<float>(uv[0]);
-				vertex.v = unmapped ? 0.0f : static_cast<float>(uv[1]);
+				vertex.u = hasUV ? static_cast<float>(uv[0]) : 0.0f;
+				vertex.v = hasUV ? static_cast<float>(uv[1]) : 0.0f;
 
-				if (SkinningData.find(controlPointIndex) != SkinningData.end()) {
-					size_t boneCount = std::min(SkinningData[controlPointIndex].size(), size_t(4));
-					for (size_t j = 0; j < boneCount; j++) {
-						vertex.boneIndices[j] = SkinningData[controlPointIndex][j].first;
-						vertex.boneWeights[j] = SkinningData[controlPointIndex][j].second;
+				// 뼈 데이터 추가
+				auto& boneIndices = controlPointBoneIndices[controlPointIndex];
+				auto& boneWeights = controlPointBoneWeights[controlPointIndex];
+
+				for (size_t i = 0; i < 4; i++) {
+					if (i < boneIndices.size()) {
+						vertex.boneIndices[i] = boneIndices[i];
+						vertex.boneWeights[i] = boneWeights[i];
+					}
+					else {
+						vertex.boneIndices[i] = 0;
+						vertex.boneWeights[i] = 0.0f;
 					}
 				}
 
@@ -322,8 +317,45 @@ void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec, std::
 		}
 	}
 
+	// 하위 노드 순회
 	for (int i = 0; i < node->GetChildCount(); ++i) {
-		ProcessNode(node->GetChild(i), VertexVec, SkinningData);
+		ProcessNode(node->GetChild(i), VertexVec);
+	}
+}
+
+void FBXUtil::ProcessSkin(FbxMesh* mesh, std::vector<std::vector<int>>& boneIndices, std::vector<std::vector<float>>& boneWeights) {
+	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
+	if (skinCount == 0) return;
+
+	FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
+	int clusterCount = skin->GetClusterCount();
+
+	for (int clusterIdx = 0; clusterIdx < clusterCount; clusterIdx++) {
+		FbxCluster* cluster = skin->GetCluster(clusterIdx);
+		if (!cluster) continue;
+
+		int* indices = cluster->GetControlPointIndices();
+		double* weights = cluster->GetControlPointWeights();
+		int count = cluster->GetControlPointIndicesCount();
+
+		for (int i = 0; i < count; i++) {
+			int controlPointIndex = indices[i];
+			float weight = static_cast<float>(weights[i]);
+
+			boneIndices[controlPointIndex].push_back(clusterIdx);
+			boneWeights[controlPointIndex].push_back(weight);
+		}
+	}
+
+	// Normalize weights to sum up to 1.0
+	for (size_t i = 0; i < boneWeights.size(); i++) {
+		float totalWeight = 0.0f;
+		for (float weight : boneWeights[i]) {
+			totalWeight += weight;
+		}
+		for (float& weight : boneWeights[i]) {
+			weight /= totalWeight;
+		}
 	}
 }
 
