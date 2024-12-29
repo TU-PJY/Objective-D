@@ -1,14 +1,18 @@
 #pragma once
 #include "DirectX_3D.h"
 #include <fstream>
+#include <unordered_map>
 
 struct MyVertex
 {
 	float px, py, pz;   // Position
 	float nx, ny, nz;   // Normal
 	float u, v;         // UV
+	int boneIndices[4]; // 영향을 받는 본 인덱스 (최대 4개)
+	float boneWeights[4]; // 본 가중치 (최대 4개)
 };
 extern std::vector<MyVertex> parsedVertices;
+extern std::unordered_map<int, std::vector<std::pair<int, float>>> skinningData;
 
 struct AnimationKey {
 	double time;
@@ -45,6 +49,14 @@ protected:
 	XMFLOAT2* TextureCoords{};
 	ID3D12Resource* TextureCoordBuffer{};
 	ID3D12Resource* TextureCoordUploadBuffer{};
+
+	ID3D12Resource* BoneIndexBuffer{};
+	ID3D12Resource* BoneIndexUploadBuffer{};
+	XMUINT4* BoneIndices{};
+
+	ID3D12Resource* BoneWeightBuffer{};
+	ID3D12Resource* BoneWeightUploadBuffer{};
+	XMFLOAT4* BoneWeights{};
 
 	UINT Indices{};
 	UINT* PnIndices{};
@@ -93,13 +105,13 @@ public:
 
 	void InitializeFBX(FbxManager*& manager, FbxScene*& scene);
 	bool LoadFBXFile(FbxManager* manager, FbxScene* scene, const char* filePath);
-	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec);
-	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec);
+	void ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData);
 	void PrintVertexData(const std::vector<MyVertex>& VertexVec);
 	void ProcessAnimation(FbxScene* scene, std::vector<AnimatedNode>& animationNodes);
 	void ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer, std::vector<AnimatedNode>& animationNodes);
 	void PrintAnimationData(const std::vector<AnimatedNode>& animationNodes);
 	bool TriangulateScene(FbxManager* pManager, FbxScene* pScene);
+	void GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData);
 };
 
 extern FBXUtil fbxUtil;

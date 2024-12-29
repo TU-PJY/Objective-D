@@ -5,6 +5,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #define _WITH_DIERECTX_MATH_FRUSTUM
+#define NOMINMAX
 
 #include <windows.h>
 #include <stdio.h>

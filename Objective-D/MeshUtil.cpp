@@ -3,10 +3,11 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 FBXUtil fbxUtil;
 std::vector<MyVertex> parsedVertices;
-std::vector<AnimatedNode> animations;
+std::unordered_map<int, std::vector<std::pair<int, float>>> skinningData;
 
 // 매쉬를 담당하는 유틸이다.
 
@@ -230,81 +231,99 @@ bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
 	return true;
 }
 
-void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec) {
+void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData){
 	FbxNode* rootNode = scene->GetRootNode();
 	if (rootNode) {
 		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessNode(rootNode->GetChild(i), VertexVec);
+			ProcessNode(rootNode->GetChild(i), VertexVec, SkinningData);
 		}
 	}
 }
 
-void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec) {
-	std::cout << "Node Name: " << node->GetName() << "\n";
-
-	// 노드가 메쉬 데이터를 가지고 있는 경우
+void FBXUtil::ProcessNode(FbxNode* node, std::vector<MyVertex>& VertexVec, std::unordered_map<int, std::vector<std::pair<int, float>>>& SkinningData) {
 	FbxMesh* mesh = node->GetMesh();
 	if (mesh) {
-		std::cout << "Processing Mesh: " << node->GetName() << "\n";
+		int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
+		for (int i = 0; i < skinCount; i++) {
+			FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(i, FbxDeformer::eSkin));
+			int clusterCount = skin->GetClusterCount();
 
-		// 폴리곤(삼각형) 개수
+			for (int j = 0; j < clusterCount; j++) {
+				FbxCluster* cluster = skin->GetCluster(j);
+				FbxNode* bone = cluster->GetLink();
+
+				if (!bone) continue;
+
+				int* indices = cluster->GetControlPointIndices();
+				double* weights = cluster->GetControlPointWeights();
+				int indexCount = cluster->GetControlPointIndicesCount();
+
+				for (int k = 0; k < indexCount; k++) {
+					int controlPointIndex = indices[k];
+					float weight = static_cast<float>(weights[k]);
+
+					SkinningData[controlPointIndex].emplace_back(j, weight);
+				}
+			}
+		}
+
 		int polygonCount = mesh->GetPolygonCount();
-		// 컨트롤 포인트 (버텍스) 배열
 		FbxVector4* controlPoints = mesh->GetControlPoints();
 
-		// UVSet 이름 (보통 "map1" 또는 "UVMap" 등)
+		// UVSet 이름 가져오기
 		const char* uvSetName = nullptr;
 		if (mesh->GetElementUVCount() > 0) {
 			FbxLayerElementUV* uvElement = mesh->GetElementUV(0);
-			if (uvElement)
+			if (uvElement) {
 				uvSetName = uvElement->GetName();
+			}
 		}
 
-		// 폴리곤 단위로 반복
 		for (int polyIndex = 0; polyIndex < polygonCount; polyIndex++) {
-			int vertexCountInPoly = mesh->GetPolygonSize(polyIndex);
-			for (int v = 0; v < vertexCountInPoly; v++) {
-				// 컨트롤 포인트 인덱스
+			for (int v = 0; v < mesh->GetPolygonSize(polyIndex); v++) {
 				int controlPointIndex = mesh->GetPolygonVertex(polyIndex, v);
-				if (controlPointIndex < 0) continue;
-
-				// 위치 (Pos)
 				FbxVector4 pos = controlPoints[controlPointIndex];
 
-				// 노멀 읽기
+				// 노멀 값 읽기
 				FbxVector4 normal(0, 0, 0, 0);
 				bool hasNormal = mesh->GetPolygonVertexNormal(polyIndex, v, normal);
 
-				// UV 읽기
+				// UV 좌표 읽기
 				FbxVector2 uv(0, 0);
 				bool unmapped = false;
-				bool hasUV = false;
 				if (uvSetName) {
-					hasUV = mesh->GetPolygonVertexUV(polyIndex, v, uvSetName, uv, unmapped);
+					mesh->GetPolygonVertexUV(polyIndex, v, uvSetName, uv, unmapped);
 				}
 
-				// MyVertex 구조체에 저장
 				MyVertex vertex{};
 				vertex.px = static_cast<float>(pos[0]);
 				vertex.py = static_cast<float>(pos[1]);
 				vertex.pz = static_cast<float>(pos[2]);
 
+				// 노멀 값 할당
 				vertex.nx = hasNormal ? static_cast<float>(normal[0]) : 0.0f;
 				vertex.ny = hasNormal ? static_cast<float>(normal[1]) : 0.0f;
 				vertex.nz = hasNormal ? static_cast<float>(normal[2]) : 0.0f;
 
-				vertex.u = (hasUV && !unmapped) ? static_cast<float>(uv[0]) : 0.0f;
-				vertex.v = (hasUV && !unmapped) ? static_cast<float>(uv[1]) : 0.0f;
+				// UV 좌표 할당
+				vertex.u = unmapped ? 0.0f : static_cast<float>(uv[0]);
+				vertex.v = unmapped ? 0.0f : static_cast<float>(uv[1]);
 
-				// 벡터에 추가
+				if (SkinningData.find(controlPointIndex) != SkinningData.end()) {
+					size_t boneCount = std::min(SkinningData[controlPointIndex].size(), size_t(4));
+					for (size_t j = 0; j < boneCount; j++) {
+						vertex.boneIndices[j] = SkinningData[controlPointIndex][j].first;
+						vertex.boneWeights[j] = SkinningData[controlPointIndex][j].second;
+					}
+				}
+
 				VertexVec.push_back(vertex);
 			}
 		}
 	}
 
-	// 하위 노드 순회
 	for (int i = 0; i < node->GetChildCount(); ++i) {
-		ProcessNode(node->GetChild(i), VertexVec);
+		ProcessNode(node->GetChild(i), VertexVec, SkinningData);
 	}
 }
 
@@ -318,92 +337,4 @@ void FBXUtil::PrintVertexData(const std::vector<MyVertex>& VertexVec) {
 		std::cout << "UV(" << vertex.u << ", " << vertex.v << ")\n";
 	}
 	std::cout << "--- End of Vertex Data ---\n";
-}
-
-void FBXUtil::ProcessAnimation(FbxScene* scene, std::vector<AnimatedNode>& animationNodes) {
-	FbxAnimStack* animStack = scene->GetCurrentAnimationStack();
-	if (!animStack) {
-		std::cerr << "No animation stack found in the FBX file.\n";
-		return;
-	}
-
-	FbxAnimLayer* animLayer = animStack->GetMember<FbxAnimLayer>();
-	if (!animLayer) {
-		std::cerr << "No animation layer found in the current animation stack.\n";
-		return;
-	}
-
-	FbxNode* rootNode = scene->GetRootNode();
-	if (rootNode) {
-		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessAnimationNode(rootNode->GetChild(i), animLayer, animationNodes);
-		}
-	}
-}
-
-void FBXUtil::ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer, std::vector<AnimatedNode>& animationNodes) {
-	AnimatedNode animNode;
-	animNode.name = node->GetName();
-
-	FbxAnimCurve* translateX = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
-	FbxAnimCurve* translateY = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
-	FbxAnimCurve* translateZ = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
-
-	if (!translateX && !translateY && !translateZ) {
-		std::cerr << "Node " << node->GetName() << " has no translation animation curves.\n";
-	}
-
-	FbxAnimCurve* rotateX = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
-	FbxAnimCurve* rotateY = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
-	FbxAnimCurve* rotateZ = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
-
-	FbxAnimCurve* scaleX = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
-	FbxAnimCurve* scaleY = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
-	FbxAnimCurve* scaleZ = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
-
-	int keyCount = translateX ? translateX->KeyGetCount() : 0;
-	for (int i = 0; i < keyCount; ++i) {
-		AnimationKey key;
-		key.time = translateX->KeyGetTime(i).GetSecondDouble();
-
-		key.translation = XMFLOAT3(
-			translateX ? static_cast<float>(translateX->KeyGetValue(i)) : 0.0f,
-			translateY ? static_cast<float>(translateY->KeyGetValue(i)) : 0.0f,
-			translateZ ? static_cast<float>(translateZ->KeyGetValue(i)) : 0.0f
-		);
-
-		key.rotation = XMFLOAT3(
-			rotateX ? static_cast<float>(rotateX->KeyGetValue(i)) : 0.0f,
-			rotateY ? static_cast<float>(rotateY->KeyGetValue(i)) : 0.0f,
-			rotateZ ? static_cast<float>(rotateZ->KeyGetValue(i)) : 0.0f
-		);
-
-		key.scaling = XMFLOAT3(
-			scaleX ? static_cast<float>(scaleX->KeyGetValue(i)) : 1.0f,
-			scaleY ? static_cast<float>(scaleY->KeyGetValue(i)) : 1.0f,
-			scaleZ ? static_cast<float>(scaleZ->KeyGetValue(i)) : 1.0f
-		);
-
-		animNode.keys.push_back(key);
-	}
-
-	animationNodes.push_back(animNode);
-
-	for (int i = 0; i < node->GetChildCount(); ++i) {
-		ProcessAnimationNode(node->GetChild(i), animLayer, animationNodes);
-	}
-}
-
-void FBXUtil::PrintAnimationData(const std::vector<AnimatedNode>& animationNodes) {
-	std::cout << "\n--- Animation Data ---\n";
-	for (const auto& node : animationNodes) {
-		std::cout << "Node: " << node.name << "\n";
-		for (const auto& key : node.keys) {
-			std::cout << "  Time: " << key.time
-				<< " Translation: (" << key.translation.x << ", " << key.translation.y << ", " << key.translation.z << ")"
-				<< " Rotation: (" << key.rotation.x << ", " << key.rotation.y << ", " << key.rotation.z << ")"
-				<< " Scaling: (" << key.scaling.x << ", " << key.scaling.y << ", " << key.scaling.z << ")\n";
-		}
-	}
-	std::cout << "--- End of Animation Data ---\n";
 }
