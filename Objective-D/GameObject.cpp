@@ -180,6 +180,7 @@ void GameObject::PrepareRender() {
 
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&RotateMatrix), XMLoadFloat4x4(&TranslateMatrix));
 	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&ScaleMatrix), ResultMatrix);
+	ResultMatrix = XMMatrixMultiply(XMLoadFloat4x4(&AnimationMatrix), ResultMatrix);
 
 	// 이미지 출력 모드일경우 종횡비를 적용한다.
 	if (RenderType == RENDER_TYPE_2D || RenderType == RENDER_TYPE_2D_STATIC)

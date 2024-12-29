@@ -5,7 +5,7 @@
 
 
 Mesh* GunMesh;
-Mesh* ZombieMesh;
+Mesh* HelicopterMesh;
 
 // 매쉬를 여기서 로드한다.
 void LoadMesh(DeviceSystem& System) {
@@ -16,10 +16,10 @@ void LoadMesh(DeviceSystem& System) {
 	if (fbxUtil.LoadFBXFile(fbxUtil.manager, fbxUtil.scene, "Resources//Models//zombie.fbx")) {
 		fbxUtil.TriangulateScene(fbxUtil.manager, fbxUtil.scene);
 		fbxUtil.GetVertexData(fbxUtil.scene, parsedVertices);
-		fbxUtil.ProcessAnimation(fbxUtil.scene);
-		//fbxUtil.PrintVertexData(parsedVertices);
-		ZombieMesh = new Mesh();
-		ZombieMesh->CreateFBXMesh(System.Device, System.CmdList, parsedVertices);
+		fbxUtil.ProcessAnimation(fbxUtil.scene, animations);
+		fbxUtil.PrintAnimationData(animations);
+		HelicopterMesh = new Mesh();
+		HelicopterMesh->CreateFBXMesh(System.Device, System.CmdList, parsedVertices);
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////
@@ -27,14 +27,14 @@ void LoadMesh(DeviceSystem& System) {
 
 Texture* Tex, * SkyboxTex, * WoodTex;
 Texture* ColorTex;
-Texture* ZombieTex;
+Texture* HelicopterTex;
 
 // 택스처를 여기서 로드한다.
 void LoadTexture(DeviceSystem& System) {
 	ImportTexture(System, Tex, L"Resources//Image//Gun.jpg", TEXTURE_TYPE_WIC);
 	ImportTexture(System, WoodTex, L"Resources//Image//Wood.jpg", TEXTURE_TYPE_WIC);
 	ImportTexture(System, ColorTex, L"Resources//Image//ColorTexture.png", TEXTURE_TYPE_WIC);
-	ImportTexture(System, ZombieTex, L"Resources//Image//zombie.png", TEXTURE_TYPE_WIC, D3D12_FILTER_ANISOTROPIC);
+	ImportTexture(System, HelicopterTex, L"Resources//Image//zombie.png", TEXTURE_TYPE_WIC, D3D12_FILTER_ANISOTROPIC);
 }
 /////////////////////////////////////////////////////////////////////////////////
 

@@ -64,32 +64,6 @@ public:
 		InitRenderState();
 		Transform::Move(TranslateMatrix, 0.0, -1.0, 0.0);
 		Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
-		//Transform::Scale(ScaleMatrix, 0.1, 0.1, 0.1);
-		Render3D(ZombieMesh, ZombieTex);
-
-		///*InitRenderState(RENDER_TYPE_3D);
-		//SetLightUse(DISABLE_LIGHT);
-		//Transform::Scale(ScaleMatrix, 20.0, 20.0, 20.0);
-		//Render3D(SkyboxMesh, SkyboxTex, 1.0, false);*/
-
-		//// 모델 출력
-		//InitRenderState(RENDER_TYPE_3D);
-		//SetColor(Color);
-		//Transform::Move(TranslateMatrix, Position.x, Position.y, Position.z);
-		//Transform::Rotate(RotateMatrix, Rotation.x, Rotation.y, 0.0);
-		//Transform::Scale(ScaleMatrix, 0.4, 0.4, 0.4);
-		//Render3D(GunMesh, Tex);
-
-		//// 피킹 행렬 업데이트, 렌더링 직후 실행할 것을 추천
-		//UpdatePickMatrix();
-
-		//oobb.Update(GunMesh, TranslateMatrix, RotateMatrix, ScaleMatrix);
-		//oobb.Render();
-
-		//// 이미지 출력, 이미지 종횡비가 자동으로 적용된다.
-		//InitRenderState(RENDER_TYPE_2D);
-		//Transform::Move2D(TranslateMatrix, -0.5, 0.5);
-		//Transform::Scale2D(ScaleMatrix, 0.5, 0.5);
-		//Render2D(WoodTex);
+		Render3D(HelicopterMesh, HelicopterTex);
 	}
 };

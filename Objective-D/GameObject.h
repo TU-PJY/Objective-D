@@ -17,6 +17,7 @@ public:
 	XMFLOAT4X4 RotateMatrix{ Mat4::Identity() };
 	XMFLOAT4X4 ScaleMatrix { Mat4::Identity() };
 	XMFLOAT4X4 ImageAspectMatrix{ Mat4::Identity() };
+	XMFLOAT4X4 AnimationMatrix{ Mat4::Identity() };
 	XMMATRIX ResultMatrix{};
 
 	// 오브젝트 피킹 될 경우 사용될 행렬

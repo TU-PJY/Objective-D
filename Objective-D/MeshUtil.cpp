@@ -6,6 +6,7 @@
 
 FBXUtil fbxUtil;
 std::vector<MyVertex> parsedVertices;
+std::vector<AnimatedNode> animations;
 
 // 매쉬를 담당하는 유틸이다.
 
@@ -229,15 +230,6 @@ bool FBXUtil::TriangulateScene(FbxManager* pManager, FbxScene* pScene) {
 	return true;
 }
 
-void FBXUtil::ParseFBXScene(FbxScene* scene) {
-	/*FbxNode* rootNode = scene->GetRootNode();
-	if (rootNode) {
-		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessNode(rootNode->GetChild(i));
-		}
-	}*/
-}
-
 void FBXUtil::GetVertexData(FbxScene* scene, std::vector<MyVertex>& VertexVec) {
 	FbxNode* rootNode = scene->GetRootNode();
 	if (rootNode) {
@@ -328,32 +320,90 @@ void FBXUtil::PrintVertexData(const std::vector<MyVertex>& VertexVec) {
 	std::cout << "--- End of Vertex Data ---\n";
 }
 
-void FBXUtil::ProcessAnimation(FbxScene* scene) {
+void FBXUtil::ProcessAnimation(FbxScene* scene, std::vector<AnimatedNode>& animationNodes) {
 	FbxAnimStack* animStack = scene->GetCurrentAnimationStack();
-	if (!animStack) return;
+	if (!animStack) {
+		std::cerr << "No animation stack found in the FBX file.\n";
+		return;
+	}
 
 	FbxAnimLayer* animLayer = animStack->GetMember<FbxAnimLayer>();
-	if (!animLayer) return;
+	if (!animLayer) {
+		std::cerr << "No animation layer found in the current animation stack.\n";
+		return;
+	}
 
 	FbxNode* rootNode = scene->GetRootNode();
 	if (rootNode) {
 		for (int i = 0; i < rootNode->GetChildCount(); ++i) {
-			ProcessAnimationNode(rootNode->GetChild(i), animLayer);
+			ProcessAnimationNode(rootNode->GetChild(i), animLayer, animationNodes);
 		}
 	}
 }
 
-void FBXUtil::ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer) {
+void FBXUtil::ProcessAnimationNode(FbxNode* node, FbxAnimLayer* animLayer, std::vector<AnimatedNode>& animationNodes) {
+	AnimatedNode animNode;
+	animNode.name = node->GetName();
+
 	FbxAnimCurve* translateX = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
-	if (translateX) {
-		for (int i = 0; i < translateX->KeyGetCount(); ++i) {
-			FbxTime time = translateX->KeyGetTime(i);
-			float value = translateX->KeyGetValue(i);
-			std::cout << "Node: " << node->GetName() << " Time: " << time.GetSecondDouble() << " Value: " << value << "\n";
-		}
+	FbxAnimCurve* translateY = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
+	FbxAnimCurve* translateZ = node->LclTranslation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
+
+	if (!translateX && !translateY && !translateZ) {
+		std::cerr << "Node " << node->GetName() << " has no translation animation curves.\n";
 	}
 
-	for (int i = 0; i < node->GetChildCount(); ++i) {
-		ProcessAnimationNode(node->GetChild(i), animLayer);
+	FbxAnimCurve* rotateX = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
+	FbxAnimCurve* rotateY = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
+	FbxAnimCurve* rotateZ = node->LclRotation.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
+
+	FbxAnimCurve* scaleX = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_X);
+	FbxAnimCurve* scaleY = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Y);
+	FbxAnimCurve* scaleZ = node->LclScaling.GetCurve(animLayer, FBXSDK_CURVENODE_COMPONENT_Z);
+
+	int keyCount = translateX ? translateX->KeyGetCount() : 0;
+	for (int i = 0; i < keyCount; ++i) {
+		AnimationKey key;
+		key.time = translateX->KeyGetTime(i).GetSecondDouble();
+
+		key.translation = XMFLOAT3(
+			translateX ? static_cast<float>(translateX->KeyGetValue(i)) : 0.0f,
+			translateY ? static_cast<float>(translateY->KeyGetValue(i)) : 0.0f,
+			translateZ ? static_cast<float>(translateZ->KeyGetValue(i)) : 0.0f
+		);
+
+		key.rotation = XMFLOAT3(
+			rotateX ? static_cast<float>(rotateX->KeyGetValue(i)) : 0.0f,
+			rotateY ? static_cast<float>(rotateY->KeyGetValue(i)) : 0.0f,
+			rotateZ ? static_cast<float>(rotateZ->KeyGetValue(i)) : 0.0f
+		);
+
+		key.scaling = XMFLOAT3(
+			scaleX ? static_cast<float>(scaleX->KeyGetValue(i)) : 1.0f,
+			scaleY ? static_cast<float>(scaleY->KeyGetValue(i)) : 1.0f,
+			scaleZ ? static_cast<float>(scaleZ->KeyGetValue(i)) : 1.0f
+		);
+
+		animNode.keys.push_back(key);
 	}
+
+	animationNodes.push_back(animNode);
+
+	for (int i = 0; i < node->GetChildCount(); ++i) {
+		ProcessAnimationNode(node->GetChild(i), animLayer, animationNodes);
+	}
+}
+
+void FBXUtil::PrintAnimationData(const std::vector<AnimatedNode>& animationNodes) {
+	std::cout << "\n--- Animation Data ---\n";
+	for (const auto& node : animationNodes) {
+		std::cout << "Node: " << node.name << "\n";
+		for (const auto& key : node.keys) {
+			std::cout << "  Time: " << key.time
+				<< " Translation: (" << key.translation.x << ", " << key.translation.y << ", " << key.translation.z << ")"
+				<< " Rotation: (" << key.rotation.x << ", " << key.rotation.y << ", " << key.rotation.z << ")"
+				<< " Scaling: (" << key.scaling.x << ", " << key.scaling.y << ", " << key.scaling.z << ")\n";
+		}
+	}
+	std::cout << "--- End of Animation Data ---\n";
 }
